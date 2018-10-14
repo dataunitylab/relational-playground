@@ -1,15 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import SplitPane from 'react-split-pane';
 import RelExpr from './RelExpr';
+
+import './Home.css';
 
 class Home extends Component {
   render() {
-    return <div><RelExpr expr={this.props.expr}/></div>
+    return (
+      <SplitPane split="horizontal">
+        <div><RelExpr expr={this.props.expr}/></div>
+        <div></div>
+      </SplitPane>
+    )
   }
 }
 
 const mapStateToProps = (state) => {
-  console.log(state);
   return {'expr': state.relexp.expr};
 };
 
