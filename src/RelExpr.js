@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import RelOp, { Projection, Rename, Selection } from './RelOp';
 
 class RelExpr extends Component {
   conditionToString(select, conds = []) {
-    if (select.length == 0) { return conds; }
+    if (select.length === 0) { return conds; }
 
     const field = Object.keys(select[0])[0];
     const op = Object.keys(select[0][field])[0];
@@ -43,10 +42,9 @@ class RelExpr extends Component {
         );
       case 'relation':
         return expr.relation;
-      case 'default':
+      default:
         return Object.keys(expr)[0];
     }
-    return <div>3</div>;
   }
 
   render() {
