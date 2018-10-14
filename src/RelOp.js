@@ -20,7 +20,7 @@ class Rename extends Component {
 
 class Selection extends Component {
   render() {
-    return <span>&sigma;<sub>{this.props.select.join(',')}</sub></span>;
+    return <span>&sigma;<sub>{this.props.select.join(' &#8743; ')}</sub></span>;
   }
 }
 
