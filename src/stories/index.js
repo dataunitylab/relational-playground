@@ -5,6 +5,7 @@ import { action } from '@storybook/addon-actions';
 import { linkTo } from '@storybook/addon-links';
 
 import RelOp, { Projection, Rename, Selection } from '../RelOp';
+import RelExpr from '../RelExpr';
 import Table from '../Table';
 
 storiesOf('Table', module)
@@ -35,4 +36,27 @@ storiesOf('RelOp', module)
         <RelOp operator={<Selection select={['salary > 100K']}/>}>Doctor</RelOp>
       </RelOp>
     </RelOp>
+  ));
+
+storiesOf('RelExpr', module)
+  .add('a complex expression', () => (
+    <RelExpr expr={{
+      rename: {
+        arguments: { rename: {'firstName': 'name'}},
+        children: [
+          {projection: {
+            arguments: { project: ['firstName', 'lastName']},
+            children: [
+              {selection: {
+                arguments: { select: [{'salary': {'$gt': 100000}}] },
+                children: [
+                  {relation: 'Doctor'}
+                ]
+              }}
+            ]
+          }}
+        ]
+      }
+    }}>
+    </RelExpr>
   ));
