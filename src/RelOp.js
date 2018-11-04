@@ -1,8 +1,29 @@
 import React, { Component } from 'react';
 
+import './RelOp.css';
+
 class RelOp extends Component {
+  constructor() {
+    super();
+    this.state = {isHovered: false};
+    this.handleHover = this.handleHover.bind(this);
+  }
+
+  handleHover(e) {
+    const hovering = e.type == 'mouseover';
+    e.stopPropagation();
+    this.setState((state) => {
+      return {...state, isHovered: hovering};
+    });
+  }
+
   render() {
-    return (<span>{this.props.operator}({this.props.children})</span>);
+    const hoverClass = 'RelOp ' + (this.state.isHovered ? 'hovering' : '');
+    return (
+      <span className={hoverClass} onMouseOver={this.handleHover} onMouseOut={this.handleHover}>
+        {this.props.operator}({this.props.children})
+      </span>
+    );
   }
 }
 
