@@ -25,19 +25,19 @@ class RelExpr extends Component {
       case 'projection':
         return (
           <RelOp operator={<Projection project={expr.projection.arguments.project}/>}>
-            {this.buildExpr(expr.projection.children[0])}
+            <RelExpr expr={expr.projection.children[0]}/>
           </RelOp>
         );
       case 'selection':
         return (
           <RelOp operator={<Selection select={this.conditionToString(expr.selection.arguments.select)}/>}>
-            {this.buildExpr(expr.selection.children[0])}
+            <RelExpr expr={expr.selection.children[0]}/>
           </RelOp>
         );
       case 'rename':
         return (
           <RelOp operator={<Rename rename={expr.rename.arguments.rename}/>}>
-            {this.buildExpr(expr.rename.children[0])}
+            <RelExpr expr={expr.rename.children[0]}/>
           </RelOp>
         );
       case 'relation':
