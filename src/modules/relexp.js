@@ -7,7 +7,7 @@ const initialState = {
           arguments: { project: ['firstName', 'lastName']},
           children: [
             {selection: {
-              arguments: { select: [{'salary': {'$gt': 100000}}] },
+              arguments: { select: [{'salary': {'$gt': 130000}}] },
               children: [
                 {relation: 'Doctor'}
               ]

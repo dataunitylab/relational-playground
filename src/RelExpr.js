@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import RelOp, { Projection, Rename, Selection } from './RelOp';
 
 class RelExpr extends Component {
+  constructor() {
+    super();
+    this.handleExprClick = this.handleExprClick.bind(this);
+  }
+
   conditionToString(select, conds = []) {
     if (select.length === 0) { return conds; }
 
@@ -25,19 +30,19 @@ class RelExpr extends Component {
       case 'projection':
         return (
           <RelOp operator={<Projection project={expr.projection.arguments.project}/>}>
-            <RelExpr expr={expr.projection.children[0]}/>
+            <RelExpr expr={expr.projection.children[0]} changeExpr={this.props.changeExpr}/>
           </RelOp>
         );
       case 'selection':
         return (
           <RelOp operator={<Selection select={this.conditionToString(expr.selection.arguments.select)}/>}>
-            <RelExpr expr={expr.selection.children[0]}/>
+            <RelExpr expr={expr.selection.children[0]} changeExpr={this.props.changeExpr}/>
           </RelOp>
         );
       case 'rename':
         return (
           <RelOp operator={<Rename rename={expr.rename.arguments.rename}/>}>
-            <RelExpr expr={expr.rename.children[0]}/>
+            <RelExpr expr={expr.rename.children[0]} changeExpr={this.props.changeExpr}/>
           </RelOp>
         );
       case 'relation':
@@ -47,8 +52,13 @@ class RelExpr extends Component {
     }
   }
 
+  handleExprClick(e) {
+    e.stopPropagation();
+    this.props.changeExpr(this.props.expr);
+  }
+
   render() {
-    return this.buildExpr(this.props.expr);
+    return <span onClick={this.handleExprClick}>{this.buildExpr(this.props.expr)}</span>;
   }
 }
 
