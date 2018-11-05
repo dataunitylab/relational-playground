@@ -10,7 +10,7 @@ class RelOp extends Component {
   }
 
   handleHover(e) {
-    const hovering = e.type == 'mouseover';
+    const hovering = e.type === 'mouseover';
     e.stopPropagation();
     this.setState((state) => {
       return {...state, isHovered: hovering};

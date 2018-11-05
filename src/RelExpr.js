@@ -43,7 +43,7 @@ class RelExpr extends Component {
       case 'relation':
         return expr.relation;
       default:
-        return Object.keys(expr)[0];
+        throw new Error('Invalid expression');
     }
   }
 
