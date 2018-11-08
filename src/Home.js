@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import SplitPane from 'react-split-pane';
+import MultiTable from './MultiTable';
 import RelExpr from './RelExpr';
+import SplitPane from 'react-split-pane';
 import Table from './Table';
 import { changeExpr } from './modules/data';
 
@@ -20,9 +21,16 @@ class Home extends Component {
     }
 
     return (
-      <SplitPane split="horizontal">
-        <div><RelExpr expr={this.props.expr} changeExpr={this.props.changeExpr} /></div>
-        <div>{data}</div>
+      <SplitPane split="vertical" primary="second" minSize={400}>
+        <div>
+          <SplitPane split="horizontal" primary="second" minSize={300}>
+            <div><RelExpr expr={this.props.expr} changeExpr={this.props.changeExpr} /></div>
+            <div>{data}</div>
+          </SplitPane>
+        </div>
+        <div>
+          <MultiTable tables={this.props.sources}/>
+        </div>
       </SplitPane>
     )
   }
@@ -31,7 +39,8 @@ class Home extends Component {
 const mapStateToProps = (state) => {
   return {
     'expr': state.relexp.expr,
-    'data': state.data
+    'data': state.data,
+    'sources': state.data.sourcedata
   };
 };
 

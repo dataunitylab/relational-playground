@@ -12,7 +12,9 @@ class Table extends Component {
       data={this.props.data}
       columns={columns}
       defaultPageSize={5}
-      sortable={this.props.sortable}>
+      showPageSizeOptions={false}
+      sortable={this.props.sortable}
+      width={500}>
     </ReactTable>)
   }
 }
