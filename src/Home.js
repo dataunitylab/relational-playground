@@ -10,7 +10,7 @@ import './Home.css';
 
 class Home extends Component {
   render() {
-    let data = <div>Select an expression above.</div>;
+    let data = <div style={{padding: '2em'}}>Select an expression above.</div>;
     if (this.props.data.current) {
       data=
         <Table
@@ -24,7 +24,7 @@ class Home extends Component {
       <SplitPane split="vertical" primary="second" minSize={400}>
         <div>
           <SplitPane split="horizontal" primary="second" minSize={300}>
-            <div><RelExpr expr={this.props.expr} changeExpr={this.props.changeExpr} /></div>
+            <div style={{padding: '2em'}}><RelExpr expr={this.props.expr} changeExpr={this.props.changeExpr} /></div>
             <div>{data}</div>
           </SplitPane>
         </div>
