@@ -25,12 +25,58 @@ const initialState = {
   }
 }
 
+const opMap = {
+  '=': '$eq',
+  '!=': '$ne',
+  '>': '$gt',
+  '>=': '$gte',
+  '<': '$lt',
+  '<=': '$lte'
+};
+
+function convertExpr(expr) {
+  switch(expr.type) {
+    case 'AndExpression':
+      let and = [];
+
+      const left = convertExpr(expr.left);
+      if (Array.isArray(left)) {
+        and = and.concat(left);
+      } else {
+        and.push(left);
+      }
+
+      const right = convertExpr(expr.right);
+      if (Array.isArray(right)) {
+        and = and.concat(right);
+      } else {
+        and.push(right);
+      }
+      return and;
+    case 'ComparisonBooleanPrimary':
+      return [{[convertExpr(expr.left)]: {[opMap[expr.operator]]: convertExpr(expr.right)}}];
+    case 'Identifier':
+    case 'Number':
+    case 'String':
+      return expr.value;
+    default:
+      throw new Error('Invalid expression.');
+  }
+}
+
 function buildExpr(sql) {
   switch (sql.type) {
     case 'Select':
-      const from = sql.from.value.map((v) => buildExpr(v));
+      let from = sql.from.value.map((v) => buildExpr(v));
       if (from.length > 1) {
-        throw 'Only single table queries currently supported.';
+        throw new Error('Only single table queries currently supported.');
+      }
+
+      if (sql.where) {
+        from = [{selection: {
+          arguments: {select: convertExpr(sql.where)},
+          children: from
+        }}];
       }
 
       const select = sql.selectItems.value;
@@ -38,17 +84,27 @@ function buildExpr(sql) {
         return from[0];
       } else {
         const project = select.map((field) => field.value);
-        return {projection: {
+        const projection = {projection: {
           arguments: {project},
           children: from
         }};
+
+        const rename = select.filter((field) => field.hasAs).map((field) => [field.value, field.alias]);
+        if (rename.length > 0) {
+          return {rename: {
+            arguments: {rename: Object.fromEntries(rename)},
+            children: [projection]
+          }};
+        } else {
+          return projection;
+        }
       }
     case 'TableRefrence':
       return buildExpr(sql.value);
     case 'TableFactor':
       return {relation: sql.value.value};
     default:
-      throw 'Unsupported statement.';
+      throw new Error('Unsupported statement.');
   }
 }
 
