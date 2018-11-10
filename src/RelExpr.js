@@ -14,7 +14,7 @@ class RelExpr extends Component {
     const op = Object.keys(select[0][field])[0];
     const opMap = {
       '$gte': '>=',
-      '$gt': '>=',
+      '$gt': '>',
       '$lt': '<',
       '$lte': '<=',
       '$ne': '!=',
