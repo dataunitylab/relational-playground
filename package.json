@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "connected-react-router": "^4.5.0",
+    "js-sql-parser": "^1.0.7",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-redux": "^5.0.7",

@@ -3,8 +3,10 @@ import { connect } from 'react-redux';
 import MultiTable from './MultiTable';
 import RelExpr from './RelExpr';
 import SplitPane from 'react-split-pane';
+import SqlEditor from './SqlEditor';
 import Table from './Table';
 import { changeExpr } from './modules/data';
+import { exprFromSql } from './modules/relexp';
 
 import './Home.css';
 
@@ -24,7 +26,10 @@ class Home extends Component {
       <SplitPane split="vertical" primary="second" minSize={400}>
         <div>
           <SplitPane split="horizontal" primary="second" minSize={300}>
-            <div style={{padding: '2em'}}><RelExpr expr={this.props.expr} changeExpr={this.props.changeExpr} /></div>
+            <div style={{padding: '2em'}}>
+              <div style={{marginBottom: '2em'}}><SqlEditor exprFromSql={this.props.exprFromSql}/></div>
+              <RelExpr expr={this.props.expr} changeExpr={this.props.changeExpr} />
+            </div>
             <div>{data}</div>
           </SplitPane>
         </div>
@@ -46,7 +51,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    changeExpr: data => { dispatch(changeExpr(data)) }
+    changeExpr: data => { dispatch(changeExpr(data)) },
+    exprFromSql: data => { dispatch(exprFromSql(data)) }
   };
 };
 
