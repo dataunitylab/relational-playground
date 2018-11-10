@@ -48,7 +48,7 @@ class RelExpr extends Component {
       case 'relation':
         return expr.relation;
       default:
-        throw new Error('Invalid expression');
+        throw new Error('Invalid expression ' + JSON.stringify(expr) + '.');
     }
   }
 
