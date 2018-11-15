@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import RelOp, { Projection, Rename, Selection } from './RelOp';
+import Relation from './Relation';
 
 class RelExpr extends Component {
   constructor() {
@@ -26,6 +27,8 @@ class RelExpr extends Component {
   }
 
   buildExpr(expr) {
+    if (!expr || Object.keys(expr).length === 0) { return ''; }
+
     switch(Object.keys(expr)[0]) {
       case 'projection':
         return (
@@ -46,7 +49,7 @@ class RelExpr extends Component {
           </RelOp>
         );
       case 'relation':
-        return expr.relation;
+        return <Relation name={expr.relation}/>;
       default:
         throw new Error('Invalid expression ' + JSON.stringify(expr) + '.');
     }

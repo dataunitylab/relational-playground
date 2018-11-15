@@ -27,7 +27,7 @@ class Home extends Component {
         <div>
           <SplitPane split="horizontal" primary="second" minSize={300}>
             <div style={{padding: '2em'}}>
-              <div style={{marginBottom: '2em'}}><SqlEditor exprFromSql={this.props.exprFromSql}/></div>
+              <div style={{marginBottom: '2em'}}><SqlEditor text="SELECT * FROM Doctor" exprFromSql={this.props.exprFromSql}/></div>
               <RelExpr expr={this.props.expr} changeExpr={this.props.changeExpr} />
             </div>
             <div>{data}</div>

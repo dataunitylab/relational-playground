@@ -5,24 +5,7 @@ export function exprFromSql(sql) {
 }
 
 const initialState = {
-  expr: {
-    rename: {
-      arguments: { rename: {'firstName': 'name'}},
-      children: [
-        {projection: {
-          arguments: { project: ['firstName', 'lastName']},
-          children: [
-            {selection: {
-              arguments: { select: [{'salary': {'$gt': 130000}}] },
-              children: [
-                {relation: 'Doctor'}
-              ]
-            }}
-          ]
-        }}
-      ]
-    }
-  }
+  expr: {}
 }
 
 const opMap = {
