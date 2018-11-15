@@ -4,7 +4,7 @@ import './Relation.css';
 
 class Relation extends Component {
   render() {
-    return <span className="Relation">{this.props.name}</span>;
+    return <span data-testid="span" className="Relation">{this.props.name}</span>;
   }
 }
 

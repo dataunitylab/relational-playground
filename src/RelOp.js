@@ -35,13 +35,13 @@ class Projection extends Component {
 
 class Rename extends Component {
   render() {
-    return <span>&rho;<sub>{Object.entries(this.props.rename).map(([o, n]) => o + '/' + n)}</sub></span>;
+    return <span>&rho;<sub>{Object.entries(this.props.rename).map(([o, n]) => o + '/' + n).join(',')}</sub></span>;
   }
 }
 
 class Selection extends Component {
   render() {
-    return <span>&sigma;<sub>{this.props.select.join(' &#8743; ')}</sub></span>;
+    return <span>&sigma;<sub>{this.props.select.join(' ∧ ')}</sub></span>;
   }
 }
 
