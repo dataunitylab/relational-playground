@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 
@@ -7,23 +7,27 @@ type Props = {
   tableName: string,
   columns: Array<string>,
   data: Array<{[string]: any}>,
-  sortable?: boolean
+  sortable?: boolean,
 };
 
 class Table extends Component<Props> {
   render() {
-    let columns = [{
-      Header: this.props.tableName,
-      columns: this.props.columns.map(c => ({Header: c, accessor: c}))
-    }];
-    return (<ReactTable
-      data={this.props.data}
-      columns={columns}
-      defaultPageSize={5}
-      showPageSizeOptions={false}
-      sortable={this.props.sortable}
-      width={500}>
-    </ReactTable>)
+    let columns = [
+      {
+        Header: this.props.tableName,
+        columns: this.props.columns.map(c => ({Header: c, accessor: c})),
+      },
+    ];
+    return (
+      <ReactTable
+        data={this.props.data}
+        columns={columns}
+        defaultPageSize={5}
+        showPageSizeOptions={false}
+        sortable={this.props.sortable}
+        width={500}
+      />
+    );
   }
 }
 
