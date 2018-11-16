@@ -1,9 +1,10 @@
 // @flow
 import React, { Component } from 'react';
 import { exprFromSql } from './modules/relexp';
-const parser = require('js-sql-parser');
 
 import type { ElementRef } from 'react';
+
+const parser = require('js-sql-parser');
 
 type Props = {
   text: string,
