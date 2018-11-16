@@ -8,3 +8,11 @@ script:
 - yarn lint
 - yarn flow
 - yarn test
+before_deploy: yarn build
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  local_dir: build
+  on:
+    branch: master
