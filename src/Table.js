@@ -1,8 +1,16 @@
+// @flow
 import React, { Component } from 'react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 
-class Table extends Component {
+type Props = {
+  tableName: string,
+  columns: Array<string>,
+  data: Array<{[string]: any}>,
+  sortable?: boolean
+};
+
+class Table extends Component<Props> {
   render() {
     let columns = [{
       Header: this.props.tableName,

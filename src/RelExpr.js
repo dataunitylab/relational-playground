@@ -1,14 +1,21 @@
+// @flow
 import React, { Component } from 'react';
 import RelOp, { Projection, Rename, Selection } from './RelOp';
 import Relation from './Relation';
+import { changeExpr } from './modules/data';
 
-class RelExpr extends Component {
+type Props = {
+  changeExpr: typeof changeExpr,
+  expr: {[string]: any}
+};
+
+class RelExpr extends Component<Props> {
   constructor() {
     super();
-    this.handleExprClick = this.handleExprClick.bind(this);
+    (this:any).handleExprClick = this.handleExprClick.bind(this);
   }
 
-  conditionToString(select, conds = []) {
+  conditionToString(select:Array<{[string]: any}>, conds:Array<string> = []) {
     if (select.length === 0) { return conds; }
 
     const field = Object.keys(select[0])[0];
@@ -26,7 +33,7 @@ class RelExpr extends Component {
     return conds;
   }
 
-  buildExpr(expr) {
+  buildExpr(expr: {[string]: any}) {
     if (!expr || Object.keys(expr).length === 0) { return ''; }
 
     switch(Object.keys(expr)[0]) {
@@ -55,7 +62,7 @@ class RelExpr extends Component {
     }
   }
 
-  handleExprClick(e) {
+  handleExprClick(e: SyntheticMouseEvent<HTMLElement>) {
     e.stopPropagation();
     this.props.changeExpr(this.props.expr);
   }

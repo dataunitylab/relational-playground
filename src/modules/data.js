@@ -1,11 +1,23 @@
+// @flow
 export const CHANGE_EXPR = 'CHANGE_EXPR';
 
-export function changeExpr(expr) {
+type Action =
+  | {type: 'CHANGE_EXPR', expr: {[string]: any}};
+
+export function changeExpr(expr: {[string]: any}): Action {
   return {type: CHANGE_EXPR, expr};
 }
 
+export type Data = {
+  name: string, columns: Array<string>, data: Array<{[string]: any}>
+};
+
+export type State = {
+  current?: Data,
+  sourcedata: {[string]: Data}
+};
+
 const initialState = {
-  current: null,
   sourcedata: {
     'Doctor': {
       name: 'Doctor',
@@ -82,7 +94,7 @@ function applyExpr(expr, sourceData) {
     }
 }
 
-export default (state = initialState, action) => {
+export default (state: State = initialState, action: Action) => {
   switch(action.type) {
     case CHANGE_EXPR:
       return {
@@ -94,4 +106,4 @@ export default (state = initialState, action) => {
         ...state
       }
   }
-}
+};

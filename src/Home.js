@@ -1,3 +1,4 @@
+// @flow
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import MultiTable from './MultiTable';
@@ -10,7 +11,18 @@ import { exprFromSql } from './modules/relexp';
 
 import './Home.css';
 
-class Home extends Component {
+import type { Data, State as DataState } from './modules/data';
+
+type Props = {
+  expr: {[string]: any},
+  data: DataState,
+  sources: {[string]: Data},
+
+  changeExpr: typeof changeExpr,
+  exprFromSql: typeof exprFromSql
+};
+
+class Home extends Component<Props> {
   render() {
     let data = <div style={{padding: '2em'}}>Select an expression above.</div>;
     if (this.props.data.current) {

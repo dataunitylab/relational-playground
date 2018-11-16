@@ -1,16 +1,32 @@
+// @flow
 import React, { Component } from 'react';
+import { exprFromSql } from './modules/relexp';
 const parser = require('js-sql-parser');
 
-class SqlEditor extends Component {
-  constructor(props) {
-    super(props);
-    this.handleChange = this.handleChange.bind(this);
-    this.parseQuery = this.parseQuery.bind(this);
+import type { ElementRef } from 'react';
+
+type Props = {
+  text: string,
+  exprFromSql: typeof exprFromSql
+};
+
+type State = {
+  error: string | null,
+  timeout: any
+};
+
+class SqlEditor extends Component<Props, State> {
+  inputRef: ?HTMLTextAreaElement;
+
+  constructor() {
+    super();
+    (this:any).handleChange = this.handleChange.bind(this);
+    (this:any).parseQuery = this.parseQuery.bind(this);
     this.state = {error: null, timeout: null};
     this.parseQuery(this.props.text, true);
   }
 
-  parseQuery(text, skipState) {
+  parseQuery(text: string, skipState?: boolean) {
     if (!skipState) { this.setState({timeout: null}); }
     try {
       const sql = parser.parse(text);
@@ -26,7 +42,7 @@ class SqlEditor extends Component {
     }
   }
 
-  handleChange(event) {
+  handleChange(event: SyntheticInputEvent<HTMLTextAreaElement>) {
     if (this.state.timeout) {
       clearTimeout(this.state.timeout);
     }
@@ -41,7 +57,7 @@ class SqlEditor extends Component {
       error = <div style={{color: 'red'}}>{this.state.error}</div>;
     }
     return <div>
-      <textarea style={{minHeight: '4em', padding: '1em', width: '100%'}} onChange={this.handleChange} ref={this.inputRef} defaultValue={this.props.text}></textarea>
+      <textarea style={{minHeight: '4em', padding: '1em', width: '100%'}} onChange={this.handleChange} ref={inputRef => (this.inputRef = inputRef)} defaultValue={this.props.text}></textarea>
       {error}
     </div>;
   }

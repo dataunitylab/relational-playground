@@ -1,8 +1,16 @@
+// @flow
 export const EXPR_FROM_SQL = 'EXPR_FROM_SQL';
 
-export function exprFromSql(sql) {
+type Action =
+  | {type: 'EXPR_FROM_SQL', sql: {[string]: any}};
+
+export function exprFromSql(sql: {[string]: any}): Action {
   return {type: EXPR_FROM_SQL, sql};
 }
+
+type State = {
+  expr: {[string]: any}
+};
 
 const initialState = {
   expr: {}
@@ -17,10 +25,10 @@ const opMap = {
   '<=': '$lte'
 };
 
-function convertExpr(expr) {
+function convertExpr(expr: {[string]: any}) {
   switch(expr.type) {
     case 'AndExpression':
-      let and = [];
+      let and: Array<any> = [];
 
       const left = convertExpr(expr.left);
       if (Array.isArray(left)) {
@@ -37,7 +45,9 @@ function convertExpr(expr) {
       }
       return and;
     case 'ComparisonBooleanPrimary':
-      return [{[convertExpr(expr.left)]: {[opMap[expr.operator]]: convertExpr(expr.right)}}];
+      let ret = {};
+      ret[(convertExpr(expr.left): any)] = {[opMap[expr.operator]]: convertExpr(expr.right)};
+      return [ret];
     case 'Identifier':
     case 'Number':
     case 'String':
@@ -75,7 +85,7 @@ function buildExpr(sql) {
         const rename = select.filter((field) => field.hasAs).map((field) => [field.value, field.alias]);
         if (rename.length > 0) {
           return {rename: {
-            arguments: {rename: Object.fromEntries(rename)},
+            arguments: {rename: (Object:any).fromEntries(rename)},
             children: [projection]
           }};
         } else {
@@ -91,7 +101,7 @@ function buildExpr(sql) {
   }
 }
 
-export default (state = initialState, action) => {
+export default (state: State = initialState, action: Action) => {
   switch(action.type) {
     case EXPR_FROM_SQL:
       return {

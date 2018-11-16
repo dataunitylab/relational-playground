@@ -1,15 +1,26 @@
+// @flow
 import React, { Component } from 'react';
 import Select from 'react-select';
 import Table from './Table';
 
-class MultiTable extends Component {
-  constructor(props) {
+import type { Data } from './modules/data';
+
+type Props = {
+  tables: {[string]: Data}
+};
+
+type State = {
+  selected: string
+};
+
+class MultiTable extends Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = {selected: Object.keys(this.props.tables)[0]};
   }
 
-  handleChange = (table) => {
-    this.setState({selected: table.value});
+  handleChange = (table: SyntheticInputEvent<HTMLInputElement>) => {
+    this.setState({selected: table.target.value});
   }
 
   render() {

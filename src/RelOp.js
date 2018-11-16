@@ -1,15 +1,27 @@
+// @flow
 import React, { Component } from 'react';
+
+import type { Element, Node } from 'react';
 
 import './RelOp.css';
 
-class RelOp extends Component {
+type Props = {
+  operator: Element<any>,
+  children: Node
+};
+
+type State = {
+  isHovered: boolean
+};
+
+class RelOp extends Component<Props, State> {
   constructor() {
     super();
     this.state = {isHovered: false};
-    this.handleHover = this.handleHover.bind(this);
+    (this:any).handleHover = this.handleHover.bind(this);
   }
 
-  handleHover(e) {
+  handleHover(e: SyntheticMouseEvent<HTMLElement>) {
     const hovering = e.type === 'mouseover';
     e.stopPropagation();
     this.setState((state) => {
@@ -27,19 +39,21 @@ class RelOp extends Component {
   }
 }
 
-class Projection extends Component {
+class Projection extends Component<{project: Array<string>}> {
   render() {
     return <span>&pi;<sub>{this.props.project.join(',')}</sub></span>;
   }
 }
 
-class Rename extends Component {
+class Rename extends Component<{rename: {[string]: string}}> {
   render() {
-    return <span>&rho;<sub>{Object.entries(this.props.rename).map(([o, n]) => o + '/' + n).join(',')}</sub></span>;
+    return <span>&rho;<sub>{Object.entries(this.props.rename).map(([o, n]) => {
+      return o + '/' + ((n:any): string);
+    }).join(',')}</sub></span>;
   }
 }
 
-class Selection extends Component {
+class Selection extends Component<{select: Array<string>}> {
   render() {
     return <span>&sigma;<sub>{this.props.select.join(' ∧ ')}</sub></span>;
   }
