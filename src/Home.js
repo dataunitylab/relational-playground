@@ -42,7 +42,7 @@ class Home extends Component<Props> {
             <div style={{padding: '2em'}}>
               <div style={{marginBottom: '2em'}}>
                 <SqlEditor
-                  text="SELECT * FROM Doctor"
+                  defaultText="SELECT * FROM Doctor"
                   exprFromSql={this.props.exprFromSql}
                 />
               </div>

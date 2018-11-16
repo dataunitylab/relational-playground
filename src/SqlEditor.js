@@ -5,7 +5,7 @@ import {exprFromSql} from './modules/relexp';
 const parser = require('js-sql-parser');
 
 type Props = {
-  text: string,
+  defaultText: string,
   exprFromSql: typeof exprFromSql,
 };
 
@@ -22,7 +22,10 @@ class SqlEditor extends Component<Props, State> {
     (this: any).handleChange = this.handleChange.bind(this);
     (this: any).parseQuery = this.parseQuery.bind(this);
     this.state = {error: null, timeout: null};
-    this.parseQuery(this.props.text, true);
+  }
+
+  componentDidMount() {
+    this.parseQuery(this.props.defaultText, true);
   }
 
   parseQuery(text: string, skipState?: boolean) {
@@ -71,7 +74,7 @@ class SqlEditor extends Component<Props, State> {
           style={{minHeight: '4em', padding: '1em', width: '100%'}}
           onChange={this.handleChange}
           ref={inputRef => (this.inputRef = inputRef)}
-          defaultValue={this.props.text}
+          defaultValue={this.props.defaultText}
         />
         {error}
       </div>
