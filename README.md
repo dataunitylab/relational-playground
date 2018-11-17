@@ -11,10 +11,10 @@ You can find the most recent version of this guide [here](https://github.com/fac
 
 - [Updating to New Releases](#updating-to-new-releases)
 - [Available Scripts](#available-scripts)
-  - [npm start](#npm-start)
-  - [npm test](#npm-test)
-  - [npm run build](#npm-run-build)
-  - [npm run eject](#npm-run-eject)
+  - [yarn start](#yarn-start)
+  - [yarn test](#yarn-test)
+  - [yarn run build](#yarn-run-build)
+  - [yarn run eject](#yarn-run-eject)
 - [Supported Browsers](#supported-browsers)
 - [Supported Language Features](#supported-language-features)
 - [Syntax Highlighting in the Editor](#syntax-highlighting-in-the-editor)
@@ -80,11 +80,11 @@ You can find the most recent version of this guide [here](https://github.com/fac
 - [Analyzing the Bundle Size](#analyzing-the-bundle-size)
 - [Advanced Configuration](#advanced-configuration)
 - [Troubleshooting](#troubleshooting)
-  - [`npm start` doesn’t detect changes](#npm-start-doesnt-detect-changes)
-  - [`npm test` hangs or crashes on macOS Sierra](#npm-test-hangs-or-crashes-on-macos-sierra)
-  - [`npm run build` exits too early](#npm-run-build-exits-too-early)
-  - [`npm run build` fails on Heroku](#npm-run-build-fails-on-heroku)
-  - [`npm run build` fails to minify](#npm-run-build-fails-to-minify)
+  - [`yarn start` doesn’t detect changes](#yarn-start-doesnt-detect-changes)
+  - [`yarn test` hangs or crashes on macOS Sierra](#yarn-test-hangs-or-crashes-on-macos-sierra)
+  - [`yarn build` exits too early](#yarn-build-exits-too-early)
+  - [`yarn build` fails on Heroku](#yarn-build-fails-on-heroku)
+  - [`yarn build` fails to minify](#yarn-build-fails-to-minify)
   - [Moment.js locales are missing](#momentjs-locales-are-missing)
 - [Alternatives to Ejecting](#alternatives-to-ejecting)
 
@@ -101,13 +101,13 @@ When you run `create-react-app`, it always creates the project with the latest v
 
 To update an existing project to a new version of `react-scripts`, [open the changelog](https://github.com/facebook/create-react-app/blob/master/CHANGELOG.md), find the version you’re currently on (check `package.json` in this folder if you’re not sure), and apply the migration instructions for the newer versions.
 
-In most cases bumping the `react-scripts` version in `package.json` and running `npm install` (or `yarn install`) in this folder should be enough, but it’s good to consult the [changelog](https://github.com/facebook/create-react-app/blob/master/CHANGELOG.md) for potential breaking changes.
+In most cases bumping the `react-scripts` version in `package.json` and running `yarn` in this folder should be enough, but it’s good to consult the [changelog](https://github.com/facebook/create-react-app/blob/master/CHANGELOG.md) for potential breaking changes.
 
 ## Available Scripts
 
 In the project directory, you can run:
 
-### `npm start`
+### `yarn start`
 
 Runs the app in the development mode.<br>
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -115,12 +115,12 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.<br>
 You will also see any lint errors in the console.
 
-### `npm test`
+### `yarn test`
 
 Launches the test runner in the interactive watch mode.<br>
 See the section about [running tests](#running-tests) for more information.
 
-### `npm run build`
+### `yarn build`
 
 Builds the app for production to the `build` folder.<br>
 It correctly bundles React in production mode and optimizes the build for the best performance.
@@ -130,7 +130,7 @@ Your app is ready to be deployed!
 
 See the section about [deployment](#deployment) for more information.
 
-### `npm run eject`
+### `yarn eject`
 
 **Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
@@ -211,7 +211,7 @@ Then add the block below to your `launch.json` file and put it inside the `.vsco
 
 > Note: the URL may be different if you've made adjustments via the [HOST or PORT environment variables](#advanced-configuration).
 
-Start your app by running `npm start`, and start debugging in VS Code by pressing `F5` or by clicking the green debug icon. You can now write code, set breakpoints, make changes to the code, and debug your newly modified code—all from your editor.
+Start your app by running `yarn start`, and start debugging in VS Code by pressing `F5` or by clicking the green debug icon. You can now write code, set breakpoints, make changes to the code, and debug your newly modified code—all from your editor.
 
 Having problems with VS Code Debugging? Please see their [troubleshooting guide](https://github.com/Microsoft/vscode-chrome-debug/blob/master/README.md#troubleshooting).
 
@@ -223,7 +223,7 @@ In the WebStorm menu `Run` select `Edit Configurations...`. Then click `+` and s
 
 > Note: the URL may be different if you've made adjustments via the [HOST or PORT environment variables](#advanced-configuration).
 
-Start your app by running `npm start`, then press `^D` on macOS or `F9` on Windows and Linux or click the green debug icon to start debugging in WebStorm.
+Start your app by running `yarn start`, then press `^D` on macOS or `F9` on Windows and Linux or click the green debug icon to start debugging in WebStorm.
 
 The same way you can debug your application in IntelliJ IDEA Ultimate, PhpStorm, PyCharm Pro, and RubyMine.
 
@@ -239,13 +239,7 @@ If you use a custom server for your app in production and want to modify the tit
 
 ## Installing a Dependency
 
-The generated project includes React and ReactDOM as dependencies. It also includes a set of scripts used by Create React App as a development dependency. You may install other dependencies (for example, React Router) with `npm`:
-
-```sh
-npm install --save react-router-dom
-```
-
-Alternatively you may use `yarn`:
+The generated project includes React and ReactDOM as dependencies. It also includes a set of scripts used by Create React App as a development dependency. You may install other dependencies (for example, React Router) with `yarn`:
 
 ```sh
 yarn add react-router-dom
@@ -446,8 +440,6 @@ Following this rule often makes CSS preprocessors less useful, as features like 
 To use Sass, first install `node-sass`:
 
 ```bash
-$ npm install node-sass --save
-$ # or
 $ yarn add node-sass
 ```
 
@@ -596,7 +588,7 @@ Inside `index.html`, you can use it like this:
 
 Only files inside the `public` folder will be accessible by `%PUBLIC_URL%` prefix. If you need to use a file from `src` or `node_modules`, you’ll have to copy it there to explicitly specify your intention to make this file a part of the build.
 
-When you run `npm run build`, Create React App will substitute `%PUBLIC_URL%` with a correct absolute path so your project works even if you use client-side routing or host it at a non-root URL.
+When you run `yarn build`, Create React App will substitute `%PUBLIC_URL%` with a correct absolute path so your project works even if you use client-side routing or host it at a non-root URL.
 
 In JavaScript code, you can use `process.env.PUBLIC_URL` for similar purposes:
 
@@ -648,12 +640,6 @@ You don’t have to use [reactstrap](https://reactstrap.github.io/) together wit
 Install reactstrap and Bootstrap from npm. reactstrap does not include Bootstrap CSS so this needs to be installed as well:
 
 ```sh
-npm install --save reactstrap bootstrap@4
-```
-
-Alternatively you may use `yarn`:
-
-```sh
 yarn add bootstrap@4 reactstrap
 ```
 
@@ -703,12 +689,6 @@ Relay is a framework for building data-driven React applications powered by Grap
 To add it, run:
 
 ```sh
-npm install --save --dev babel-plugin-relay@dev
-```
-
-Alternatively you may use `yarn`:
-
-```sh
 yarn upgrade babel-plugin-relay@dev
 ```
 
@@ -737,12 +717,6 @@ Create React App doesn't prescribe a specific routing solution, but [React Route
 To add it, run:
 
 ```sh
-npm install --save react-router-dom
-```
-
-Alternatively you may use `yarn`:
-
-```sh
 yarn add react-router-dom
 ```
 
@@ -763,7 +737,7 @@ default you will have `NODE_ENV` defined for you, and any other environment vari
 These environment variables will be defined for you on `process.env`. For example, having an environment
 variable named `REACT_APP_SECRET_CODE` will be exposed in your JS as `process.env.REACT_APP_SECRET_CODE`.
 
-There is also a special built-in environment variable called `NODE_ENV`. You can read it from `process.env.NODE_ENV`. When you run `npm start`, it is always equal to `'development'`, when you run `npm test` it is always equal to `'test'`, and when you run `npm run build` to make a production bundle, it is always equal to `'production'`. **You cannot override `NODE_ENV` manually.** This prevents developers from accidentally deploying a slow development build to production.
+There is also a special built-in environment variable called `NODE_ENV`. You can read it from `process.env.NODE_ENV`. When you run `yarn start`, it is always equal to `'development'`, when you run `yarn test` it is always equal to `'test'`, and when you run `yarn build` to make a production bundle, it is always equal to `'production'`. **You cannot override `NODE_ENV` manually.** This prevents developers from accidentally deploying a slow development build to production.
 
 These environment variables can be useful for displaying information conditionally based on where the project is
 deployed or consuming sensitive data that lives outside of version control.
@@ -786,7 +760,7 @@ render() {
 
 During the build, `process.env.REACT_APP_SECRET_CODE` will be replaced with the current value of the `REACT_APP_SECRET_CODE` environment variable. Remember that the `NODE_ENV` variable will be set for you automatically.
 
-When you load the app in the browser and inspect the `<input>`, you will see its value set to `abcdef`, and the bold text will show the environment provided when using `npm start`:
+When you load the app in the browser and inspect the `<input>`, you will see its value set to `abcdef`, and the bold text will show the environment provided when using `yarn start`:
 
 ```html
 <div>
@@ -809,7 +783,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 ```
 
-When you compile the app with `npm run build`, the minification step will strip out this condition, and the resulting bundle will be smaller.
+When you compile the app with `yarn build`, the minification step will strip out this condition, and the resulting bundle will be smaller.
 
 ### Referencing Environment Variables in the HTML
 
@@ -832,7 +806,7 @@ life of the shell session.
 #### Windows (cmd.exe)
 
 ```cmd
-set "REACT_APP_SECRET_CODE=abcdef" && npm start
+set "REACT_APP_SECRET_CODE=abcdef" && yarn start
 ```
 
 (Note: Quotes around the variable assignment are required to avoid a trailing whitespace.)
@@ -840,13 +814,13 @@ set "REACT_APP_SECRET_CODE=abcdef" && npm start
 #### Windows (Powershell)
 
 ```Powershell
-($env:REACT_APP_SECRET_CODE = "abcdef") -and (npm start)
+($env:REACT_APP_SECRET_CODE = "abcdef") -and (yarn start)
 ```
 
 #### Linux, macOS (Bash)
 
 ```bash
-REACT_APP_SECRET_CODE=abcdef npm start
+REACT_APP_SECRET_CODE=abcdef yarn start
 ```
 
 ### Adding Development Environment Variables In `.env`
@@ -870,9 +844,9 @@ REACT_APP_SECRET_CODE=abcdef
 
 Files on the left have more priority than files on the right:
 
-- `npm start`: `.env.development.local`, `.env.development`, `.env.local`, `.env`
-- `npm run build`: `.env.production.local`, `.env.production`, `.env.local`, `.env`
-- `npm test`: `.env.test.local`, `.env.test`, `.env` (note `.env.local` is missing)
+- `yarn start`: `.env.development.local`, `.env.development`, `.env.local`, `.env`
+- `yarn build`: `.env.production.local`, `.env.production`, `.env.local`, `.env`
+- `yarn test`: `.env.test.local`, `.env.test`, `.env` (note `.env.local` is missing)
 
 These variables will act as the defaults if the machine does not explicitly set them.<br>
 Please refer to the [dotenv documentation](https://github.com/motdotla/dotenv) for more details.
@@ -978,7 +952,7 @@ Conveniently, this avoids [CORS issues](http://stackoverflow.com/questions/21854
 Fetch API cannot load http://localhost:4000/api/todos. No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin 'http://localhost:3000' is therefore not allowed access. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.
 ```
 
-Keep in mind that `proxy` only has effect in development (with `npm start`), and it is up to you to ensure that URLs like `/api/todos` point to the right thing in production. You don’t have to use the `/api` prefix. Any unrecognized request without a `text/html` accept header will be redirected to the specified `proxy`.
+Keep in mind that `proxy` only has effect in development (with `yarn start`), and it is up to you to ensure that URLs like `/api/todos` point to the right thing in production. You don’t have to use the `/api` prefix. Any unrecognized request without a `text/html` accept header will be redirected to the specified `proxy`.
 
 The `proxy` option supports HTTP, HTTPS and WebSocket connections.<br>
 If the `proxy` option is **not** flexible enough for you, alternatively you can:
@@ -1019,11 +993,9 @@ If the `proxy` option is **not** flexible enough for you, you can get direct acc
 
 You can use this feature in conjunction with the `proxy` property in `package.json`, but it is recommended you consolidate all of your logic into `src/setupProxy.js`.
 
-First, install `http-proxy-middleware` using npm or Yarn:
+First, install `http-proxy-middleware` using Yarn:
 
 ```bash
-$ npm install http-proxy-middleware --save
-$ # or
 $ yarn add http-proxy-middleware
 ```
 
@@ -1057,12 +1029,12 @@ module.exports = function(app) {
 
 You may require the dev server to serve pages over HTTPS. One particular case where this could be useful is when using [the "proxy" feature](#proxying-api-requests-in-development) to proxy requests to an API server when that API server is itself serving HTTPS.
 
-To do this, set the `HTTPS` environment variable to `true`, then start the dev server as usual with `npm start`:
+To do this, set the `HTTPS` environment variable to `true`, then start the dev server as usual with `yarn start`:
 
 #### Windows (cmd.exe)
 
 ```cmd
-set HTTPS=true&&npm start
+set HTTPS=true&&yarn start
 ```
 
 (Note: the lack of whitespace is intentional.)
@@ -1070,13 +1042,13 @@ set HTTPS=true&&npm start
 #### Windows (Powershell)
 
 ```Powershell
-($env:HTTPS = $true) -and (npm start)
+($env:HTTPS = $true) -and (yarn start)
 ```
 
 #### Linux, macOS (Bash)
 
 ```bash
-HTTPS=true npm start
+HTTPS=true yarn start
 ```
 
 Note that the server will use a self-signed certificate, so your web browser will almost definitely display a warning upon accessing the page.
@@ -1148,7 +1120,7 @@ We recommend to put the test files (or `__tests__` folders) next to the code the
 
 ### Command Line Interface
 
-When you run `npm test`, Jest will launch in the watch mode. Every time you save a file, it will re-run the tests, just like `npm start` recompiles the code.
+When you run `yarn test`, Jest will launch in the watch mode. Every time you save a file, it will re-run the tests, just like `yarn start` recompiles the code.
 
 The watcher includes an interactive command-line interface with the ability to run all tests, or focus on a search pattern. It is designed this way so that you can keep it open and enjoy fast re-runs. You can learn the commands from the “Watch Usage” note that the watcher prints after every run:
 
@@ -1156,7 +1128,7 @@ The watcher includes an interactive command-line interface with the ability to r
 
 ### Version Control Integration
 
-By default, when you run `npm test`, Jest will only run the tests related to files changed since the last commit. This is an optimization designed to make your tests run fast regardless of how many tests you have. However it assumes that you don’t often commit the code that doesn’t pass the tests.
+By default, when you run `yarn test`, Jest will only run the tests related to files changed since the last commit. This is an optimization designed to make your tests run fast regardless of how many tests you have. However it assumes that you don’t often commit the code that doesn’t pass the tests.
 
 Jest will always explicitly mention that it only ran tests related to the files changed since the last commit. You can also press `a` in the watch mode to force Jest to run all tests.
 
@@ -1202,12 +1174,6 @@ This test mounts a component and makes sure that it didn’t throw during render
 When you encounter bugs caused by changing components, you will gain a deeper insight into which parts of them are worth testing in your application. This might be a good time to introduce more specific tests asserting specific expected output or behavior.
 
 If you’d like to test components in isolation from the child components they render, we recommend using [`shallow()` rendering API](http://airbnb.io/enzyme/docs/api/shallow.html) from [Enzyme](http://airbnb.io/enzyme/). To install it, run:
-
-```sh
-npm install --save enzyme enzyme-adapter-react-16 react-test-renderer
-```
-
-Alternatively you may use `yarn`:
 
 ```sh
 yarn add enzyme enzyme-adapter-react-16 react-test-renderer
@@ -1271,12 +1237,6 @@ expect(wrapper).toContainReact(welcome);
 To enable this, install `jest-enzyme`:
 
 ```sh
-npm install --save jest-enzyme
-```
-
-Alternatively you may use `yarn`:
-
-```sh
 yarn add jest-enzyme
 ```
 
@@ -1333,7 +1293,7 @@ Similarly, `fit()` lets you focus on a specific test without running any other t
 ### Coverage Reporting
 
 Jest has an integrated coverage reporter that works well with ES6 and requires no configuration.<br>
-Run `npm test -- --coverage` (note extra `--` in the middle) to include a coverage report like this:
+Run `yarn test -- --coverage` (note extra `--` in the middle) to include a coverage report like this:
 
 ![coverage report](http://i.imgur.com/5bFhnTS.png)
 
@@ -1377,9 +1337,9 @@ Example package.json:
 
 ### Continuous Integration
 
-By default `npm test` runs the watcher with interactive CLI. However, you can force it to run tests once and finish the process by setting an environment variable called `CI`.
+By default `yarn test` runs the watcher with interactive CLI. However, you can force it to run tests once and finish the process by setting an environment variable called `CI`.
 
-When creating a build of your application with `npm run build` linter warnings are not checked by default. Like `npm test`, you can force the build to perform a linter warning check by setting the environment variable `CI`. If any warnings are encountered then the build fails.
+When creating a build of your application with `yarn build` linter warnings are not checked by default. Like `yarn test`, you can force the build to perform a linter warning check by setting the environment variable `CI`. If any warnings are encountered then the build fails.
 
 Popular CI servers already set the environment variable `CI` by default but you can do this yourself too:
 
@@ -1398,8 +1358,8 @@ cache:
   directories:
     - node_modules
 script:
-  - npm run build
-  - npm test
+  - yarn build
+  - yarn test
 ```
 
 1. Trigger your first build with a git push.
@@ -1414,11 +1374,11 @@ Follow [this article](https://medium.com/@knowbody/circleci-and-zeits-now-sh-c9b
 ##### Windows (cmd.exe)
 
 ```cmd
-set CI=true&&npm test
+set CI=true&&yarn test
 ```
 
 ```cmd
-set CI=true&&npm run build
+set CI=true&&yarn build
 ```
 
 (Note: the lack of whitespace is intentional.)
@@ -1426,21 +1386,21 @@ set CI=true&&npm run build
 ##### Windows (Powershell)
 
 ```Powershell
-($env:CI = $true) -and (npm test)
+($env:CI = $true) -and (yarn test)
 ```
 
 ```Powershell
-($env:CI = $true) -and (npm run build)
+($env:CI = $true) -and (yarn build)
 ```
 
 ##### Linux, macOS (Bash)
 
 ```bash
-CI=true npm test
+CI=true yarn test
 ```
 
 ```bash
-CI=true npm run build
+CI=true yarn build
 ```
 
 The test command will force Jest to run tests once instead of launching the watcher.
@@ -1504,7 +1464,7 @@ Add the following to the `scripts` section in your project's `package.json`
 Place `debugger;` statements in any test and run:
 
 ```bash
-$ npm run test:debug
+$ yarn test:debug
 ```
 
 This will start running your Jest tests, but pause before executing to allow a debugger to attach to the process.
@@ -1609,13 +1569,13 @@ following into account:
    on browsers that lack support.
 
 1. The service worker is only enabled in the [production environment](#deployment),
-   e.g. the output of `npm run build`. It's recommended that you do not enable an
+   e.g. the output of `yarn build`. It's recommended that you do not enable an
    offline-first service worker in a development environment, as it can lead to
    frustration when previously cached assets are used and do not include the latest
    changes you've made locally.
 
 1. If you _need_ to test your offline-first service worker locally, build
-   the application (using `npm run build`) and run a simple http server from your
+   the application (using `yarn build`) and run a simple http server from your
    build directory. After running the build script, `create-react-app` will give
    instructions for one way to test your production build locally and the [deployment instructions](#deployment) have
    instructions for using other methods. _Be sure to always use an
@@ -1664,12 +1624,6 @@ bloat is coming from.
 To add Source map explorer to a Create React App project, follow these steps:
 
 ```sh
-npm install --save source-map-explorer
-```
-
-Alternatively you may use `yarn`:
-
-```sh
 yarn add source-map-explorer
 ```
 
@@ -1687,8 +1641,8 @@ Then to analyze the bundle run the production build then run the analyze
 script.
 
 ```
-npm run build
-npm run analyze
+yarn build
+yarn analyze
 ```
 
 ## Advanced Configuration
@@ -1697,22 +1651,22 @@ You can adjust various development and production settings by setting environmen
 
 | Variable            |      Development       |     Production     | Usage                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | :------------------ | :--------------------: | :----------------: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| BROWSER             |   :white_check_mark:   |        :x:         | By default, Create React App will open the default system browser, favoring Chrome on macOS. Specify a [browser](https://github.com/sindresorhus/opn#app) to override this behavior, or set it to `none` to disable it completely. If you need to customize the way the browser is launched, you can specify a node script instead. Any arguments passed to `npm start` will also be passed to this script, and the url where your app is served will be the last argument. Your script's file name must have the `.js` extension.                                                                                                                                       |
+| BROWSER             |   :white_check_mark:   |        :x:         | By default, Create React App will open the default system browser, favoring Chrome on macOS. Specify a [browser](https://github.com/sindresorhus/opn#app) to override this behavior, or set it to `none` to disable it completely. If you need to customize the way the browser is launched, you can specify a node script instead. Any arguments passed to `yarn start` will also be passed to this script, and the url where your app is served will be the last argument. Your script's file name must have the `.js` extension.                                                                                                                                       |
 | HOST                |   :white_check_mark:   |        :x:         | By default, the development web server binds to `localhost`. You may use this variable to specify a different host.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | PORT                |   :white_check_mark:   |        :x:         | By default, the development web server will attempt to listen on port 3000 or prompt you to attempt the next available port. You may use this variable to specify a different port.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | HTTPS               |   :white_check_mark:   |        :x:         | When set to `true`, Create React App will run the development server in `https` mode.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | PUBLIC_URL          |          :x:           | :white_check_mark: | Create React App assumes your application is hosted at the serving web server's root or a subpath as specified in [`package.json` (`homepage`)](#building-for-relative-paths). Normally, Create React App ignores the hostname. You may use this variable to force assets to be referenced verbatim to the url you provide (hostname included). This may be particularly useful when using a CDN to host your application.                                                                                                                                                                                                                                               |
 | CI                  | :large_orange_diamond: | :white_check_mark: | When set to `true`, Create React App treats warnings as failures in the build. It also makes the test runner non-watching. Most CIs set this flag by default.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | REACT_EDITOR        |   :white_check_mark:   |        :x:         | When an app crashes in development, you will see an error overlay with clickable stack trace. When you click on it, Create React App will try to determine the editor you are using based on currently running processes, and open the relevant source file. You can [send a pull request to detect your editor of choice](https://github.com/facebook/create-react-app/issues/2636). Setting this environment variable overrides the automatic detection. If you do it, make sure your systems [PATH](<https://en.wikipedia.org/wiki/PATH_(variable)>) environment variable points to your editor’s bin folder. You can also set it to `none` to disable it completely. |
-| CHOKIDAR_USEPOLLING |   :white_check_mark:   |        :x:         | When set to `true`, the watcher runs in polling mode, as necessary inside a VM. Use this option if `npm start` isn't detecting changes.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| CHOKIDAR_USEPOLLING |   :white_check_mark:   |        :x:         | When set to `true`, the watcher runs in polling mode, as necessary inside a VM. Use this option if `yarn start` isn't detecting changes.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | GENERATE_SOURCEMAP  |          :x:           | :white_check_mark: | When set to `false`, source maps are not generated for a production build. This solves OOM issues on some smaller machines.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | NODE_PATH           |   :white_check_mark:   | :white_check_mark: | Same as [`NODE_PATH` in Node.js](https://nodejs.org/api/modules.html#modules_loading_from_the_global_folders), but only relative folders are allowed. Can be handy for emulating a monorepo setup by setting `NODE_PATH=src`.                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 
 ## Troubleshooting
 
-### `npm start` doesn’t detect changes
+### `yarn start` doesn’t detect changes
 
-When you save a file while `npm start` is running, the browser should refresh with the updated code.<br>
+When you save a file while `yarn start` is running, the browser should refresh with the updated code.<br>
 If this doesn’t happen, try one of the following workarounds:
 
 - If your project is in a Dropbox folder, try moving it out.
@@ -1720,15 +1674,15 @@ If this doesn’t happen, try one of the following workarounds:
 - Some editors like Vim and IntelliJ have a “safe write” feature that currently breaks the watcher. You will need to disable it. Follow the instructions in [“Adjusting Your Text Editor”](https://webpack.js.org/guides/development/#adjusting-your-text-editor).
 - If your project path contains parentheses, try moving the project to a path without them. This is caused by a [Webpack watcher bug](https://github.com/webpack/watchpack/issues/42).
 - On Linux and macOS, you might need to [tweak system settings](https://github.com/webpack/docs/wiki/troubleshooting#not-enough-watchers) to allow more watchers.
-- If the project runs inside a virtual machine such as (a Vagrant provisioned) VirtualBox, create an `.env` file in your project directory if it doesn’t exist, and add `CHOKIDAR_USEPOLLING=true` to it. This ensures that the next time you run `npm start`, the watcher uses the polling mode, as necessary inside a VM.
+- If the project runs inside a virtual machine such as (a Vagrant provisioned) VirtualBox, create an `.env` file in your project directory if it doesn’t exist, and add `CHOKIDAR_USEPOLLING=true` to it. This ensures that the next time you run `yarn start`, the watcher uses the polling mode, as necessary inside a VM.
 
 If none of these solutions help please leave a comment [in this thread](https://github.com/facebook/create-react-app/issues/659).
 
-### `npm test` hangs or crashes on macOS Sierra
+### `yarn test` hangs or crashes on macOS Sierra
 
-If you run `npm test` and the console gets stuck after printing `react-scripts test` to the console there might be a problem with your [Watchman](https://facebook.github.io/watchman/) installation as described in [facebook/create-react-app#713](https://github.com/facebook/create-react-app/issues/713).
+If you run `yarn test` and the console gets stuck after printing `react-scripts test` to the console there might be a problem with your [Watchman](https://facebook.github.io/watchman/) installation as described in [facebook/create-react-app#713](https://github.com/facebook/create-react-app/issues/713).
 
-We recommend deleting `node_modules` in your project and running `npm install` (or `yarn` if you use it) first. If it doesn't help, you can try one of the numerous workarounds mentioned in these issues:
+We recommend deleting `node_modules` in your project and running `yarn` first. If it doesn't help, you can try one of the numerous workarounds mentioned in these issues:
 
 - [facebook/jest#1767](https://github.com/facebook/jest/issues/1767)
 - [facebook/watchman#358](https://github.com/facebook/watchman/issues/358)
@@ -1748,15 +1702,15 @@ If this still doesn’t help, try running `launchctl unload -F ~/Library/LaunchA
 
 There are also reports that _uninstalling_ Watchman fixes the issue. So if nothing else helps, remove it from your system and try again.
 
-### `npm run build` exits too early
+### `yarn build` exits too early
 
-It is reported that `npm run build` can fail on machines with limited memory and no swap space, which is common in cloud environments. Even with small projects this command can increase RAM usage in your system by hundreds of megabytes, so if you have less than 1 GB of available memory your build is likely to fail with the following message:
+It is reported that `yarn build` can fail on machines with limited memory and no swap space, which is common in cloud environments. Even with small projects this command can increase RAM usage in your system by hundreds of megabytes, so if you have less than 1 GB of available memory your build is likely to fail with the following message:
 
 > The build failed because the process exited too early. This probably means the system ran out of memory or someone called `kill -9` on the process.
 
 If you are completely sure that you didn't terminate the process, consider [adding some swap space](https://www.digitalocean.com/community/tutorials/how-to-add-swap-on-ubuntu-14-04) to the machine you’re building on, or build the project locally.
 
-### `npm run build` fails on Heroku
+### `yarn build` fails on Heroku
 
 This may be a problem with case sensitive filenames.
 Please refer to [this section](#resolving-heroku-deployment-errors).
@@ -1787,7 +1741,7 @@ moment.locale('fr');
 
 This will only work for locales that have been explicitly imported before.
 
-### `npm run build` fails to minify
+### `yarn build` fails to minify
 
 Before `react-scripts@2.0.0`, this problem was caused by third party `node_modules` using modern JavaScript features because the minifier couldn't handle them during the build. This has been solved by compiling standard modern JavaScript features inside `node_modules` in `react-scripts@2.0.0` and higher.
 
@@ -1795,4 +1749,4 @@ If you're seeing this error, you're likely using an old version of `react-script
 
 ## Alternatives to Ejecting
 
-[Ejecting](#npm-run-eject) lets you customize anything, but from that point on you have to maintain the configuration and scripts yourself. This can be daunting if you have many similar projects. In such cases instead of ejecting we recommend to _fork_ `react-scripts` and any other packages you need. [This article](https://auth0.com/blog/how-to-configure-create-react-app/) dives into how to do it in depth. You can find more discussion in [this issue](https://github.com/facebook/create-react-app/issues/682).
+[Ejecting](#yarn-eject) lets you customize anything, but from that point on you have to maintain the configuration and scripts yourself. This can be daunting if you have many similar projects. In such cases instead of ejecting we recommend to _fork_ `react-scripts` and any other packages you need. [This article](https://auth0.com/blog/how-to-configure-create-react-app/) dives into how to do it in depth. You can find more discussion in [this issue](https://github.com/facebook/create-react-app/issues/682).
