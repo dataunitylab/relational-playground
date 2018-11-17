@@ -188,9 +188,6 @@ To configure the syntax highlighting in your favorite text editor, head to the [
 
 ## Displaying Lint Output in the Editor
 
-> Note: this feature is available with `react-scripts@0.2.0` and higher.<br>
-> It also only works with npm 3 or higher.
-
 Some editors, including Sublime Text, Atom, and Visual Studio Code, provide plugins for ESLint.
 
 They are not required for linting. You should see the linter output right in your terminal as well as the browser console. However, if you prefer the lint results to appear right in your editor, there are some extra steps you can do.
@@ -409,8 +406,6 @@ If you are concerned about using Webpack-specific semantics, you can put all you
 
 ## Adding a CSS Modules Stylesheet
 
-> Note: this feature is available with `react-scripts@2.0.0` and higher.
-
 This project supports [CSS Modules](https://github.com/css-modules/css-modules) alongside regular stylesheets using the `[name].module.css` file naming convention. CSS Modules allows the scoping of CSS by automatically creating a unique classname of the format `[filename]\_[classname]\_\_[hash]`.
 
 > **Tip:** Should you want to preprocess a stylesheet with Sass then make sure to [follow the installation instructions](#adding-a-sass-stylesheet) and then change the stylesheet file extension as follows: `[name].module.scss` or `[name].module.sass`.
@@ -460,8 +455,6 @@ No clashes from other `.error` class names
 **This is an optional feature.** Regular `<link>` stylesheets and CSS files are fully supported. CSS Modules are turned on for files ending with the `.module.css` extension.
 
 ## Adding a Sass Stylesheet
-
-> Note: this feature is available with `react-scripts@2.0.0` and higher.
 
 Generally, we recommend that you don’t reuse the same CSS classes across different components. For example, instead of using a `.Button` CSS class in `<AcceptButton>` and `<RejectButton>` components, we recommend creating a `<Button>` component with its own `.Button` styles, that both `<AcceptButton>` and `<RejectButton>` can render (but [not inherit](https://facebook.github.io/react/docs/composition-vs-inheritance.html)).
 
@@ -575,8 +568,6 @@ An alternative way of handling static assets is described in the next section.
 
 ### Adding SVGs
 
-> Note: this feature is available with `react-scripts@2.0.0` and higher.
-
 One way to add SVG files was described in the section above. You can also import SVGs directly as React components. You can use either of the two approaches. In your code it would look like this:
 
 ```js
@@ -592,8 +583,6 @@ const App = () => (
 This is handy if you don't want to load SVG as a separate file. Don't forget the curly braces in the import! The `ReactComponent` import name is special and tells Create React App that you want a React component that renders an SVG, rather than its filename.
 
 ## Using the `public` Folder
-
-> Note: this feature is available with `react-scripts@0.5.0` and higher.
 
 ### Changing the HTML
 
@@ -703,8 +692,6 @@ Now you are ready to use the imported reactstrap components within your componen
 
 ### Using a Custom Theme
 
-> Note: this feature is available with `react-scripts@2.0.0` and higher.
-
 Sometimes you might need to tweak the visual styles of Bootstrap (or equivalent package).<br>
 As of `react-scripts@2.0.0` you can import `.scss` files. This makes it possible to use a package's built-in Sass variables for global style preferences.
 
@@ -782,8 +769,6 @@ Note that [you may need to configure your production server to support client-si
 
 ## Adding Custom Environment Variables
 
-> Note: this feature is available with `react-scripts@0.2.3` and higher.
-
 Your project can consume variables declared in your environment as if they were declared locally in your JS files. By
 default you will have `NODE_ENV` defined for you, and any other environment variables starting with
 `REACT_APP_`.
@@ -845,8 +830,6 @@ When you compile the app with `npm run build`, the minification step will strip 
 
 ### Referencing Environment Variables in the HTML
 
-> Note: this feature is available with `react-scripts@0.9.0` and higher.
-
 You can also access the environment variables starting with `REACT_APP_` in the `public/index.html`. For example:
 
 ```html
@@ -885,8 +868,6 @@ REACT_APP_SECRET_CODE=abcdef npm start
 
 ### Adding Development Environment Variables In `.env`
 
-> Note: this feature is available with `react-scripts@0.5.0` and higher.
-
 To define permanent environment variables, create a file called `.env` in the root of your project:
 
 ```
@@ -898,8 +879,6 @@ REACT_APP_SECRET_CODE=abcdef
 `.env` files **should be** checked into source control (with the exclusion of `.env*.local`).
 
 #### What other `.env` files can be used?
-
-> Note: this feature is **available with `react-scripts@1.0.0` and higher**.
 
 - `.env`: Default.
 - `.env.local`: Local overrides. **This file is loaded for all environments except test.**
@@ -919,8 +898,6 @@ Please refer to the [dotenv documentation](https://github.com/motdotla/dotenv) f
 > these defined as well. Consult their documentation how to do this. For example, see the documentation for [Travis CI](https://docs.travis-ci.com/user/environment-variables/) or [Heroku](https://devcenter.heroku.com/articles/config-vars).
 
 #### Expanding Environment Variables In `.env`
-
-> Note: this feature is available with `react-scripts@1.1.0` and higher.
 
 Expand variables already on your machine for use in your `.env` file (using [dotenv-expand](https://github.com/motdotla/dotenv-expand)).
 
@@ -993,8 +970,6 @@ Check out [this tutorial](https://api-platform.com/docs/distribution).
 
 ## Proxying API Requests in Development
 
-> Note: this feature is available with `react-scripts@0.2.3` and higher.
-
 People often serve the front-end React app from the same host and port as their backend implementation.<br>
 For example, a production setup might look like this after the app is deployed:
 
@@ -1057,8 +1032,6 @@ We don’t recommend this approach.
 
 ### Configuring the Proxy Manually
 
-> Note: this feature is available with `react-scripts@2.0.0` and higher.
-
 If the `proxy` option is **not** flexible enough for you, you can get direct access to the Express app instance and hook up your own proxy middleware.
 
 You can use this feature in conjunction with the `proxy` property in `package.json`, but it is recommended you consolidate all of your logic into `src/setupProxy.js`.
@@ -1098,8 +1071,6 @@ module.exports = function(app) {
 > **Note:** Passing the path to the proxy function allows you to use globbing and/or pattern matching on the path, which is more flexible than the express route matching.
 
 ## Using HTTPS in Development
-
-> Note: this feature is available with `react-scripts@0.4.0` and higher.
 
 You may require the dev server to serve pages over HTTPS. One particular case where this could be useful is when using [the "proxy" feature](#proxying-api-requests-in-development) to proxy requests to an API server when that API server is itself serving HTTPS.
 
@@ -1169,8 +1140,6 @@ Similarly to the previous section, you can leave some placeholders in the HTML t
 Then, on the server, you can replace `__SERVER_DATA__` with a JSON of real data right before sending the response. The client code can then read `window.SERVER_DATA` to use it. **Make sure to [sanitize the JSON before sending it to the client](https://medium.com/node-security/the-most-common-xss-vulnerability-in-react-js-applications-2bdffbcc1fa0) as it makes your app vulnerable to XSS attacks.**
 
 ## Running Tests
-
-> Note: this feature is available with `react-scripts@0.3.0` and higher.<br>
 
 > [Read the migration guide to learn how to enable it in older projects!](https://github.com/facebook/create-react-app/blob/master/CHANGELOG.md#migrating-from-023-to-030)
 
@@ -1348,8 +1317,6 @@ import { expect } from 'chai';
 and then use them in your tests like you normally do.
 
 ### Initializing Test Environment
-
-> Note: this feature is available with `react-scripts@0.4.0` and higher.
 
 If your app uses a browser API that you need to mock in your tests or if you just need a global setup before running your tests, add a `src/setupTests.js` to your project. It will be automatically executed before running your tests.
 
@@ -1936,8 +1903,6 @@ For example:
 
 #### Serving the Same Build from Different Paths
 
-> Note: this feature is available with `react-scripts@0.9.0` and higher.
-
 If you are not using the HTML5 `pushState` history API or not using client-side routing at all, it is unnecessary to specify the URL from which your app will be served. Instead, you can put this in your `package.json`:
 
 ```js
@@ -2054,8 +2019,6 @@ Now, after you create a production build with `npm run build`, you can deploy it
 For more information see [Add Firebase to your JavaScript Project](https://firebase.google.com/docs/web/setup).
 
 ### [GitHub Pages](https://pages.github.com/)
-
-> Note: this feature is available with `react-scripts@0.2.0` and higher.
 
 #### Step 1: Add `homepage` to `package.json`
 
