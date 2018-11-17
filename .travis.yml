@@ -8,11 +8,11 @@ script:
 - yarn lint
 - yarn flow
 - yarn test
-before_deploy: yarn build
+- yarn build
 deploy:
-  provider: pages
+  provider: surge
   skip_cleanup: true
-  github_token: $GITHUB_TOKEN
-  local_dir: build
+  project: ./build/
+  domain: relational-playground.surge.sh  
   on:
     branch: master
