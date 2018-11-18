@@ -5,7 +5,7 @@ import Relation from './Relation';
 import {changeExpr} from './modules/data';
 
 type Props = {
-  changeExpr: typeof changeExpr,
+  changeExpr?: typeof changeExpr,
   expr: {[string]: any},
 };
 
@@ -87,7 +87,9 @@ class RelExpr extends Component<Props> {
 
   handleExprClick(e: SyntheticMouseEvent<HTMLElement>) {
     e.stopPropagation();
-    this.props.changeExpr(this.props.expr);
+    if (this.props.changeExpr) {
+      this.props.changeExpr(this.props.expr);
+    }
   }
 
   render() {

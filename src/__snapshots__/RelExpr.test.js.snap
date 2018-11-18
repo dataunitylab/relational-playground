@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`correctly renders a complex expression 1`] = `
+<span
+  onClick={[Function]}
+>
+  <span
+    className="RelOp "
+    onMouseOut={[Function]}
+    onMouseOver={[Function]}
+  >
+    <span>
+      ρ
+      <sub>
+        firstName/name
+      </sub>
+    </span>
+    (
+    <span
+      onClick={[Function]}
+    >
+      <span
+        className="RelOp "
+        onMouseOut={[Function]}
+        onMouseOver={[Function]}
+      >
+        <span>
+          π
+          <sub>
+            firstName,lastName
+          </sub>
+        </span>
+        (
+        <span
+          onClick={[Function]}
+        >
+          <span
+            className="RelOp "
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+          >
+            <span>
+              σ
+              <sub>
+                salary &gt; 130000
+              </sub>
+            </span>
+            (
+            <span
+              onClick={[Function]}
+            >
+              <span
+                className="Relation"
+                data-testid="span"
+              >
+                Doctor
+              </span>
+            </span>
+            )
+          </span>
+        </span>
+        )
+      </span>
+    </span>
+    )
+  </span>
+</span>
+`;
