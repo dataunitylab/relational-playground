@@ -1,20 +1,21 @@
 // @flow
+import fromEntries from 'fromentries';
+
 export const EXPR_FROM_SQL = 'EXPR_FROM_SQL';
 
-type Action =
-  | {type: 'EXPR_FROM_SQL', sql: {[string]: any}};
+type Action = {type: 'EXPR_FROM_SQL', sql: {[string]: any}};
 
 export function exprFromSql(sql: {[string]: any}): Action {
   return {type: EXPR_FROM_SQL, sql};
 }
 
 type State = {
-  expr: {[string]: any}
+  expr: {[string]: any},
 };
 
 const initialState = {
-  expr: {}
-}
+  expr: {},
+};
 
 const opMap = {
   '=': '$eq',
@@ -22,11 +23,11 @@ const opMap = {
   '>': '$gt',
   '>=': '$gte',
   '<': '$lt',
-  '<=': '$lte'
+  '<=': '$lte',
 };
 
 function convertExpr(expr: {[string]: any}) {
-  switch(expr.type) {
+  switch (expr.type) {
     case 'AndExpression':
       let and: Array<any> = [];
 
@@ -46,7 +47,9 @@ function convertExpr(expr: {[string]: any}) {
       return and;
     case 'ComparisonBooleanPrimary':
       let ret = {};
-      ret[(convertExpr(expr.left): any)] = {[opMap[expr.operator]]: convertExpr(expr.right)};
+      ret[(convertExpr(expr.left): any)] = {
+        [opMap[expr.operator]]: convertExpr(expr.right),
+      };
       return [ret];
     case 'Identifier':
     case 'Number':
@@ -60,34 +63,44 @@ function convertExpr(expr: {[string]: any}) {
 function buildExpr(sql) {
   switch (sql.type) {
     case 'Select':
-      let from = sql.from.value.map((v) => buildExpr(v));
+      let from = sql.from.value.map(v => buildExpr(v));
       if (from.length > 1) {
         throw new Error('Only single table queries currently supported.');
       }
 
       if (sql.where) {
-        from = [{selection: {
-          arguments: {select: convertExpr(sql.where)},
-          children: from
-        }}];
+        from = [
+          {
+            selection: {
+              arguments: {select: convertExpr(sql.where)},
+              children: from,
+            },
+          },
+        ];
       }
 
       const select = sql.selectItems.value;
       if (select.length === 1 && select[0].value === '*') {
         return from[0];
       } else {
-        const project = select.map((field) => field.value);
-        const projection = {projection: {
-          arguments: {project},
-          children: from
-        }};
+        const project = select.map(field => field.value);
+        const projection = {
+          projection: {
+            arguments: {project},
+            children: from,
+          },
+        };
 
-        const rename = select.filter((field) => field.hasAs).map((field) => [field.value, field.alias]);
+        const rename = select
+          .filter(field => field.hasAs)
+          .map(field => [field.value, field.alias]);
         if (rename.length > 0) {
-          return {rename: {
-            arguments: {rename: (Object:any).fromEntries(rename)},
-            children: [projection]
-          }};
+          return {
+            rename: {
+              arguments: {rename: fromEntries(rename)},
+              children: [projection],
+            },
+          };
         } else {
           return projection;
         }
@@ -102,15 +115,15 @@ function buildExpr(sql) {
 }
 
 export default (state: State = initialState, action: Action) => {
-  switch(action.type) {
+  switch (action.type) {
     case EXPR_FROM_SQL:
       return {
         ...state,
-        expr: buildExpr(action.sql)
+        expr: buildExpr(action.sql),
       };
     default:
       return {
-        ...state
-      }
+        ...state,
+      };
   }
-}
+};
