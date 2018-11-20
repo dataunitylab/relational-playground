@@ -7879,6 +7879,10 @@ nopt@~1.0.10:
   dependencies:
     abbrev "1"
 
+normalize-newline@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/normalize-newline/-/normalize-newline-3.0.0.tgz#1cbea804aba436001f83938ab21ec039d69ae9d3"
+
 normalize-package-data@^2.3.2, normalize-package-data@^2.3.4:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/normalize-package-data/-/normalize-package-data-2.4.0.tgz#12f95a307d58352075a04907b84ac8be98ac012f"
@@ -8431,6 +8435,14 @@ pkg-dir@^3.0.0:
   resolved "https://registry.yarnpkg.com/pkg-dir/-/pkg-dir-3.0.0.tgz#2749020f239ed990881b1f71210d51eb6523bea3"
   dependencies:
     find-up "^3.0.0"
+
+pkg-ok@^2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/pkg-ok/-/pkg-ok-2.3.1.tgz#d6dc4f079445a540db3656c1fc158517bc9f33c4"
+  dependencies:
+    chalk "^2.4.1"
+    meow "^5.0.0"
+    normalize-newline "^3.0.0"
 
 pkg-up@2.0.0:
   version "2.0.0"
