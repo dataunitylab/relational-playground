@@ -18,6 +18,10 @@ script:
 - yarn test
 - yarn build
 
+matrix:
+  allow_failures:
+  - os: windows
+
 jobs:
   include:
     - stage: deploy
