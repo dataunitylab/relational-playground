@@ -56,7 +56,9 @@
     "pkg-ok": "^2.3.1",
     "prettier": "^1.15.2",
     "react-test-renderer": "^16.6.3",
-    "react-testing-library": "^5.2.3"
+    "react-testing-library": "^5.2.3",
+    "stylelint": "^9.8.0",
+    "stylelint-config-standard": "^18.2.0"
   },
   "husky": {
     "hooks": {
@@ -64,9 +66,14 @@
     }
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,json,css}": [
+    "src/**/*.{js,jsx,json}": [
       "eslint",
       "flow focus-check",
+      "prettier --write",
+      "git add"
+    ],
+    "src/**/*.css": [
+      "stylelint --fix",
       "prettier --write",
       "git add"
     ],
