@@ -13,8 +13,10 @@ You can find the most recent version of this guide [here](https://github.com/fac
 - [Available Scripts](#available-scripts)
   - [yarn start](#yarn-start)
   - [yarn test](#yarn-test)
-  - [yarn run build](#yarn-run-build)
-  - [yarn run eject](#yarn-run-eject)
+  - [yarn build](#yarn-build)
+  - [yarn eject](#yarn-eject)
+  - [yarn flow](#yarn-flow)
+  - [yarn lint](#yarn-lint)
 - [Supported Browsers](#supported-browsers)
 - [Supported Language Features](#supported-language-features)
 - [Syntax Highlighting in the Editor](#syntax-highlighting-in-the-editor)
@@ -139,6 +141,16 @@ If you aren’t satisfied with the build tool and configuration choices, you can
 Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+
+### `yarn flow`
+
+Type check all files in the `src` folder using [Flow](https://flow.org/).
+This check will also be run before commits.
+
+### `yarn flow`
+
+Lint all files in `src` using [ESLint](https://eslint.org/).
+Files which have changed are also linted before every commit.
 
 ## Supported Browsers
 
