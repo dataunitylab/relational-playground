@@ -67,7 +67,7 @@
   },
   "lint-staged": {
     "src/**/*.{js,jsx,json}": [
-      "eslint",
+      "eslint --fix",
       "flow focus-check",
       "prettier --write",
       "git add"
