@@ -15,6 +15,7 @@ cache:
 script:
 - yarn lint
 - yarn flow
+- flow stop
 - yarn test
 - yarn build
 
