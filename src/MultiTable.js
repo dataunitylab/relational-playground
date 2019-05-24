@@ -19,8 +19,9 @@ class MultiTable extends Component<Props, State> {
     this.state = {selected: Object.keys(this.props.tables)[0]};
   }
 
-  handleChange = (table: SyntheticInputEvent<HTMLInputElement>) => {
-    this.setState({selected: table.target.value});
+  // TODO: Fix type annotation below
+  handleChange = (table: any) => {
+    this.setState({selected: table.value});
   };
 
   render() {
