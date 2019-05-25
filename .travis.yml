@@ -26,10 +26,11 @@ matrix:
 jobs:
   include:
     - stage: deploy
-      provider: surge
-      skip_cleanup: true
-      project: ./build/
-      domain: relational-playground.surge.sh  
+      deploy:
+        provider: surge
+        skip_cleanup: true
+        project: ./build/
+        domain: relational-playground.surge.sh
       on:
         branch: master
       os: linux
