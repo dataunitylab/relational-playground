@@ -1,6 +1,8 @@
 # Relational Playground
 
-[![Build Status](https://travis-ci.com/michaelmior/relational-playground.svg?branch=master)](https://travis-ci.com/michaelmior/relational-playground) [![Greenkeeper badge](https://badges.greenkeeper.io/michaelmior/relational-playground.svg)](https://greenkeeper.io/)
+[![Build Status](https://travis-ci.com/michaelmior/relational-playground.svg?branch=master)](https://travis-ci.com/michaelmior/relational-playground)
+[![Greenkeeper badge](https://badges.greenkeeper.io/michaelmior/relational-playground.svg)](https://greenkeeper.io/)
+[![Coverage Status](https://coveralls.io/repos/github/michaelmior/relational-playground/badge.svg?branch=master)](https://coveralls.io/github/michaelmior/relational-playground?branch=master)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

@@ -16,8 +16,11 @@ script:
 - yarn lint
 - yarn flow
 - flow stop
-- yarn test
+- yarn test --coverage
 - yarn build
+
+after_script:
+- '[[ $TRAVIS_OS_NAME = "linux" ]] && yarn coveralls'
 
 matrix:
   allow_failures:
