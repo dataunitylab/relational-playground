@@ -32,7 +32,7 @@
     "build-storybook": "build-storybook -s public",
     "flow": "flow check src",
     "lint": "eslint src",
-    "now-build": "react-scripts build",
+    "now-build": "react-scripts build && build-storybook -o build/storybook/",
     "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls"
   },
   "eslintConfig": {
