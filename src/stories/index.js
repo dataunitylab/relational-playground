@@ -4,6 +4,7 @@ import {storiesOf} from '@storybook/react';
 
 import RelOp, {Projection, Rename, Selection} from '../RelOp';
 import RelExpr from '../RelExpr';
+import MultiTable from '../MultiTable';
 import Table from '../Table';
 
 storiesOf('Table', module).add('with some data', () => (
@@ -14,6 +15,29 @@ storiesOf('Table', module).add('with some data', () => (
       {firstName: 'Alice', lastName: 'Yang', salary: 176000},
       {firstName: 'Bob', lastName: 'Smith', salary: 120000},
     ]}
+  />
+));
+
+storiesOf('MultiTable', module).add('with several sources', () => (
+  <MultiTable
+    tables={{
+      Doctor: {
+        name: 'Doctor',
+        columns: ['firstName', 'lastName', 'salary'],
+        data: [
+          {firstName: 'Alice', lastName: 'Yang', salary: 176000},
+          {firstName: 'Bob', lastName: 'Smith', salary: 120000},
+        ],
+      },
+      Patient: {
+        name: 'Patient',
+        columns: ['firstName', 'lastName'],
+        data: [
+          {firstName: 'Carlos', lastName: 'Vasquez'},
+          {firstName: 'Xu', lastName: 'Xing'},
+        ],
+      },
+    }}
   />
 ));
 
