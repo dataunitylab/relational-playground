@@ -66,11 +66,6 @@
     "stylelint": "^10.0.1",
     "stylelint-config-standard": "^18.3.0"
   },
-  "greenkeeper": {
-    "ignore": [
-      "babel-loader"
-    ]
-  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
