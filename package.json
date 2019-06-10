@@ -61,7 +61,7 @@
     "npm-package-json-lint": "^3.6.1",
     "npm-package-json-lint-config-default": "^2.0.0",
     "pkg-ok": "^2.3.1",
-    "prettier": "^1.17.1",
+    "prettier": "^1.18.2",
     "react-test-renderer": "^16.8.6",
     "stylelint": "^10.0.1",
     "stylelint-config-standard": "^18.3.0"
