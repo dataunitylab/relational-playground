@@ -29,6 +29,7 @@ matrix:
 jobs:
   include:
     - stage: deploy
+      if: branch = master AND type = push
       deploy:
         provider: surge
         skip_cleanup: true
