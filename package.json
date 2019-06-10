@@ -31,7 +31,7 @@
     "storybook": "start-storybook -p 9009 -s public",
     "build-storybook": "build-storybook -s public",
     "flow": "flow check src",
-    "lint": "eslint src",
+    "lint": "node_modules/.bin/prettier --check src/**/*.{js,jsx,json} && eslint src",
     "now-build": "react-scripts build && build-storybook -o build/storybook/",
     "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls"
   },
