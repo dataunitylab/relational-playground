@@ -25,6 +25,7 @@ after_script:
 matrix:
   allow_failures:
   - os: windows
+  fast_finish: true
 
 jobs:
   include:
