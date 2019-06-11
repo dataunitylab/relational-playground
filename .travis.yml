@@ -20,7 +20,7 @@ script:
 - yarn build
 
 after_script:
-- '[[ $TRAVIS_OS_NAME = "linux" ]] && yarn coveralls'
+- '[[ $TRAVIS_OS_NAME = "linux" ]] && [[ $TRAVIS_BRANCH = "master" ]] && yarn coveralls'
 
 matrix:
   allow_failures:
