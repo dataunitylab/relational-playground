@@ -18,7 +18,7 @@ script:
 - flow stop
 - yarn test --coverage
 - yarn build
-- yarn docs
+- yarn esdoc && mv docs/ build/
 
 after_script:
 - 'if [ "x$TRAVIS_OS_NAME" = "xlinux" -a "x$TRAVIS_BRANCH" = "xmaster" ]; then yarn coveralls; else true; fi'
