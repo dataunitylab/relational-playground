@@ -1573,29 +1573,6 @@ or unreliable network.
 If you do decide to opt-in to service worker registration, please take the
 following into account:
 
-1. Service workers [require HTTPS](https://developers.google.com/web/fundamentals/getting-started/primers/service-workers#you_need_https),
-   although to facilitate local testing, that policy
-   [does not apply to `localhost`](http://stackoverflow.com/questions/34160509/options-for-testing-service-workers-via-http/34161385#34161385).
-   If your production web server does not support HTTPS, then the service worker
-   registration will fail, but the rest of your web app will remain functional.
-
-1. Service workers are [not supported](https://jakearchibald.github.io/isserviceworkerready/#moar)
-   in older web browsers. Service worker registration [won't be attempted](src/registerServiceWorker.js)
-   on browsers that lack support.
-
-1. The service worker is only enabled in the [production environment](#deployment),
-   e.g. the output of `yarn build`. It's recommended that you do not enable an
-   offline-first service worker in a development environment, as it can lead to
-   frustration when previously cached assets are used and do not include the latest
-   changes you've made locally.
-
-1. If you _need_ to test your offline-first service worker locally, build
-   the application (using `yarn build`) and run a simple http server from your
-   build directory. After running the build script, `create-react-app` will give
-   instructions for one way to test your production build locally and the [deployment instructions](#deployment) have
-   instructions for using other methods. _Be sure to always use an
-   incognito window to avoid complications with your browser cache._
-
 1. Users aren't always familiar with offline-first web apps. It can be useful to
    [let the user know](https://developers.google.com/web/fundamentals/instant-and-offline/offline-ux#inform_the_user_when_the_app_is_ready_for_offline_consumption)
    when the service worker has finished populating your caches (showing a "This web
