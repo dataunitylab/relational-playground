@@ -19,12 +19,12 @@ export type Data = {
 
 export type State = {
   current?: Data,
-  sourcedata: {[string]: Data},
+  sourceData: {[string]: Data},
 };
 
 // Source data which can be used in SQL queries
 const initialState = {
-  sourcedata: {
+  sourceData: {
     Doctor: {
       name: 'Doctor',
       columns: ['firstName', 'lastName', 'salary'],
@@ -46,6 +46,9 @@ const initialState = {
 };
 
 /**
+ * @param expr - a relational algebra expression to evaluate
+ * @param sourceData - source data from relations
+ * @return result of evaluating the expression
  */
 function applyExpr(expr, sourceData) {
   switch (Object.keys(expr)[0]) {
@@ -144,7 +147,7 @@ export default (state: State = initialState, action: Action) => {
     case CHANGE_EXPR:
       return {
         ...state,
-        current: applyExpr(action.expr, state.sourcedata),
+        current: applyExpr(action.expr, state.sourceData),
       };
     default:
       return {

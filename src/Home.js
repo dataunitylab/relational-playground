@@ -72,7 +72,7 @@ const mapStateToProps = state => {
   return {
     expr: state.relexp.expr,
     data: state.data,
-    sources: state.data.sourcedata,
+    sources: state.data.sourceData,
   };
 };
 

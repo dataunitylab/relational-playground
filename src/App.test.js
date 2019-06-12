@@ -10,7 +10,7 @@ it('renders without crashing', () => {
   const div = document.createElement('div');
   const store = createStore(() => ({
     relexp: {expr: {}},
-    data: {sourcedata: {}},
+    data: {sourceData: {}},
   }));
   ReactDOM.render(
     <Provider store={store}>
