@@ -14,6 +14,7 @@ type State = {
   isHovered: boolean,
 };
 
+/** Base class for all relational algebra operators */
 class RelOp extends Component<Props, State> {
   constructor() {
     super();
@@ -43,6 +44,7 @@ class RelOp extends Component<Props, State> {
   }
 }
 
+/** Projection relational algebra operator */
 class Projection extends Component<{project: Array<string>}> {
   render() {
     return (
@@ -53,12 +55,14 @@ class Projection extends Component<{project: Array<string>}> {
   }
 }
 
+/** Rename relational algebra operator */
 class Rename extends Component<{rename: {[string]: string}}> {
   render() {
     return (
       <span>
         &rho;
         <sub>
+          {/* Loop over all columns to rename and combine them */}
           {Object.entries(this.props.rename)
             .map(([o, n]) => {
               return o + '/' + ((n: any): string);
@@ -70,6 +74,7 @@ class Rename extends Component<{rename: {[string]: string}}> {
   }
 }
 
+/** Selection relational algebra operator */
 class Selection extends Component<{select: Array<string>}> {
   render() {
     return (

@@ -9,12 +9,18 @@ type Props = {
   expr: {[string]: any},
 };
 
+/** A graphical representation of a relational algebra expression */
 class RelExpr extends Component<Props> {
   constructor() {
     super();
     (this: any).handleExprClick = this.handleExprClick.bind(this);
   }
 
+  /**
+   * @param select - an array of objects representing conditions
+   * @param conds - an array of conditions to be added to
+   * @return a string representing a query condition
+   */
   conditionToString(select: Array<{[string]: any}>, conds: Array<string> = []) {
     if (select.length === 0) {
       return conds;
@@ -35,7 +41,12 @@ class RelExpr extends Component<Props> {
     return conds;
   }
 
+  /**
+   * @param expr - a relational algebra expression object to render
+   * @return a component representing the top-most expression
+   */
   buildExpr(expr: {[string]: any}) {
+    // Don't try to render empty expressions
     if (!expr || Object.keys(expr).length === 0) {
       return '';
     }
@@ -54,6 +65,7 @@ class RelExpr extends Component<Props> {
             />
           </RelOp>
         );
+
       case 'selection':
         return (
           <RelOp
@@ -69,6 +81,7 @@ class RelExpr extends Component<Props> {
             />
           </RelOp>
         );
+
       case 'rename':
         return (
           <RelOp operator={<Rename rename={expr.rename.arguments.rename} />}>
@@ -78,13 +91,18 @@ class RelExpr extends Component<Props> {
             />
           </RelOp>
         );
+
       case 'relation':
         return <Relation name={expr.relation} />;
+
       default:
         throw new Error('Invalid expression ' + JSON.stringify(expr) + '.');
     }
   }
 
+  /**
+   * @param e - the event object which generated the click
+   */
   handleExprClick(e: SyntheticMouseEvent<HTMLElement>) {
     e.stopPropagation();
     if (this.props.changeExpr) {

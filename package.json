@@ -32,7 +32,7 @@
     "build-storybook": "build-storybook -s public",
     "flow": "flow check src",
     "lint": "node_modules/.bin/prettier --check src/**/*.{js,jsx,json} && eslint src",
-    "now-build": "react-scripts build && build-storybook -o build/storybook/",
+    "now-build": "react-scripts build && build-storybook -o build/storybook/ && esdoc && mv docs/ build/",
     "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls"
   },
   "eslintConfig": {
@@ -54,6 +54,12 @@
     "@testing-library/react": "^8.0.1",
     "babel-loader": "8.0.5",
     "coveralls": "^3.0.4",
+    "esdoc": "^1.1.0",
+    "esdoc-ecmascript-proposal-plugin": "^1.0.0",
+    "esdoc-flow-type-plugin": "^1.1.0",
+    "esdoc-jsx-plugin": "^1.0.0",
+    "esdoc-react-plugin": "^1.0.1",
+    "esdoc-standard-plugin": "^1.0.0",
     "flow-bin": "^0.98.1",
     "husky": "^2.4.0",
     "jest-dom": "^3.5.0",
