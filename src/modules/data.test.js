@@ -46,3 +46,18 @@ it('can evaluate a rename', () => {
   expect(current.columns).toStrictEqual(['quux', 'baz']);
   expect(current.data).toStrictEqual([{quux: 1, baz: 2}, {quux: 3, baz: 4}]);
 });
+
+/** @test {data} */
+it('can evaluate a selection', () => {
+  const expr = {
+    selection: {
+      arguments: {select: [{bar: {$gt: '1'}}]},
+      children: [{relation: 'foo'}],
+    },
+  };
+  const action = changeExpr(expr);
+  const current = reducer({sourceData: sourceData}, action).current;
+
+  expect(current.columns).toStrictEqual(sourceData.foo.columns);
+  expect(current.data).toStrictEqual([{bar: 3, baz: 4}]);
+});
