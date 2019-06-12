@@ -101,10 +101,10 @@ function applyExpr(expr, sourceData) {
               keep = keep && item[col] <= select[i][col][op];
               break;
             case '$ne':
-              keep = keep && item[col] !== select[i][col][op];
+              keep = keep && item[col] != select[i][col][op];
               break;
             case '$eq':
-              keep = keep && item[col] === select[i][col][op];
+              keep = keep && item[col] == select[i][col][op];
               break;
             default:
               throw new Error('Invalid expression');
