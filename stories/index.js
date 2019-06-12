@@ -2,10 +2,10 @@ import React from 'react';
 
 import {storiesOf} from '@storybook/react';
 
-import RelOp, {Projection, Rename, Selection} from '../RelOp';
-import RelExpr from '../RelExpr';
-import MultiTable from '../MultiTable';
-import Table from '../Table';
+import RelOp, {Projection, Rename, Selection} from '../src/RelOp';
+import RelExpr from '../src/RelExpr';
+import MultiTable from '../src/MultiTable';
+import Table from '../src/Table';
 
 storiesOf('Table', module).add('with some data', () => (
   <Table
