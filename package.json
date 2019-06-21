@@ -48,7 +48,7 @@
   "devDependencies": {
     "@babel/core": "^7.4.5",
     "@storybook/addon-actions": "^5.1.8",
-    "@storybook/addon-links": "^5.1.8",
+    "@storybook/addon-links": "^5.1.9",
     "@storybook/addons": "^5.0.13",
     "@storybook/cli": "^5.1.8",
     "@storybook/react": "^5.1.8",
