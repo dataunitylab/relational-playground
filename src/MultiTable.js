@@ -34,6 +34,7 @@ class MultiTable extends Component<Props, State> {
     }
     return (
       <div>
+        <h4>Select a Table:</h4>
         <Select
           value={{value: this.state.selected, label: this.state.selected}}
           onChange={this.handleChange}
@@ -41,6 +42,8 @@ class MultiTable extends Component<Props, State> {
             return {value: tbl, label: tbl};
           })}
         />
+
+        <h4>Your Selected Table: </h4>
         {table}
       </div>
     );

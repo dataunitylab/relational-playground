@@ -27,34 +27,39 @@ class Home extends Component<Props> {
     let data = <div style={{padding: '2em'}}>Select an expression above.</div>;
     if (this.props.data.current) {
       data = (
-        <Table
-          tableName={this.props.data.current.name}
-          columns={this.props.data.current.columns}
-          data={this.props.data.current.data}
-        />
+          <div style={{width: '100%', margin: '1em'}}>
+            <h4>Table for your selected Relation: </h4>
+            <Table
+                tableName={this.props.data.current.name}
+                columns={this.props.data.current.columns}
+                data={this.props.data.current.data}
+            />
+          </div>
+
       );
     }
 
     return (
       <SplitPane split="vertical" primary="second" minSize={400}>
         <div>
-          <SplitPane split="horizontal" primary="second" minSize={300}>
-            <div style={{padding: '2em'}}>
-              <div style={{marginBottom: '2em'}}>
+          <SplitPane split="horizontal" primary="second" minSize={400}>
+            <div style={{padding: '2em'}} className="topLeftContainer">
+              <div>
                 <SqlEditor
                   defaultText="SELECT * FROM Doctor"
                   exprFromSql={this.props.exprFromSql}
                 />
+
+                <RelExpr
+                  expr={this.props.expr}
+                  changeExpr={this.props.changeExpr}
+                />
               </div>
-              <RelExpr
-                expr={this.props.expr}
-                changeExpr={this.props.changeExpr}
-              />
             </div>
-            <div>{data}</div>
+            {data}
           </SplitPane>
         </div>
-        <div>
+        <div style={{margin: '2em'}}>
           <MultiTable tables={this.props.sources} />
         </div>
       </SplitPane>
