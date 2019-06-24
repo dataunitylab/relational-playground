@@ -7,6 +7,7 @@ type Props = {
   name: string,
 };
 
+/** Simple component to display a relation name as part of an expression */
 class Relation extends Component<Props> {
   render() {
     return (

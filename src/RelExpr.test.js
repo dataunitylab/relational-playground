@@ -3,6 +3,7 @@ import renderer from 'react-test-renderer';
 
 import RelExpr from './RelExpr';
 
+/** @test {RelExpr} */
 it('correctly renders a complex expression', () => {
   const expr = {
     rename: {

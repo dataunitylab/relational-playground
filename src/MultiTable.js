@@ -13,6 +13,7 @@ type State = {
   selected: string,
 };
 
+/** Displays more than one table with a dropdown to choose */
 class MultiTable extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
@@ -25,6 +26,7 @@ class MultiTable extends Component<Props, State> {
   };
 
   render() {
+    // Render the selected table
     let table = <div>Select a table above.</div>;
     if (this.state.selected) {
       const data = this.props.tables[this.state.selected];
@@ -32,6 +34,8 @@ class MultiTable extends Component<Props, State> {
         <Table tableName={data.name} columns={data.columns} data={data.data} />
       );
     }
+
+    // Render the menu along with the table
     return (
       <div>
         <h4>Select a Table:</h4>

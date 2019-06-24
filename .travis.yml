@@ -18,13 +18,15 @@ script:
 - flow stop
 - yarn test --coverage
 - yarn build
+- yarn esdoc && mv docs/ build/
 
 after_script:
-- '[[ $TRAVIS_OS_NAME = "linux" ]] && yarn coveralls'
+- 'if [ "x$TRAVIS_OS_NAME" = "xlinux" -a "x$TRAVIS_BRANCH" = "xmaster" ]; then yarn coveralls; else true; fi'
 
 matrix:
   allow_failures:
   - os: windows
+  fast_finish: true
 
 jobs:
   include:

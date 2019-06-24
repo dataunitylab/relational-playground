@@ -22,6 +22,7 @@ type Props = {
   exprFromSql: typeof exprFromSql,
 };
 
+/** Container for all components on the main page */
 class Home extends Component<Props> {
   render() {
     let data = <div style={{padding: '2em'}}>Select an expression above.</div>;
@@ -43,22 +44,22 @@ class Home extends Component<Props> {
       <SplitPane split="vertical" primary="second" minSize={400}>
         <div>
           <SplitPane split="horizontal" primary="second" minSize={400}>
-            <div style={{padding: '2em'}} className="topLeftContainer">
-              <div>
+            <div style={{padding: '2em'}}>
+              {/* SQL query input */}
                 <SqlEditor
                   defaultText="SELECT * FROM Doctor"
                   exprFromSql={this.props.exprFromSql}
-                />
-
+                /> 
+                {/* Relational algebra expression display */}
                 <RelExpr
                   expr={this.props.expr}
                   changeExpr={this.props.changeExpr}
                 />
-              </div>
             </div>
             {data}
           </SplitPane>
         </div>
+        {/* Input dataset preview */}
         <div style={{margin: '2em'}}>
           <MultiTable tables={this.props.sources} />
         </div>
@@ -71,7 +72,7 @@ const mapStateToProps = state => {
   return {
     expr: state.relexp.expr,
     data: state.data,
-    sources: state.data.sourcedata,
+    sources: state.data.sourceData,
   };
 };
 
