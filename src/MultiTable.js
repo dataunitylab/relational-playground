@@ -38,6 +38,7 @@ class MultiTable extends Component<Props, State> {
     // Render the menu along with the table
     return (
       <div>
+        <h4>Source relations</h4>
         <Select
           value={{value: this.state.selected, label: this.state.selected}}
           onChange={this.handleChange}
@@ -45,6 +46,7 @@ class MultiTable extends Component<Props, State> {
             return {value: tbl, label: tbl};
           })}
         />
+
         {table}
       </div>
     );

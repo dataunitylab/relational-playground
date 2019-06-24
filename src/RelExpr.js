@@ -25,9 +25,6 @@ class RelExpr extends Component<Props> {
     if (select.length === 0) {
       return conds;
     }
-
-    const field = Object.keys(select[0])[0];
-    const op = Object.keys(select[0][field])[0];
     const opMap = {
       $gte: '>=',
       $gt: '>',
@@ -36,8 +33,11 @@ class RelExpr extends Component<Props> {
       $ne: '!=',
       $eq: '=',
     };
-    conds.push(field + ' ' + opMap[op] + ' ' + select[0][field][op]);
-
+    const field = Object.keys(select[0])[0];
+    for (let i = 0; i < select.length; i++) {
+      const op = Object.keys(select[i][field])[0];
+      conds.push(field + ' ' + opMap[op] + ' ' + select[i][field][op]);
+    }
     return conds;
   }
 
@@ -50,7 +50,6 @@ class RelExpr extends Component<Props> {
     if (!expr || Object.keys(expr).length === 0) {
       return '';
     }
-
     switch (Object.keys(expr)[0]) {
       case 'projection':
         return (
@@ -112,7 +111,7 @@ class RelExpr extends Component<Props> {
 
   render() {
     return (
-      <span onClick={this.handleExprClick}>
+      <span onClick={this.handleExprClick} style={{margin: '.4em'}}>
         {this.buildExpr(this.props.expr)}
       </span>
     );

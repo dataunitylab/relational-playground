@@ -1,6 +1,7 @@
 // @flow
 import React, {Component} from 'react';
 import {exprFromSql} from './modules/relexp';
+import './SqlEditor.css';
 
 const parser = require('js-sql-parser');
 
@@ -85,14 +86,14 @@ class SqlEditor extends Component<Props, State> {
     }
 
     return (
-      <div>
+      <div className="SqlEditor">
+        <h4>SQL Query</h4>
         <textarea
-          style={{minHeight: '4em', padding: '1em', width: '100%'}}
           onChange={this.handleChange}
           ref={inputRef => (this.inputRef = inputRef)}
           defaultValue={this.props.defaultText}
         />
-        {error}
+        <div className="error">{error}</div>
       </div>
     );
   }

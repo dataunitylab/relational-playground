@@ -1,0 +1,19 @@
+.SqlEditor {
+  box-sizing: border-box;
+  margin: auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.SqlEditor textarea {
+  height: 5em;
+  resize: none;
+  border-style: solid;
+  padding: 0.4em;
+}
+
+.SqlEditor .error {
+  font-weight: bold;
+  padding: 0.4em;
+}
