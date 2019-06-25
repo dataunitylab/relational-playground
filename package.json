@@ -64,7 +64,7 @@
     "esdoc-react-plugin": "^1.0.1",
     "esdoc-standard-plugin": "^1.0.0",
     "flow-bin": "^0.98.1",
-    "husky": "^2.4.1",
+    "husky": "^2.5.0",
     "jest-dom": "^3.5.0",
     "jest-enzyme": "^7.0.2",
     "lint-staged": "^8.2.1",
