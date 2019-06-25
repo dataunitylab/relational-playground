@@ -1,0 +1,23 @@
+{
+  "source": "./src",
+  "destination": "./docs",
+  "plugins": [
+    {
+      "name": "esdoc-standard-plugin",
+      "option": {
+        "coverage": {"enable": true},
+        "undocumentIdentifier": {"enable": true},
+        "unexportedIdentifier": {"enable": false},
+        "test": {
+          "source": "./src/",
+          "interfaces": ["describe", "it", "context", "suite", "test"],
+          "includes": ["(spec|Spec|test|Test)\\.js$"]
+        }
+      }
+    },
+    {"name": "esdoc-react-plugin"},
+    {"name": "esdoc-jsx-plugin", "option": {"enable": true}},
+    {"name": "esdoc-flow-type-plugin", "option": {"enable": true}},
+    {"name": "esdoc-ecmascript-proposal-plugin", "option": {"all": true}}
+  ]
+}

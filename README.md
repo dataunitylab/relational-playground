@@ -39,11 +39,7 @@ You can find the most recent version of this guide [here](https://github.com/fac
   - [Changing the HTML](#changing-the-html)
   - [Adding Assets Outside of the Module System](#adding-assets-outside-of-the-module-system)
   - [When to Use the `public` Folder](#when-to-use-the-public-folder)
-- [Using Global Variables](#using-global-variables)
-- [Adding Bootstrap](#adding-bootstrap)
-  - [Using a Custom Theme](#using-a-custom-theme)
 - [Adding Relay](#adding-relay)
-- [Adding a Router](#adding-a-router)
 - [Adding Custom Environment Variables](#adding-custom-environment-variables)
   - [Referencing Environment Variables in the HTML](#referencing-environment-variables-in-the-html)
   - [Adding Temporary Environment Variables In Your Shell](#adding-temporary-environment-variables-in-your-shell)
@@ -634,69 +630,6 @@ The `public` folder is useful as a workaround for a number of less common cases:
 
 Note that if you add a `<script>` that declares global variables, you also need to read the next section on using them.
 
-## Using Global Variables
-
-When you include a script in the HTML file that defines global variables and try to use one of these variables in the code, the linter will complain because it cannot see the definition of the variable.
-
-You can avoid this by reading the global variable explicitly from the `window` object, for example:
-
-```js
-const $ = window.$;
-```
-
-This makes it obvious you are using a global variable intentionally rather than because of a typo.
-
-Alternatively, you can force the linter to ignore any line by adding `// eslint-disable-line` after it.
-
-## Adding Bootstrap
-
-You don’t have to use [reactstrap](https://reactstrap.github.io/) together with React but it is a popular library for integrating Bootstrap with React apps. If you need it, you can integrate it with Create React App by following these steps:
-
-Install reactstrap and Bootstrap from npm. reactstrap does not include Bootstrap CSS so this needs to be installed as well:
-
-```sh
-yarn add bootstrap@4 reactstrap
-```
-
-Import Bootstrap CSS and optionally Bootstrap theme CSS in the beginning of your `src/index.js` file:
-
-```js
-import 'bootstrap/dist/css/bootstrap.css';
-// Put any other imports below so that CSS from your
-// components takes precedence over default styles.
-```
-
-Import required reactstrap components within `src/App.js` file or your custom component files:
-
-```js
-import { Button } from 'reactstrap';
-```
-
-Now you are ready to use the imported reactstrap components within your component hierarchy defined in the render method. Here is an example [`App.js`](https://gist.githubusercontent.com/zx6658/d9f128cd57ca69e583ea2b5fea074238/raw/a56701c142d0c622eb6c20a457fbc01d708cb485/App.js) redone using reactstrap.
-
-### Using a Custom Theme
-
-Sometimes you might need to tweak the visual styles of Bootstrap (or equivalent package).<br>
-As of `react-scripts@2.0.0` you can import `.scss` files. This makes it possible to use a package's built-in Sass variables for global style preferences.
-
-To customize Bootstrap, create a file called `src/custom.scss` (or similar) and import the Bootstrap source stylesheet. Add any overrides _before_ the imported file(s). You can reference [Bootstrap's documentation](http://getbootstrap.com/docs/4.1/getting-started/theming/#css-variables) for the names of the available variables.
-
-```scss
-// Override default variables before the import
-$body-bg: #000;
-
-// Import Bootstrap and its default variables
-@import '~bootstrap/scss/bootstrap.scss';
-```
-
-> **Note:** You must prefix imports from `node_modules` with `~` as displayed above.
-
-Finally, import the newly created `.scss` file instead of the default Bootstrap `.css` in the beginning of your `src/index.js` file, for example:
-
-```javascript
-import './custom.scss';
-```
-
 ## Adding Relay
 
 Relay is a framework for building data-driven React applications powered by GraphQL. The current release candidate of Relay works with Create React App projects out of the box using Babel Macros. Simply set up your project as laid out in the [Relay documentation](https://facebook.github.io/relay/), then make sure you have a version of the babel plugin providing the macro.
@@ -724,20 +657,6 @@ graphql`
 ```
 
 To learn more about Relay, check out [its documentation](https://facebook.github.io/relay/).
-
-## Adding a Router
-
-Create React App doesn't prescribe a specific routing solution, but [React Router](https://reacttraining.com/react-router/web/) is the most popular one.
-
-To add it, run:
-
-```sh
-yarn add react-router-dom
-```
-
-To try it, delete all the code in `src/App.js` and replace it with any of the examples on its website. The [Basic Example](https://reacttraining.com/react-router/web/example/basic) is a good place to get started.
-
-Note that [you may need to configure your production server to support client-side routing](#serving-apps-with-client-side-routing) before deploying your app.
 
 ## Adding Custom Environment Variables
 
@@ -1188,79 +1107,6 @@ This test mounts a component and makes sure that it didn’t throw during render
 
 When you encounter bugs caused by changing components, you will gain a deeper insight into which parts of them are worth testing in your application. This might be a good time to introduce more specific tests asserting specific expected output or behavior.
 
-If you’d like to test components in isolation from the child components they render, we recommend using [`shallow()` rendering API](http://airbnb.io/enzyme/docs/api/shallow.html) from [Enzyme](http://airbnb.io/enzyme/). To install it, run:
-
-```sh
-yarn add enzyme enzyme-adapter-react-16 react-test-renderer
-```
-
-As of Enzyme 3, you will need to install Enzyme along with an Adapter corresponding to the version of React you are using. (The examples above use the adapter for React 16.)
-
-The adapter will also need to be configured in your [global setup file](#initializing-test-environment):
-
-#### `src/setupTests.js`
-
-```js
-import { configure } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-
-configure({ adapter: new Adapter() });
-```
-
-> Note: Keep in mind that if you decide to "eject" before creating `src/setupTests.js`, the resulting `package.json` file won't contain any reference to it. [Read here](#initializing-test-environment) to learn how to add this after ejecting.
-
-Now you can write a smoke test with it:
-
-```js
-import React from 'react';
-import { shallow } from 'enzyme';
-import App from './App';
-
-it('renders without crashing', () => {
-  shallow(<App />);
-});
-```
-
-Unlike the previous smoke test using `ReactDOM.render()`, this test only renders `<App>` and doesn’t go deeper. For example, even if `<App>` itself renders a `<Button>` that throws, this test will pass. Shallow rendering is great for isolated unit tests, but you may still want to create some full rendering tests to ensure the components integrate correctly. Enzyme supports [full rendering with `mount()`](http://airbnb.io/enzyme/docs/api/mount.html), and you can also use it for testing state changes and component lifecycle.
-
-You can read the [Enzyme documentation](http://airbnb.io/enzyme/) for more testing techniques. Enzyme documentation uses Chai and Sinon for assertions but you don’t have to use them because Jest provides built-in `expect()` and `jest.fn()` for spies.
-
-Here is an example from Enzyme documentation that asserts specific output, rewritten to use Jest matchers:
-
-```js
-import React from 'react';
-import { shallow } from 'enzyme';
-import App from './App';
-
-it('renders welcome message', () => {
-  const wrapper = shallow(<App />);
-  const welcome = <h2>Welcome to React</h2>;
-  // expect(wrapper.contains(welcome)).toBe(true);
-  expect(wrapper.contains(welcome)).toEqual(true);
-});
-```
-
-All Jest matchers are [extensively documented here](http://facebook.github.io/jest/docs/en/expect.html).<br>
-Nevertheless you can use a third-party assertion library like [Chai](http://chaijs.com/) if you want to, as described below.
-
-Additionally, you might find [jest-enzyme](https://github.com/blainekasten/enzyme-matchers) helpful to simplify your tests with readable matchers. The above `contains` code can be written more simply with jest-enzyme.
-
-```js
-expect(wrapper).toContainReact(welcome);
-```
-
-To enable this, install `jest-enzyme`:
-
-```sh
-yarn add jest-enzyme
-```
-
-Import it in [`src/setupTests.js`](#initializing-test-environment) to make its matchers available in every test:
-
-```js
-import 'jest-enzyme';
-```
-
 ### Using Third Party Assertion Libraries
 
 We recommend that you use `expect()` for assertions and `jest.fn()` for spies. If you are having issues with them please [file those against Jest](https://github.com/facebook/jest/issues/new), and we’ll fix them. We intend to keep making them better for React, supporting, for example, [pretty-printing React elements as JSX](https://github.com/facebook/jest/pull/1566).
@@ -1573,29 +1419,6 @@ or unreliable network.
 If you do decide to opt-in to service worker registration, please take the
 following into account:
 
-1. Service workers [require HTTPS](https://developers.google.com/web/fundamentals/getting-started/primers/service-workers#you_need_https),
-   although to facilitate local testing, that policy
-   [does not apply to `localhost`](http://stackoverflow.com/questions/34160509/options-for-testing-service-workers-via-http/34161385#34161385).
-   If your production web server does not support HTTPS, then the service worker
-   registration will fail, but the rest of your web app will remain functional.
-
-1. Service workers are [not supported](https://jakearchibald.github.io/isserviceworkerready/#moar)
-   in older web browsers. Service worker registration [won't be attempted](src/registerServiceWorker.js)
-   on browsers that lack support.
-
-1. The service worker is only enabled in the [production environment](#deployment),
-   e.g. the output of `yarn build`. It's recommended that you do not enable an
-   offline-first service worker in a development environment, as it can lead to
-   frustration when previously cached assets are used and do not include the latest
-   changes you've made locally.
-
-1. If you _need_ to test your offline-first service worker locally, build
-   the application (using `yarn build`) and run a simple http server from your
-   build directory. After running the build script, `create-react-app` will give
-   instructions for one way to test your production build locally and the [deployment instructions](#deployment) have
-   instructions for using other methods. _Be sure to always use an
-   incognito window to avoid complications with your browser cache._
-
 1. Users aren't always familiar with offline-first web apps. It can be useful to
    [let the user know](https://developers.google.com/web/fundamentals/instant-and-offline/offline-ux#inform_the_user_when_the_app_is_ready_for_offline_consumption)
    when the service worker has finished populating your caches (showing a "This web
@@ -1636,23 +1459,7 @@ not you opt-in to service worker registration.
 JavaScript bundles using the source maps. This helps you understand where code
 bloat is coming from.
 
-To add Source map explorer to a Create React App project, follow these steps:
-
-```sh
-yarn add source-map-explorer
-```
-
-Then in `package.json`, add the following line to `scripts`:
-
-```diff
-   "scripts": {
-+    "analyze": "source-map-explorer build/static/js/main.*",
-     "start": "react-scripts start",
-     "build": "react-scripts build",
-     "test": "react-scripts test",
-```
-
-Then to analyze the bundle run the production build then run the analyze
+To analyze the bundle run the production build then run the analyze
 script.
 
 ```

@@ -10,6 +10,7 @@ type Props = {
   sortable?: boolean,
 };
 
+/** A wrapper for {ReactTable} which sets some default options */
 class Table extends Component<Props> {
   render() {
     let columns = [

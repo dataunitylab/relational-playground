@@ -5,6 +5,10 @@ export const EXPR_FROM_SQL = 'EXPR_FROM_SQL';
 
 type Action = {type: 'EXPR_FROM_SQL', sql: {[string]: any}};
 
+/**
+ * @param sql - a parsed SQL query
+ * @return a new EXPR_FROM_SQL action
+ */
 export function exprFromSql(sql: {[string]: any}): Action {
   return {type: EXPR_FROM_SQL, sql};
 }
@@ -26,48 +30,66 @@ const opMap = {
   '<=': '$lte',
 };
 
+/**
+ * @param and - the current expression list
+ * @param expr - a new expression to append to the list
+ */
+function addToAnd(and: Array<any>, expr: {[string]: any}) {
+  const converted = convertExpr(expr.left);
+  if (Array.isArray(converted)) {
+    and = and.concat(converted);
+  } else {
+    and.push(converted);
+  }
+}
+
+/**
+ * @param expr - a parsed expression from a SQL query
+ * @return a relational algebra expression object
+ */
 function convertExpr(expr: {[string]: any}) {
   switch (expr.type) {
     case 'AndExpression':
+      // Collect all expressions on either side of the AND
       let and: Array<any> = [];
+      addToAnd(and, expr.left);
+      addToAnd(and, expr.right);
 
-      const left = convertExpr(expr.left);
-      if (Array.isArray(left)) {
-        and = and.concat(left);
-      } else {
-        and.push(left);
-      }
-
-      const right = convertExpr(expr.right);
-      if (Array.isArray(right)) {
-        and = and.concat(right);
-      } else {
-        and.push(right);
-      }
       return and;
+
     case 'ComparisonBooleanPrimary':
       let ret = {};
       ret[(convertExpr(expr.left): any)] = {
         [opMap[expr.operator]]: convertExpr(expr.right),
       };
       return [ret];
+
     case 'Identifier':
     case 'Number':
     case 'String':
+      // For literals and identtifiers, just return the value object as-is
       return expr.value;
+
     default:
+      // Produce an error if the expression is unsupported
       throw new Error('Invalid expression.');
   }
 }
 
-function buildExpr(sql) {
+/**
+ * @param sql - a parsed SQL query
+ * @return a relational algebra expression object representing the query
+ */
+function buildRelExp(sql) {
   switch (sql.type) {
     case 'Select':
-      let from = sql.from.value.map(v => buildExpr(v));
+      // Build an expression for everything in the FROM clause
+      let from = sql.from.value.map(v => buildRelExp(v));
       if (from.length > 1) {
         throw new Error('Only single table queries currently supported.');
       }
 
+      // Wrap the table in a selection operator if there are any conditions
       if (sql.where) {
         from = [
           {
@@ -79,8 +101,10 @@ function buildExpr(sql) {
         ];
       }
 
+      // Add projections as needed for the SELECT clause
       const select = sql.selectItems.value;
       if (select.length === 1 && select[0].value === '*') {
+        // Don't project anything if SELECT * is used
         return from[0];
       } else {
         const project = select.map(field => field.value);
@@ -91,24 +115,30 @@ function buildExpr(sql) {
           },
         };
 
+        // Check for any aliased columns (e.g. SELECT foo AS bar...)
         const rename = select
           .filter(field => field.hasAs)
           .map(field => [field.value, field.alias]);
-        if (rename.length > 0) {
+        if (rename.length === 0) {
+          // Don't add a rename if not needed
+          return projection;
+        } else {
+          // Perform any necessary renames
           return {
             rename: {
               arguments: {rename: fromEntries(rename)},
               children: [projection],
             },
           };
-        } else {
-          return projection;
         }
       }
+
     case 'TableRefrence':
-      return buildExpr(sql.value);
+      return buildRelExp(sql.value);
+
     case 'TableFactor':
       return {relation: sql.value.value};
+
     default:
       throw new Error('Unsupported statement.');
   }
@@ -119,7 +149,7 @@ export default (state: State = initialState, action: Action) => {
     case EXPR_FROM_SQL:
       return {
         ...state,
-        expr: buildExpr(action.sql),
+        expr: buildRelExp(action.sql),
       };
     default:
       return {
