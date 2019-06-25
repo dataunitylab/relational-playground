@@ -19,9 +19,8 @@ class RelExpr extends Component<Props> {
     if (select.length === 0) {
       return conds;
     }
-
+    const field = Object.keys(select[0])[0];
     for(let i=0; i<select.length; i++){
-      const field = Object.keys(select[i])[0];
       const op = Object.keys(select[i][field])[0];
       const opMap = {
         $gte: '>=',
@@ -33,7 +32,6 @@ class RelExpr extends Component<Props> {
       };
       conds.push(field + ' ' + opMap[op] + ' ' + select[i][field][op]);
     }
-
     return conds;
   }
 
@@ -41,9 +39,6 @@ class RelExpr extends Component<Props> {
     if (!expr || Object.keys(expr).length === 0) {
       return '';
     }
-
-
-
     switch (Object.keys(expr)[0]) {
       case 'projection':
         return (

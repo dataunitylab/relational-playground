@@ -10,11 +10,9 @@
     height: 5em;
     resize: none;
     border-style: solid;
-    background-color: lightgray;
-
 }
 
-.error{
+.SqlEditor.error{
     font-weight: bold;
     padding: .4em;
 }

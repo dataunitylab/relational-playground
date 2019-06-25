@@ -71,7 +71,7 @@ class SqlEditor extends Component<Props, State> {
     }
     return (
       <div className="SqlEditor">
-        <h4>Enter SQL Command Here: </h4>
+        <h4>Enter SQL Query Here: </h4>
         <textarea
           onChange={this.handleChange}
           ref={inputRef => (this.inputRef = inputRef)}
