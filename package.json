@@ -52,7 +52,7 @@
     "@storybook/addons": "^5.1.9",
     "@storybook/cli": "^5.1.9",
     "@storybook/react": "^5.1.9",
-    "@testing-library/react": "^8.0.2",
+    "@testing-library/react": "^8.0.4",
     "babel-loader": "8.0.5",
     "coveralls": "^3.0.4",
     "enzyme": "^3.10.0",
