@@ -30,9 +30,7 @@ class MultiTable extends Component<Props, State> {
     let table = <div>Select a table above.</div>;
     if (this.state.selected) {
       const data = this.props.tables[this.state.selected];
-      table = (
-        <Table tableName={data.name} columns={data.columns} data={data.data} />
-      );
+      table = <Table columns={data.columns} data={data.data} />;
     }
 
     // Render the menu along with the table

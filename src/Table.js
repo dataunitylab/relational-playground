@@ -3,8 +3,10 @@ import React, {Component} from 'react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 
+import './Table.css';
+
 type Props = {
-  tableName: string,
+  tableName?: string,
   columns: Array<string>,
   data: Array<{[string]: any}>,
   sortable?: boolean,
@@ -19,8 +21,10 @@ class Table extends Component<Props> {
         columns: this.props.columns.map(c => ({Header: c, accessor: c})),
       },
     ];
+
     return (
       <ReactTable
+        className={this.props.tableName ? '' : 'no-header'}
         data={this.props.data}
         columns={columns}
         defaultPageSize={5}
