@@ -3,6 +3,11 @@
 exports[`correctly renders a complex expression 1`] = `
 <span
   onClick={[Function]}
+  style={
+    Object {
+      "margin": ".4em",
+    }
+  }
 >
   <span
     className="RelOp "
@@ -18,6 +23,11 @@ exports[`correctly renders a complex expression 1`] = `
     (
     <span
       onClick={[Function]}
+      style={
+        Object {
+          "margin": ".4em",
+        }
+      }
     >
       <span
         className="RelOp "
@@ -33,6 +43,11 @@ exports[`correctly renders a complex expression 1`] = `
         (
         <span
           onClick={[Function]}
+          style={
+            Object {
+              "margin": ".4em",
+            }
+          }
         >
           <span
             className="RelOp "
@@ -48,6 +63,11 @@ exports[`correctly renders a complex expression 1`] = `
             (
             <span
               onClick={[Function]}
+              style={
+                Object {
+                  "margin": ".4em",
+                }
+              }
             >
               <span
                 className="Relation"
