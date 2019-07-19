@@ -12,14 +12,17 @@ type Props = {
 
 type State = {
   isHovered: boolean,
+  isClicked: boolean
 };
 
 /** Base class for all relational algebra operators */
 class RelOp extends Component<Props, State> {
   constructor() {
     super();
-    this.state = {isHovered: false};
+    this.state = {isHovered: false, isClicked: false};
     (this: any).handleHover = this.handleHover.bind(this);
+    (this: any).handleClick = this.handleClick.bind(this);
+
   }
 
   handleHover(e: SyntheticMouseEvent<HTMLElement>) {
@@ -30,14 +33,29 @@ class RelOp extends Component<Props, State> {
     });
   }
 
+  handleClick(e: SyntheticMouseEvent<HTMLElement>){
+    const clicked = e.type === 'click';
+    if(this.state.isClicked){
+      this.setState(state => {
+        return {...state, isClicked: false && clicked};
+      });
+    }else{
+      this.setState(state => {
+        return {...state, isClicked: clicked};
+      });
+    }
+  }
+
   render() {
     const hoverClass = 'RelOp ' + (this.state.isHovered ? 'hovering' : '');
+    const clickedClass = 'RelOp ' + (this.state.isClicked ? 'clicked' : '');
     return (
-      <span
-        className={hoverClass}
-        onMouseOver={this.handleHover}
-        onMouseOut={this.handleHover}
-      >
+        <span
+            className={(clickedClass === 'RelOp ') ? hoverClass : clickedClass}
+            onMouseOver={this.handleHover}
+            onMouseOut={this.handleHover}
+            onClick={this.handleClick}
+        >
         {this.props.operator}({this.props.children})
       </span>
     );
@@ -48,7 +66,7 @@ class RelOp extends Component<Props, State> {
 class Projection extends Component<{project: Array<string>}> {
   render() {
     return (
-      <span>
+        <span>
         &pi;<sub>{this.props.project.join(',')}</sub>
       </span>
     );
@@ -59,15 +77,15 @@ class Projection extends Component<{project: Array<string>}> {
 class Rename extends Component<{rename: {[string]: string}}> {
   render() {
     return (
-      <span>
+        <span>
         &rho;
-        <sub>
+          <sub>
           {/* Loop over all columns to rename and combine them */}
-          {Object.entries(this.props.rename)
-            .map(([o, n]) => {
-              return o + '/' + ((n: any): string);
-            })
-            .join(',')}
+            {Object.entries(this.props.rename)
+                .map(([o, n]) => {
+                  return o + '/' + ((n: any): string);
+                })
+                .join(',')}
         </sub>
       </span>
     );
@@ -78,7 +96,7 @@ class Rename extends Component<{rename: {[string]: string}}> {
 class Selection extends Component<{select: Array<string>}> {
   render() {
     return (
-      <span>
+        <span>
         &sigma;<sub>{this.props.select.join(' ∧ ')}</sub>
       </span>
     );
