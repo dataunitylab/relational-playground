@@ -811,16 +811,10 @@
   dependencies:
     regenerator-runtime "^0.13.2"
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.3.4", "@babel/runtime@^7.4.0", "@babel/runtime@^7.4.2", "@babel/runtime@^7.4.4", "@babel/runtime@^7.4.5":
-  version "7.4.5"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.4.5.tgz#582bb531f5f9dc67d2fcb682979894f75e253f12"
-  dependencies:
-    regenerator-runtime "^0.13.2"
-
-"@babel/runtime@^7.5.1":
-  version "7.5.4"
-  resolved "https://registry.npm.taobao.org/@babel/runtime/download/@babel/runtime-7.5.4.tgz#cb7d1ad7c6d65676e66b47186577930465b5271b"
-  integrity sha1-y30a18bWVnbma0cYZXeTBGW1Jxs=
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.3.4", "@babel/runtime@^7.4.0", "@babel/runtime@^7.4.2", "@babel/runtime@^7.4.4", "@babel/runtime@^7.4.5", "@babel/runtime@^7.5.1", "@babel/runtime@^7.5.4":
+  version "7.5.5"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.5.5.tgz#74fba56d35efbeca444091c7850ccd494fd2f132"
+  integrity sha512-28QvEGyQyNkB0/m2B4FU7IEZGK2NUrcMtT6BZEFALTguLk+AUT6ofsHtPk5QyjAdUkpMJ+/Em+quwz4HOt30AQ==
   dependencies:
     regenerator-runtime "^0.13.2"
 
@@ -1616,10 +1610,10 @@
   dependencies:
     defer-to-connect "^1.0.1"
 
-"@testing-library/dom@^5.0.0":
-  version "5.2.0"
-  resolved "https://registry.npm.taobao.org/@testing-library/dom/download/@testing-library/dom-5.2.0.tgz#450bd09f93ddd8865eec98fc5e81fceb2bccdf9c"
-  integrity sha1-RQvQn5Pd2IZe7Jj8XoH86yvM35w=
+"@testing-library/dom@^5.5.4":
+  version "5.6.0"
+  resolved "https://registry.yarnpkg.com/@testing-library/dom/-/dom-5.6.0.tgz#18a7c162a6a79964e731ad7b810022a28218047c"
+  integrity sha512-nAsRvQLr/b6TGNjuHMEbWXCNPLrQYnzqa/KKQZL7wBOtfptUxsa4Ah9aqkHW0ZmCSFmUDj4nFUxWPVTeMu0iCw==
   dependencies:
     "@babel/runtime" "^7.4.5"
     "@sheerun/mutationobserver-shim" "^0.3.2"
@@ -1642,13 +1636,13 @@
     pretty-format "^24.0.0"
     redent "^3.0.0"
 
-"@testing-library/react@^8.0.4":
-  version "8.0.4"
-  resolved "https://registry.yarnpkg.com/@testing-library/react/-/react-8.0.4.tgz#6ed405ba88b625ec53d7cfa78c038a950bafc1fa"
-  integrity sha512-omm4D00Z0aMaWfPRRP4X6zIaOVb0Kf1Yc1H5VE4id9D0pQRiBcTtmjbN0kZgT8rQGxHhVAuv1NuwFwMTwKzFqg==
+"@testing-library/react@^8.0.6":
+  version "8.0.6"
+  resolved "https://registry.yarnpkg.com/@testing-library/react/-/react-8.0.6.tgz#614340646f32027426377dc6e5895a566eeb61b5"
+  integrity sha512-/4oeS0eatnHvAf9yuxIg1/8pjl1OrtWN7SLpDFEdxFjllIAEL09xXhA88C93vvlN+8enZa+xlXJ8ecohECT6Yg==
   dependencies:
-    "@babel/runtime" "^7.4.5"
-    "@testing-library/dom" "^5.0.0"
+    "@babel/runtime" "^7.5.4"
+    "@testing-library/dom" "^5.5.4"
 
 "@types/babel__core@^7.1.0":
   version "7.1.2"
