@@ -9,7 +9,7 @@
     "connected-react-router": "^6.5.2",
     "fromentries": "^1.1.0",
     "history": "^4.7.2",
-    "js-sql-parser": "^1.1.0",
+    "js-sql-parser": "^1.2.0",
     "prop-types": "^15.5.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
