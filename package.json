@@ -55,7 +55,7 @@
     "@storybook/react": "^5.1.10",
     "@testing-library/react": "^8.0.7",
     "babel-loader": "8.0.5",
-    "coveralls": "^3.0.5",
+    "coveralls": "^3.0.6",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "esdoc": "^1.1.0",
