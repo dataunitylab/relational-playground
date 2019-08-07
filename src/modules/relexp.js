@@ -140,7 +140,7 @@ function buildRelExp(sql) {
       return {relation: sql.value.value};
 
     default:
-      throw new Error('Unsupported statement.');
+      throw new Error('Unsupported statement ' + sql.type + '.');
   }
 }
 

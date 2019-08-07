@@ -1,6 +1,6 @@
 // @flow
 import React, {Component} from 'react';
-import RelOp, {Projection, Rename, Selection} from './RelOp';
+import {UnaryRelOp, Projection, Rename, Selection} from './RelOp';
 import Relation from './Relation';
 import {changeExpr} from './modules/data';
 
@@ -53,7 +53,7 @@ class RelExpr extends Component<Props> {
     switch (Object.keys(expr)[0]) {
       case 'projection':
         return (
-          <RelOp
+          <UnaryRelOp
             operator={
               <Projection project={expr.projection.arguments.project} />
             }
@@ -62,12 +62,12 @@ class RelExpr extends Component<Props> {
               expr={expr.projection.children[0]}
               changeExpr={this.props.changeExpr}
             />
-          </RelOp>
+          </UnaryRelOp>
         );
 
       case 'selection':
         return (
-          <RelOp
+          <UnaryRelOp
             operator={
               <Selection
                 select={this.conditionToString(expr.selection.arguments.select)}
@@ -78,17 +78,19 @@ class RelExpr extends Component<Props> {
               expr={expr.selection.children[0]}
               changeExpr={this.props.changeExpr}
             />
-          </RelOp>
+          </UnaryRelOp>
         );
 
       case 'rename':
         return (
-          <RelOp operator={<Rename rename={expr.rename.arguments.rename} />}>
+          <UnaryRelOp
+            operator={<Rename rename={expr.rename.arguments.rename} />}
+          >
             <RelExpr
               expr={expr.rename.children[0]}
               changeExpr={this.props.changeExpr}
             />
-          </RelOp>
+          </UnaryRelOp>
         );
 
       case 'relation':

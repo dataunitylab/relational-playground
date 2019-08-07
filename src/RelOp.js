@@ -15,7 +15,7 @@ type State = {
 };
 
 /** Base class for all relational algebra operators */
-class RelOp extends Component<Props, State> {
+class RelOp<T> extends Component<T, State> {
   constructor() {
     super();
     this.state = {isHovered: false};
@@ -29,7 +29,13 @@ class RelOp extends Component<Props, State> {
       return {...state, isHovered: hovering};
     });
   }
+}
 
+type UnaryProps = Props & {
+  children: Node,
+};
+
+class UnaryRelOp extends RelOp<UnaryProps> {
   render() {
     const hoverClass = 'RelOp ' + (this.state.isHovered ? 'hovering' : '');
     return (
@@ -85,4 +91,4 @@ class Selection extends Component<{select: Array<string>}> {
   }
 }
 
-export {RelOp as default, Projection, Rename, Selection};
+export {RelOp as default, UnaryRelOp, Projection, Rename, Selection};
