@@ -1,5 +1,6 @@
 // @flow
 import React, {Component} from 'react';
+// $FlowFixMe
 import Select from 'react-select';
 import Table from './Table';
 
