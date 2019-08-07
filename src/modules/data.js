@@ -45,6 +45,38 @@ const initialState = {
   },
 };
 
+function resolveColumn(path: string, row: {[string]: any}): string {
+  let [table, column] = path.split('.');
+  if (!column) {
+    column = table;
+    table = undefined;
+  }
+
+  if (table) {
+    if (row.hasOwnProperty(path)) {
+      // Use the dotted path
+      return path;
+    } else if (row.hasOwnProperty(column)) {
+      // Use the column name without the table qualifier
+      return column;
+    }
+  }
+
+  const columns = [];
+  for (const rowCol in row) {
+    if (rowCol === column || rowCol.endsWith('.' + column)) {
+      columns.push(rowCol);
+    }
+  }
+
+  // Ensure we find the correct column
+  if (columns.length === 1) {
+    return columns[0];
+  }
+
+  throw new Error('Invalid column ' + path);
+}
+
 /**
  * @param expr - a relational algebra expression to evaluate
  * @param sourceData - source data from relations
@@ -57,7 +89,10 @@ function applyExpr(expr, sourceData) {
       let projData = applyExpr(expr.projection.children[0], sourceData);
 
       // Get the columns which should be deleted
-      const deleted = projData.columns.filter(
+      const columns = projData.columns.map(col =>
+        resolveColumn(col, projData.data[0])
+      );
+      const deleted = columns.filter(
         column => expr.projection.arguments.project.indexOf(column) === -1
       );
 
@@ -83,7 +118,7 @@ function applyExpr(expr, sourceData) {
         // Loop over all expressions to be evaluauted
         for (var i = 0; keep && i < select.length; i++) {
           // Get the column to compare and the comparison operator
-          const col = Object.keys(select[i])[0];
+          const col = resolveColumn(Object.keys(select[i])[0], item);
           const op = Object.keys(select[i][col])[0];
 
           // Update the flag indicating whether we should keep this tuple
@@ -123,13 +158,19 @@ function applyExpr(expr, sourceData) {
 
       // Loop over all pairs of things to rename
       Object.entries(expr.rename.arguments.rename).forEach(([from, to]) => {
+        // Ensure target name is a string
+        if (typeof to !== 'string') {
+          throw new Error('Invalid target for rename');
+        }
+
         // Add a new column with the new name
-        renData.columns[renData.columns.indexOf(from)] = to;
+        const fromColumn = resolveColumn(from, renData.data[0]);
+        renData.columns[renData.columns.indexOf(fromColumn)] = to;
 
         // Copy all column data and delete the original column
         for (let j = 0; j < renData.data.length; j++) {
-          renData.data[j][to] = renData.data[j][from];
-          delete renData.data[j][from];
+          renData.data[j][to] = renData.data[j][fromColumn];
+          delete renData.data[j][fromColumn];
         }
       });
       return renData;
@@ -137,6 +178,60 @@ function applyExpr(expr, sourceData) {
     case 'relation':
       // Make a copy of the data from a source table and return it
       return JSON.parse(JSON.stringify(sourceData[expr.relation]));
+
+    case 'join':
+      // Process each side of the join
+      const left = applyExpr(expr.join.left, sourceData);
+      const right = applyExpr(expr.join.right, sourceData);
+
+      // Combine columns adding relation name where needed
+      const combinedColumns: Array<string> = [];
+      for (const leftColumn of left.columns) {
+        if (right.columns.includes(leftColumn)) {
+          combinedColumns.push(left.name + '.' + leftColumn);
+        } else {
+          combinedColumns.push(leftColumn);
+        }
+      }
+      for (const rightColumn of right.columns) {
+        if (left.columns.includes(rightColumn)) {
+          combinedColumns.push(right.name + '.' + rightColumn);
+        } else {
+          combinedColumns.push(rightColumn);
+        }
+      }
+
+      const output = {
+        name: left.name + ' × ' + right.name,
+        columns: combinedColumns,
+        data: [],
+      };
+
+      // Perform the cross product
+      for (const leftRow of left.data) {
+        for (const rightRow of right.data) {
+          // Combine data from the two objects including the relation name
+          const combinedData = {};
+          for (const leftKey in leftRow) {
+            combinedData[left.name + '.' + leftKey] = leftRow[leftKey];
+          }
+          for (const rightKey in rightRow) {
+            combinedData[right.name + '.' + rightKey] = rightRow[rightKey];
+          }
+
+          // Resolve the output data according to the combined data
+          // This may remove relation names where they are not needed
+          const outputData = {};
+          for (const column of combinedColumns) {
+            outputData[column] =
+              combinedData[resolveColumn(column, combinedData)];
+          }
+
+          output.data.push(outputData);
+        }
+      }
+
+      return output;
 
     default:
       // Fallback in case we get something invalid to show a nice error

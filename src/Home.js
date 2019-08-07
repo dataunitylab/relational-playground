@@ -17,6 +17,7 @@ type Props = {
   expr: {[string]: any},
   data: DataState,
   sources: {[string]: Data},
+  types: {[string]: Array<string>},
 
   changeExpr: typeof changeExpr,
   exprFromSql: typeof exprFromSql,
@@ -49,6 +50,7 @@ class Home extends Component<Props> {
                 <SqlEditor
                   defaultText="SELECT * FROM Doctor"
                   exprFromSql={this.props.exprFromSql}
+                  types={this.props.types}
                 />
 
                 {/* Relational algebra expression display */}
@@ -71,9 +73,20 @@ class Home extends Component<Props> {
 }
 
 const mapStateToProps = state => {
+  // Get just the column names from the source data
+  const types = Object.fromEntries(
+    Object.entries(state.data.sourceData).map(([name, data]) => {
+      return [
+        name,
+        data != null && typeof data === 'object' ? data.columns : [],
+      ];
+    })
+  );
+
   return {
     expr: state.relexp.expr,
     data: state.data,
+    types: types,
     sources: state.data.sourceData,
   };
 };
@@ -83,8 +96,8 @@ const mapDispatchToProps = dispatch => {
     changeExpr: data => {
       dispatch(changeExpr(data));
     },
-    exprFromSql: data => {
-      dispatch(exprFromSql(data));
+    exprFromSql: (sql, types) => {
+      dispatch(exprFromSql(sql, types));
     },
   };
 };
