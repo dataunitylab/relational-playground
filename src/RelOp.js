@@ -1,6 +1,5 @@
 // @flow
 import React, {Component} from 'react';
-
 import type {Element, Node} from 'react';
 
 import './RelOp.css';
@@ -11,17 +10,15 @@ type Props = {
 };
 
 type State = {
-  isHovered: boolean,
-  isClicked: boolean
+  isHovered: boolean
 };
 
 /** Base class for all relational algebra operators */
 class RelOp extends Component<Props, State> {
   constructor() {
     super();
-    this.state = {isHovered: false, isClicked: false};
+    this.state = {isHovered: false};
     (this: any).handleHover = this.handleHover.bind(this);
-    (this: any).handleClick = this.handleClick.bind(this);
 
   }
 
@@ -33,28 +30,14 @@ class RelOp extends Component<Props, State> {
     });
   }
 
-  handleClick(e: SyntheticMouseEvent<HTMLElement>){
-    const clicked = e.type === 'click';
-    if(this.state.isClicked){
-      this.setState(state => {
-        return {...state, isClicked: false && clicked};
-      });
-    }else{
-      this.setState(state => {
-        return {...state, isClicked: clicked};
-      });
-    }
-  }
-
   render() {
     const hoverClass = 'RelOp ' + (this.state.isHovered ? 'hovering' : '');
-    const clickedClass = 'RelOp ' + (this.state.isClicked ? 'clicked' : '');
+
     return (
         <span
-            className={(clickedClass === 'RelOp ') ? hoverClass : clickedClass}
+            className={hoverClass}
             onMouseOver={this.handleHover}
             onMouseOut={this.handleHover}
-            onClick={this.handleClick}
         >
         {this.props.operator}({this.props.children})
       </span>
@@ -66,8 +49,19 @@ class RelOp extends Component<Props, State> {
 class Projection extends Component<{project: Array<string>}> {
   render() {
     return (
-        <span>
+      <span>
         &pi;<sub>{this.props.project.join(',')}</sub>
+      </span>
+    );
+  }
+}
+
+/** Selection relational algebra operator */
+class Selection extends Component<{select: Array<string>}> {
+  render() {
+    return (
+      <span>
+          &sigma;<sub>{this.props.select.join(' ∧ ')}</sub>
       </span>
     );
   }
@@ -87,17 +81,6 @@ class Rename extends Component<{rename: {[string]: string}}> {
                 })
                 .join(',')}
         </sub>
-      </span>
-    );
-  }
-}
-
-/** Selection relational algebra operator */
-class Selection extends Component<{select: Array<string>}> {
-  render() {
-    return (
-        <span>
-        &sigma;<sub>{this.props.select.join(' ∧ ')}</sub>
       </span>
     );
   }

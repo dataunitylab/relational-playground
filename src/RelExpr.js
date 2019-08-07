@@ -55,7 +55,10 @@ class RelExpr extends Component<Props> {
         return (
           <RelOp
             operator={
-              <Projection project={expr.projection.arguments.project} />
+              <Projection
+                  project={expr.projection.arguments.project}
+              />
+
             }
           >
             <RelExpr
@@ -83,7 +86,13 @@ class RelExpr extends Component<Props> {
 
       case 'rename':
         return (
-          <RelOp operator={<Rename rename={expr.rename.arguments.rename} />}>
+          <RelOp
+            operator={
+              <Rename
+                  rename={expr.rename.arguments.rename}
+              />
+            }
+          >
             <RelExpr
               expr={expr.rename.children[0]}
               changeExpr={this.props.changeExpr}
@@ -105,13 +114,14 @@ class RelExpr extends Component<Props> {
   handleExprClick(e: SyntheticMouseEvent<HTMLElement>) {
     e.stopPropagation();
     if (this.props.changeExpr) {
-      this.props.changeExpr(this.props.expr);
+      let element : ?HTMLElement = e.target;
+      this.props.changeExpr(this.props.expr, element.parentElement);
     }
   }
 
   render() {
     return (
-      <span onClick={this.handleExprClick} style={{margin: '.4em'}}>
+      <span onClick={e => this.handleExprClick(e)} style={{margin: '.4em'}}>
         {this.buildExpr(this.props.expr)}
       </span>
     );
