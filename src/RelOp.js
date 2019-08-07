@@ -7,7 +7,6 @@ import './RelOp.css';
 
 type Props = {
   operator: Element<any>,
-  children: Node,
 };
 
 type State = {
@@ -91,4 +90,38 @@ class Selection extends Component<{select: Array<string>}> {
   }
 }
 
-export {RelOp as default, UnaryRelOp, Projection, Rename, Selection};
+type BinaryProps = Props & {
+  left: Node,
+  right: Node,
+};
+
+class BinaryRelOp extends RelOp<BinaryProps> {
+  render() {
+    const hoverClass = 'RelOp ' + (this.state.isHovered ? 'hovering' : '');
+    return (
+      <span
+        className={hoverClass}
+        onMouseOver={this.handleHover}
+        onMouseOut={this.handleHover}
+      >
+        ({this.props.left}){this.props.operator}({this.props.right})
+      </span>
+    );
+  }
+}
+
+class Join extends Component<{}> {
+  render() {
+    return <span>&times;</span>;
+  }
+}
+
+export {
+  RelOp as default,
+  UnaryRelOp,
+  Projection,
+  Rename,
+  Selection,
+  BinaryRelOp,
+  Join,
+};

@@ -138,6 +138,26 @@ function applyExpr(expr, sourceData) {
       // Make a copy of the data from a source table and return it
       return JSON.parse(JSON.stringify(sourceData[expr.relation]));
 
+    case 'join':
+      // Process each side of the join
+      let left = applyExpr(expr.join.left, sourceData);
+      let right = applyExpr(expr.join.right, sourceData);
+
+      let output = {
+        name: left.name + ' × ' + right.name,
+        columns: left.columns.concat(right.columns),
+        data: []
+      }
+
+      // Perform the cross product
+      for (const leftRow of left.data) {
+        for (const rightRow of right.data) {
+          output.data.push({...rightRow, ...leftRow});
+        }
+      }
+
+      return output;
+
     default:
       // Fallback in case we get something invalid to show a nice error
       throw new Error('Invalid expression');

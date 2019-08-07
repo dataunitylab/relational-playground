@@ -139,6 +139,14 @@ function buildRelExp(sql) {
     case 'TableFactor':
       return {relation: sql.value.value};
 
+    case 'InnerCrossJoinTable':
+      return {
+        join: {
+          left: buildRelExp(sql.left),
+          right: buildRelExp(sql.right)
+        }
+      };
+
     default:
       throw new Error('Unsupported statement ' + sql.type + '.');
   }
