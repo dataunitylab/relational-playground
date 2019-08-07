@@ -133,7 +133,7 @@ function buildRelExp(sql) {
         }
       }
 
-    case 'TableRefrence':
+    case 'TableReference':
       return buildRelExp(sql.value);
 
     case 'TableFactor':
