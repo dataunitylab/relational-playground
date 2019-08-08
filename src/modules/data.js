@@ -1,14 +1,21 @@
 // @flow
 export const CHANGE_EXPR = 'CHANGE_EXPR';
 
-type Action = {type: 'CHANGE_EXPR', expr: {[string]: any}, element: HTMLElement};
+type Action = {
+  type: 'CHANGE_EXPR',
+  expr: {[string]: any},
+  element: ?HTMLElement,
+};
 
 /**
  * @param expr - a relational algebra expression object
  * @param element
  * @return a new CHANGE_EXPR action
  */
-export function changeExpr(expr: {[string]: any}, element: HTMLElement): Action {
+export function changeExpr(
+  expr: {[string]: any},
+  element: ?HTMLElement
+): Action {
   return {type: CHANGE_EXPR, expr, element};
 }
 
@@ -21,7 +28,7 @@ export type Data = {
 export type State = {
   current?: Data,
   sourceData: {[string]: Data},
-  element: HTMLElement,
+  element: ?HTMLElement,
 };
 
 // Source data which can be used in SQL queries
@@ -45,7 +52,7 @@ const initialState = {
       ],
     },
   },
-  element: null
+  element: undefined,
 };
 
 /**
@@ -147,10 +154,14 @@ function applyExpr(expr, sourceData) {
   }
 }
 
-function highlightExpr(currentElement: HTMLElement, newElement: HTMLElement){
+function highlightExpr(currentElement: ?HTMLElement, newElement: ?HTMLElement) {
   if (currentElement !== newElement) {
-    if (typeof currentElement !== "undefined"){currentElement.style.backgroundColor = "";}
-    newElement.style.backgroundColor = "#ff3";
+    if (currentElement) {
+      currentElement.style.backgroundColor = '';
+    }
+    if (newElement) {
+      newElement.style.backgroundColor = '#FF3';
+    }
   }
   return newElement;
 }
