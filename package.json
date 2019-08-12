@@ -7,7 +7,7 @@
   "dependencies": {
     "@testing-library/jest-dom": "^4.0.0",
     "connected-react-router": "^6.5.2",
-    "fromentries": "^1.1.0",
+    "fromentries": "^1.2.0",
     "history": "^4.7.2",
     "js-sql-parser": "^1.2.0",
     "prop-types": "^15.5.0",
