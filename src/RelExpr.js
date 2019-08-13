@@ -105,13 +105,19 @@ class RelExpr extends Component<Props> {
   handleExprClick(e: SyntheticMouseEvent<HTMLElement>) {
     e.stopPropagation();
     if (this.props.changeExpr) {
-      this.props.changeExpr(this.props.expr);
+      const target =
+        e.target instanceof HTMLInputElement ? e.target : undefined;
+      const parent =
+        target && target.parentElement instanceof HTMLElement
+          ? target.parentElement
+          : undefined;
+      this.props.changeExpr(this.props.expr, parent);
     }
   }
 
   render() {
     return (
-      <span onClick={this.handleExprClick} style={{margin: '.4em'}}>
+      <span onClick={e => this.handleExprClick(e)} style={{margin: '.4em'}}>
         {this.buildExpr(this.props.expr)}
       </span>
     );

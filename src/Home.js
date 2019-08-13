@@ -17,6 +17,7 @@ type Props = {
   expr: {[string]: any},
   data: DataState,
   sources: {[string]: Data},
+  element: HTMLElement,
 
   changeExpr: typeof changeExpr,
   exprFromSql: typeof exprFromSql,
@@ -24,6 +25,7 @@ type Props = {
 
 /** Container for all components on the main page */
 class Home extends Component<Props> {
+
   render() {
     let data = <div style={{padding: '2em'}}>Select an expression above.</div>;
     if (this.props.data.current) {
@@ -75,17 +77,18 @@ const mapStateToProps = state => {
     expr: state.relexp.expr,
     data: state.data,
     sources: state.data.sourceData,
+    element: state.data.element
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    changeExpr: data => {
-      dispatch(changeExpr(data));
+    changeExpr: (data, element) => {
+      dispatch(changeExpr(data, element));
     },
     exprFromSql: data => {
       dispatch(exprFromSql(data));
-    },
+    }
   };
 };
 
