@@ -8,6 +8,7 @@ const parser = require('js-sql-parser');
 type Props = {
   defaultText: string,
   exprFromSql: typeof exprFromSql,
+  types: {[string]: Array<string>},
 };
 
 type State = {
@@ -43,7 +44,7 @@ class SqlEditor extends Component<Props, State> {
       const sql = parser.parse(text);
       if (sql.nodeType === 'Main' && sql.value.type === 'Select') {
         // Parse SELECT queries
-        this.props.exprFromSql(sql.value);
+        this.props.exprFromSql(sql.value, this.props.types);
         if (!skipState) {
           this.setState({error: null});
         }
