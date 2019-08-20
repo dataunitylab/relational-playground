@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import RelOp, {Projection, Rename, Selection} from './RelOp';
 import Relation from './Relation';
 import {changeExpr} from './modules/data';
+import ReactGA from 'react-ga';
 
 type Props = {
   changeExpr?: typeof changeExpr,
@@ -13,6 +14,7 @@ type Props = {
 class RelExpr extends Component<Props> {
   constructor() {
     super();
+    ReactGA.initialize('UA-143847373-1', {testMode: true});
     (this: any).handleExprClick = this.handleExprClick.bind(this);
   }
 
@@ -105,12 +107,17 @@ class RelExpr extends Component<Props> {
   handleExprClick(e: SyntheticMouseEvent<HTMLElement>) {
     e.stopPropagation();
     if (this.props.changeExpr) {
-      const target = e.target instanceof HTMLElement ? e.target : undefined;
+      const target =
+        e.target instanceof HTMLInputElement ? e.target : undefined;
       const parent =
         target && target.parentElement instanceof HTMLElement
           ? target.parentElement
           : undefined;
       this.props.changeExpr(this.props.expr, parent);
+      ReactGA.event({
+        category: 'User Selecting Relational Algebra Enclosure',
+        action: Object.keys(this.props.expr)[0],
+      });
     }
   }
 

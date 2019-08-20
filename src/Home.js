@@ -8,6 +8,7 @@ import SqlEditor from './SqlEditor';
 import Table from './Table';
 import {changeExpr} from './modules/data';
 import {exprFromSql} from './modules/relexp';
+import ReactGA from 'react-ga';
 
 import './Home.css';
 
@@ -25,6 +26,11 @@ type Props = {
 
 /** Container for all components on the main page */
 class Home extends Component<Props> {
+  constructor() {
+    super();
+    ReactGA.initialize('UA-143847373-1', {testMode: true});
+    ReactGA.pageview('/');
+  }
 
   render() {
     let data = <div style={{padding: '2em'}}>Select an expression above.</div>;
@@ -77,7 +83,7 @@ const mapStateToProps = state => {
     expr: state.relexp.expr,
     data: state.data,
     sources: state.data.sourceData,
-    element: state.data.element
+    element: state.data.element,
   };
 };
 
@@ -88,7 +94,7 @@ const mapDispatchToProps = dispatch => {
     },
     exprFromSql: data => {
       dispatch(exprFromSql(data));
-    }
+    },
   };
 };
 
