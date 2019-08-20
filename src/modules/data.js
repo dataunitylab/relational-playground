@@ -1,4 +1,5 @@
 // @flow
+import './data.css';
 export const CHANGE_EXPR = 'CHANGE_EXPR';
 
 type Action = {
@@ -157,10 +158,10 @@ function applyExpr(expr, sourceData) {
 function highlightExpr(currentElement: ?HTMLElement, newElement: ?HTMLElement) {
   if (currentElement !== newElement) {
     if (currentElement) {
-      currentElement.style.backgroundColor = '';
+      currentElement.className = currentElement.className + '';
     }
     if (newElement) {
-      newElement.style.backgroundColor = '#FF3';
+      newElement.className = newElement.className + 'highlighted';
     }
   }
   return newElement;
