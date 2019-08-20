@@ -158,10 +158,10 @@ function applyExpr(expr, sourceData) {
 function highlightExpr(currentElement: ?HTMLElement, newElement: ?HTMLElement) {
   if (currentElement !== newElement) {
     if (currentElement) {
-      currentElement.className = currentElement.className + '';
+      currentElement.className = '';
     }
     if (newElement) {
-      newElement.className = newElement.className + 'highlighted';
+      newElement.className = 'highlighted';
     }
   }
   return newElement;
