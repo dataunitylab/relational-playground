@@ -84,6 +84,7 @@ class SqlEditor extends Component<Props, State> {
     if (this.state.error) {
       error = <div style={{color: 'red'}}>{this.state.error}</div>;
     }
+    banana
 
     return (
       <div className="SqlEditor">
