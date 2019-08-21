@@ -115,7 +115,7 @@ function convertExpr(
         }
 
         // Ensure the column was found in only one table
-        if (tables.length > 1) {
+        if (columnTables.length > 1) {
           throw new Error('Column ' + column + ' is ambiguous');
         }
 
@@ -200,12 +200,24 @@ function buildRelExp(sql, types, tables) {
       return {relation: sql.value.value};
 
     case 'InnerCrossJoinTable':
-      return {
+      const join = {
         join: {
           left: buildRelExp(sql.left, types, tables),
           right: buildRelExp(sql.right, types, tables),
         },
       };
+
+      // Add the join condition if it exists
+      if (sql.condition) {
+        return {
+          selection: {
+            arguments: {select: convertExpr(sql.condition.value, types, tables)},
+            children: [join]
+          }
+        };
+      }
+
+      return join;
 
     default:
       throw new Error('Unsupported statement ' + sql.type + '.');
