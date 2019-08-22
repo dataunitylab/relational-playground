@@ -5,7 +5,7 @@
   "private": true,
   "homepage": "https://relational-playground.surge.sh/",
   "dependencies": {
-    "@testing-library/jest-dom": "^4.0.1",
+    "@testing-library/jest-dom": "^4.1.0",
     "connected-react-router": "^6.5.2",
     "fromentries": "^1.2.0",
     "history": "^4.7.2",
