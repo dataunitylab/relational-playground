@@ -11,6 +11,7 @@ type Action = {
 
 /**
  * @param sql - a parsed SQL query
+ * @param types - an object mapping table names to lists of columns
  * @return a new EXPR_FROM_SQL action
  */
 export function exprFromSql(
@@ -40,6 +41,8 @@ const opMap = {
 /**
  * @param and - the current expression list
  * @param expr - a new expression to append to the list
+ * @param types - an object mapping table names to lists of columns
+ * @param tables - all tables used in the expression
  */
 function addToAnd(
   and: Array<any>,
@@ -57,6 +60,8 @@ function addToAnd(
 
 /**
  * @param expr - a parsed expression from a SQL query
+ * @param types - an object mapping table names to lists of columns
+ * @param tables - all tables used in the expression
  * @return a relational algebra expression object
  */
 function convertExpr(
@@ -135,6 +140,8 @@ function convertExpr(
 
 /**
  * @param sql - a parsed SQL query
+ * @param types - an object mapping table names to lists of columns
+ * @param tables - all tables used in the expression
  * @return a relational algebra expression object representing the query
  */
 function buildRelExp(sql, types, tables) {
@@ -211,9 +218,11 @@ function buildRelExp(sql, types, tables) {
       if (sql.condition) {
         return {
           selection: {
-            arguments: {select: convertExpr(sql.condition.value, types, tables)},
-            children: [join]
-          }
+            arguments: {
+              select: convertExpr(sql.condition.value, types, tables),
+            },
+            children: [join],
+          },
         };
       }
 
