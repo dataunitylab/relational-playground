@@ -1,6 +1,7 @@
 // @flow
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import fromEntries from 'fromentries';
 import MultiTable from './MultiTable';
 import RelExpr from './RelExpr';
 import SplitPane from 'react-split-pane';
@@ -74,7 +75,7 @@ class Home extends Component<Props> {
 
 const mapStateToProps = state => {
   // Get just the column names from the source data
-  const types = Object.fromEntries(
+  const types = fromEntries(
     Object.entries(state.data.sourceData).map(([name, data]) => {
       return [
         name,
