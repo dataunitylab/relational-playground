@@ -27,17 +27,3 @@ matrix:
   allow_failures:
   - os: windows
   fast_finish: true
-
-jobs:
-  include:
-    - stage: deploy
-      if: branch = master AND type = push
-      deploy:
-        provider: surge
-        skip_cleanup: true
-        project: ./build/
-        domain: relational-playground.surge.sh
-      on:
-        branch: master
-      os: linux
-      node_js: stable
