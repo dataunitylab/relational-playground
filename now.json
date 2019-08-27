@@ -6,5 +6,8 @@
       "config": {
           "distDir": "build"
       }
-  }]
+  }],
+  "env": {
+    "CI": 1
+  }
 }
