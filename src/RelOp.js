@@ -104,7 +104,9 @@ class BinaryRelOp extends RelOp<BinaryProps> {
         onMouseOver={this.handleHover}
         onMouseOut={this.handleHover}
       >
-        {this.props.left}{this.props.operator}{this.props.right}
+        {this.props.left}
+        {this.props.operator}
+        {this.props.right}
       </span>
     );
   }

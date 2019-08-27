@@ -1,6 +1,13 @@
 // @flow
 import React, {Component} from 'react';
-import {UnaryRelOp, Projection, Rename, Selection, BinaryRelOp, Join} from './RelOp';
+import {
+  UnaryRelOp,
+  Projection,
+  Rename,
+  Selection,
+  BinaryRelOp,
+  Join,
+} from './RelOp';
 import Relation from './Relation';
 import {changeExpr} from './modules/data';
 
@@ -97,10 +104,13 @@ class RelExpr extends Component<Props> {
         return <Relation name={expr.relation} />;
 
       case 'join':
-        return <BinaryRelOp
-          operator={<Join/>}
-          left={<RelExpr expr={expr.join.left}/>}
-          right={<RelExpr expr={expr.join.right}/>}/>;
+        return (
+          <BinaryRelOp
+            operator={<Join />}
+            left={<RelExpr expr={expr.join.left} />}
+            right={<RelExpr expr={expr.join.right} />}
+          />
+        );
 
       default:
         throw new Error('Invalid expression ' + JSON.stringify(expr) + '.');

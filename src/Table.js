@@ -24,7 +24,7 @@ class Table extends Component<Props> {
         columns: this.props.columns.map(c => ({
           id: c,
           Header: c,
-          accessor: d => d[c]
+          accessor: d => d[c],
         })),
       },
     ];
