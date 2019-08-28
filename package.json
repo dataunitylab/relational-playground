@@ -34,7 +34,7 @@
     "build-storybook": "build-storybook -s public",
     "flow": "flow check src",
     "lint": "node_modules/.bin/prettier --check src/**/*.{js,jsx,json} && eslint src",
-    "now-build": "react-scripts test --forceExit && react-scripts build && build-storybook -o build/storybook/ && esdoc && mv docs/ build/",
+    "now-build": "react-scripts build && build-storybook -o build/storybook/ && esdoc && mv docs/ build/",
     "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls"
   },
   "eslintConfig": {
