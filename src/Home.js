@@ -18,8 +18,8 @@ type Props = {
   expr: {[string]: any},
   data: DataState,
   sources: {[string]: Data},
-  types: {[string]: Array<string>},
   element: HTMLElement,
+  types: {[string]: Array<string>},
 
   changeExpr: typeof changeExpr,
   exprFromSql: typeof exprFromSql,
