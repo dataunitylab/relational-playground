@@ -6,20 +6,18 @@ import './RelOp.css';
 
 type Props = {
   operator: Element<any>,
-  children: Node,
 };
 
 type State = {
-  isHovered: boolean
+  isHovered: boolean,
 };
 
 /** Base class for all relational algebra operators */
-class RelOp extends Component<Props, State> {
+class RelOp<T> extends Component<T, State> {
   constructor() {
     super();
     this.state = {isHovered: false};
     (this: any).handleHover = this.handleHover.bind(this);
-
   }
 
   handleHover(e: SyntheticMouseEvent<HTMLElement>) {
@@ -29,16 +27,22 @@ class RelOp extends Component<Props, State> {
       return {...state, isHovered: hovering};
     });
   }
+}
 
+type UnaryProps = Props & {
+  children: Node,
+};
+
+class UnaryRelOp extends RelOp<UnaryProps> {
   render() {
     const hoverClass = 'RelOp ' + (this.state.isHovered ? 'hovering' : '');
 
     return (
-        <span
-            className={hoverClass}
-            onMouseOver={this.handleHover}
-            onMouseOut={this.handleHover}
-        >
+      <span
+        className={hoverClass}
+        onMouseOver={this.handleHover}
+        onMouseOut={this.handleHover}
+      >
         {this.props.operator}({this.props.children})
       </span>
     );
@@ -61,7 +65,7 @@ class Selection extends Component<{select: Array<string>}> {
   render() {
     return (
       <span>
-          &sigma;<sub>{this.props.select.join(' ∧ ')}</sub>
+        &sigma;<sub>{this.props.select.join(' ∧ ')}</sub>
       </span>
     );
   }
@@ -71,19 +75,55 @@ class Selection extends Component<{select: Array<string>}> {
 class Rename extends Component<{rename: {[string]: string}}> {
   render() {
     return (
-        <span>
+      <span>
         &rho;
-          <sub>
+        <sub>
           {/* Loop over all columns to rename and combine them */}
-            {Object.entries(this.props.rename)
-                .map(([o, n]) => {
-                  return o + '/' + ((n: any): string);
-                })
-                .join(',')}
+          {Object.entries(this.props.rename)
+            .map(([o, n]) => {
+              return o + '/' + ((n: any): string);
+            })
+            .join(',')}
         </sub>
       </span>
     );
   }
 }
 
-export {RelOp as default, Projection, Rename, Selection};
+type BinaryProps = Props & {
+  left: Node,
+  right: Node,
+};
+
+class BinaryRelOp extends RelOp<BinaryProps> {
+  render() {
+    const hoverClass = 'RelOp ' + (this.state.isHovered ? 'hovering' : '');
+    return (
+      <span
+        className={hoverClass}
+        onMouseOver={this.handleHover}
+        onMouseOut={this.handleHover}
+      >
+        {this.props.left}
+        {this.props.operator}
+        {this.props.right}
+      </span>
+    );
+  }
+}
+
+class Join extends Component<{}> {
+  render() {
+    return <span>&times;</span>;
+  }
+}
+
+export {
+  RelOp as default,
+  UnaryRelOp,
+  Projection,
+  Rename,
+  Selection,
+  BinaryRelOp,
+  Join,
+};

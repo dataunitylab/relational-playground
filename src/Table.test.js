@@ -13,17 +13,9 @@ it('can render a table', () => {
   const table = wrapper.find(ReactTable).first();
   expect(table).toHaveProp({
     data: data,
-    columns: [
-      {
-        Header: 'foo',
-        columns: [
-          {Header: 'bar', accessor: 'bar'},
-          {Header: 'baz', accessor: 'baz'},
-        ],
-      },
-    ],
     sortable: true,
   });
+  expect(table).toHaveProp('columns');
 });
 
 /** @test {Table} */
