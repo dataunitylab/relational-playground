@@ -2,13 +2,13 @@
 import React, {Component} from 'react';
 import {exprFromSql} from './modules/relexp';
 import './SqlEditor.css';
-import ReactGA from 'react-ga';
 
 const parser = require('js-sql-parser');
 
 type Props = {
   defaultText: string,
   exprFromSql: typeof exprFromSql,
+  ReactGA: any,
 };
 
 type State = {
@@ -22,7 +22,6 @@ class SqlEditor extends Component<Props, State> {
 
   constructor() {
     super();
-    ReactGA.initialize('UA-143847373-1', {testMode: true});
     (this: any).handleChange = this.handleChange.bind(this);
     (this: any).parseQuery = this.parseQuery.bind(this);
     this.state = {error: null, timeout: null};
@@ -46,7 +45,7 @@ class SqlEditor extends Component<Props, State> {
       if (sql.nodeType === 'Main' && sql.value.type === 'Select') {
         // Parse SELECT queries
         this.props.exprFromSql(sql.value);
-        ReactGA.event({
+        this.props.ReactGA.event({
           category: 'User Typing SQL Statement',
           action: text,
         });

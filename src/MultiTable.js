@@ -3,12 +3,12 @@ import React, {Component} from 'react';
 // $FlowFixMe
 import Select from 'react-select';
 import Table from './Table';
-import ReactGA from 'react-ga';
 
 import type {Data} from './modules/data';
 
 type Props = {
   tables: {[string]: Data},
+  ReactGA: any,
 };
 
 type State = {
@@ -19,14 +19,13 @@ type State = {
 class MultiTable extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    ReactGA.initialize('UA-143847373-1', {testMode: true});
     this.state = {selected: Object.keys(this.props.tables)[0]};
   }
 
   // TODO: Fix type annotation below
   handleChange = (table: any) => {
     this.setState({selected: table.value});
-    ReactGA.event({
+    this.props.ReactGA.event({
       category: 'User Selecting A Table',
       action: table.value,
     });
