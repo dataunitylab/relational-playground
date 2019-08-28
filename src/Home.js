@@ -9,6 +9,7 @@ import SqlEditor from './SqlEditor';
 import Table from './Table';
 import {changeExpr} from './modules/data';
 import {exprFromSql} from './modules/relexp';
+import ReactGA from 'react-ga';
 
 import './Home.css';
 
@@ -27,6 +28,22 @@ type Props = {
 
 /** Container for all components on the main page */
 class Home extends Component<Props> {
+  constructor() {
+    super();
+    switch (process.env.NODE_ENV) {
+      case 'production':
+        ReactGA.initialize('UA-143847373-2');
+        break;
+      case 'development':
+        ReactGA.initialize('UA-143847373-1');
+        break;
+      default:
+        ReactGA.initialize('UA-143847373-1', {testMode: true});
+        break;
+    }
+    ReactGA.pageview('/');
+  }
+
   render() {
     let data = <div style={{padding: '2em'}}>Select an expression above.</div>;
     if (this.props.data.current) {
@@ -50,6 +67,7 @@ class Home extends Component<Props> {
               <div>
                 {/* SQL query input */}
                 <SqlEditor
+                  ReactGA={ReactGA}
                   defaultText="SELECT * FROM Doctor"
                   exprFromSql={this.props.exprFromSql}
                   types={this.props.types}
@@ -57,6 +75,7 @@ class Home extends Component<Props> {
 
                 {/* Relational algebra expression display */}
                 <RelExpr
+                  ReactGA={ReactGA}
                   expr={this.props.expr}
                   changeExpr={this.props.changeExpr}
                 />
@@ -67,7 +86,7 @@ class Home extends Component<Props> {
         </div>
         {/* Input dataset preview */}
         <div style={{margin: '2em'}}>
-          <MultiTable tables={this.props.sources} />
+          <MultiTable ReactGA={ReactGA} tables={this.props.sources} />
         </div>
       </SplitPane>
     );

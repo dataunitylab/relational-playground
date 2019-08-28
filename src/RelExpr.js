@@ -14,6 +14,7 @@ import {changeExpr} from './modules/data';
 type Props = {
   changeExpr?: typeof changeExpr,
   expr: {[string]: any},
+  ReactGA: any,
 };
 
 /** A graphical representation of a relational algebra expression */
@@ -68,6 +69,7 @@ class RelExpr extends Component<Props> {
             <RelExpr
               expr={expr.projection.children[0]}
               changeExpr={this.props.changeExpr}
+              ReactGA={this.props.ReactGA}
             />
           </UnaryRelOp>
         );
@@ -84,6 +86,7 @@ class RelExpr extends Component<Props> {
             <RelExpr
               expr={expr.selection.children[0]}
               changeExpr={this.props.changeExpr}
+              ReactGA={this.props.ReactGA}
             />
           </UnaryRelOp>
         );
@@ -96,6 +99,7 @@ class RelExpr extends Component<Props> {
             <RelExpr
               expr={expr.rename.children[0]}
               changeExpr={this.props.changeExpr}
+              ReactGA={this.props.ReactGA}
             />
           </UnaryRelOp>
         );
@@ -107,8 +111,12 @@ class RelExpr extends Component<Props> {
         return (
           <BinaryRelOp
             operator={<Join />}
-            left={<RelExpr expr={expr.join.left} />}
-            right={<RelExpr expr={expr.join.right} />}
+            left={
+              <RelExpr expr={expr.join.left} ReactGA={this.props.ReactGA} />
+            }
+            right={
+              <RelExpr expr={expr.join.right} ReactGA={this.props.ReactGA} />
+            }
           />
         );
 
@@ -129,6 +137,10 @@ class RelExpr extends Component<Props> {
           ? target.parentElement
           : undefined;
       this.props.changeExpr(this.props.expr, parent);
+      this.props.ReactGA.event({
+        category: 'User Selecting Relational Algebra Enclosure',
+        action: Object.keys(this.props.expr)[0],
+      });
     }
   }
 

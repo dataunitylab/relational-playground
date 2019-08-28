@@ -8,6 +8,7 @@ import type {Data} from './modules/data';
 
 type Props = {
   tables: {[string]: Data},
+  ReactGA: any,
 };
 
 type State = {
@@ -24,6 +25,10 @@ class MultiTable extends Component<Props, State> {
   // TODO: Fix type annotation below
   handleChange = (table: any) => {
     this.setState({selected: table.value});
+    this.props.ReactGA.event({
+      category: 'User Selecting A Table',
+      action: table.value,
+    });
   };
 
   render() {
