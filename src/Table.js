@@ -18,7 +18,14 @@ class Table extends Component<Props> {
     let columns = [
       {
         Header: this.props.tableName,
-        columns: this.props.columns.map(c => ({Header: c, accessor: c})),
+
+        // Define the column with a default accessor to ignore the
+        // default behaviour of asking nested properties via dots
+        columns: this.props.columns.map(c => ({
+          id: c,
+          Header: c,
+          accessor: d => d[c],
+        })),
       },
     ];
 

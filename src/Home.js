@@ -1,6 +1,7 @@
 // @flow
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import fromEntries from 'fromentries';
 import MultiTable from './MultiTable';
 import RelExpr from './RelExpr';
 import SplitPane from 'react-split-pane';
@@ -18,6 +19,7 @@ type Props = {
   data: DataState,
   sources: {[string]: Data},
   element: HTMLElement,
+  types: {[string]: Array<string>},
 
   changeExpr: typeof changeExpr,
   exprFromSql: typeof exprFromSql,
@@ -25,7 +27,6 @@ type Props = {
 
 /** Container for all components on the main page */
 class Home extends Component<Props> {
-
   render() {
     let data = <div style={{padding: '2em'}}>Select an expression above.</div>;
     if (this.props.data.current) {
@@ -51,6 +52,7 @@ class Home extends Component<Props> {
                 <SqlEditor
                   defaultText="SELECT * FROM Doctor"
                   exprFromSql={this.props.exprFromSql}
+                  types={this.props.types}
                 />
 
                 {/* Relational algebra expression display */}
@@ -73,11 +75,22 @@ class Home extends Component<Props> {
 }
 
 const mapStateToProps = state => {
+  // Get just the column names from the source data
+  const types = fromEntries(
+    Object.entries(state.data.sourceData).map(([name, data]) => {
+      return [
+        name,
+        data != null && typeof data === 'object' ? data.columns : [],
+      ];
+    })
+  );
+
   return {
     expr: state.relexp.expr,
     data: state.data,
+    types: types,
     sources: state.data.sourceData,
-    element: state.data.element
+    element: state.data.element,
   };
 };
 
@@ -86,9 +99,9 @@ const mapDispatchToProps = dispatch => {
     changeExpr: (data, element) => {
       dispatch(changeExpr(data, element));
     },
-    exprFromSql: data => {
-      dispatch(exprFromSql(data));
-    }
+    exprFromSql: (sql, types) => {
+      dispatch(exprFromSql(sql, types));
+    },
   };
 };
 

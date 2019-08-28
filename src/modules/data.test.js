@@ -7,6 +7,11 @@ const sourceData = {
     columns: ['bar', 'baz'],
     data: [{bar: 1, baz: 2}, {bar: 3, baz: 4}, {bar: 5, baz: 6}],
   },
+  corge: {
+    name: 'corge',
+    columns: ['grault'],
+    data: [{grault: 7}, {grault: 8}],
+  },
 };
 
 /** @test {data} */
@@ -48,6 +53,28 @@ it('can evaluate a rename', () => {
     {quux: 1, baz: 2},
     {quux: 3, baz: 4},
     {quux: 5, baz: 6},
+  ]);
+});
+
+/** @test {data} */
+it('can evaluate a join', () => {
+  const expr = {
+    join: {
+      left: {relation: 'foo'},
+      right: {relation: 'corge'},
+    },
+  };
+  const action = changeExpr(expr);
+  const current = reducer({sourceData: sourceData}, action).current;
+
+  expect(current.columns).toStrictEqual(['bar', 'baz', 'grault']);
+  expect(current.data).toStrictEqual([
+    {bar: 1, baz: 2, grault: 7},
+    {bar: 1, baz: 2, grault: 8},
+    {bar: 3, baz: 4, grault: 7},
+    {bar: 3, baz: 4, grault: 8},
+    {bar: 5, baz: 6, grault: 7},
+    {bar: 5, baz: 6, grault: 8},
   ]);
 });
 
