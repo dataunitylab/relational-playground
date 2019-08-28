@@ -19,6 +19,7 @@ type Props = {
   data: DataState,
   sources: {[string]: Data},
   types: {[string]: Array<string>},
+  element: HTMLElement,
 
   changeExpr: typeof changeExpr,
   exprFromSql: typeof exprFromSql,
@@ -89,13 +90,14 @@ const mapStateToProps = state => {
     data: state.data,
     types: types,
     sources: state.data.sourceData,
+    element: state.data.element,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    changeExpr: data => {
-      dispatch(changeExpr(data));
+    changeExpr: (data, element) => {
+      dispatch(changeExpr(data, element));
     },
     exprFromSql: (sql, types) => {
       dispatch(exprFromSql(sql, types));

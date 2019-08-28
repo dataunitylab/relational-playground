@@ -1,14 +1,23 @@
 // @flow
+import './data.css';
 export const CHANGE_EXPR = 'CHANGE_EXPR';
 
-type Action = {type: 'CHANGE_EXPR', expr: {[string]: any}};
+type Action = {
+  type: 'CHANGE_EXPR',
+  expr: {[string]: any},
+  element: ?HTMLElement,
+};
 
 /**
  * @param expr - a relational algebra expression object
+ * @param element
  * @return a new CHANGE_EXPR action
  */
-export function changeExpr(expr: {[string]: any}): Action {
-  return {type: CHANGE_EXPR, expr};
+export function changeExpr(
+  expr: {[string]: any},
+  element: ?HTMLElement
+): Action {
+  return {type: CHANGE_EXPR, expr, element};
 }
 
 export type Data = {
@@ -20,6 +29,7 @@ export type Data = {
 export type State = {
   current?: Data,
   sourceData: {[string]: Data},
+  element: ?HTMLElement,
 };
 
 // Source data which can be used in SQL queries
@@ -43,6 +53,7 @@ const initialState = {
       ],
     },
   },
+  element: undefined,
 };
 
 function resolveColumn(path: string, row: {[string]: any}): string {
@@ -239,12 +250,25 @@ function applyExpr(expr, sourceData) {
   }
 }
 
+function highlightExpr(currentElement: ?HTMLElement, newElement: ?HTMLElement) {
+  if (currentElement !== newElement) {
+    if (currentElement) {
+      currentElement.className = '';
+    }
+    if (newElement) {
+      newElement.className = 'highlighted';
+    }
+  }
+  return newElement;
+}
+
 export default (state: State = initialState, action: Action) => {
   switch (action.type) {
     case CHANGE_EXPR:
       return {
         ...state,
         current: applyExpr(action.expr, state.sourceData),
+        element: highlightExpr(state.element, action.element),
       };
     default:
       return {

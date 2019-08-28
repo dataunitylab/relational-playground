@@ -123,7 +123,12 @@ class RelExpr extends Component<Props> {
   handleExprClick(e: SyntheticMouseEvent<HTMLElement>) {
     e.stopPropagation();
     if (this.props.changeExpr) {
-      this.props.changeExpr(this.props.expr);
+      const target = e.target instanceof HTMLElement ? e.target : undefined;
+      const parent =
+        target && target.parentElement instanceof HTMLElement
+          ? target.parentElement
+          : undefined;
+      this.props.changeExpr(this.props.expr, parent);
     }
   }
 
