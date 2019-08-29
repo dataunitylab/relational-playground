@@ -1,7 +1,7 @@
 import reducer from './relexp';
 import {exprFromSql} from './relexp';
 
-const parser = require('js-sql-parser');
+const parser = require('@michaelmior/js-sql-parser');
 
 /** @test {relexp} */
 it('converts a simple SELECT *', () => {
@@ -40,6 +40,66 @@ it('converts a rename', () => {
             },
           },
         ],
+      },
+    },
+  });
+});
+
+/** @test {relexp} */
+it('converts a difference', () => {
+  const sql = parser.parse('SELECT * FROM foo EXCEPT SELECT * FROM bar');
+  const action = exprFromSql(sql.value, {});
+  expect(reducer({}, action)).toStrictEqual({
+    expr: {
+      except: {
+        left: {relation: 'foo'},
+        right: {relation: 'bar'},
+        distinct: true,
+      },
+    },
+  });
+});
+
+/** @test {relexp} */
+it('converts an intersection', () => {
+  const sql = parser.parse('SELECT * FROM foo INTERSECT SELECT * FROM bar');
+  const action = exprFromSql(sql.value, {});
+  expect(reducer({}, action)).toStrictEqual({
+    expr: {
+      intersect: {
+        left: {relation: 'foo'},
+        right: {relation: 'bar'},
+        distinct: true,
+      },
+    },
+  });
+});
+
+/** @test {relexp} */
+it('converts a distinct union', () => {
+  const sql = parser.parse('SELECT * FROM foo UNION SELECT * FROM bar');
+  const action = exprFromSql(sql.value, {});
+  expect(reducer({}, action)).toStrictEqual({
+    expr: {
+      union: {
+        left: {relation: 'foo'},
+        right: {relation: 'bar'},
+        distinct: true,
+      },
+    },
+  });
+});
+
+/** @test {relexp} */
+it('converts a union', () => {
+  const sql = parser.parse('SELECT * FROM foo UNION ALL SELECT * FROM bar');
+  const action = exprFromSql(sql.value, {});
+  expect(reducer({}, action)).toStrictEqual({
+    expr: {
+      union: {
+        left: {relation: 'foo'},
+        right: {relation: 'bar'},
+        distinct: false,
       },
     },
   });

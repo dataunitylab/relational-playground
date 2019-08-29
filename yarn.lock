@@ -1188,6 +1188,11 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^12.0.9"
 
+"@michaelmior/js-sql-parser@^1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@michaelmior/js-sql-parser/-/js-sql-parser-1.3.0.tgz#b47500897bafa2cf2044dd989079a484861e56bf"
+  integrity sha512-gnmco8Gu23TZ9hq2etRDJZzYsYQZezNr6ikjB2h6DRM+X1+pzPsQs/2qtp6+aAvoJj+aEyN41Yk44gro2T9yyw==
+
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"
@@ -5447,6 +5452,11 @@ fast-deep-equal@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-2.0.1.tgz#7b05218ddf9667bf7f370bf7fdb2cb15fdd0aa49"
 
+fast-equals@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/fast-equals/-/fast-equals-2.0.0.tgz#bef2c423af3939f2c54310df54c57e64cd2adefc"
+  integrity sha512-u6RBd8cSiLLxAiC04wVsLV6GBFDOXcTCgWkd3wEoFXgidPSoAJENqC9m7Jb2vewSvjBIfXV6icKeh3GTKfIaXA==
+
 fast-glob@^2.0.2, fast-glob@^2.2.6:
   version "2.2.7"
   resolved "https://registry.yarnpkg.com/fast-glob/-/fast-glob-2.2.7.tgz#6953857c3afa475fff92ee6015d52da70a4cd39d"
@@ -7475,11 +7485,6 @@ jest@24.8.0:
 js-levenshtein@^1.1.3:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/js-levenshtein/-/js-levenshtein-1.1.6.tgz#c6cee58eb3550372df8deb85fad5ce66ce01d59d"
-
-js-sql-parser@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/js-sql-parser/-/js-sql-parser-1.2.0.tgz#59e5799da4d64ff8adb66b465a0c2f76ec22ff61"
-  integrity sha512-u7QhKKRFGaTO4sHmF4VwtPiKmLEA9BxveqUZdHTy6uZgEOyAMRNqzmSIEHYo7Kp2D4JPql36JC+fLVOSEsES3w==
 
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"

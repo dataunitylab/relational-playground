@@ -6,7 +6,10 @@ import {
   Rename,
   Selection,
   BinaryRelOp,
+  Except,
   Join,
+  Intersect,
+  Union,
 } from './RelOp';
 import Relation from './Relation';
 import {changeExpr} from './modules/data';
@@ -58,7 +61,8 @@ class RelExpr extends Component<Props> {
     if (!expr || Object.keys(expr).length === 0) {
       return '';
     }
-    switch (Object.keys(expr)[0]) {
+    const type = Object.keys(expr)[0];
+    switch (type) {
       case 'projection':
         return (
           <UnaryRelOp
@@ -107,15 +111,24 @@ class RelExpr extends Component<Props> {
       case 'relation':
         return <Relation name={expr.relation} />;
 
+      case 'except':
+      case 'intersect':
       case 'join':
+      case 'union':
+        const operator = {
+          except: <Except />,
+          intersect: <Intersect />,
+          join: <Join />,
+          union: <Union />,
+        }[type];
         return (
           <BinaryRelOp
-            operator={<Join />}
+            operator={operator}
             left={
-              <RelExpr expr={expr.join.left} ReactGA={this.props.ReactGA} />
+              <RelExpr expr={expr[type].left} ReactGA={this.props.ReactGA} />
             }
             right={
-              <RelExpr expr={expr.join.right} ReactGA={this.props.ReactGA} />
+              <RelExpr expr={expr[type].right} ReactGA={this.props.ReactGA} />
             }
           />
         );

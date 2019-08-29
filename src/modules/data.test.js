@@ -12,6 +12,11 @@ const sourceData = {
     columns: ['grault'],
     data: [{grault: 7}, {grault: 8}],
   },
+  garply: {
+    name: 'garply',
+    columns: ['waldo'],
+    data: [{waldo: 7}, {waldo: 9}],
+  },
 };
 
 /** @test {data} */
@@ -68,6 +73,74 @@ it('can evaluate a rename', () => {
     {quux: 1, baz: 2},
     {quux: 3, baz: 4},
     {quux: 5, baz: 6},
+  ]);
+});
+/** @test {data} */
+it('can evaluate a difference', () => {
+  const expr = {
+    except: {
+      left: {relation: 'corge'},
+      right: {relation: 'garply'},
+      distinct: true,
+    },
+  };
+  const action = changeExpr(expr);
+  const current = reducer({sourceData: sourceData}, action).current;
+
+  expect(current.columns).toStrictEqual(['grault']);
+  expect(current.data).toStrictEqual([{grault: 8}]);
+});
+
+/** @test {data} */
+it('can evaluate an intersection', () => {
+  const expr = {
+    intersect: {
+      left: {relation: 'corge'},
+      right: {relation: 'garply'},
+      distinct: true,
+    },
+  };
+  const action = changeExpr(expr);
+  const current = reducer({sourceData: sourceData}, action).current;
+
+  expect(current.columns).toStrictEqual(['grault']);
+  expect(current.data).toStrictEqual([{grault: 7}]);
+});
+
+/** @test {data} */
+it('can evaluate a distinct union', () => {
+  const expr = {
+    union: {
+      left: {relation: 'corge'},
+      right: {relation: 'garply'},
+      distinct: true,
+    },
+  };
+  const action = changeExpr(expr);
+  const current = reducer({sourceData: sourceData}, action).current;
+
+  expect(current.columns).toStrictEqual(['grault']);
+  expect(current.data).toStrictEqual([{grault: 7}, {grault: 8}, {grault: 9}]);
+});
+
+/** @test {data} */
+it('can evaluate a union', () => {
+  const expr = {
+    union: {
+      left: {relation: 'corge'},
+      right: {relation: 'garply'},
+      distinct: false,
+    },
+  };
+  const action = changeExpr(expr);
+  const current = reducer({sourceData: sourceData}, action).current;
+
+  expect(current.columns).toStrictEqual(['grault']);
+  expect(current.data).toStrictEqual([
+    {grault: 7},
+    {grault: 8},
+    {grault: 7},
+    {grault: 9},
   ]);
 });
 

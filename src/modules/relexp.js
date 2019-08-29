@@ -146,6 +146,24 @@ function convertExpr(
  */
 function buildRelExp(sql, types, tables) {
   switch (sql.type) {
+    case 'Except':
+    case 'Intersect':
+    case 'Union':
+      const distinct = (sql.distinctOpt || '').toUpperCase();
+      if (distinct && distinct !== 'ALL') {
+        throw new Error('Invalid distinct option');
+      }
+
+      const setType = sql.type.toLowerCase();
+
+      return {
+        [setType]: {
+          left: buildRelExp(sql.left, types, tables),
+          right: buildRelExp(sql.right, types, tables),
+          distinct: !distinct,
+        },
+      };
+
     case 'Select':
       // Build an expression for everything in the FROM clause
       let from = sql.from.value.map(v => buildRelExp(v, types, tables));

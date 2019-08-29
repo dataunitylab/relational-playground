@@ -5,11 +5,12 @@
   "private": true,
   "homepage": "https://relational-playground.surge.sh/",
   "dependencies": {
+    "@michaelmior/js-sql-parser": "^1.3.0",
     "@testing-library/jest-dom": "^4.1.0",
     "connected-react-router": "^6.5.2",
+    "fast-equals": "^2.0.0",
     "fromentries": "^1.2.0",
     "history": "^4.7.2",
-    "js-sql-parser": "^1.2.0",
     "prop-types": "^15.5.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",

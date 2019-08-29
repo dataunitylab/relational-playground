@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {exprFromSql} from './modules/relexp';
 import './SqlEditor.css';
 
-const parser = require('js-sql-parser');
+const parser = require('@michaelmior/js-sql-parser');
 
 type Props = {
   defaultText: string,
@@ -43,7 +43,10 @@ class SqlEditor extends Component<Props, State> {
     }
     try {
       const sql = parser.parse(text);
-      if (sql.nodeType === 'Main' && sql.value.type === 'Select') {
+      if (
+        sql.nodeType === 'Main' &&
+        ['Except', 'Intersect', 'Select', 'Union'].includes(sql.value.type)
+      ) {
         // Parse SELECT queries
         this.props.ReactGA.event({
           category: 'User Typing SQL Statement',

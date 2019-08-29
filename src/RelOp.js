@@ -111,10 +111,26 @@ class BinaryRelOp extends RelOp<BinaryProps> {
     );
   }
 }
+class Except extends Component<{}> {
+  render() {
+    return <span>&minus;</span>;
+  }
+}
+class Intersect extends Component<{}> {
+  render() {
+    return <span>&cap;</span>;
+  }
+}
 
 class Join extends Component<{}> {
   render() {
     return <span>&times;</span>;
+  }
+}
+
+class Union extends Component<{}> {
+  render() {
+    return <span>&cup;</span>;
   }
 }
 
@@ -125,5 +141,8 @@ export {
   Rename,
   Selection,
   BinaryRelOp,
+  Except,
+  Intersect,
   Join,
+  Union,
 };

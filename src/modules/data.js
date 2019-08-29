@@ -1,4 +1,6 @@
 // @flow
+import {deepEqual} from 'fast-equals';
+
 import './data.css';
 export const CHANGE_EXPR = 'CHANGE_EXPR';
 
@@ -48,7 +50,7 @@ const initialState = {
       name: 'Patient',
       columns: ['firstName', 'lastName'],
       data: [
-        {firstName: 'Carlos', lastName: 'Vasquez'},
+        {firstName: 'Alice', lastName: 'Vasquez'},
         {firstName: 'Xu', lastName: 'Xing'},
       ],
     },
@@ -94,7 +96,8 @@ function resolveColumn(path: string, row: {[string]: any}): string {
  * @return result of evaluating the expression
  */
 function applyExpr(expr, sourceData) {
-  switch (Object.keys(expr)[0]) {
+  const type = Object.keys(expr)[0];
+  switch (type) {
     case 'projection':
       // Evaluate the single child of this expression
       let projData = applyExpr(expr.projection.children[0], sourceData);
@@ -106,9 +109,7 @@ function applyExpr(expr, sourceData) {
       const keep = expr.projection.arguments.project.map(col =>
         resolveColumn(col, projData.data[0])
       );
-      const deleted = columns.filter(
-        column => keep.indexOf(column) === -1
-      );
+      const deleted = columns.filter(column => keep.indexOf(column) === -1);
 
       // Make a copy of the list of columns to project
       projData.columns = keep;
@@ -192,6 +193,80 @@ function applyExpr(expr, sourceData) {
     case 'relation':
       // Make a copy of the data from a source table and return it
       return JSON.parse(JSON.stringify(sourceData[expr.relation]));
+
+    case 'except':
+    case 'intersect':
+    case 'union':
+      // Process each side of the operation
+      const setLeft = applyExpr(expr[type].left, sourceData);
+      const setRight = applyExpr(expr[type].right, sourceData);
+
+      // Check for valid columns
+      if (setLeft.columns.length !== setRight.columns.length) {
+        throw new Error(
+          'Each side of ' + type + ' must have the same number of columns'
+        );
+      }
+
+      const outColumns: Array<string> = setLeft.columns.slice();
+      const setOutput = {
+        name: setLeft.name + ' ∪ ' + setRight.name,
+        columns: outColumns,
+        data: [],
+      };
+
+      for (const leftRow of setLeft.data) {
+        // Add the row if it doesn't exist or we don't want distinct
+        if (
+          !expr[type].distinct ||
+          setOutput.data.find(row => deepEqual(row, leftRow)) === undefined
+        ) {
+          setOutput.data.push(leftRow);
+        }
+      }
+
+      // Generate new rows for the right side with the salem
+      // column names as those on the left
+      const newRight = setRight.data.map(rightRow => {
+        const newRow = {};
+        for (const rightKey of Object.keys(rightRow)) {
+          newRow[setLeft.columns[setRight.columns.indexOf(rightKey)]] =
+            rightRow[rightKey];
+        }
+
+        return newRow;
+      });
+
+      if (type === 'intersect') {
+        // Keep only rows from th left which have a match on the right
+        setOutput.data = setOutput.data.filter(leftRow => {
+          for (const rightRow of newRight) {
+            if (deepEqual(leftRow, rightRow)) {
+              return true;
+            }
+          }
+          return false;
+        });
+      } else {
+        for (const rightRow of newRight) {
+          if (type === 'except') {
+            // Remove any matching rows
+            setOutput.data = setOutput.data.filter(
+              row => !deepEqual(row, rightRow)
+            );
+          } else if (type === 'union') {
+            // Add the row if it doesn't exist or we don't want distinct
+            if (
+              !expr[type].distinct ||
+              setOutput.data.find(row => deepEqual(row, rightRow)) === undefined
+            ) {
+              setOutput.data.push(rightRow);
+            }
+          }
+        }
+      }
+
+      return setOutput;
 
     case 'join':
       // Process each side of the join
