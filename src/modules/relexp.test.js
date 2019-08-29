@@ -106,6 +106,32 @@ it('converts a union', () => {
 });
 
 /** @test {relexp} */
+it('converts a union on two tables with the same column', () => {
+  const sql = parser.parse('SELECT bar FROM foo UNION SELECT bar FROM baz');
+  const action = exprFromSql(sql.value, {foo: ['bar'], baz: ['bar']});
+  expect(reducer({}, action)).toStrictEqual({
+    expr: {
+      union: {
+        left: {
+          projection: {
+            arguments: {project: ['bar']},
+            children: [{relation: 'foo'}],
+          }
+        },
+        right: {
+          projection: {
+            arguments: {project: ['bar']},
+            children: [{relation: 'baz'}],
+          }
+        },
+        distinct: true,
+      },
+    },
+  });
+});
+
+
+/** @test {relexp} */
 it('converts a simple cross join', () => {
   const sql = parser.parse('SELECT * FROM foo JOIN bar');
   const action = exprFromSql(sql.value, {});

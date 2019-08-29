@@ -156,10 +156,15 @@ function buildRelExp(sql, types, tables) {
 
       const setType = sql.type.toLowerCase();
 
+      // Ensure we use a different set of tables for each side
+      const setTablesBackup = tables.slice();
+      const leftSetExp = buildRelExp(sql.left, types, tables);
+      const rightSetExp = buildRelExp(sql.right, types, setTablesBackup);
+
       return {
         [setType]: {
-          left: buildRelExp(sql.left, types, tables),
-          right: buildRelExp(sql.right, types, tables),
+          left: leftSetExp,
+          right: rightSetExp,
           distinct: !distinct,
         },
       };
