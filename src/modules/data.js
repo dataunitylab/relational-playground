@@ -103,12 +103,15 @@ function applyExpr(expr, sourceData) {
       const columns = projData.columns.map(col =>
         resolveColumn(col, projData.data[0])
       );
+      const keep = expr.projection.arguments.project.map(col =>
+        resolveColumn(col, projData.data[0])
+      );
       const deleted = columns.filter(
-        column => expr.projection.arguments.project.indexOf(column) === -1
+        column => keep.indexOf(column) === -1
       );
 
       // Make a copy of the list of columns to project
-      projData.columns = expr.projection.arguments.project.slice();
+      projData.columns = keep;
 
       // Delete data values which should not be included
       for (let i = 0; i < deleted.length; i++) {

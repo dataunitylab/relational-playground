@@ -38,6 +38,21 @@ it('can evaluate a projection', () => {
 });
 
 /** @test {data} */
+it('can evaluate a projection with dots', () => {
+  const expr = {
+    projection: {
+      arguments: {project: ['foo.bar']},
+      children: [{relation: 'foo'}],
+    },
+  };
+  const action = changeExpr(expr);
+  const current = reducer({sourceData: sourceData}, action).current;
+
+  expect(current.columns).toStrictEqual(['bar']);
+  expect(current.data).toStrictEqual([{bar: 1}, {bar: 3}, {bar: 5}]);
+});
+
+/** @test {data} */
 it('can evaluate a rename', () => {
   const expr = {
     rename: {
