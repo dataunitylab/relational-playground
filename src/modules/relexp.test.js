@@ -116,20 +116,19 @@ it('converts a union on two tables with the same column', () => {
           projection: {
             arguments: {project: ['bar']},
             children: [{relation: 'foo'}],
-          }
+          },
         },
         right: {
           projection: {
             arguments: {project: ['bar']},
             children: [{relation: 'baz'}],
-          }
+          },
         },
         distinct: true,
       },
     },
   });
 });
-
 
 /** @test {relexp} */
 it('converts a simple cross join', () => {
