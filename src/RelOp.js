@@ -1,5 +1,5 @@
 // @flow
-import React, {Component} from 'react';
+import React, {Component, DOMElement} from 'react';
 
 import type {Element, Node} from 'react';
 
@@ -17,16 +17,26 @@ type State = {
 class RelOp<T> extends Component<T, State> {
   constructor() {
     super();
-    this.state = {isHovered: false};
+    this.state = {
+      isHovered: false,
+    };
     (this: any).handleHover = this.handleHover.bind(this);
   }
 
   handleHover(e: SyntheticMouseEvent<HTMLElement>) {
     const hovering = e.type === 'mouseover';
     e.stopPropagation();
+
     this.setState(state => {
       return {...state, isHovered: hovering};
     });
+
+    let newClassName = e.target.className.replace(' RelOp', '');
+    newClassName = newClassName.replace(' hovering', '');
+    newClassName += ' RelOp' + (hovering ? ' hovering' : '');
+
+    this.setState({hoverClass: newClassName});
+    e.target.className = newClassName;
   }
 }
 
@@ -36,10 +46,9 @@ type UnaryProps = Props & {
 
 class UnaryRelOp extends RelOp<UnaryProps> {
   render() {
-    const hoverClass = 'RelOp ' + (this.state.isHovered ? 'hovering' : '');
     return (
       <span
-        className={hoverClass}
+        className={this.state.hoverClass}
         onMouseOver={this.handleHover}
         onMouseOut={this.handleHover}
       >

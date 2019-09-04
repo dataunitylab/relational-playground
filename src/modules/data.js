@@ -3,11 +3,16 @@ import {deepEqual} from 'fast-equals';
 
 import './data.css';
 export const CHANGE_EXPR = 'CHANGE_EXPR';
+export const RESET_HIGHLIGHT = 'RESET_HIGHLIGHT';
 
 type Action = {
   type: 'CHANGE_EXPR',
   expr: {[string]: any},
   element: ?HTMLElement,
+};
+
+type resetAction = {
+  type: 'RESET_HIGHLIGHT'
 };
 
 /**
@@ -20,6 +25,11 @@ export function changeExpr(
   element: ?HTMLElement
 ): Action {
   return {type: CHANGE_EXPR, expr, element};
+}
+
+export function resetHighlight(
+): resetAction {
+  return {type: RESET_HIGHLIGHT};
 }
 
 export type Data = {
@@ -330,18 +340,34 @@ function applyExpr(expr, sourceData) {
 
 function highlightExpr(currentElement: ?HTMLElement, newElement: ?HTMLElement) {
   if (currentElement !== newElement) {
-    if (currentElement) {
-      currentElement.className = '';
+    if(currentElement){
+      let newClassName = currentElement.className.replace(" highlighted","");
+      currentElement.className = newClassName;
     }
     if (newElement) {
-      newElement.className = 'highlighted';
+      newElement.className = newElement.className + " highlighted";
     }
   }
   return newElement;
 }
 
-export default (state: State = initialState, action: Action) => {
+
+
+export function applyResetHighlight(currentElement: ?HTMLElement){
+  console.log("reset Highlight called");
+  if(currentElement){
+    let newClassName = currentElement.className.replace(" highlighted","");
+    currentElement.className = newClassName;
+  }
+}
+
+export default (state: State = initialState, action: any) => {
   switch (action.type) {
+    case RESET_HIGHLIGHT:
+      applyResetHighlight(state.element);
+      return {
+        ...state,
+      };
     case CHANGE_EXPR:
       return {
         ...state,

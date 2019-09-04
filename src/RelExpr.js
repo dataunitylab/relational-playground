@@ -65,47 +65,55 @@ class RelExpr extends Component<Props> {
     switch (type) {
       case 'projection':
         return (
-          <UnaryRelOp
-            operator={
-              <Projection project={expr.projection.arguments.project} />
-            }
-          >
-            <RelExpr
-              expr={expr.projection.children[0]}
-              changeExpr={this.props.changeExpr}
-              ReactGA={this.props.ReactGA}
-            />
-          </UnaryRelOp>
+          <span onClick={this.handleExprClick}>
+            <UnaryRelOp
+              operator={
+                <Projection project={expr.projection.arguments.project} />
+              }
+            >
+              <RelExpr
+                expr={expr.projection.children[0]}
+                changeExpr={this.props.changeExpr}
+                ReactGA={this.props.ReactGA}
+              />
+            </UnaryRelOp>
+          </span>
         );
 
       case 'selection':
         return (
-          <UnaryRelOp
-            operator={
-              <Selection
-                select={this.conditionToString(expr.selection.arguments.select)}
+          <span onClick={this.handleExprClick}>
+            <UnaryRelOp
+              operator={
+                <Selection
+                  select={this.conditionToString(
+                    expr.selection.arguments.select
+                  )}
+                />
+              }
+            >
+              <RelExpr
+                expr={expr.selection.children[0]}
+                changeExpr={this.props.changeExpr}
+                ReactGA={this.props.ReactGA}
               />
-            }
-          >
-            <RelExpr
-              expr={expr.selection.children[0]}
-              changeExpr={this.props.changeExpr}
-              ReactGA={this.props.ReactGA}
-            />
-          </UnaryRelOp>
+            </UnaryRelOp>
+          </span>
         );
 
       case 'rename':
         return (
-          <UnaryRelOp
-            operator={<Rename rename={expr.rename.arguments.rename} />}
-          >
-            <RelExpr
-              expr={expr.rename.children[0]}
-              changeExpr={this.props.changeExpr}
-              ReactGA={this.props.ReactGA}
-            />
-          </UnaryRelOp>
+          <span onClick={this.handleExprClick}>
+            <UnaryRelOp
+              operator={<Rename rename={expr.rename.arguments.rename} />}
+            >
+              <RelExpr
+                expr={expr.rename.children[0]}
+                changeExpr={this.props.changeExpr}
+                ReactGA={this.props.ReactGA}
+              />
+            </UnaryRelOp>
+          </span>
         );
 
       case 'relation':
@@ -122,15 +130,17 @@ class RelExpr extends Component<Props> {
           union: <Union />,
         }[type];
         return (
-          <BinaryRelOp
-            operator={operator}
-            left={
-              <RelExpr expr={expr[type].left} ReactGA={this.props.ReactGA} />
-            }
-            right={
-              <RelExpr expr={expr[type].right} ReactGA={this.props.ReactGA} />
-            }
-          />
+          <span onClick={this.handleExprClick}>
+            <BinaryRelOp
+              operator={operator}
+              left={
+                <RelExpr expr={expr[type].left} ReactGA={this.props.ReactGA} />
+              }
+              right={
+                <RelExpr expr={expr[type].right} ReactGA={this.props.ReactGA} />
+              }
+            />
+          </span>
         );
 
       default:
@@ -145,11 +155,21 @@ class RelExpr extends Component<Props> {
     e.stopPropagation();
     if (this.props.changeExpr) {
       const target = e.target instanceof HTMLElement ? e.target : undefined;
-      const parent =
-        target && target.parentElement instanceof HTMLElement
-          ? target.parentElement
-          : undefined;
-      this.props.changeExpr(this.props.expr, parent);
+
+      if (target.className.includes('RelOp')) {
+        const element =
+          target && target.parentElement instanceof HTMLElement
+            ? target.parentElement.parentElement.parentElement
+            : undefined;
+        this.props.changeExpr(this.props.expr, element);
+      } else {
+        const element =
+          target && target.parentElement instanceof HTMLElement
+            ? target.parentElement
+            : undefined;
+        this.props.changeExpr(this.props.expr, element);
+      }
+
       this.props.ReactGA.event({
         category: 'User Selecting Relational Algebra Enclosure',
         action: Object.keys(this.props.expr)[0],
@@ -159,9 +179,7 @@ class RelExpr extends Component<Props> {
 
   render() {
     return (
-      <span onClick={this.handleExprClick} style={{margin: '.4em'}}>
-        {this.buildExpr(this.props.expr)}
-      </span>
+      <span style={{margin: '.4em'}}>{this.buildExpr(this.props.expr)}</span>
     );
   }
 }

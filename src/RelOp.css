@@ -1,9 +1,9 @@
-.RelOp.clicked {
+.clicked {
   background: #ff3;
   cursor: pointer;
 }
 
-.RelOp.hovering {
+.hovering {
   background: #ff3;
   cursor: pointer;
 }
