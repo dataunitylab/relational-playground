@@ -28,3 +28,10 @@ it('correctly renders a complex expression', () => {
   const tree = renderer.create(<RelExpr expr={expr} />).toJSON();
   expect(tree).toMatchSnapshot();
 });
+
+/** @test {RelExpr} */
+it('produces an error for an invalid expression', () => {
+  expect(() => {
+    renderer.create(<RelExpr expr={{invalidExpr: 42}} />);
+  }).toThrow();
+});
