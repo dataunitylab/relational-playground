@@ -8,7 +8,7 @@ const parser = require('@michaelmior/js-sql-parser');
 type Props = {
   defaultText: string,
   exprFromSql: typeof exprFromSql,
-  ReactGA: ?any,
+  ReactGA: any,
   types: {[string]: Array<string>},
 };
 
@@ -48,7 +48,7 @@ class SqlEditor extends Component<Props, State> {
         ['Except', 'Intersect', 'Select', 'Union'].includes(sql.value.type)
       ) {
         // Record the typed SQL statement
-        if (this.props.ReactGA && !firstLoad) {
+        if (!firstLoad) {
           this.props.ReactGA.event({
             category: 'User Typing SQL Statement',
             action: text,
