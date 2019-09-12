@@ -47,7 +47,7 @@ class SqlEditor extends Component<Props, State> {
         sql.nodeType === 'Main' &&
         ['Except', 'Intersect', 'Select', 'Union'].includes(sql.value.type)
       ) {
-        // Parse SELECT queries
+        // Parse queries
         this.props.ReactGA.event({
           category: 'User Typing SQL Statement',
           action: text,
@@ -57,7 +57,7 @@ class SqlEditor extends Component<Props, State> {
           this.setState({error: null});
         }
       } else {
-        // Show an error if we try to parse anything other than SELECT
+        // Show an error if we try to parse any unsupported query type
         const errMsg = 'Unsupported expression';
         if (!skipState) {
           this.setState({error: errMsg});
