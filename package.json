@@ -103,5 +103,11 @@
       "npmPkgJsonLint -q .",
       "pkg-ok"
     ]
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}",
+      "!src/index.js"
+    ]
   }
 }
