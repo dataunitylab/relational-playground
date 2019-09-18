@@ -37,11 +37,10 @@ class SqlEditor extends Component<Props, State> {
 
   /**
    * @param text - the query to parse
-   * @param skipState - whether component state should be updated
+   * @param firstLoad - whether this is the first call when mounted
    */
-  parseQuery(text: string, skipState?: boolean) {
-    this.props.resetHighlight();
-    if (!skipState) {
+  parseQuery(text: string, firstLoad?: boolean) {
+    if (!firstLoad) {
       this.setState({timeout: null});
     }
     try {
@@ -50,25 +49,29 @@ class SqlEditor extends Component<Props, State> {
         sql.nodeType === 'Main' &&
         ['Except', 'Intersect', 'Select', 'Union'].includes(sql.value.type)
       ) {
-        // Parse SELECT queries
-        this.props.ReactGA.event({
-          category: 'User Typing SQL Statement',
-          action: text,
-        });
+        // Record the typed SQL statement
+        if (!firstLoad) {
+          this.props.ReactGA.event({
+            category: 'User Typing SQL Statement',
+            action: text,
+          });
+        }
+
+        // Parse the query
         this.props.exprFromSql(sql.value, this.props.types);
-        if (!skipState) {
+        if (!firstLoad) {
           this.setState({error: null});
         }
       } else {
-        // Show an error if we try to parse anything other than SELECT
+        // Show an error if we try to parse any unsupported query type
         const errMsg = 'Unsupported expression';
-        if (!skipState) {
+        if (!firstLoad) {
           this.setState({error: errMsg});
         }
       }
     } catch (err) {
       // Display any error message generated during parsing
-      if (!skipState) {
+      if (!firstLoad) {
         this.setState({error: err.message});
       }
     }
