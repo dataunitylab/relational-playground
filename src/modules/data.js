@@ -2,13 +2,14 @@
 import {deepEqual} from 'fast-equals';
 
 import './data.css';
+import {DOMElement} from "react";
 export const CHANGE_EXPR = 'CHANGE_EXPR';
 export const RESET_HIGHLIGHT = 'RESET_HIGHLIGHT';
 
 type Action = {
   type: 'CHANGE_EXPR',
   expr: {[string]: any},
-  element: ?HTMLElement,
+  element: ?DOMElement,
 };
 
 type resetAction = {
@@ -22,7 +23,7 @@ type resetAction = {
  */
 export function changeExpr(
   expr: {[string]: any},
-  element: ?HTMLElement
+  element: ?DOMElement
 ): Action {
   return {type: CHANGE_EXPR, expr, element};
 }
@@ -41,7 +42,7 @@ export type Data = {
 export type State = {
   current?: Data,
   sourceData: {[string]: Data},
-  element: ?HTMLElement,
+  element: ?DOMElement,
 };
 
 // Source data which can be used in SQL queries
@@ -338,7 +339,7 @@ function applyExpr(expr, sourceData) {
   }
 }
 
-function highlightExpr(currentElement: ?HTMLElement, newElement: ?HTMLElement) {
+function highlightExpr(currentElement: ?DOMElement, newElement: ?DOMElement) {
   if (currentElement !== newElement) {
     if(currentElement){
       let newClassName = currentElement.className.replace(" highlighted","");
@@ -353,7 +354,7 @@ function highlightExpr(currentElement: ?HTMLElement, newElement: ?HTMLElement) {
 
 
 
-export function applyResetHighlight(currentElement: ?HTMLElement){
+export function applyResetHighlight(currentElement: ?DOMElement){
   console.log("reset Highlight called");
   if(currentElement){
     let newClassName = currentElement.className.replace(" highlighted","");

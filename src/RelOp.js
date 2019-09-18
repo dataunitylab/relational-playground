@@ -4,6 +4,7 @@ import React, {Component, DOMElement} from 'react';
 import type {Element, Node} from 'react';
 
 import './RelOp.css';
+import * as ReactDOM from "react-dom";
 
 type Props = {
   operator: Element<any>,
@@ -11,6 +12,7 @@ type Props = {
 
 type State = {
   isHovered: boolean,
+  hoverClass: String,
 };
 
 /** Base class for all relational algebra operators */
@@ -19,6 +21,7 @@ class RelOp<T> extends Component<T, State> {
     super();
     this.state = {
       isHovered: false,
+      hoverClass: '',
     };
     (this: any).handleHover = this.handleHover.bind(this);
   }
@@ -26,12 +29,13 @@ class RelOp<T> extends Component<T, State> {
   handleHover(e: SyntheticMouseEvent<HTMLElement>) {
     const hovering = e.type === 'mouseover';
     e.stopPropagation();
+    const node = ReactDOM.findDOMNode(this);
 
     this.setState(state => {
       return {...state, isHovered: hovering};
     });
 
-    let newClassName = e.target.className.replace(' RelOp', '');
+    let newClassName = node.className.replace(' RelOp', '');
     newClassName = newClassName.replace(' hovering', '');
     newClassName += ' RelOp' + (hovering ? ' hovering' : '');
 
