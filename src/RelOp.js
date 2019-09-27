@@ -1,10 +1,10 @@
 // @flow
-import React, {Component, DOMElement} from 'react';
+import React, {Component} from 'react';
+import ReactDOM from 'react-dom';
 
 import type {Element, Node} from 'react';
 
 import './RelOp.css';
-import * as ReactDOM from "react-dom";
 
 type Props = {
   operator: Element<any>,
@@ -12,7 +12,7 @@ type Props = {
 
 type State = {
   isHovered: boolean,
-  hoverClass: String,
+  hoverClass: string,
 };
 
 /** Base class for all relational algebra operators */
@@ -29,18 +29,23 @@ class RelOp<T> extends Component<T, State> {
   handleHover(e: SyntheticMouseEvent<HTMLElement>) {
     const hovering = e.type === 'mouseover';
     e.stopPropagation();
+
     const node = ReactDOM.findDOMNode(this);
 
-    this.setState(state => {
-      return {...state, isHovered: hovering};
-    });
+    if (node) {
+      let newClassName = node instanceof HTMLElement ? node.className : '';
 
-    let newClassName = node.className.replace(' RelOp', '');
-    newClassName = newClassName.replace(' hovering', '');
-    newClassName += ' RelOp' + (hovering ? ' hovering' : '');
+      this.setState(state => {
+        return {...state, isHovered: hovering};
+      });
 
-    this.setState({hoverClass: newClassName});
-    e.target.className = newClassName;
+      newClassName = newClassName.replace(' RelOp', '');
+      newClassName = newClassName.replace(' hovering', '');
+      newClassName += ' RelOp' + (hovering ? ' hovering' : '');
+
+      this.setState({hoverClass: newClassName});
+      if (node instanceof HTMLElement) node.className = newClassName;
+    }
   }
 }
 

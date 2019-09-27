@@ -13,7 +13,7 @@ import {
 } from './RelOp';
 import Relation from './Relation';
 import {changeExpr} from './modules/data';
-import * as ReactDOM from "react-dom";
+import ReactDOM from 'react-dom';
 
 type Props = {
   changeExpr?: typeof changeExpr,
@@ -66,7 +66,7 @@ class RelExpr extends Component<Props> {
     switch (type) {
       case 'projection':
         return (
-          <span onClick={this.handleExprClick}>
+          <span>
             <UnaryRelOp
               operator={
                 <Projection project={expr.projection.arguments.project} />
@@ -83,7 +83,7 @@ class RelExpr extends Component<Props> {
 
       case 'selection':
         return (
-          <span onClick={this.handleExprClick}>
+          <span>
             <UnaryRelOp
               operator={
                 <Selection
@@ -104,7 +104,7 @@ class RelExpr extends Component<Props> {
 
       case 'rename':
         return (
-          <span onClick={this.handleExprClick}>
+          <span>
             <UnaryRelOp
               operator={<Rename rename={expr.rename.arguments.rename} />}
             >
@@ -131,7 +131,7 @@ class RelExpr extends Component<Props> {
           union: <Union />,
         }[type];
         return (
-          <span onClick={this.handleExprClick}>
+          <span>
             <BinaryRelOp
               operator={operator}
               left={
@@ -154,21 +154,25 @@ class RelExpr extends Component<Props> {
    */
   handleExprClick(e: SyntheticMouseEvent<HTMLElement>) {
     e.stopPropagation();
-    if (this.props.changeExpr) {
-      const node = ReactDOM.findDOMNode(this);
+    const node =
+      ReactDOM.findDOMNode(this) instanceof HTMLElement
+        ? ReactDOM.findDOMNode(this)
+        : undefined;
 
+    if (node instanceof HTMLElement && this.props.changeExpr)
       this.props.changeExpr(this.props.expr, node);
 
-      this.props.ReactGA.event({
-        category: 'User Selecting Relational Algebra Enclosure',
-        action: Object.keys(this.props.expr)[0],
-      });
-    }
+    this.props.ReactGA.event({
+      category: 'User Selecting Relational Algebra Enclosure',
+      action: Object.keys(this.props.expr)[0],
+    });
   }
 
   render() {
     return (
-      <span style={{margin: '.4em'}}>{this.buildExpr(this.props.expr)}</span>
+      <span onClick={this.handleExprClick} style={{margin: '.4em'}}>
+        {this.buildExpr(this.props.expr)}
+      </span>
     );
   }
 }
