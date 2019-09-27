@@ -85,5 +85,6 @@ storiesOf('RelExpr', module).add('a complex expression', () => (
         ],
       },
     }}
+    changeExpr={(expr, element) => undefined}
   />
 ));

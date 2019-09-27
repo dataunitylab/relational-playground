@@ -15,7 +15,7 @@ import Relation from './Relation';
 import {changeExpr} from './modules/data';
 
 type Props = {
-  changeExpr?: typeof changeExpr,
+  changeExpr: typeof changeExpr,
   expr: {[string]: any},
   ReactGA: any,
 };
@@ -125,10 +125,18 @@ class RelExpr extends Component<Props> {
           <BinaryRelOp
             operator={operator}
             left={
-              <RelExpr expr={expr[type].left} ReactGA={this.props.ReactGA} />
+              <RelExpr
+                expr={expr[type].left}
+                ReactGA={this.props.ReactGA}
+                changeExpr={this.props.changeExpr}
+              />
             }
             right={
-              <RelExpr expr={expr[type].right} ReactGA={this.props.ReactGA} />
+              <RelExpr
+                expr={expr[type].right}
+                ReactGA={this.props.ReactGA}
+                changeExpr={this.props.changeExpr}
+              />
             }
           />
         );
