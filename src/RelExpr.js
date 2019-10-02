@@ -16,7 +16,7 @@ import {changeExpr} from './modules/data';
 import ReactDOM from 'react-dom';
 
 type Props = {
-  changeExpr?: typeof changeExpr,
+  changeExpr: typeof changeExpr,
   expr: {[string]: any},
   ReactGA: any,
 };
@@ -131,17 +131,23 @@ class RelExpr extends Component<Props> {
           union: <Union />,
         }[type];
         return (
-          <span>
-            <BinaryRelOp
-              operator={operator}
-              left={
-                <RelExpr expr={expr[type].left} ReactGA={this.props.ReactGA} />
-              }
-              right={
-                <RelExpr expr={expr[type].right} ReactGA={this.props.ReactGA} />
-              }
-            />
-          </span>
+          <BinaryRelOp
+            operator={operator}
+            left={
+              <RelExpr
+                expr={expr[type].left}
+                ReactGA={this.props.ReactGA}
+                changeExpr={this.props.changeExpr}
+              />
+            }
+            right={
+              <RelExpr
+                expr={expr[type].right}
+                ReactGA={this.props.ReactGA}
+                changeExpr={this.props.changeExpr}
+              />
+            }
+          />
         );
 
       default:
