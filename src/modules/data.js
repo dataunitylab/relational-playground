@@ -2,6 +2,9 @@
 import {deepEqual} from 'fast-equals';
 
 import './data.css';
+import patient from '../resources/Patient.json';
+import doctor from '../resources/Doctor.json';
+
 export const CHANGE_EXPR = 'CHANGE_EXPR';
 
 type Action = {
@@ -37,23 +40,9 @@ export type State = {
 // Source data which can be used in SQL queries
 const initialState = {
   sourceData: {
-    Doctor: {
-      name: 'Doctor',
-      columns: ['firstName', 'lastName', 'salary'],
-      data: [
-        {firstName: 'Alice', lastName: 'Yang', salary: 176000},
-        {firstName: 'Bob', lastName: 'Smith', salary: 120000},
-      ],
-    },
+    Doctor: doctor,
 
-    Patient: {
-      name: 'Patient',
-      columns: ['firstName', 'lastName'],
-      data: [
-        {firstName: 'Alice', lastName: 'Vasquez'},
-        {firstName: 'Xu', lastName: 'Xing'},
-      ],
-    },
+    Patient: patient,
   },
   element: undefined,
 };
