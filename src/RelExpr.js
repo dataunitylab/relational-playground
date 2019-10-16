@@ -165,8 +165,9 @@ class RelExpr extends Component<Props> {
         ? ReactDOM.findDOMNode(this)
         : undefined;
 
-    if (node instanceof HTMLElement && this.props.changeExpr)
+    if (node instanceof HTMLElement && this.props.changeExpr) {
       this.props.changeExpr(this.props.expr, node);
+    }
 
     this.props.ReactGA.event({
       category: 'User Selecting Relational Algebra Enclosure',
@@ -175,11 +176,21 @@ class RelExpr extends Component<Props> {
   }
 
   render() {
-    return (
-      <span onClick={this.handleExprClick} style={{margin: '.4em'}}>
-        {this.buildExpr(this.props.expr)}
-      </span>
-    );
+    if (!this.props.expr || Object.keys(this.props.expr).length === 0) {
+      return '';
+    }
+    const type = Object.keys(this.props.expr)[0];
+    if (type === 'relation') {
+      return (
+        <span style={{margin: '.4em'}}>{this.buildExpr(this.props.expr)}</span>
+      );
+    } else {
+      return (
+        <span onClick={this.handleExprClick} style={{margin: '.4em'}}>
+          {this.buildExpr(this.props.expr)}
+        </span>
+      );
+    }
   }
 }
 

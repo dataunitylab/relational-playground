@@ -65,7 +65,6 @@ exports[`correctly renders a complex expression 1`] = `
                   </span>
                   (
                   <span
-                    onClick={[Function]}
                     style={
                       Object {
                         "margin": ".4em",

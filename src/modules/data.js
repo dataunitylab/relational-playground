@@ -3,7 +3,7 @@ import {deepEqual} from 'fast-equals';
 
 import './data.css';
 export const CHANGE_EXPR = 'CHANGE_EXPR';
-export const RESET_HIGHLIGHT = 'RESET_HIGHLIGHT';
+export const CHANGE_ACTION = 'CHANGE_ACTION';
 
 type Action = {
   type: 'CHANGE_EXPR',
@@ -11,8 +11,8 @@ type Action = {
   element: ?HTMLElement,
 };
 
-type resetAction = {
-  type: 'RESET_HIGHLIGHT',
+type ChangeAction = {
+  type: 'CHANGE_ACTION',
 };
 
 /**
@@ -27,8 +27,8 @@ export function changeExpr(
   return {type: CHANGE_EXPR, expr, element};
 }
 
-export function resetHighlight(): resetAction {
-  return {type: RESET_HIGHLIGHT};
+export function changeAction(): ChangeAction {
+  return {type: CHANGE_ACTION};
 }
 
 export type Data = {
@@ -350,8 +350,7 @@ function highlightExpr(currentElement: ?HTMLElement, newElement: ?HTMLElement) {
   return newElement;
 }
 
-export function applyResetHighlight(currentElement: ?HTMLElement) {
-  console.log('reset Highlight called');
+export function applyChangeAction(currentElement: ?HTMLElement) {
   if (currentElement) {
     let newClassName = currentElement.className.replace(' highlighted', '');
     currentElement.className = newClassName;
@@ -360,8 +359,8 @@ export function applyResetHighlight(currentElement: ?HTMLElement) {
 
 export default (state: State = initialState, action: any) => {
   switch (action.type) {
-    case RESET_HIGHLIGHT:
-      applyResetHighlight(state.element);
+    case CHANGE_ACTION:
+      applyChangeAction(state.element);
       return {
         ...state,
       };

@@ -42,7 +42,7 @@ it('produces an error for an invalid expression', () => {
 });
 
 /** @test {RelExpr} */
-it('changes the expression when clicked', () => {
+it('doesnt change the expression when clicked and relation', () => {
   const mockAction = jest.fn();
   const mockEvent = jest.fn();
   const expr = {relation: 'foo'};
@@ -54,13 +54,42 @@ it('changes the expression when clicked', () => {
   wrapper.simulate('click', {stopPropagation: jest.fn()});
 
   // An action changing the expression should fire
-  //expect(mockAction.mock.calls.length).toBe(1);
-  //expect(mockAction.mock.calls[0][0]).toBe(expr);
+  // Should not have action attached when type relation
+  expect(mockAction.mock.calls.length).toBe(0);
+
+  // Don't expect analytics on a relation
+  expect(mockEvent.mock.calls.length).toBe(0);
+});
+
+/** @test {RelExpr} */
+it('changes the expression when clicked not relation', () => {
+  const mockAction = jest.fn();
+  const mockEvent = jest.fn();
+  const expr = {
+    selection: {
+      arguments: {
+        select: 'foo',
+      },
+      children: {
+        relation: {},
+      },
+    },
+  };
+  const wrapper = mount(
+    <RelExpr ReactGA={{event: mockEvent}} expr={expr} changeExpr={mockAction} />
+  );
+
+  // Click on the expression
+  wrapper.simulate('click', {stopPropagation: jest.fn()});
+
+  // An action changing the expression should fire
+  expect(mockAction.mock.calls.length).toBe(1);
+  expect(mockAction.mock.calls[0][0]).toBe(expr);
 
   // And also an analytics event
   expect(mockEvent.mock.calls.length).toBe(1);
   expect(mockEvent.mock.calls[0][0].category).toBe(
     'User Selecting Relational Algebra Enclosure'
   );
-  expect(mockEvent.mock.calls[0][0].action).toBe('relation');
+  expect(mockEvent.mock.calls[0][0].action).toBe('selection');
 });
