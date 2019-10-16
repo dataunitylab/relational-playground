@@ -41,7 +41,9 @@ class SqlEditor extends Component<Props, State> {
    */
   parseQuery(text: string, firstLoad?: boolean) {
     if (!firstLoad) {
-      this.props.changeAction();
+      if (this.props.changeAction) {
+        this.props.changeAction();
+      }
       this.setState({timeout: null});
     }
     try {
