@@ -130,27 +130,33 @@ function applyExpr(expr, sourceData) {
           const col = resolveColumn(Object.keys(select[i])[0], item);
           const op = Object.keys(select[i][col])[0];
 
+          // Try to resolve the column, otherwise treat it as a literal
+          let rhs = select[i][col][op];
+          try {
+            rhs = item[resolveColumn(rhs, item)];
+          } catch {}
+
           // Update the flag indicating whether we should keep this tuple
           switch (op) {
             case '$gte':
-              keep = keep && item[col] >= select[i][col][op];
+              keep = keep && item[col] >= rhs;
               break;
             case '$gt':
-              keep = keep && item[col] > select[i][col][op];
+              keep = keep && item[col] > rhs;
               break;
             case '$lt':
-              keep = keep && item[col] < select[i][col][op];
+              keep = keep && item[col] < rhs;
               break;
             case '$lte':
-              keep = keep && item[col] <= select[i][col][op];
+              keep = keep && item[col] <= rhs;
               break;
             case '$ne':
               // eslint-disable-next-line eqeqeq
-              keep = keep && item[col] != select[i][col][op];
+              keep = keep && item[col] != rhs;
               break;
             case '$eq':
               // eslint-disable-next-line eqeqeq
-              keep = keep && item[col] == select[i][col][op];
+              keep = keep && item[col] == rhs;
               break;
             default:
               throw new Error('Invalid expression');
