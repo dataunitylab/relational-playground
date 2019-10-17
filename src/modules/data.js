@@ -48,6 +48,11 @@ const initialState = {
 };
 
 function resolveColumn(path: string, row: {[string]: any}): string {
+  // Avoid an error if we're projecting nothing
+  if (!row) {
+    return path;
+  }
+
   let [table, column] = path.split('.');
   if (!column) {
     column = table;
