@@ -36,7 +36,8 @@
     "build-storybook": "build-storybook -s public",
     "flow": "flow check src",
     "lint": "node_modules/.bin/prettier --check src/**/*.{js,jsx,json} && eslint src",
-    "now-build": "REACT_APP_GIT_SHA=`git rev-parse --short HEAD` react-scripts build && build-storybook -o build/storybook/ && esdoc && mv docs/ build/",
+    "report-deploy": "./scripts/report-deploy.sh",
+    "now-build": "REACT_APP_GIT_SHA=`git rev-parse --short HEAD` react-scripts build && build-storybook -o build/storybook/ && esdoc && mv docs/ build/ && yarn report-deploy",
     "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls"
   },
   "eslintConfig": {
