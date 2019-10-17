@@ -6,7 +6,7 @@
   "homepage": "https://relationalplayground.com/",
   "dependencies": {
     "@michaelmior/js-sql-parser": "^1.3.0",
-    "@testing-library/jest-dom": "^4.1.0",
+    "@testing-library/jest-dom": "^4.1.2",
     "connected-react-router": "^6.5.2",
     "fast-equals": "^2.0.0",
     "fromentries": "^1.2.0",
