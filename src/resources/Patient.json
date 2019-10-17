@@ -1,246 +1,326 @@
 {
   "name": "Patient",
-  "columns": ["firstName", "lastName", "gender", "age"],
+  "columns": ["id", "firstName", "lastName", "gender", "age", "primaryDoctor"],
   "data": [
     {
+      "id": 1,
       "firstName": "Orelia",
       "lastName": "Thorald",
       "gender": "Female",
-      "age": 19
+      "age": 19,
+      "primaryDoctor": 10
     },
     {
+      "id": 2,
       "firstName": "Cymbre",
       "lastName": "Willshee",
       "gender": "Female",
-      "age": 67
+      "age": 67,
+      "primaryDoctor": 17
     },
     {
+      "id": 3,
       "firstName": "Morly",
       "lastName": "Sykora",
       "gender": "Male",
-      "age": 63
+      "age": 63,
+      "primaryDoctor": 23
     },
     {
+      "id": 4,
       "firstName": "Dalenna",
       "lastName": "Piffe",
       "gender": "Female",
-      "age": 22
+      "age": 22,
+      "primaryDoctor": 31
     },
     {
+      "id": 5,
       "firstName": "Pail",
       "lastName": "Glinde",
       "gender": "Male",
-      "age": 21
+      "age": 21,
+      "primaryDoctor": 4
     },
     {
+      "id": 6,
       "firstName": "Whitaker",
       "lastName": "Buffy",
       "gender": "Male",
-      "age": 5
+      "age": 5,
+      "primaryDoctor": 12
     },
     {
+      "id": 7,
       "firstName": "Rori",
       "lastName": "Ramey",
       "gender": "Female",
-      "age": 1
+      "age": 2,
+      "primaryDoctor": 9
     },
     {
+      "id": 8,
       "firstName": "Gregoire",
       "lastName": "De Ruggiero",
       "gender": "Male",
-      "age": 32
+      "age": 32,
+      "primaryDoctor": 9
     },
     {
+      "id": 9,
       "firstName": "Merissa",
       "lastName": "Bagworth",
       "gender": "Female",
-      "age": 25
+      "age": 25,
+      "primaryDoctor": 33
     },
     {
+      "id": 10,
       "firstName": "Marijn",
       "lastName": "Yanin",
       "gender": "Male",
-      "age": 25
+      "age": 25,
+      "primaryDoctor": 28
     },
     {
+      "id": 11,
       "firstName": "Allys",
       "lastName": "Ollerhad",
       "gender": "Female",
-      "age": 60
+      "age": 60,
+      "primaryDoctor": 12
     },
     {
+      "id": 12,
       "firstName": "Alano",
       "lastName": "Carcas",
       "gender": "Male",
-      "age": 28
+      "age": 28,
+      "primaryDoctor": 19
     },
     {
+      "id": 13,
       "firstName": "Ceciley",
       "lastName": "Kerslake",
       "gender": "Female",
-      "age": 35
+      "age": 35,
+      "primaryDoctor": 39
     },
     {
+      "id": 14,
       "firstName": "Allsun",
       "lastName": "Tomaszewicz",
       "gender": "Female",
-      "age": 45
+      "age": 45,
+      "primaryDoctor": 11
     },
     {
+      "id": 15,
       "firstName": "Mandel",
       "lastName": "McWhorter",
       "gender": "Male",
-      "age": 47
+      "age": 47,
+      "primaryDoctor": 6
     },
     {
+      "id": 16,
       "firstName": "Tanny",
       "lastName": "Boaler",
       "gender": "Male",
-      "age": 22
+      "age": 22,
+      "primaryDoctor": 22
     },
     {
+      "id": 17,
       "firstName": "Townie",
       "lastName": "Pascoe",
       "gender": "Male",
-      "age": 44
+      "age": 44,
+      "primaryDoctor": 11
     },
     {
+      "id": 18,
       "firstName": "Knox",
       "lastName": "Peacop",
       "gender": "Male",
-      "age": 6
+      "age": 6,
+      "primaryDoctor": 13
     },
     {
+      "id": 19,
       "firstName": "Creigh",
       "lastName": "Heath",
       "gender": "Male",
-      "age": 38
+      "age": 38,
+      "primaryDoctor": 17
     },
     {
+      "id": 20,
       "firstName": "Daphne",
       "lastName": "Cortez",
       "gender": "Female",
-      "age": 44
+      "age": 44,
+      "primaryDoctor": 24
     },
     {
+      "id": 21,
       "firstName": "Eziechiele",
       "lastName": "Windeatt",
       "gender": "Male",
-      "age": 1
+      "age": 1,
+      "primaryDoctor": 20
     },
     {
+      "id": 22,
       "firstName": "Lisle",
       "lastName": "Anstie",
       "gender": "Male",
-      "age": 19
+      "age": 19,
+      "primaryDoctor": 37
     },
     {
+      "id": 23,
       "firstName": "Esme",
       "lastName": "Tomkins",
       "gender": "Female",
-      "age": 40
+      "age": 40,
+      "primaryDoctor": 21
     },
     {
+      "id": 24,
       "firstName": "Hort",
       "lastName": "Kinlock",
       "gender": "Male",
-      "age": 69
+      "age": 69,
+      "primaryDoctor": 26
     },
     {
+      "id": 25,
       "firstName": "Allegra",
       "lastName": "Waghorne",
       "gender": "Female",
-      "age": 38
+      "age": 38,
+      "primaryDoctor": 40
     },
     {
+      "id": 26,
       "firstName": "Wynnie",
       "lastName": "Ipwell",
       "gender": "Female",
-      "age": 53
+      "age": 53,
+      "primaryDoctor": 20
     },
     {
+      "id": 27,
       "firstName": "Joya",
       "lastName": "Aucock",
       "gender": "Female",
-      "age": 57
+      "age": 57,
+      "primaryDoctor": 10
     },
     {
+      "id": 28,
       "firstName": "Gusella",
       "lastName": "Wiggington",
       "gender": "Female",
-      "age": 36
+      "age": 36,
+      "primaryDoctor": 3
     },
     {
+      "id": 29,
       "firstName": "Callean",
       "lastName": "Beasant",
       "gender": "Male",
-      "age": 17
+      "age": 17,
+      "primaryDoctor": 27
     },
     {
+      "id": 30,
       "firstName": "Kerk",
       "lastName": "Shillabeer",
       "gender": "Male",
-      "age": 3
+      "age": 3,
+      "primaryDoctor": 8
     },
     {
+      "id": 31,
       "firstName": "Eloisa",
       "lastName": "Giraths",
       "gender": "Female",
-      "age": 65
+      "age": 65,
+      "primaryDoctor": 6
     },
     {
+      "id": 32,
       "firstName": "Etan",
       "lastName": "Yankin",
       "gender": "Male",
-      "age": 24
+      "age": 24,
+      "primaryDoctor": 18
     },
     {
+      "id": 33,
       "firstName": "Del",
       "lastName": "Leteurtre",
       "gender": "Female",
-      "age": 6
+      "age": 6,
+      "primaryDoctor": 12
     },
     {
+      "id": 34,
       "firstName": "Maybelle",
       "lastName": "Rylance",
       "gender": "Female",
-      "age": 25
+      "age": 25,
+      "primaryDoctor": 35
     },
     {
+      "id": 35,
       "firstName": "Gardie",
       "lastName": "Puve",
       "gender": "Male",
-      "age": 10
+      "age": 10,
+      "primaryDoctor": 15
     },
     {
+      "id": 36,
       "firstName": "Judye",
       "lastName": "Ivison",
       "gender": "Female",
-      "age": 62
+      "age": 62,
+      "primaryDoctor": 20
     },
     {
+      "id": 37,
       "firstName": "Leonanie",
       "lastName": "Burgess",
       "gender": "Female",
-      "age": 53
+      "age": 53,
+      "primaryDoctor": 31
     },
     {
+      "id": 38,
       "firstName": "Gladys",
       "lastName": "Kless",
       "gender": "Female",
-      "age": 48
+      "age": 48,
+      "primaryDoctor": 32
     },
     {
+      "id": 39,
       "firstName": "Albertina",
       "lastName": "Garlicke",
       "gender": "Female",
-      "age": 32
+      "age": 32,
+      "primaryDoctor": 28
     },
     {
+      "id": 40,
       "firstName": "Albertine",
       "lastName": "Habbert",
       "gender": "Female",
-      "age": 44
+      "age": 44,
+      "primaryDoctor": 5
     }
   ]
 }
