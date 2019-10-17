@@ -28,15 +28,15 @@
   },
   "scripts": {
     "analyze": "source-map-explorer build/static/js/*.js",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "REACT_APP_GIT_SHA=`git rev-parse --short HEAD` react-scripts start",
+    "build": "REACT_APP_GIT_SHA=`git rev-parse --short HEAD` react-scripts build",
+    "test": "REACT_APP_GIT_SHA=`git rev-parse --short HEAD` react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 9009 -s public",
     "build-storybook": "build-storybook -s public",
     "flow": "flow check src",
     "lint": "node_modules/.bin/prettier --check src/**/*.{js,jsx,json} && eslint src",
-    "now-build": "react-scripts build && build-storybook -o build/storybook/ && esdoc && mv docs/ build/",
+    "now-build": "REACT_APP_GIT_SHA=`git rev-parse --short HEAD` react-scripts build && build-storybook -o build/storybook/ && esdoc && mv docs/ build/",
     "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls"
   },
   "eslintConfig": {
