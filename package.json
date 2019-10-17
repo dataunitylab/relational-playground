@@ -78,7 +78,7 @@
     "prettier": "^1.18.2",
     "react-test-renderer": "^16.10.2",
     "source-map-explorer": "^2.1.0",
-    "stylelint": "^11.0.0",
+    "stylelint": "^11.1.1",
     "stylelint-config-standard": "^19.0.0"
   },
   "engines": {
