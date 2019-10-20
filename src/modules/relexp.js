@@ -50,9 +50,9 @@ function addToAnd(
   types: {[string]: Array<string>},
   tables: Array<string>
 ) {
-  const converted = convertExpr(expr.left, types, tables);
+  const converted = convertExpr(expr, types, tables);
   if (Array.isArray(converted)) {
-    and = and.concat(converted);
+    and.push(...converted);
   } else {
     and.push(converted);
   }

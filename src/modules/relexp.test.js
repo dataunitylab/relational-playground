@@ -178,3 +178,17 @@ it('converts a selection', () => {
     },
   });
 });
+
+/** @test {relexp} */
+it('converts a selection with AND', () => {
+  const sql = parser.parse('SELECT * FROM foo WHERE bar > 1 AND baz < 3');
+  const action = exprFromSql(sql.value, {foo: ['bar', 'baz']});
+  expect(reducer({}, action)).toStrictEqual({
+    expr: {
+      selection: {
+        arguments: {select: [{bar: {$gt: '1'}}, {baz: {$lt: '3'}}]},
+        children: [{relation: 'foo'}],
+      },
+    },
+  });
+});
