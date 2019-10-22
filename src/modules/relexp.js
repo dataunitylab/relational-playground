@@ -104,6 +104,10 @@ function convertExpr(
           throw new Error('Column ' + column + ' not found in ' + table);
         }
 
+        if (!tables.includes(table)) {
+          throw new Error('Table ' + table + ' is not referenced in query');
+        }
+
         return expr.value;
       } else {
         // Find all tables which contain the column

@@ -192,3 +192,12 @@ it('converts a selection with AND', () => {
     },
   });
 });
+
+/** @test {relexp} */
+it('throws an error if a column is referenced in a table not joined', () => {
+  const sql = parser.parse('SELECT baz.quux FROM foo');
+  const action = exprFromSql(sql.value, {foo: ['bar'], baz: ['quux']});
+  expect(() => reducer({}, action)).toThrow(
+    'Table baz is not referenced in query'
+  );
+});
