@@ -9,6 +9,7 @@ import SqlEditor from './SqlEditor';
 import Table from './Table';
 import {changeExpr} from './modules/data';
 import {exprFromSql} from './modules/relexp';
+import {resetAction} from './modules/data';
 import ReactGA from 'react-ga';
 
 import './Home.css';
@@ -24,6 +25,7 @@ type Props = {
 
   changeExpr: typeof changeExpr,
   exprFromSql: typeof exprFromSql,
+  resetAction: typeof resetAction,
 };
 
 /** Container for all components on the main page */
@@ -70,6 +72,7 @@ class Home extends Component<Props> {
                   ReactGA={ReactGA}
                   defaultText="SELECT * FROM Doctor"
                   exprFromSql={this.props.exprFromSql}
+                  resetAction={this.props.resetAction}
                   types={this.props.types}
                 />
 
@@ -115,6 +118,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    resetAction: () => {
+      dispatch(resetAction());
+    },
     changeExpr: (data, element) => {
       dispatch(changeExpr(data, element));
     },

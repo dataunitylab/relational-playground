@@ -1,16 +1,20 @@
 // @flow
 import {deepEqual} from 'fast-equals';
 
-import './data.css';
 import patient from '../resources/Patient.json';
 import doctor from '../resources/Doctor.json';
 
 export const CHANGE_EXPR = 'CHANGE_EXPR';
+export const RESET_EXPR = 'RESET_EXPR';
 
-type Action = {
+type ChangeAction = {
   type: 'CHANGE_EXPR',
   expr: {[string]: any},
   element: ?HTMLElement,
+};
+
+type ResetAction = {
+  type: 'RESET_EXPR',
 };
 
 /**
@@ -21,8 +25,12 @@ type Action = {
 export function changeExpr(
   expr: {[string]: any},
   element: ?HTMLElement
-): Action {
+): ChangeAction {
   return {type: CHANGE_EXPR, expr, element};
+}
+
+export function resetAction(): ResetAction {
+  return {type: RESET_EXPR};
 }
 
 export type Data = {
@@ -331,17 +339,31 @@ function applyExpr(expr, sourceData) {
 function highlightExpr(currentElement: ?HTMLElement, newElement: ?HTMLElement) {
   if (currentElement !== newElement) {
     if (currentElement) {
-      currentElement.className = '';
+      let newClassName = currentElement.className.replace(' highlighted', '');
+      currentElement.className = newClassName;
     }
     if (newElement) {
-      newElement.className = 'highlighted';
+      newElement.className = newElement.className + ' highlighted';
     }
   }
   return newElement;
 }
 
-export default (state: State = initialState, action: Action) => {
+export function applyResetAction(currentElement: ?HTMLElement) {
+  if (currentElement) {
+    let newClassName = currentElement.className.replace(' highlighted', '');
+    currentElement.className = newClassName;
+  }
+}
+
+export default (state: State = initialState, action: any) => {
   switch (action.type) {
+    case RESET_EXPR:
+      applyResetAction(state.element);
+      state.element = undefined;
+      return {
+        ...state,
+      };
     case CHANGE_EXPR:
       return {
         ...state,
