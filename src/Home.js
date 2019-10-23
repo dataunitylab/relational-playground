@@ -60,35 +60,41 @@ class Home extends Component<Props> {
     }
 
     return (
-      <SplitPane split="vertical" primary="second" minSize={400}>
-        <div>
-          <SplitPane split="horizontal" primary="second" minSize={400}>
-            <div style={{padding: '0em 1em 1em 1em'}}>
-              <div>
-                {/* SQL query input */}
-                <SqlEditor
-                  ReactGA={ReactGA}
-                  defaultText="SELECT * FROM Doctor"
-                  exprFromSql={this.props.exprFromSql}
-                  types={this.props.types}
-                />
+      <div>
+        <SplitPane split="vertical" primary="second" minSize={400}>
+          <div>
+            <SplitPane split="horizontal" primary="second" minSize={400}>
+              <div style={{padding: '0em 1em 1em 1em'}}>
+                <div>
+                  {/* SQL query input */}
+                  <SqlEditor
+                    ReactGA={ReactGA}
+                    defaultText="SELECT * FROM Doctor"
+                    exprFromSql={this.props.exprFromSql}
+                    types={this.props.types}
+                  />
 
-                {/* Relational algebra expression display */}
-                <RelExpr
-                  ReactGA={ReactGA}
-                  expr={this.props.expr}
-                  changeExpr={this.props.changeExpr}
-                />
+                  {/* Relational algebra expression display */}
+                  <RelExpr
+                    ReactGA={ReactGA}
+                    expr={this.props.expr}
+                    changeExpr={this.props.changeExpr}
+                  />
+                </div>
               </div>
-            </div>
-            {data}
-          </SplitPane>
+              {data}
+            </SplitPane>
+          </div>
+          {/* Input dataset preview */}
+          <div style={{margin: '2em'}}>
+            <MultiTable ReactGA={ReactGA} tables={this.props.sources} />
+          </div>
+        </SplitPane>
+        <div className="email">
+          For Questions Please Email:
+          <a href="mailto:mmior@cs.rit.edu">mmior@cs.rit.edu</a>
         </div>
-        {/* Input dataset preview */}
-        <div style={{margin: '2em'}}>
-          <MultiTable ReactGA={ReactGA} tables={this.props.sources} />
-        </div>
-      </SplitPane>
+      </div>
     );
   }
 }
