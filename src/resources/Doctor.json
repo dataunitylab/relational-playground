@@ -1,203 +1,243 @@
 {
   "name": "Doctor",
-  "columns": ["firstName", "lastName", "salary"],
+  "columns": ["id", "firstName", "lastName", "salary"],
   "data": [
     {
+      "id": 1,
       "firstName": "Kerrin",
       "lastName": "Maddick",
       "salary": 168000
     },
     {
+      "id": 2,
       "firstName": "Katharina",
       "lastName": "Drissell",
       "salary": 125000
     },
     {
+      "id": 3,
       "firstName": "Libbi",
       "lastName": "Trenaman",
       "salary": 167000
     },
     {
+      "id": 4,
       "firstName": "Erwin",
       "lastName": "Oleksinski",
       "salary": 140000
     },
     {
+      "id": 5,
       "firstName": "Nesta",
       "lastName": "Drains",
       "salary": 127000
     },
     {
+      "id": 6,
       "firstName": "Sigvard",
       "lastName": "L'Archer",
       "salary": 188000
     },
     {
+      "id": 7,
       "firstName": "Dennie",
       "lastName": "Timmins",
       "salary": 122000
     },
     {
+      "id": 8,
       "firstName": "Clarine",
       "lastName": "Wraggs",
       "salary": 154000
     },
     {
+      "id": 9,
       "firstName": "Sumner",
       "lastName": "Botton",
       "salary": 135000
     },
     {
+      "id": 10,
       "firstName": "Lauren",
       "lastName": "Thresh",
       "salary": 168000
     },
     {
+      "id": 11,
       "firstName": "Marketa",
       "lastName": "Bibb",
       "salary": 189000
     },
     {
+      "id": 12,
       "firstName": "Katey",
       "lastName": "Francois",
       "salary": 164000
     },
     {
+      "id": 13,
       "firstName": "Lelah",
       "lastName": "Lydiate",
       "salary": 126000
     },
     {
+      "id": 14,
       "firstName": "Cchaddie",
       "lastName": "Laudham",
       "salary": 170000
     },
     {
+      "id": 15,
       "firstName": "Tatiania",
       "lastName": "Pape",
       "salary": 147000
     },
     {
+      "id": 16,
       "firstName": "Queenie",
       "lastName": "Fischer",
       "salary": 127000
     },
     {
+      "id": 17,
       "firstName": "Diahann",
       "lastName": "Lapthorne",
       "salary": 177000
     },
     {
+      "id": 18,
       "firstName": "Allin",
       "lastName": "Matthesius",
       "salary": 129000
     },
     {
+      "id": 19,
       "firstName": "Jervis",
       "lastName": "Jakeman",
       "salary": 100000
     },
     {
+      "id": 20,
       "firstName": "Ira",
       "lastName": "Tissington",
       "salary": 137000
     },
     {
+      "id": 21,
       "firstName": "Auroora",
       "lastName": "Hastewell",
       "salary": 165000
     },
     {
+      "id": 22,
       "firstName": "Caralie",
       "lastName": "Roxburgh",
       "salary": 125000
     },
     {
+      "id": 23,
       "firstName": "Sianna",
       "lastName": "Kreuzer",
       "salary": 168000
     },
     {
+      "id": 24,
       "firstName": "Llywellyn",
       "lastName": "Valentine",
       "salary": 133000
     },
     {
+      "id": 25,
       "firstName": "Uri",
       "lastName": "Gravie",
       "salary": 123000
     },
     {
+      "id": 26,
       "firstName": "Birgit",
       "lastName": "Woodage",
       "salary": 159000
     },
     {
+      "id": 27,
       "firstName": "Ludovika",
       "lastName": "Cheng",
       "salary": 135000
     },
     {
+      "id": 28,
       "firstName": "Welsh",
       "lastName": "Huleatt",
       "salary": 114000
     },
     {
+      "id": 29,
       "firstName": "Riley",
       "lastName": "Beverley",
       "salary": 157000
     },
     {
+      "id": 30,
       "firstName": "Gigi",
       "lastName": "Elstow",
       "salary": 162000
     },
     {
+      "id": 31,
       "firstName": "Lucie",
       "lastName": "Azema",
       "salary": 163000
     },
     {
+      "id": 32,
       "firstName": "Gray",
       "lastName": "Wisby",
       "salary": 107000
     },
     {
+      "id": 33,
       "firstName": "Abbey",
       "lastName": "O' Concannon",
       "salary": 134000
     },
     {
+      "id": 34,
       "firstName": "Fairfax",
       "lastName": "Frantsev",
       "salary": 173000
     },
     {
+      "id": 35,
       "firstName": "Cammi",
       "lastName": "Jellybrand",
       "salary": 118000
     },
     {
+      "id": 36,
       "firstName": "Millie",
       "lastName": "Checci",
       "salary": 183000
     },
     {
+      "id": 37,
       "firstName": "Kelsi",
       "lastName": "Pim",
       "salary": 159000
     },
     {
+      "id": 38,
       "firstName": "Lorine",
       "lastName": "Bottom",
       "salary": 173000
     },
     {
+      "id": 39,
       "firstName": "Lemar",
       "lastName": "Diaper",
       "salary": 103000
     },
     {
+      "id": 40,
       "firstName": "Cassandra",
       "lastName": "Willford",
       "salary": 183000

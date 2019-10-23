@@ -50,9 +50,9 @@ function addToAnd(
   types: {[string]: Array<string>},
   tables: Array<string>
 ) {
-  const converted = convertExpr(expr.left, types, tables);
+  const converted = convertExpr(expr, types, tables);
   if (Array.isArray(converted)) {
-    and = and.concat(converted);
+    and.push(...converted);
   } else {
     and.push(converted);
   }
@@ -102,6 +102,10 @@ function convertExpr(
         // Make sure the column of the table exists
         if (!types[table].includes(column)) {
           throw new Error('Column ' + column + ' not found in ' + table);
+        }
+
+        if (!tables.includes(table)) {
+          throw new Error('Table ' + table + ' is not referenced in query');
         }
 
         return expr.value;
