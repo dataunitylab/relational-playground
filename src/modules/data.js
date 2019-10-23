@@ -350,6 +350,7 @@ export default (state: State = initialState, action: any) => {
   switch (action.type) {
     case CHANGE_ACTION:
       applyChangeAction(state.element);
+      state.element = undefined;
       return {
         ...state,
       };
