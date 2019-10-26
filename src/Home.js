@@ -56,6 +56,7 @@ class Home extends Component<Props> {
             tableName={this.props.data.current.name}
             columns={this.props.data.current.columns}
             data={this.props.data.current.data}
+            sortable={false}
           />
         </div>
       );
