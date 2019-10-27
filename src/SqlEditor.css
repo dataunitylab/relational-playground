@@ -6,14 +6,14 @@
   flex-direction: column;
 }
 
-.SqlEditor textarea {
-  height: 5em;
-  resize: none;
-  border-style: solid;
-  padding: 0.4em;
-}
-
 .SqlEditor .error {
   font-weight: bold;
   padding: 0.4em;
+}
+
+.SqlEditor .CodeMirror {
+  border: 1px solid #333;
+  padding: 1em;
+  height: auto;
+  margin-bottom: 1em;
 }

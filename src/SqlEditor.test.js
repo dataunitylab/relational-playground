@@ -1,6 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 
+import CodeMirror from 'react-codemirror';
 import SqlEditor from './SqlEditor';
 
 it('can parse the initial query', () => {
@@ -8,7 +9,7 @@ it('can parse the initial query', () => {
   const mockAction = jest.fn();
   const mockEvent = jest.fn();
   const mockResetAction = jest.fn(() => undefined);
-  const wrapper = shallow(
+  shallow(
     <SqlEditor
       defaultText="SELECT * FROM foo"
       ReactGA={{event: mockEvent}}
@@ -46,9 +47,9 @@ it('can parse modified query and fire an event', () => {
 
   const query = 'SELECT 1 FROM quux';
   wrapper
-    .find('textarea')
+    .find(CodeMirror)
     .first()
-    .simulate('change', {target: {value: query}});
+    .simulate('change', query);
 
   // No events should be recorded yet
   expect(mockEvent.mock.calls.length).toBe(0);
