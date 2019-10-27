@@ -2,7 +2,7 @@
 
 exports[`correctly renders a complex expression 1`] = `
 <span
-  class="RelExpr"
+  className="RelExpr"
   onClick={[Function]}
   style={
     Object {
@@ -24,7 +24,7 @@ exports[`correctly renders a complex expression 1`] = `
       </span>
       (
       <span
-        class="RelExpr"
+        className="RelExpr"
         onClick={[Function]}
         style={
           Object {
@@ -46,7 +46,7 @@ exports[`correctly renders a complex expression 1`] = `
             </span>
             (
             <span
-              class="RelExpr"
+              className="RelExpr"
               onClick={[Function]}
               style={
                 Object {
@@ -68,7 +68,7 @@ exports[`correctly renders a complex expression 1`] = `
                   </span>
                   (
                   <span
-                    class="RelExpr"
+                    className="RelExpr"
                     style={
                       Object {
                         "margin": ".4em",

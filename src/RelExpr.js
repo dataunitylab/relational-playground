@@ -184,14 +184,14 @@ class RelExpr extends Component<Props> {
     const type = Object.keys(this.props.expr)[0];
     if (type === 'relation') {
       return (
-        <span class="RelExpr" style={{margin: '.4em'}}>
+        <span className="RelExpr" style={{margin: '.4em'}}>
           {this.buildExpr(this.props.expr)}
         </span>
       );
     } else {
       return (
         <span
-          class="RelExpr"
+          className="RelExpr"
           onClick={this.handleExprClick}
           style={{margin: '.4em'}}
         >
