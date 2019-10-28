@@ -9929,10 +9929,10 @@ npm-package-json-lint-config-default@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/npm-package-json-lint-config-default/-/npm-package-json-lint-config-default-2.0.0.tgz#3d93f7ec8d85ce5e4a795269a752634c0aced8b3"
 
-npm-package-json-lint@^4.0.2:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/npm-package-json-lint/-/npm-package-json-lint-4.0.2.tgz#4065378f8f17c288158c39812996f7ad7d226c8e"
-  integrity sha512-xlahvfRgZcsawUPzKaJvcQSs4K0EzDgQ9YEe7VODo1XbLMWwS0IEXiywHlKPAvo1fmWBvovIdoAqhe0Gk4InHA==
+npm-package-json-lint@^4.0.3:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/npm-package-json-lint/-/npm-package-json-lint-4.0.3.tgz#3f869195a238bd67c273c7ecb32b80a1e433a866"
+  integrity sha512-cuvTR2l5dOjjlRR3a1CCp+mh2A2HyQRxydwdcYi0Z77NRlADpf7wF3Jf8XFLGZM7J6afXNRBofBjQ1UWFyOtKA==
   dependencies:
     ajv "^6.10.2"
     ajv-errors "^1.0.1"
