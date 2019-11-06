@@ -69,7 +69,7 @@
     "esdoc-jsx-plugin": "^1.0.0",
     "esdoc-react-plugin": "^1.0.1",
     "esdoc-standard-plugin": "^1.0.0",
-    "flow-bin": "^0.111.0",
+    "flow-bin": "^0.111.3",
     "husky": "^3.0.9",
     "jest-each": "^24.9.0",
     "jest-enzyme": "^7.1.2",
