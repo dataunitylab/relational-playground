@@ -174,9 +174,14 @@ function buildRelExp(sql, types, tables) {
       };
 
     case 'Select':
+      // Ensure we have a FROM clause
+      if (!sql.from) {
+        throw new Error('A FROM clause must be specified.');
+      }
+
       // Build an expression for everything in the FROM clause
       let from = sql.from.value.map(v => buildRelExp(v, types, tables));
-      if (from.length > 1) {
+      if (from.length !== 1) {
         throw new Error('Only single table queries currently supported.');
       }
 

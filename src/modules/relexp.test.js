@@ -201,3 +201,12 @@ it('throws an error if a column is referenced in a table not joined', () => {
     'Table baz is not referenced in query'
   );
 });
+
+/** @test {relexp} */
+it('throws an error if no FROM clause is given', () => {
+  const sql = parser.parse('SELECT 0');
+  const action = exprFromSql(sql.value, {});
+  expect(() => reducer({}, action)).toThrow(
+    'A FROM clause must be specified.'
+  );
+});
