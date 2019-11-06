@@ -1,8 +1,12 @@
 // @flow
 import React, {Component} from 'react';
+import CodeMirror from 'react-codemirror';
 import {exprFromSql} from './modules/relexp';
 import {resetAction} from './modules/data';
 import './SqlEditor.css';
+
+import 'codemirror/lib/codemirror.css';
+require('codemirror/mode/sql/sql');
 
 const parser = require('@michaelmior/js-sql-parser');
 
@@ -21,8 +25,6 @@ type State = {
 
 /** Editor for SQL queries */
 class SqlEditor extends Component<Props, State> {
-  inputRef: ?HTMLTextAreaElement;
-
   constructor() {
     super();
     (this: any).handleChange = this.handleChange.bind(this);
@@ -80,14 +82,11 @@ class SqlEditor extends Component<Props, State> {
     }
   }
 
-  handleChange(event: SyntheticInputEvent<HTMLTextAreaElement>) {
+  handleChange(text: string) {
     // Cancel any pending query parsing
     if (this.state.timeout) {
       clearTimeout(this.state.timeout);
     }
-
-    // Get the query to be parsed
-    const text = event.target.value;
 
     // Only parse the query once per second
     let handle = setTimeout(() => {
@@ -106,10 +105,13 @@ class SqlEditor extends Component<Props, State> {
     return (
       <div className="SqlEditor">
         <h4>SQL Query</h4>
-        <textarea
+        <CodeMirror
           onChange={this.handleChange}
-          ref={inputRef => (this.inputRef = inputRef)}
           defaultValue={this.props.defaultText}
+          options={{
+            mode: 'sql',
+            viewportMargin: Infinity,
+          }}
         />
         <div className="error">{error}</div>
       </div>
