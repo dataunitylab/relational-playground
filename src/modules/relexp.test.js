@@ -208,3 +208,17 @@ it('throws an error if no FROM clause is given', () => {
   const action = exprFromSql(sql.value, {});
   expect(() => reducer({}, action)).toThrow('A FROM clause must be specified.');
 });
+
+/** @test {relexp} */
+it('should remove quotes from string literals', () => {
+  const sql = parser.parse('SELECT * FROM foo WHERE bar = "baz"');
+  const action = exprFromSql(sql.value, {foo: ['bar']});
+  expect(reducer({}, action)).toStrictEqual({
+    expr: {
+      selection: {
+        arguments: {select: [{bar: {"$eq": "baz"}}]},
+        children: [{relation: 'foo'}],
+      },
+    },
+  });
+});

@@ -132,9 +132,18 @@ function convertExpr(
       }
 
     case 'Number':
-    case 'String':
       // For literals, just return the value object as-is
       return expr.value;
+
+    case 'String':
+      // If needed, strip quotes
+      if (expr.value && typeof expr.value === 'string' && expr.value.length > 1
+          && (expr.value[0] === "'" || expr.value[0] === '"')
+          && (expr.value.charAt(expr.value.length - 1) === expr.value[0])) {
+        return expr.value.slice(1, -1);;
+      } else {
+        return expr.value;
+      }
 
     default:
       // Produce an error if the expression is unsupported
