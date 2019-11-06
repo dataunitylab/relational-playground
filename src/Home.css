@@ -52,5 +52,6 @@
 
 .email {
   position: absolute;
-  bottom: 5px;
+  bottom: 15px;
+  right: 15px;
 }

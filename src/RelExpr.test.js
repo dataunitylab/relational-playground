@@ -1,8 +1,8 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import {shallow} from 'enzyme';
 
 import RelExpr from './RelExpr';
+import {mount} from 'enzyme';
 
 /** @test {RelExpr} */
 it('correctly renders a complex expression', () => {
@@ -42,11 +42,40 @@ it('produces an error for an invalid expression', () => {
 });
 
 /** @test {RelExpr} */
-it('changes the expression when clicked', () => {
+it('doesnt change the expression when clicked and relation', () => {
   const mockAction = jest.fn();
   const mockEvent = jest.fn();
   const expr = {relation: 'foo'};
-  const wrapper = shallow(
+  const wrapper = mount(
+    <RelExpr ReactGA={{event: mockEvent}} expr={expr} changeExpr={mockAction} />
+  );
+
+  // Click on the expression
+  wrapper.simulate('click', {stopPropagation: jest.fn()});
+
+  // An action changing the expression should fire
+  // Should not have action attached when type relation
+  expect(mockAction.mock.calls.length).toBe(0);
+
+  // Don't expect analytics on a relation
+  expect(mockEvent.mock.calls.length).toBe(0);
+});
+
+/** @test {RelExpr} */
+it('changes the expression when clicked not relation', () => {
+  const mockAction = jest.fn();
+  const mockEvent = jest.fn();
+  const expr = {
+    selection: {
+      arguments: {
+        select: 'foo',
+      },
+      children: {
+        relation: {},
+      },
+    },
+  };
+  const wrapper = mount(
     <RelExpr ReactGA={{event: mockEvent}} expr={expr} changeExpr={mockAction} />
   );
 
@@ -62,5 +91,5 @@ it('changes the expression when clicked', () => {
   expect(mockEvent.mock.calls[0][0].category).toBe(
     'User Selecting Relational Algebra Enclosure'
   );
-  expect(mockEvent.mock.calls[0][0].action).toBe('relation');
+  expect(mockEvent.mock.calls[0][0].action).toBe('selection');
 });

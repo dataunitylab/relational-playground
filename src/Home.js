@@ -9,6 +9,7 @@ import SqlEditor from './SqlEditor';
 import Table from './Table';
 import {changeExpr} from './modules/data';
 import {exprFromSql} from './modules/relexp';
+import {resetAction} from './modules/data';
 import ReactGA from 'react-ga';
 
 import './Home.css';
@@ -24,6 +25,7 @@ type Props = {
 
   changeExpr: typeof changeExpr,
   exprFromSql: typeof exprFromSql,
+  resetAction: typeof resetAction,
 };
 
 /** Container for all components on the main page */
@@ -60,41 +62,40 @@ class Home extends Component<Props> {
     }
 
     return (
-      <div>
-        <SplitPane split="vertical" primary="second" minSize={400}>
-          <div>
-            <SplitPane split="horizontal" primary="second" minSize={400}>
-              <div style={{padding: '0em 1em 1em 1em'}}>
-                <div>
-                  {/* SQL query input */}
-                  <SqlEditor
-                    ReactGA={ReactGA}
-                    defaultText="SELECT * FROM Doctor"
-                    exprFromSql={this.props.exprFromSql}
-                    types={this.props.types}
-                  />
+      <SplitPane split="vertical" primary="second" minSize={400}>
+        <div>
+          <SplitPane split="horizontal" primary="second" minSize={400}>
+            <div style={{padding: '0em 1em 1em 1em'}}>
+              <div>
+                {/* SQL query input */}
+                <SqlEditor
+                  ReactGA={ReactGA}
+                  defaultText="SELECT * FROM Doctor"
+                  exprFromSql={this.props.exprFromSql}
+                  resetAction={this.props.resetAction}
+                  types={this.props.types}
+                />
 
-                  {/* Relational algebra expression display */}
-                  <RelExpr
-                    ReactGA={ReactGA}
-                    expr={this.props.expr}
-                    changeExpr={this.props.changeExpr}
-                  />
-                </div>
+                {/* Relational algebra expression display */}
+                <RelExpr
+                  ReactGA={ReactGA}
+                  expr={this.props.expr}
+                  changeExpr={this.props.changeExpr}
+                />
               </div>
-              {data}
-            </SplitPane>
-          </div>
-          {/* Input dataset preview */}
-          <div style={{margin: '2em'}}>
-            <MultiTable ReactGA={ReactGA} tables={this.props.sources} />
-          </div>
-        </SplitPane>
-        <div className="email">
-          For Questions Please Email:
-          <a href="mailto:mmior@cs.rit.edu">mmior@cs.rit.edu</a>
+            </div>
+            {data}
+          </SplitPane>
         </div>
-      </div>
+        {/* Input dataset preview */}
+        <div style={{margin: '2em'}}>
+          <MultiTable ReactGA={ReactGA} tables={this.props.sources} />
+          <div className="email">
+            For Questions Please Email:{' '}
+            <a href="mailto:mmior@cs.rit.edu">mmior@cs.rit.edu</a>
+          </div>
+        </div>
+      </SplitPane>
     );
   }
 }
@@ -121,6 +122,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    resetAction: () => {
+      dispatch(resetAction());
+    },
     changeExpr: (data, element) => {
       dispatch(changeExpr(data, element));
     },

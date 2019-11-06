@@ -1,6 +1,7 @@
 // @flow
 import React, {Component} from 'react';
 import {exprFromSql} from './modules/relexp';
+import {resetAction} from './modules/data';
 import './SqlEditor.css';
 
 const parser = require('@michaelmior/js-sql-parser');
@@ -8,6 +9,7 @@ const parser = require('@michaelmior/js-sql-parser');
 type Props = {
   defaultText: string,
   exprFromSql: typeof exprFromSql,
+  resetAction: typeof resetAction,
   ReactGA: any,
   types: {[string]: Array<string>},
 };
@@ -39,6 +41,9 @@ class SqlEditor extends Component<Props, State> {
    */
   parseQuery(text: string, firstLoad?: boolean) {
     if (!firstLoad) {
+      if (this.props.resetAction) {
+        this.props.resetAction();
+      }
       this.setState({timeout: null});
     }
     try {

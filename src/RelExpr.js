@@ -13,6 +13,9 @@ import {
 } from './RelOp';
 import Relation from './Relation';
 import {changeExpr} from './modules/data';
+import ReactDOM from 'react-dom';
+
+import './RelExpr.css';
 
 type Props = {
   changeExpr: typeof changeExpr,
@@ -65,47 +68,55 @@ class RelExpr extends Component<Props> {
     switch (type) {
       case 'projection':
         return (
-          <UnaryRelOp
-            operator={
-              <Projection project={expr.projection.arguments.project} />
-            }
-          >
-            <RelExpr
-              expr={expr.projection.children[0]}
-              changeExpr={this.props.changeExpr}
-              ReactGA={this.props.ReactGA}
-            />
-          </UnaryRelOp>
+          <span>
+            <UnaryRelOp
+              operator={
+                <Projection project={expr.projection.arguments.project} />
+              }
+            >
+              <RelExpr
+                expr={expr.projection.children[0]}
+                changeExpr={this.props.changeExpr}
+                ReactGA={this.props.ReactGA}
+              />
+            </UnaryRelOp>
+          </span>
         );
 
       case 'selection':
         return (
-          <UnaryRelOp
-            operator={
-              <Selection
-                select={this.conditionToString(expr.selection.arguments.select)}
+          <span>
+            <UnaryRelOp
+              operator={
+                <Selection
+                  select={this.conditionToString(
+                    expr.selection.arguments.select
+                  )}
+                />
+              }
+            >
+              <RelExpr
+                expr={expr.selection.children[0]}
+                changeExpr={this.props.changeExpr}
+                ReactGA={this.props.ReactGA}
               />
-            }
-          >
-            <RelExpr
-              expr={expr.selection.children[0]}
-              changeExpr={this.props.changeExpr}
-              ReactGA={this.props.ReactGA}
-            />
-          </UnaryRelOp>
+            </UnaryRelOp>
+          </span>
         );
 
       case 'rename':
         return (
-          <UnaryRelOp
-            operator={<Rename rename={expr.rename.arguments.rename} />}
-          >
-            <RelExpr
-              expr={expr.rename.children[0]}
-              changeExpr={this.props.changeExpr}
-              ReactGA={this.props.ReactGA}
-            />
-          </UnaryRelOp>
+          <span>
+            <UnaryRelOp
+              operator={<Rename rename={expr.rename.arguments.rename} />}
+            >
+              <RelExpr
+                expr={expr.rename.children[0]}
+                changeExpr={this.props.changeExpr}
+                ReactGA={this.props.ReactGA}
+              />
+            </UnaryRelOp>
+          </span>
         );
 
       case 'relation':
@@ -151,26 +162,43 @@ class RelExpr extends Component<Props> {
    */
   handleExprClick(e: SyntheticMouseEvent<HTMLElement>) {
     e.stopPropagation();
-    if (this.props.changeExpr) {
-      const target = e.target instanceof HTMLElement ? e.target : undefined;
-      const parent =
-        target && target.parentElement instanceof HTMLElement
-          ? target.parentElement
-          : undefined;
-      this.props.changeExpr(this.props.expr, parent);
-      this.props.ReactGA.event({
-        category: 'User Selecting Relational Algebra Enclosure',
-        action: Object.keys(this.props.expr)[0],
-      });
+    const node =
+      ReactDOM.findDOMNode(this) instanceof HTMLElement
+        ? ReactDOM.findDOMNode(this)
+        : undefined;
+
+    if (node instanceof HTMLElement && this.props.changeExpr) {
+      this.props.changeExpr(this.props.expr, node);
     }
+
+    this.props.ReactGA.event({
+      category: 'User Selecting Relational Algebra Enclosure',
+      action: Object.keys(this.props.expr)[0],
+    });
   }
 
   render() {
-    return (
-      <span onClick={this.handleExprClick} style={{margin: '.4em'}}>
-        {this.buildExpr(this.props.expr)}
-      </span>
-    );
+    if (!this.props.expr || Object.keys(this.props.expr).length === 0) {
+      return '';
+    }
+    const type = Object.keys(this.props.expr)[0];
+    if (type === 'relation') {
+      return (
+        <span class="RelExpr" style={{margin: '.4em'}}>
+          {this.buildExpr(this.props.expr)}
+        </span>
+      );
+    } else {
+      return (
+        <span
+          class="RelExpr"
+          onClick={this.handleExprClick}
+          style={{margin: '.4em'}}
+        >
+          {this.buildExpr(this.props.expr)}
+        </span>
+      );
+    }
   }
 }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import {shallow} from 'enzyme';
+import {mount} from 'enzyme';
 import {render} from '@testing-library/react';
 import each from 'jest-each';
 
@@ -19,7 +19,7 @@ each([
   ['unary operators', <UnaryRelOp />],
   ['binary operators', <BinaryRelOp />],
 ]).test('%s should add (and remove) a class on hover', (opType, relOp) => {
-  const wrapper = shallow(relOp);
+  const wrapper = mount(relOp);
 
   // Hovering class should be off by default
   expect(wrapper.hasClass('hovering')).toBeFalsy();
@@ -27,12 +27,12 @@ each([
   // Hovering should add the class and not propagate the event
   const mockStop = jest.fn();
   wrapper.simulate('mouseover', {type: 'mouseover', stopPropagation: mockStop});
-  expect(wrapper.hasClass('hovering')).toBeTruthy();
+  expect(wrapper.exists('.hovering')).toBeTruthy();
   expect(mockStop.mock.calls.length).toBe(1);
 
   // Mouse out should remove the class
   wrapper.simulate('mouseout', {type: 'mouseout', stopPropagation: jest.fn()});
-  expect(wrapper.hasClass('hovering')).toBeFalsy();
+  expect(wrapper.exists('.hovering')).toBeFalsy();
 });
 
 /** @test {Projection} */
