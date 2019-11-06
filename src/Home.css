@@ -49,3 +49,8 @@
 .Resizer.disabled:hover {
   border-color: transparent;
 }
+
+.email {
+  position: absolute;
+  bottom: 1em;
+}

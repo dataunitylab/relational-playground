@@ -91,6 +91,9 @@ class Home extends Component<Props> {
         {/* Input dataset preview */}
         <div style={{margin: '2em'}}>
           <MultiTable ReactGA={ReactGA} tables={this.props.sources} />
+          <div className='email'>
+            For questions, please email <a href='mailto:mmior@cs.rit.edu'>mmior@cs.rit.edu</a>
+          </div>
         </div>
       </SplitPane>
     );
