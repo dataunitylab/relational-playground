@@ -137,10 +137,14 @@ function convertExpr(
 
     case 'String':
       // If needed, strip quotes
-      if (expr.value && typeof expr.value === 'string' && expr.value.length > 1
-          && (expr.value[0] === "'" || expr.value[0] === '"')
-          && (expr.value.charAt(expr.value.length - 1) === expr.value[0])) {
-        return expr.value.slice(1, -1);;
+      if (
+        expr.value &&
+        typeof expr.value === 'string' &&
+        expr.value.length > 1 &&
+        (expr.value[0] === "'" || expr.value[0] === '"') &&
+        expr.value.charAt(expr.value.length - 1) === expr.value[0]
+      ) {
+        return expr.value.slice(1, -1);
       } else {
         return expr.value;
       }

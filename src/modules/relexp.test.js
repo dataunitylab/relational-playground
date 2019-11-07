@@ -216,7 +216,7 @@ it('should remove quotes from string literals', () => {
   expect(reducer({}, action)).toStrictEqual({
     expr: {
       selection: {
-        arguments: {select: [{bar: {"$eq": "baz"}}]},
+        arguments: {select: [{bar: {$eq: 'baz'}}]},
         children: [{relation: 'foo'}],
       },
     },
