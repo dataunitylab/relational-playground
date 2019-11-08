@@ -135,11 +135,11 @@ function applyExpr(expr, sourceData) {
         // Loop over all expressions to be evaluauted
         for (var i = 0; keep && i < select.length; i++) {
           // Get the column to compare and the comparison operator
-          const col = resolveColumn(Object.keys(select[i])[0], item);
-          const op = Object.keys(select[i][col])[0];
+          const col = resolveColumn(select[i].lhs, item);
+          const op = select[i].op;
 
           // Try to resolve the column, otherwise treat it as a literal
-          let rhs = select[i][col][op];
+          let rhs = select[i].rhs;
           try {
             rhs = item[resolveColumn(rhs, item)];
           } catch {}

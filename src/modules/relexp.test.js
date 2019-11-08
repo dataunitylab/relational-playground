@@ -151,7 +151,7 @@ it('converts a join with a condition', () => {
   expect(reducer({}, action)).toStrictEqual({
     expr: {
       selection: {
-        arguments: {select: [{'foo.baz': {$eq: 'bar.corge'}}]},
+        arguments: {select: [{lhs: 'foo.baz', op: '$eq', rhs: 'bar.corge'}]},
         children: [
           {
             join: {
@@ -172,7 +172,7 @@ it('converts a selection', () => {
   expect(reducer({}, action)).toStrictEqual({
     expr: {
       selection: {
-        arguments: {select: [{bar: {$gt: '1'}}]},
+        arguments: {select: [{lhs: 'bar', op: '$gt', rhs: '1'}]},
         children: [{relation: 'foo'}],
       },
     },
@@ -186,7 +186,12 @@ it('converts a selection with AND', () => {
   expect(reducer({}, action)).toStrictEqual({
     expr: {
       selection: {
-        arguments: {select: [{bar: {$gt: '1'}}, {baz: {$lt: '3'}}]},
+        arguments: {
+          select: [
+            {lhs: 'bar', op: '$gt', rhs: '1'},
+            {lhs: 'baz', op: '$lt', rhs: '3'},
+          ],
+        },
         children: [{relation: 'foo'}],
       },
     },
@@ -216,7 +221,7 @@ it('should remove quotes from string literals', () => {
   expect(reducer({}, action)).toStrictEqual({
     expr: {
       selection: {
-        arguments: {select: [{bar: {$eq: 'baz'}}]},
+        arguments: {select: [{lhs: 'bar', op: '$eq', rhs: 'baz'}]},
         children: [{relation: 'foo'}],
       },
     },

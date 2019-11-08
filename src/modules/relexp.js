@@ -80,9 +80,9 @@ function convertExpr(
 
     case 'ComparisonBooleanPrimary':
       let ret = {};
-      ret[(convertExpr(expr.left, types, tables): any)] = {
-        [opMap[expr.operator]]: convertExpr(expr.right, types, tables),
-      };
+      ret.lhs = convertExpr(expr.left, types, tables);
+      ret.op = opMap[expr.operator];
+      ret.rhs = convertExpr(expr.right, types, tables);
       return [ret];
 
     case 'Identifier':

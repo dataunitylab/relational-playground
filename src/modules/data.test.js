@@ -183,7 +183,7 @@ it.each(operatorTests)(
   (op, value, includeRows) => {
     const expr = {
       selection: {
-        arguments: {select: [{bar: {[op]: value}}]},
+        arguments: {select: [{lhs: 'bar', op: op, rhs: value}]},
         children: [{relation: 'foo'}],
       },
     };
