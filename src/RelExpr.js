@@ -48,9 +48,9 @@ class RelExpr extends Component<Props> {
       $eq: '=',
     };
     for (let i = 0; i < select.length; i++) {
-      const field = Object.keys(select[i])[0];
-      const op = Object.keys(select[i][field])[0];
-      conds.push(field + ' ' + opMap[op] + ' ' + select[i][field][op]);
+      conds.push(
+        select[i].lhs + ' ' + opMap[select[i].op] + ' ' + select[i].rhs
+      );
     }
     return conds;
   }

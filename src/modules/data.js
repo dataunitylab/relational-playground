@@ -92,6 +92,15 @@ function resolveColumn(path: string, row: {[string]: any}): string {
   throw new Error('Invalid column ' + path);
 }
 
+// Try to resolve a column, otherwise treat it as a literal
+function resolveValue(path: string, row: {[string]: any}): string {
+  let value = path;
+  try {
+    value = row[resolveColumn(path, row)];
+  } catch {}
+  return value;
+}
+
 /**
  * @param expr - a relational algebra expression to evaluate
  * @param sourceData - source data from relations
@@ -134,37 +143,32 @@ function applyExpr(expr, sourceData) {
 
         // Loop over all expressions to be evaluauted
         for (var i = 0; keep && i < select.length; i++) {
-          // Get the column to compare and the comparison operator
-          const col = resolveColumn(select[i].lhs, item);
+          // Get the values to compare and the comparison operator
+          const lhs = resolveValue(select[i].lhs, item);
           const op = select[i].op;
-
-          // Try to resolve the column, otherwise treat it as a literal
-          let rhs = select[i].rhs;
-          try {
-            rhs = item[resolveColumn(rhs, item)];
-          } catch {}
+          let rhs = resolveValue(select[i].rhs, item);
 
           // Update the flag indicating whether we should keep this tuple
           switch (op) {
             case '$gte':
-              keep = keep && item[col] >= rhs;
+              keep = keep && lhs >= rhs;
               break;
             case '$gt':
-              keep = keep && item[col] > rhs;
+              keep = keep && lhs > rhs;
               break;
             case '$lt':
-              keep = keep && item[col] < rhs;
+              keep = keep && lhs < rhs;
               break;
             case '$lte':
-              keep = keep && item[col] <= rhs;
+              keep = keep && lhs <= rhs;
               break;
             case '$ne':
               // eslint-disable-next-line eqeqeq
-              keep = keep && item[col] != rhs;
+              keep = keep && lhs != rhs;
               break;
             case '$eq':
               // eslint-disable-next-line eqeqeq
-              keep = keep && item[col] == rhs;
+              keep = keep && lhs == rhs;
               break;
             default:
               throw new Error('Invalid expression');

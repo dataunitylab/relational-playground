@@ -180,6 +180,20 @@ it('converts a selection', () => {
 });
 
 /** @test {relexp} */
+it('converts a selection with a literal on the left', () => {
+  const sql = parser.parse('SELECT * FROM foo WHERE 1 > bar');
+  const action = exprFromSql(sql.value, {foo: ['bar']});
+  expect(reducer({}, action)).toStrictEqual({
+    expr: {
+      selection: {
+        arguments: {select: [{lhs: '1', op: '$gt', rhs: 'bar'}]},
+        children: [{relation: 'foo'}],
+      },
+    },
+  });
+});
+
+/** @test {relexp} */
 it('converts a selection with AND', () => {
   const sql = parser.parse('SELECT * FROM foo WHERE bar > 1 AND baz < 3');
   const action = exprFromSql(sql.value, {foo: ['bar', 'baz']});

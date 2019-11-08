@@ -169,21 +169,22 @@ it('can evaluate a join', () => {
 // The test parameters below are the operator, the value for comparison,
 // and finally the indexes of the rows which should be included
 const operatorTests = [
-  ['$gt', '1', [1, 2]],
-  ['$gte', '1', [0, 1, 2]],
-  ['$lt', '1', []],
-  ['$lte', '1', [0]],
-  ['$eq', '1', [0]],
-  ['$ne', '1', [1, 2]],
+  ['bar', '$gt', '1', [1, 2]],
+  ['bar', '$gte', '1', [0, 1, 2]],
+  ['bar', '$lt', '1', []],
+  ['bar', '$lte', '1', [0]],
+  ['bar', '$eq', '1', [0]],
+  ['bar', '$ne', '1', [1, 2]],
+  ['1', '$ne', 'bar', [1, 2]],
 ];
 
 /** @test {data} */
 it.each(operatorTests)(
-  'it can evaluate a selection with the condition %s %s',
-  (op, value, includeRows) => {
+  'it can evaluate a selection with the condition %s %s %s',
+  (lhs, op, value, includeRows) => {
     const expr = {
       selection: {
-        arguments: {select: [{lhs: 'bar', op: op, rhs: value}]},
+        arguments: {select: [{lhs: lhs, op: op, rhs: value}]},
         children: [{relation: 'foo'}],
       },
     };
