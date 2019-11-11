@@ -5,7 +5,11 @@ const sourceData = {
   foo: {
     name: 'foo',
     columns: ['bar', 'baz'],
-    data: [{bar: 1, baz: 2}, {bar: 3, baz: 4}, {bar: 5, baz: 6}],
+    data: [
+      {bar: 1, baz: 2},
+      {bar: 3, baz: 4},
+      {bar: 5, baz: 6},
+    ],
   },
   corge: {
     name: 'corge',
