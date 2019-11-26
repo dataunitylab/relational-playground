@@ -2,6 +2,8 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 
+import './RelOp.css';
+
 import type {Element, Node} from 'react';
 
 type Props = {

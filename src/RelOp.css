@@ -1,0 +1,5 @@
+.RelOp .hovering,
+.RelOp.hovering {
+  background: #ff3;
+  cursor: pointer;
+}
