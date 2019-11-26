@@ -2,7 +2,7 @@ import React from 'react';
 
 import {storiesOf} from '@storybook/react';
 
-import RelOp, {Projection, Rename, Selection} from '../src/RelOp';
+import {Projection, Rename, Selection, UnaryRelOp} from '../src/RelOp';
 import RelExpr from '../src/RelExpr';
 import MultiTable from '../src/MultiTable';
 import Table from '../src/Table';
@@ -43,24 +43,24 @@ storiesOf('MultiTable', module).add('with several sources', () => (
 
 storiesOf('RelOp', module)
   .add('a simple projection', () => (
-    <RelOp operator={<Projection project={['firstName', 'lastName']} />}>
+    <UnaryRelOp operator={<Projection project={['firstName', 'lastName']} />}>
       Doctor
-    </RelOp>
+    </UnaryRelOp>
   ))
   .add('a simple selection', () => (
-    <RelOp operator={<Selection select={['salary > 100K']} />}>Doctor</RelOp>
+    <UnaryRelOp operator={<Selection select={['salary > 100K']} />}>Doctor</UnaryRelOp>
   ))
   .add('a simple rename', () => (
-    <RelOp operator={<Rename rename={{firstName: 'name'}} />}>Doctor</RelOp>
+    <UnaryRelOp operator={<Rename rename={{firstName: 'name'}} />}>Doctor</UnaryRelOp>
   ))
   .add('nested operations', () => (
-    <RelOp operator={<Rename rename={{firstName: 'name'}} />}>
-      <RelOp operator={<Projection project={['firstName', 'lastName']} />}>
-        <RelOp operator={<Selection select={['salary > 100K']} />}>
+    <UnaryRelOp operator={<Rename rename={{firstName: 'name'}} />}>
+      <UnaryRelOp operator={<Projection project={['firstName', 'lastName']} />}>
+        <UnaryRelOp operator={<Selection select={['salary > 100K']} />}>
           Doctor
-        </RelOp>
-      </RelOp>
-    </RelOp>
+        </UnaryRelOp>
+      </UnaryRelOp>
+    </UnaryRelOp>
   ));
 
 storiesOf('RelExpr', module).add('a complex expression', () => (

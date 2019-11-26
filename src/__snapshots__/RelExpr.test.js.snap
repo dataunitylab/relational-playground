@@ -17,80 +17,86 @@ exports[`correctly renders a complex expression 1`] = `
       onMouseOver={[Function]}
     >
       <span>
-        ρ
-        <sub>
-          firstName/name
-        </sub>
-      </span>
-      (
-      <span
-        className="RelExpr"
-        onClick={[Function]}
-        style={
-          Object {
-            "margin": ".4em",
-          }
-        }
-      >
         <span>
-          <span
-            className=""
-            onMouseOut={[Function]}
-            onMouseOver={[Function]}
-          >
-            <span>
-              π
-              <sub>
-                firstName,lastName
-              </sub>
-            </span>
-            (
+          ρ
+          <sub>
+            firstName/name
+          </sub>
+        </span>
+        (
+        <span
+          className="RelExpr"
+          onClick={[Function]}
+          style={
+            Object {
+              "margin": ".4em",
+            }
+          }
+        >
+          <span>
             <span
-              className="RelExpr"
-              onClick={[Function]}
-              style={
-                Object {
-                  "margin": ".4em",
-                }
-              }
+              className=""
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
             >
               <span>
+                <span>
+                  π
+                  <sub>
+                    firstName,lastName
+                  </sub>
+                </span>
+                (
                 <span
-                  className=""
-                  onMouseOut={[Function]}
-                  onMouseOver={[Function]}
+                  className="RelExpr"
+                  onClick={[Function]}
+                  style={
+                    Object {
+                      "margin": ".4em",
+                    }
+                  }
                 >
                   <span>
-                    σ
-                    <sub>
-                      salary &gt; 130000
-                    </sub>
-                  </span>
-                  (
-                  <span
-                    className="RelExpr"
-                    style={
-                      Object {
-                        "margin": ".4em",
-                      }
-                    }
-                  >
                     <span
-                      className="Relation"
-                      data-testid="span"
+                      className=""
+                      onMouseOut={[Function]}
+                      onMouseOver={[Function]}
                     >
-                      Doctor
+                      <span>
+                        <span>
+                          σ
+                          <sub>
+                            salary &gt; 130000
+                          </sub>
+                        </span>
+                        (
+                        <span
+                          className="RelExpr"
+                          style={
+                            Object {
+                              "margin": ".4em",
+                            }
+                          }
+                        >
+                          <span
+                            className="Relation"
+                            data-testid="span"
+                          >
+                            Doctor
+                          </span>
+                        </span>
+                        )
+                      </span>
                     </span>
                   </span>
-                  )
                 </span>
+                )
               </span>
             </span>
-            )
           </span>
         </span>
+        )
       </span>
-      )
     </span>
   </span>
 </span>

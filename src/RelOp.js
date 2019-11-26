@@ -5,20 +5,18 @@ import ReactDOM from 'react-dom';
 import type {Element, Node} from 'react';
 
 type Props = {
-  operator: Element<any>,
+  children: Node,
 };
 
 type State = {
-  isHovered: boolean,
   hoverClass: string,
 };
 
 /** Base class for all relational algebra operators */
-class RelOp<T> extends Component<T, State> {
+class RelOp extends Component<Props, State> {
   constructor() {
     super();
     this.state = {
-      isHovered: false,
       hoverClass: '',
     };
     (this: any).handleHover = this.handleHover.bind(this);
@@ -33,10 +31,6 @@ class RelOp<T> extends Component<T, State> {
     if (node) {
       let newClassName = node instanceof HTMLElement ? node.className : '';
 
-      this.setState(state => {
-        return {...state, isHovered: hovering};
-      });
-
       newClassName = newClassName.replace(' RelOp', '');
       newClassName = newClassName.replace(' hovering', '');
       newClassName += ' RelOp' + (hovering ? ' hovering' : '');
@@ -45,13 +39,7 @@ class RelOp<T> extends Component<T, State> {
       if (node instanceof HTMLElement) node.className = newClassName;
     }
   }
-}
 
-type UnaryProps = Props & {
-  children: Node,
-};
-
-class UnaryRelOp extends RelOp<UnaryProps> {
   render() {
     return (
       <span
@@ -59,8 +47,36 @@ class UnaryRelOp extends RelOp<UnaryProps> {
         onMouseOver={this.handleHover}
         onMouseOut={this.handleHover}
       >
+        {this.props.children}
+      </span>
+    );
+  }
+}
+
+type UnaryProps = {
+  operator: Element<any>,
+  children: Node,
+};
+
+class UnaryRelOpInternal extends Component<UnaryProps> {
+  render() {
+    return (
+      <span>
         {this.props.operator}({this.props.children})
       </span>
+    );
+  }
+}
+
+class UnaryRelOp extends Component<UnaryProps> {
+  render() {
+    return (
+      <RelOp>
+        <UnaryRelOpInternal
+          operator={this.props.operator}
+          children={this.props.children}
+        />
+      </RelOp>
     );
   }
 }
@@ -106,20 +122,16 @@ class Selection extends Component<{select: Array<string>}> {
   }
 }
 
-type BinaryProps = Props & {
+type BinaryProps = {
+  operator: Element<any>,
   left: Node,
   right: Node,
 };
 
-class BinaryRelOp extends RelOp<BinaryProps> {
+class BinaryRelOpInternal extends Component<BinaryProps> {
   render() {
-    const hoverClass = 'RelOp ' + (this.state.isHovered ? 'hovering' : '');
     return (
-      <span
-        className={hoverClass}
-        onMouseOver={this.handleHover}
-        onMouseOut={this.handleHover}
-      >
+      <span>
         {this.props.left}
         {this.props.operator}
         {this.props.right}
@@ -127,6 +139,21 @@ class BinaryRelOp extends RelOp<BinaryProps> {
     );
   }
 }
+
+class BinaryRelOp extends Component<BinaryProps> {
+  render() {
+    return (
+      <RelOp>
+        <BinaryRelOpInternal
+          left={this.props.left}
+          operator={this.props.operator}
+          right={this.props.right}
+        />
+      </RelOp>
+    );
+  }
+}
+
 class Except extends Component<{}> {
   render() {
     return <span>&minus;</span>;
