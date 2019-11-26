@@ -1,17 +1,13 @@
 language: node_js
-
 node_js:
 - 10
-
 os:
 - linux
 - osx
 - windows
-
 cache:
   directories:
   - node_modules
-
 script:
 - yarn lint
 - yarn flow
@@ -19,10 +15,13 @@ script:
 - yarn test --coverage
 - yarn build
 - yarn esdoc && mv docs/ build/
-
 after_script:
-- 'if [ "x$TRAVIS_OS_NAME" = "xlinux" -a "x$TRAVIS_BRANCH" = "xmaster" ]; then yarn coveralls; else true; fi'
-
+- if [ "x$TRAVIS_OS_NAME" = "xlinux" -a "x$TRAVIS_BRANCH" = "xmaster" ]; then
+    yarn coveralls;
+  else true; fi
+- if [ "x$TRAVIS_OS_NAME" = "xlinux" ]; then
+    yarn snapshot;
+  fi
 matrix:
   allow_failures:
   - os: windows
