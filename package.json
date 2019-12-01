@@ -76,6 +76,7 @@
     "jest-each": "^24.9.0",
     "jest-enzyme": "^7.1.2",
     "lint-staged": "^9.5.0",
+    "markdownlint-cli": "^0.19.0",
     "npm-package-json-lint": "^4.2.0",
     "npm-package-json-lint-config-default": "^2.0.0",
     "pkg-ok": "^2.3.1",
@@ -108,6 +109,9 @@
     "package.json": [
       "npmPkgJsonLint -q .",
       "pkg-ok"
+    ],
+    "README.md": [
+       "markdownlint -f"
     ]
   },
   "jest": {
