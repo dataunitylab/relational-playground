@@ -1,5 +1,6 @@
 // @flow
 import fromEntries from 'fromentries';
+import produce from 'immer';
 
 export const EXPR_FROM_SQL = 'EXPR_FROM_SQL';
 
@@ -278,16 +279,11 @@ function buildRelExp(sql, types, tables) {
   }
 }
 
-export default (state: State = initialState, action: Action) => {
+export default produce<State>((draft: State, action: Action) => {
+  // eslint-disable-next-line default-case
   switch (action.type) {
     case EXPR_FROM_SQL:
-      return {
-        ...state,
-        expr: buildRelExp(action.sql, action.types, []),
-      };
-    default:
-      return {
-        ...state,
-      };
+      draft.expr = buildRelExp(action.sql, action.types, []);
+      break;
   }
-};
+}, initialState);

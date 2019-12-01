@@ -1,5 +1,6 @@
 // @flow
 import {deepEqual} from 'fast-equals';
+import produce from 'immer';
 
 import patient from '../resources/Patient.json';
 import doctor from '../resources/Doctor.json';
@@ -16,6 +17,8 @@ type ChangeAction = {
 type ResetAction = {
   type: 'RESET_EXPR',
 };
+
+type Action = ChangeAction | ResetAction;
 
 /**
  * @param expr - a relational algebra expression object
@@ -360,23 +363,16 @@ export function applyResetAction(currentElement: ?HTMLElement) {
   }
 }
 
-export default (state: State = initialState, action: any) => {
+export default produce<State>((draft: State, action: Action) => {
+  // eslint-disable-next-line default-case
   switch (action.type) {
     case RESET_EXPR:
-      applyResetAction(state.element);
-      state.element = undefined;
-      return {
-        ...state,
-      };
+      applyResetAction(draft.element);
+      draft.element = undefined;
+      break;
     case CHANGE_EXPR:
-      return {
-        ...state,
-        current: applyExpr(action.expr, state.sourceData),
-        element: highlightExpr(state.element, action.element),
-      };
-    default:
-      return {
-        ...state,
-      };
+      draft.current = applyExpr(action.expr, draft.sourceData);
+      draft.element = highlightExpr(draft.element, action.element);
+      break;
   }
-};
+}, initialState);
