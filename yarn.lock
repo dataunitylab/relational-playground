@@ -10847,14 +10847,14 @@ npm-package-json-lint-config-default@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/npm-package-json-lint-config-default/-/npm-package-json-lint-config-default-2.0.0.tgz#3d93f7ec8d85ce5e4a795269a752634c0aced8b3"
 
-npm-package-json-lint@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/npm-package-json-lint/-/npm-package-json-lint-4.2.0.tgz#4c53a7c780e6a99c80e0d17355efa2d490557f27"
-  integrity sha512-sMShBBw5NVzPo4eXc+ziXAZ7k0C9v+diha0Gy1n2yCtnIjBzFwgGqDAIDWk6x2qgwQCTJxsjFkhPvG4wScwOrQ==
+npm-package-json-lint@^4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/npm-package-json-lint/-/npm-package-json-lint-4.4.0.tgz#d897f948a7db25769c7bac1d50b09cddd1a7dbac"
+  integrity sha512-+GvIHmDhLnCeWA7B2jD2Tf/iTc3gbfwTi146a7kZcdlgQ9TEft42ZNiHMjf8+NnbR4Kf7nqDKrdb0i9pw0pueg==
   dependencies:
     ajv "^6.10.2"
     ajv-errors "^1.0.1"
-    chalk "^2.4.2"
+    chalk "^3.0.0"
     cosmiconfig "^5.2.1"
     debug "^4.1.1"
     globby "^10.0.1"
