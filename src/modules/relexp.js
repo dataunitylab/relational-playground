@@ -151,6 +151,7 @@ function convertExpr(
       }
 
     default:
+      console.log(expr);
       // Produce an error if the expression is unsupported
       throw new Error('Invalid expression.');
   }
