@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 
-import CodeMirror from 'react-codemirror';
+import Editor from 'react-simple-code-editor';
 import SqlEditor from './SqlEditor';
 
 it('can parse the initial query', () => {
@@ -46,10 +46,14 @@ it('can parse modified query and fire an event', () => {
   );
 
   const query = 'SELECT 1 FROM quux';
+
+  // The valueChange event is specific to this component,
+  // but triggering it is the easiest way to simulate
+  // typing to the underlying textarea
   wrapper
-    .find(CodeMirror)
+    .find('Editor')
     .first()
-    .simulate('change', query);
+    .simulate('valueChange', query);
 
   // No events should be recorded yet
   expect(mockEvent.mock.calls.length).toBe(0);

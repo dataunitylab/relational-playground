@@ -1,6 +1,10 @@
 [ignore]
 .*/node_modules/react-select/.*
 
+[untyped]
+# Fix pending in https://github.com/satya164/react-simple-code-editor/pull/51
+.*/node_modules/react-simple-code-editor/.*
+
 [include]
 
 [libs]

@@ -1,12 +1,13 @@
 // @flow
 import React, {Component} from 'react';
-import CodeMirror from 'react-codemirror';
+import Editor from 'react-simple-code-editor';
+import {highlight, languages} from 'prismjs/components/prism-core';
+import 'prismjs/components/prism-sql';
 import {exprFromSql} from './modules/relexp';
 import {resetAction} from './modules/data';
 import './SqlEditor.css';
 
-import 'codemirror/lib/codemirror.css';
-require('codemirror/mode/sql/sql');
+import 'prismjs/themes/prism.css';
 
 const parser = require('@michaelmior/js-sql-parser');
 
@@ -21,6 +22,7 @@ type Props = {
 type State = {
   error: string | null,
   timeout: any,
+  query: string,
 };
 
 /** Editor for SQL queries */
@@ -29,12 +31,13 @@ class SqlEditor extends Component<Props, State> {
     super();
     (this: any).handleChange = this.handleChange.bind(this);
     (this: any).parseQuery = this.parseQuery.bind(this);
-    this.state = {error: null, timeout: null};
+    this.state = {error: null, timeout: null, query: ''};
   }
 
   componentDidMount() {
     // Parse the initial query when we start
     this.parseQuery(this.props.defaultText, true);
+    this.setState({query: this.props.defaultText});
   }
 
   /**
@@ -92,7 +95,7 @@ class SqlEditor extends Component<Props, State> {
     let handle = setTimeout(() => {
       this.parseQuery(text);
     }, 1000);
-    this.setState({timeout: handle});
+    this.setState({timeout: handle, query: text});
   }
 
   render() {
@@ -105,12 +108,13 @@ class SqlEditor extends Component<Props, State> {
     return (
       <div className="SqlEditor">
         <h4>SQL Query</h4>
-        <CodeMirror
-          onChange={this.handleChange}
-          defaultValue={this.props.defaultText}
-          options={{
-            mode: 'sql',
-            viewportMargin: Infinity,
+        <Editor
+          value={this.state.query}
+          onValueChange={this.handleChange}
+          highlight={code => highlight(code, languages.sql)}
+          padding={10}
+          style={{
+            fontFamily: '"Fira Code", "Fira Mono", monospace',
           }}
         />
         <div className="error">{error}</div>
