@@ -4,6 +4,8 @@
   "version": "0.1.0",
   "private": true,
   "homepage": "https://relationalplayground.com/",
+  "repository": "https://github.com/michaelmior/relational-playground",
+  "bugs": "https://github.com/michaelmior/relational-playground/issues",
   "dependencies": {
     "@michaelmior/js-sql-parser": "^1.3.0",
     "@testing-library/jest-dom": "^4.2.4",
@@ -31,18 +33,18 @@
   },
   "scripts": {
     "analyze": "source-map-explorer build/static/js/*.js",
-    "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "storybook": "start-storybook -p 9009 -s public",
     "build-storybook": "build-storybook -s public",
+    "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls",
+    "eject": "react-scripts eject",
     "flow": "flow check src",
     "lint": "node_modules/.bin/prettier --check src/**/*.{js,jsx,json} && eslint src",
-    "report-deploy": "bash ./scripts/report-deploy.sh",
     "now-build": "REACT_APP_GIT_SHA=`([ -n \"$NOW_GITHUB_COMMIT_SHA\" ] && echo \"$NOW_GITHUB_COMMIT_SHA\") || git rev-parse HEAD` react-scripts build && build-storybook -o build/storybook/ && esdoc && mv docs/ build/ && yarn report-deploy",
-    "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls",
-    "snapshot": "build-storybook && percy-storybook --widths=1280"
+    "report-deploy": "bash ./scripts/report-deploy.sh",
+    "snapshot": "build-storybook && percy-storybook --widths=1280",
+    "start": "react-scripts start",
+    "storybook": "start-storybook -p 9009 -s public",
+    "test": "react-scripts test"
   },
   "eslintConfig": {
     "extends": "react-app"

@@ -3,6 +3,14 @@
   "rules": {
     "no-archive-dependencies": "error",
     "no-file-dependencies": "error",
-    "no-git-dependencies": "error"
+    "no-git-dependencies": "error",
+    "prefer-alphabetical-dependencies": "error",
+    "prefer-alphabetical-devDependencies": "error",
+    "prefer-alphabetical-scripts": "error",
+    "prefer-no-engineStrict": "error",
+    "require-author": "error",
+    "require-bugs": "error",
+    "require-homepage": "error",
+    "require-scripts": "error"
   }
 }
