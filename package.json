@@ -26,7 +26,7 @@
     "react-select": "^3.0.8",
     "react-simple-code-editor": "^0.10.0",
     "react-split-pane": "^0.1.89",
-    "react-table": "^6.11.4",
+    "react-table": "^6.11.5",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",
     "typescript": "*"
