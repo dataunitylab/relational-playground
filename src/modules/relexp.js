@@ -87,6 +87,21 @@ function convertExpr(
 
       return {or: {clauses: or}};
 
+    case 'NotExpression':
+      return {not: {clause: convertExpr(expr.value, types, tables)}};
+
+    case 'SimpleExprParentheses':
+      if (
+        expr.value.type === 'ExpressionList' &&
+        expr.value.value.length === 1
+      ) {
+        return convertExpr(expr.value.value[0], types, tables);
+      } else {
+        throw new Error(
+          'Parenthesized expressions can only contain a single value'
+        );
+      }
+
     case 'ComparisonBooleanPrimary':
       let ret = {};
       ret.lhs = convertExpr(expr.left, types, tables);

@@ -34,7 +34,12 @@ class RelExpr extends Component<Props> {
    * @param expr - an object representing an expression
    * @return a string representing a query condition
    */
-  exprToString(expr: {[string]: any}): string {
+  exprToString(expr: {[string]: any}, top: boolean = true): string {
+    // We have reached a simple value
+    if (typeof expr !== 'object') {
+      return expr.toString();
+    }
+
     const opMap = {
       $gte: '>=',
       $gt: '>',
@@ -45,15 +50,38 @@ class RelExpr extends Component<Props> {
     };
 
     const type = Object.keys(expr)[0];
+    let exprString;
     switch (type) {
       case 'cmp':
-        return expr.cmp.lhs + ' ' + opMap[expr.cmp.op] + ' ' + expr.cmp.rhs;
+        exprString =
+          expr.cmp.lhs + ' ' + opMap[expr.cmp.op] + ' ' + expr.cmp.rhs;
+        break;
+
       case 'and':
-        return expr.and.clauses.map(this.exprToString).join(' ∧ ');
+        exprString = expr.and.clauses
+          .map(c => this.exprToString(c, false))
+          .join(' ∧ ');
+        break;
+
       case 'or':
-        return expr.or.clauses.map(this.exprToString).join(' ∨ ');
+        exprString = expr.or.clauses
+          .map(c => this.exprToString(c, false))
+          .join(' ∨ ');
+        break;
+
+      case 'not':
+        exprString = '¬' + this.exprToString(expr.not.clause, false);
+        break;
+
       default:
-        return expr.toString();
+        throw new Error('Unhandled expression object');
+    }
+
+    // Parenthesize if we're not at the top level
+    if (top) {
+      return exprString;
+    } else {
+      return '(' + exprString + ')';
     }
   }
 

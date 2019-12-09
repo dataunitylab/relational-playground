@@ -221,6 +221,24 @@ it.each(['and', 'or'])('converts a selection with %s', op => {
 });
 
 /** @test {relexp} */
+it('converts a selection with NOT', () => {
+  const sql = parser.parse('SELECT * FROM foo WHERE NOT bar > 1');
+  const action = exprFromSql(sql.value, {foo: ['bar', 'baz']});
+  expect(reducer({}, action)).toStrictEqual({
+    expr: {
+      selection: {
+        arguments: {
+          select: {
+            not: {clause: {cmp: {lhs: 'bar', op: '$gt', rhs: '1'}}},
+          },
+        },
+        children: [{relation: 'foo'}],
+      },
+    },
+  });
+});
+
+/** @test {relexp} */
 it('throws an error if a column is referenced in a table not joined', () => {
   const sql = parser.parse('SELECT baz.quux FROM foo');
   const action = exprFromSql(sql.value, {foo: ['bar'], baz: ['quux']});

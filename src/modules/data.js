@@ -155,6 +155,9 @@ function applyItem(expr, item) {
       }
       return orResult;
 
+    case 'not':
+      return !applyItem(expr.not.clause, item);
+
     default:
       console.log(expr);
       throw new Error('Invalid expression');

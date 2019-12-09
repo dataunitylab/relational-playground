@@ -204,6 +204,15 @@ const operatorTests = [
     },
     [0],
   ],
+
+  [
+    {
+      not: {
+        clause: {cmp: {lhs: 'bar', op: '$eq', rhs: '1'}},
+      },
+    },
+    [1, 2],
+  ],
 ];
 
 /** @test {data} */
