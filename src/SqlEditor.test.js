@@ -51,7 +51,7 @@ it('can parse modified query and fire an event', () => {
   // but triggering it is the easiest way to simulate
   // typing to the underlying textarea
   wrapper
-    .find('Editor')
+    .find(Editor)
     .first()
     .simulate('valueChange', query);
 
