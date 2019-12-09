@@ -2,6 +2,7 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 
 import RelExpr from './RelExpr';
+import {Selection} from './RelOp';
 import {mount} from 'enzyme';
 
 /** @test {RelExpr} */
@@ -32,6 +33,27 @@ it('correctly renders a complex expression', () => {
     .create(<RelExpr expr={expr} changeExpr={jest.fn()} />)
     .toJSON();
   expect(tree).toMatchSnapshot();
+});
+
+const condTests = [
+  ['$gte', '>='],
+  ['$gt', '>'],
+  ['$lt', '<'],
+  ['$lte', '<='],
+  ['$ne', '!='],
+  ['$eq', '='],
+];
+
+/** @test {RelExpr} */
+it.each(condTests)('it correctly renders a %s condition as %s', (op, str) => {
+  const expr = {
+    selection: {
+      arguments: {select: {cmp: {lhs: 'salary', op: op, rhs: 130000}}},
+      children: [{relation: 'Doctor'}],
+    },
+  };
+  const wrapper = mount(<RelExpr expr={expr} changeExpr={jest.fn()} />);
+  expect(wrapper.find(Selection).text()).toContain('salary ' + str + ' 130000');
 });
 
 /** @test {RelExpr} */
