@@ -208,7 +208,7 @@ const operatorTests = [
 
 /** @test {data} */
 it.each(operatorTests)(
-  'it can evaluate a selection with the condition %s %s %s',
+  'it can evaluate a selection with the condition %o',
   (condExpr, includeRows) => {
     const expr = {
       selection: {
