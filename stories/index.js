@@ -49,7 +49,7 @@ storiesOf('UnaryRelOp', module)
     </UnaryRelOp>
   ))
   .add('a simple selection', () => (
-    <UnaryRelOp operator={<Selection select={['salary > 100K']} />}>
+    <UnaryRelOp operator={<Selection select={'salary > 100K'} />}>
       <Relation name='Doctor' />
     </UnaryRelOp>
   ))
@@ -61,7 +61,7 @@ storiesOf('UnaryRelOp', module)
   .add('nested operations', () => (
     <UnaryRelOp operator={<Rename rename={{firstName: 'name'}} />}>
       <UnaryRelOp operator={<Projection project={['firstName', 'lastName']} />}>
-        <UnaryRelOp operator={<Selection select={['salary > 100K']} />}>
+        <UnaryRelOp operator={<Selection select={'salary > 100K'} />}>
           <Relation name='Doctor' />
         </UnaryRelOp>
       </UnaryRelOp>
@@ -88,7 +88,7 @@ storiesOf('RelExpr', module).add('a complex expression', () => (
               children: [
                 {
                   selection: {
-                    arguments: {select: [{salary: {$gt: 100000}}]},
+                    arguments: {select: {cmp: {lhs: 'salary', op: '$gt', rhs: 100000}}},
                     children: [{relation: 'Doctor'}],
                   },
                 },
