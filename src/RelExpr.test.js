@@ -17,7 +17,7 @@ it('correctly renders a complex expression', () => {
               {
                 selection: {
                   arguments: {
-                    select: [{lhs: 'salary', op: '$gt', rhs: 130000}],
+                    select: {cmp: {lhs: 'salary', op: '$gt', rhs: 130000}},
                   },
                   children: [{relation: 'Doctor'}],
                 },

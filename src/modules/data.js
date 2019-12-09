@@ -106,6 +106,63 @@ function resolveValue(path: string, row: {[string]: any}): string {
 
 /**
  * @param expr - a relational algebra expression to evaluate
+ * @param item - an item to evaluate against
+ * @return result of evaluating the expression
+ */
+function applyItem(expr, item) {
+  const type = Object.keys(expr)[0];
+  switch (type) {
+    case 'cmp':
+      // Get the values to compare and the comparison operator
+      const lhs = resolveValue(expr.cmp.lhs, item);
+      const op = expr.cmp.op;
+      let rhs = resolveValue(expr.cmp.rhs, item);
+
+      switch (op) {
+        case '$gte':
+          return lhs >= rhs;
+        case '$gt':
+          return lhs > rhs;
+        case '$lt':
+          return lhs < rhs;
+        case '$lte':
+          return lhs <= rhs;
+        case '$ne':
+          // eslint-disable-next-line eqeqeq
+          return lhs != rhs;
+        case '$eq':
+          // eslint-disable-next-line eqeqeq
+          return lhs == rhs;
+        default:
+          throw new Error('Invaid comparison operator');
+      }
+
+    case 'and':
+      let andResult = true;
+
+      // Loop over all expressions to be evaluated
+      for (var i = 0; andResult && i < expr.and.clauses.length; i++) {
+        andResult = andResult && applyItem(expr.and.clauses[i], item);
+      }
+      return andResult;
+
+    case 'or':
+      let orResult = false;
+
+      // Loop over all expressions to be evaluated
+      for (var i2 = 0; !orResult && i2 < expr.or.clauses.length; i2++) {
+        orResult = orResult || applyItem(expr.or.clauses[i2], item);
+      }
+      return orResult;
+
+    default:
+      console.log(expr);
+      throw new Error('Invalid expression');
+  }
+}
+
+/**
+ * @param expr - a relational algebra expression to evaluate
  * @param sourceData - source data from relations
  * @return result of evaluating the expression
  */
@@ -141,44 +198,7 @@ function applyExpr(expr, sourceData) {
       let selData = applyExpr(expr.selection.children[0], sourceData);
 
       let select = expr.selection.arguments.select;
-      selData.data = selData.data.filter(item => {
-        let keep = true;
-
-        // Loop over all expressions to be evaluauted
-        for (var i = 0; keep && i < select.length; i++) {
-          // Get the values to compare and the comparison operator
-          const lhs = resolveValue(select[i].lhs, item);
-          const op = select[i].op;
-          let rhs = resolveValue(select[i].rhs, item);
-
-          // Update the flag indicating whether we should keep this tuple
-          switch (op) {
-            case '$gte':
-              keep = keep && lhs >= rhs;
-              break;
-            case '$gt':
-              keep = keep && lhs > rhs;
-              break;
-            case '$lt':
-              keep = keep && lhs < rhs;
-              break;
-            case '$lte':
-              keep = keep && lhs <= rhs;
-              break;
-            case '$ne':
-              // eslint-disable-next-line eqeqeq
-              keep = keep && lhs != rhs;
-              break;
-            case '$eq':
-              // eslint-disable-next-line eqeqeq
-              keep = keep && lhs == rhs;
-              break;
-            default:
-              throw new Error('Invalid expression');
-          }
-        }
-        return keep;
-      });
+      selData.data = selData.data.filter(item => applyItem(select, item));
 
       return selData;
 

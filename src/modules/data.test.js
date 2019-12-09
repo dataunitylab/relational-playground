@@ -173,22 +173,46 @@ it('can evaluate a join', () => {
 // The test parameters below are the operator, the value for comparison,
 // and finally the indexes of the rows which should be included
 const operatorTests = [
-  ['bar', '$gt', '1', [1, 2]],
-  ['bar', '$gte', '1', [0, 1, 2]],
-  ['bar', '$lt', '1', []],
-  ['bar', '$lte', '1', [0]],
-  ['bar', '$eq', '1', [0]],
-  ['bar', '$ne', '1', [1, 2]],
-  ['1', '$ne', 'bar', [1, 2]],
+  [{cmp: {lhs: 'bar', op: '$gt', rhs: '1'}}, [1, 2]],
+  [{cmp: {lhs: 'bar', op: '$gte', rhs: '1'}}, [0, 1, 2]],
+  [{cmp: {lhs: 'bar', op: '$lt', rhs: '1'}}, []],
+  [{cmp: {lhs: 'bar', op: '$lte', rhs: '1'}}, [0]],
+  [{cmp: {lhs: 'bar', op: '$eq', rhs: '1'}}, [0]],
+  [{cmp: {lhs: 'bar', op: '$ne', rhs: '1'}}, [1, 2]],
+  [{cmp: {lhs: '1', op: '$ne', rhs: 'bar'}}, [1, 2]],
+
+  [
+    {
+      or: {
+        clauses: [
+          {cmp: {lhs: '1', op: '$ne', rhs: 'bar'}},
+          {cmp: {lhs: 'bar', op: '$eq', rhs: '1'}},
+        ],
+      },
+    },
+    [0, 1, 2],
+  ],
+
+  [
+    {
+      and: {
+        clauses: [
+          {cmp: {lhs: 'bar', op: '$gte', rhs: '1'}},
+          {cmp: {lhs: 'bar', op: '$eq', rhs: '1'}},
+        ],
+      },
+    },
+    [0],
+  ],
 ];
 
 /** @test {data} */
 it.each(operatorTests)(
   'it can evaluate a selection with the condition %s %s %s',
-  (lhs, op, value, includeRows) => {
+  (condExpr, includeRows) => {
     const expr = {
       selection: {
-        arguments: {select: [{lhs: lhs, op: op, rhs: value}]},
+        arguments: {select: condExpr},
         children: [{relation: 'foo'}],
       },
     };

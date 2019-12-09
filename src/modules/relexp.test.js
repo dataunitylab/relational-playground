@@ -151,7 +151,9 @@ it('converts a join with a condition', () => {
   expect(reducer({}, action)).toStrictEqual({
     expr: {
       selection: {
-        arguments: {select: [{lhs: 'foo.baz', op: '$eq', rhs: 'bar.corge'}]},
+        arguments: {
+          select: {cmp: {lhs: 'foo.baz', op: '$eq', rhs: 'bar.corge'}},
+        },
         children: [
           {
             join: {
@@ -172,7 +174,7 @@ it('converts a selection', () => {
   expect(reducer({}, action)).toStrictEqual({
     expr: {
       selection: {
-        arguments: {select: [{lhs: 'bar', op: '$gt', rhs: '1'}]},
+        arguments: {select: {cmp: {lhs: 'bar', op: '$gt', rhs: '1'}}},
         children: [{relation: 'foo'}],
       },
     },
@@ -186,7 +188,7 @@ it('converts a selection with a literal on the left', () => {
   expect(reducer({}, action)).toStrictEqual({
     expr: {
       selection: {
-        arguments: {select: [{lhs: '1', op: '$gt', rhs: 'bar'}]},
+        arguments: {select: {cmp: {lhs: '1', op: '$gt', rhs: 'bar'}}},
         children: [{relation: 'foo'}],
       },
     },
@@ -194,17 +196,23 @@ it('converts a selection with a literal on the left', () => {
 });
 
 /** @test {relexp} */
-it('converts a selection with AND', () => {
-  const sql = parser.parse('SELECT * FROM foo WHERE bar > 1 AND baz < 3');
+it.each(['and', 'or'])('converts a selection with %s', op => {
+  const sql = parser.parse(
+    'SELECT * FROM foo WHERE bar > 1 ' + op + ' baz < 3'
+  );
   const action = exprFromSql(sql.value, {foo: ['bar', 'baz']});
   expect(reducer({}, action)).toStrictEqual({
     expr: {
       selection: {
         arguments: {
-          select: [
-            {lhs: 'bar', op: '$gt', rhs: '1'},
-            {lhs: 'baz', op: '$lt', rhs: '3'},
-          ],
+          select: {
+            [op]: {
+              clauses: [
+                {cmp: {lhs: 'bar', op: '$gt', rhs: '1'}},
+                {cmp: {lhs: 'baz', op: '$lt', rhs: '3'}},
+              ],
+            },
+          },
         },
         children: [{relation: 'foo'}],
       },
@@ -235,7 +243,7 @@ it('should remove quotes from string literals', () => {
   expect(reducer({}, action)).toStrictEqual({
     expr: {
       selection: {
-        arguments: {select: [{lhs: 'bar', op: '$eq', rhs: 'baz'}]},
+        arguments: {select: {cmp: {lhs: 'bar', op: '$eq', rhs: 'baz'}}},
         children: [{relation: 'foo'}],
       },
     },

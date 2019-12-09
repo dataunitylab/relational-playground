@@ -31,14 +31,10 @@ class RelExpr extends Component<Props> {
   }
 
   /**
-   * @param select - an array of objects representing conditions
-   * @param conds - an array of conditions to be added to
+   * @param expr - an object representing an expression
    * @return a string representing a query condition
    */
-  conditionToString(select: Array<{[string]: any}>, conds: Array<string> = []) {
-    if (select.length === 0) {
-      return conds;
-    }
+  exprToString(expr: {[string]: any}): string {
     const opMap = {
       $gte: '>=',
       $gt: '>',
@@ -47,12 +43,18 @@ class RelExpr extends Component<Props> {
       $ne: '!=',
       $eq: '=',
     };
-    for (let i = 0; i < select.length; i++) {
-      conds.push(
-        select[i].lhs + ' ' + opMap[select[i].op] + ' ' + select[i].rhs
-      );
+
+    const type = Object.keys(expr)[0];
+    switch (type) {
+      case 'cmp':
+        return expr.cmp.lhs + ' ' + opMap[expr.cmp.op] + ' ' + expr.cmp.rhs;
+      case 'and':
+        return expr.and.clauses.map(this.exprToString).join(' ∧ ');
+      case 'or':
+        return expr.or.clauses.map(this.exprToString).join(' ∨ ');
+      default:
+        return expr.toString();
     }
-    return conds;
   }
 
   /**
@@ -89,9 +91,7 @@ class RelExpr extends Component<Props> {
             <UnaryRelOp
               operator={
                 <Selection
-                  select={this.conditionToString(
-                    expr.selection.arguments.select
-                  )}
+                  select={this.exprToString(expr.selection.arguments.select)}
                 />
               }
             >

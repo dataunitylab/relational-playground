@@ -55,13 +55,13 @@ it('renders a Rename with multiple fields', () => {
 
 /** @test {Selection} */
 it('renders a Selection with single predicate', () => {
-  const {container} = render(<Selection select={['foo=3']} />);
+  const {container} = render(<Selection select={'foo=3'} />);
   expect(container).toContainHTML('σ<sub>foo=3</sub>');
 });
 
 /** @test {Selection} */
 it('renders a Selection with multiple predicates', () => {
-  const {container} = render(<Selection select={['foo=3', 'bar=2']} />);
+  const {container} = render(<Selection select={'foo=3 ∧ bar=2'} />);
   expect(container).toContainHTML('σ<sub>foo=3 ∧ bar=2</sub>');
 });
 

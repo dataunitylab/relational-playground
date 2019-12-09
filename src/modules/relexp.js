@@ -40,22 +40,22 @@ const opMap = {
 };
 
 /**
- * @param and - the current expression list
+ * @param exprList - the current expression list
  * @param expr - a new expression to append to the list
  * @param types - an object mapping table names to lists of columns
  * @param tables - all tables used in the expression
  */
-function addToAnd(
-  and: Array<any>,
+function addToExpr(
+  exprList: Array<any>,
   expr: {[string]: any},
   types: {[string]: Array<string>},
   tables: Array<string>
 ) {
   const converted = convertExpr(expr, types, tables);
   if (Array.isArray(converted)) {
-    and.push(...converted);
+    exprList.push(...converted);
   } else {
-    and.push(converted);
+    exprList.push(converted);
   }
 }
 
@@ -74,17 +74,25 @@ function convertExpr(
     case 'AndExpression':
       // Collect all expressions on either side of the AND
       let and: Array<any> = [];
-      addToAnd(and, expr.left, types, tables);
-      addToAnd(and, expr.right, types, tables);
+      addToExpr(and, expr.left, types, tables);
+      addToExpr(and, expr.right, types, tables);
 
-      return and;
+      return {and: {clauses: and}};
+
+    case 'OrExpression':
+      // Collect all expressions on either side of the AND
+      let or: Array<any> = [];
+      addToExpr(or, expr.left, types, tables);
+      addToExpr(or, expr.right, types, tables);
+
+      return {or: {clauses: or}};
 
     case 'ComparisonBooleanPrimary':
       let ret = {};
       ret.lhs = convertExpr(expr.left, types, tables);
       ret.op = opMap[expr.operator];
       ret.rhs = convertExpr(expr.right, types, tables);
-      return [ret];
+      return {cmp: ret};
 
     case 'Identifier':
       // Splt into table, column parts

@@ -114,11 +114,11 @@ class Rename extends Component<{rename: {[string]: string}}> {
 }
 
 /** Selection relational algebra operator */
-class Selection extends Component<{select: Array<string>}> {
+class Selection extends Component<{select: string}> {
   render() {
     return (
       <span>
-        &sigma;<sub>{this.props.select.join(' ∧ ')}</sub>
+        &sigma;<sub>{this.props.select}</sub>
       </span>
     );
   }
