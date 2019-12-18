@@ -3,7 +3,7 @@
   "destination": "./docs",
   "plugins": [
     {
-      "name": "esdoc-standard-plugin",
+      "name": "@sebastianwessel/esdoc-standard-plugin",
       "option": {
         "coverage": {"enable": true},
         "undocumentIdentifier": {"enable": true},
@@ -15,9 +15,9 @@
         }
       }
     },
-    {"name": "esdoc-react-plugin"},
-    {"name": "esdoc-jsx-plugin", "option": {"enable": true}},
-    {"name": "esdoc-flow-type-plugin", "option": {"enable": true}},
-    {"name": "esdoc-ecmascript-proposal-plugin", "option": {"all": true}}
+    {"name": "@sebastianwessel/esdoc-react-plugin"},
+    {"name": "@sebastianwessel/esdoc-jsx-plugin", "option": {"enable": true}},
+    {"name": "@sebastianwessel/esdoc-flow-type-plugin", "option": {"enable": true}},
+    {"name": "@sebastianwessel/esdoc-ecmascript-proposal-plugin", "option": {"all": true}}
   ]
 }

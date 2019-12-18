@@ -32,6 +32,7 @@ class RelExpr extends Component<Props> {
 
   /**
    * @param expr - an object representing an expression
+   * @param top - whether this is a top-level expression - to avoid unneccessary ()
    * @return a string representing a query condition
    */
   exprToString(expr: {[string]: any}, top: boolean = true): string {
