@@ -54,3 +54,20 @@
   position: absolute;
   bottom: 1em;
 }
+
+.relExprContainer {
+  font-family: Fira Code, Fira Mono, monospace;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+h2 {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+@media only screen and (max-width: 600px) {
+  h2 {
+    padding-left: 24px;
+  }
+}
