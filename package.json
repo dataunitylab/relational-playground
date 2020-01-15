@@ -64,11 +64,11 @@
     "@sebastianwessel/esdoc-jsx-plugin": "^2.1.0",
     "@sebastianwessel/esdoc-react-plugin": "^2.1.0",
     "@sebastianwessel/esdoc-standard-plugin": "^2.1.0",
-    "@storybook/addon-actions": "^5.2.8",
-    "@storybook/addon-links": "^5.2.8",
-    "@storybook/addons": "^5.2.8",
+    "@storybook/addon-actions": "^5.3.3",
+    "@storybook/addon-links": "^5.3.3",
+    "@storybook/addons": "^5.3.3",
     "@storybook/cli": "^5.2.8",
-    "@storybook/react": "^5.2.8",
+    "@storybook/react": "^5.3.3",
     "@testing-library/react": "^9.4.0",
     "babel-loader": "8.0.6",
     "bundlesize": "^0.18.0",
@@ -90,8 +90,11 @@
     "stylelint": "^13.0.0",
     "stylelint-config-standard": "^19.0.0"
   },
+  "resolutions": {
+    "mini-css-extract-plugin": "0.7.0"
+  },
   "engines": {
-    "node": "10.x"
+    "node": "12.x"
   },
   "husky": {
     "hooks": {
