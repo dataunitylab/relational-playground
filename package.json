@@ -64,7 +64,7 @@
     "@sebastianwessel/esdoc-jsx-plugin": "^2.1.0",
     "@sebastianwessel/esdoc-react-plugin": "^2.1.0",
     "@sebastianwessel/esdoc-standard-plugin": "^2.1.0",
-    "@storybook/addon-actions": "^5.3.6",
+    "@storybook/addon-actions": "^5.3.7",
     "@storybook/addon-links": "^5.3.6",
     "@storybook/addons": "^5.3.6",
     "@storybook/cli": "^5.2.8",
