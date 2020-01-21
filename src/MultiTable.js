@@ -60,7 +60,6 @@ class MultiTable extends Component<Props, State> {
   render() {
     // Render the selected table
     let table = <div>Select a table above.</div>;
-    console.log(this.state.isMobile);
     if (this.state.isMobile) {
       if (this.state.showTableMobile) {
         const data = this.props.tables[this.state.selected];
@@ -74,7 +73,6 @@ class MultiTable extends Component<Props, State> {
       } else {
         table = <div>Select a table above.</div>;
       }
-      console.log('here');
       return (
         <MobileView>
           <h4>Source relations</h4>
