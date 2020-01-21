@@ -5,6 +5,8 @@
 }
 
 .mobileButton {
+  border-radius: 15px;
+  font-weight: bold;
   background-color: lightgray; /* Green */
   border: none;
   color: black;

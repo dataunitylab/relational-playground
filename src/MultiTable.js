@@ -19,7 +19,11 @@ type State = {
   showTableMobile: boolean,
   selected: string,
   isMobile: boolean,
+  buttonText: string,
 };
+
+const tableHiddenText = 'Show Table';
+const tableShownText = 'Hide Table';
 
 /** Displays more than one table with a dropdown to choose */
 class MultiTable extends Component<Props, State> {
@@ -32,12 +36,14 @@ class MultiTable extends Component<Props, State> {
       this.state = {
         isMobile: this.props.testIsMobile,
         showTableMobile: false,
+        buttonText: tableHiddenText,
         selected: Object.keys(this.props.tables)[0],
       };
     } else {
       this.state = {
         isMobile: isMobile,
         showTableMobile: false,
+        buttonText: tableHiddenText,
         selected: Object.keys(this.props.tables)[0],
       };
     }
@@ -54,7 +60,13 @@ class MultiTable extends Component<Props, State> {
   };
 
   handleButtonPress() {
-    this.setState({showTableMobile: !this.state.showTableMobile});
+    this.setState({
+      showTableMobile: !this.state.showTableMobile,
+      buttonText:
+        this.state.buttonText === tableShownText
+          ? tableHiddenText
+          : tableShownText,
+    });
   }
 
   render() {
@@ -73,6 +85,7 @@ class MultiTable extends Component<Props, State> {
       } else {
         table = <div>Select a table above.</div>;
       }
+
       return (
         <MobileView>
           <h4>Source relations</h4>
@@ -89,7 +102,7 @@ class MultiTable extends Component<Props, State> {
           <div className="tableDiv">
             {table}
             <button className="mobileButton" onClick={this.handleButtonPress}>
-              Press Me to View Table Data
+              {this.state.buttonText}
             </button>
           </div>
         </MobileView>
