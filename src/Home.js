@@ -51,7 +51,7 @@ class Home extends Component<Props> {
     let data = <div style={{padding: '2em'}}>Select an expression above.</div>;
     if (this.props.data.current) {
       data = (
-        <div style={{width: '100%', margin: '1em'}}>
+        <div style={{margin: '1em'}}>
           <h4>Data for selected expression</h4>
           <Table
             tableName={this.props.data.current.name}
@@ -66,7 +66,7 @@ class Home extends Component<Props> {
     return (
       <div>
         <BrowserView>
-          <SplitPane split="vertical" primary="second" minSize={500}>
+          <SplitPane split="vertical" primary="second" minSize={'30%'}>
             <div>
               <SplitPane split="horizontal" primary="second" minSize={400}>
                 <div style={{padding: '0em 1em 1em 1em'}}>
@@ -91,16 +91,18 @@ class Home extends Component<Props> {
                     </div>
                   </div>
                 </div>
-                {data}
+                <div className="dataContainer">
+                  {data}
+                  <div className="email">
+                    For questions, please email{' '}
+                    <a href="mailto:mmior@cs.rit.edu">mmior@cs.rit.edu</a>
+                  </div>
+                </div>
               </SplitPane>
             </div>
             {/* Input dataset preview */}
             <div style={{margin: '2em'}}>
               <MultiTable ReactGA={ReactGA} tables={this.props.sources} />
-              <div className="email">
-                For questions, please email{' '}
-                <a href="mailto:mmior@cs.rit.edu">mmior@cs.rit.edu</a>
-              </div>
             </div>
           </SplitPane>
         </BrowserView>
