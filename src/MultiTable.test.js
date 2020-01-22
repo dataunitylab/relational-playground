@@ -1,12 +1,11 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import Select from 'react-select';
-
+import {BrowserView, MobileView} from 'react-device-detect';
+import * as reactDeviceDetect from 'react-device-detect';
 import MultiTable from './MultiTable';
-import Table from './Table';
 import dataReducer from './modules/data';
 
-it('can change tables', () => {
+it('can change tables browser', () => {
   const mockEvent = jest.fn();
 
   // Fake a reducer call to get the initial state
@@ -16,15 +15,43 @@ it('can change tables', () => {
     <MultiTable ReactGA={{event: mockEvent}} tables={data} />
   );
 
-  // Change the table
-  wrapper.find(Select).simulate('change', {value: 'Patient'});
+  let browserSelect = wrapper.find('.browserSelect');
 
-  // An analytics event should be fired
+  // Change the table
+  browserSelect.simulate('change', {value: 'Patient'});
+
   expect(mockEvent.mock.calls.length).toBe(1);
   expect(mockEvent.mock.calls[0][0].category).toBe('User Selecting A Table');
   expect(mockEvent.mock.calls[0][0].action).toBe('Patient');
 
-  // The new table should be displayed
-  expect(wrapper.find(Table).prop('columns')).toBe(data.Patient.columns);
-  expect(wrapper.find(Table).prop('data')).toBe(data.Patient.data);
+  expect(wrapper.find('.browserTable').prop('columns')).toBe(
+    data.Patient.columns
+  );
+  expect(wrapper.find('.browserTable').prop('data')).toBe(data.Patient.data);
+});
+
+it('can change tables mobile', () => {
+  const mockEvent = jest.fn();
+  // Fake a reducer call to get the initial state
+  const data = dataReducer(undefined, {}).sourceData;
+
+  reactDeviceDetect.isMobile = true;
+  const wrapper = shallow(
+    <MultiTable ReactGA={{event: mockEvent}} tables={data} />
+  );
+
+  let mobileSelect = wrapper.find('.mobileSelect');
+  mobileSelect.simulate('change', {value: 'Patient'});
+
+  expect(mockEvent.mock.calls.length).toBe(1);
+  expect(mockEvent.mock.calls[0][0].category).toBe('User Selecting A Table');
+  expect(mockEvent.mock.calls[0][0].action).toBe('Patient');
+
+  let mobileButton = wrapper.find('.mobileButton');
+  mobileButton.simulate('click');
+
+  expect(wrapper.find('.mobileTable').prop('columns')).toBe(
+    data.Patient.columns
+  );
+  expect(wrapper.find('.mobileTable').prop('data')).toBe(data.Patient.data);
 });

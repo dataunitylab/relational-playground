@@ -1,0 +1,21 @@
+.tableDiv {
+  margin-top: 7px;
+  margin-bottom: 7px;
+  font-size: 15px;
+}
+
+.mobileButton {
+  border-radius: 15px;
+  font-weight: bold;
+  background-color: lightgray; /* Green */
+  border: none;
+  color: black;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 20px;
+  margin-left: 0;
+  margin-bottom: 20px;
+  font-size: 15px;
+}

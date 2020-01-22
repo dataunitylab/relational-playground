@@ -17,6 +17,7 @@
     "prismjs": "^1.19.0",
     "prop-types": "^15.5.0",
     "react": "^16.12.0",
+    "react-device-detect": "^1.11.14",
     "react-dom": "^16.12.0",
     "react-ga": "^2.7.0",
     "react-redux": "^7.1.3",

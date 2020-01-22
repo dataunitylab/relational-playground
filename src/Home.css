@@ -51,6 +51,30 @@
 }
 
 .email {
-  position: absolute;
-  bottom: 1em;
+  padding: 20px;
+}
+
+.relExprContainer {
+  font-family: Fira Code, Fira Mono, monospace;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.dataContainer {
+  width: 100%;
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+h2 {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+@media only screen and (max-width: 600px) {
+  h2 {
+    padding-left: 24px;
+  }
 }

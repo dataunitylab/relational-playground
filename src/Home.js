@@ -10,6 +10,7 @@ import Table from './Table';
 import {changeExpr} from './modules/data';
 import {exprFromSql} from './modules/relexp';
 import {resetAction} from './modules/data';
+import {BrowserView, MobileView} from 'react-device-detect';
 import ReactGA from 'react-ga';
 
 import './Home.css';
@@ -50,7 +51,7 @@ class Home extends Component<Props> {
     let data = <div style={{padding: '2em'}}>Select an expression above.</div>;
     if (this.props.data.current) {
       data = (
-        <div style={{width: '100%', margin: '1em'}}>
+        <div style={{margin: '1em'}}>
           <h4>Data for selected expression</h4>
           <Table
             tableName={this.props.data.current.name}
@@ -63,40 +64,80 @@ class Home extends Component<Props> {
     }
 
     return (
-      <SplitPane split="vertical" primary="second" minSize={400}>
-        <div>
-          <SplitPane split="horizontal" primary="second" minSize={400}>
-            <div style={{padding: '0em 1em 1em 1em'}}>
-              <div>
-                {/* SQL query input */}
-                <SqlEditor
-                  ReactGA={ReactGA}
-                  defaultText="SELECT * FROM Doctor"
-                  exprFromSql={this.props.exprFromSql}
-                  resetAction={this.props.resetAction}
-                  types={this.props.types}
-                />
+      <div>
+        <BrowserView>
+          <SplitPane split="vertical" primary="second" minSize={'30%'}>
+            <div>
+              <SplitPane split="horizontal" primary="second" minSize={400}>
+                <div style={{padding: '0em 1em 1em 1em'}}>
+                  <div>
+                    <h2>Relational Playground</h2>
+                    {/* SQL query input */}
+                    <SqlEditor
+                      ReactGA={ReactGA}
+                      defaultText="SELECT * FROM Doctor"
+                      exprFromSql={this.props.exprFromSql}
+                      resetAction={this.props.resetAction}
+                      types={this.props.types}
+                    />
 
-                {/* Relational algebra expression display */}
-                <RelExpr
-                  ReactGA={ReactGA}
-                  expr={this.props.expr}
-                  changeExpr={this.props.changeExpr}
-                />
-              </div>
+                    <div className="relExprContainer">
+                      {/* Relational algebra expression display */}
+                      <RelExpr
+                        ReactGA={ReactGA}
+                        expr={this.props.expr}
+                        changeExpr={this.props.changeExpr}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="dataContainer">
+                  {data}
+                  <div className="email">
+                    For questions, please email{' '}
+                    <a href="mailto:mmior@cs.rit.edu">mmior@cs.rit.edu</a>
+                  </div>
+                </div>
+              </SplitPane>
             </div>
-            {data}
+            {/* Input dataset preview */}
+            <div style={{margin: '2em'}}>
+              <MultiTable ReactGA={ReactGA} tables={this.props.sources} />
+            </div>
           </SplitPane>
-        </div>
-        {/* Input dataset preview */}
-        <div style={{margin: '2em'}}>
-          <MultiTable ReactGA={ReactGA} tables={this.props.sources} />
+        </BrowserView>
+
+        <MobileView>
+          <h2>Relational Playground</h2>
+          <div style={{padding: '0em 1em 1em 1em'}}>
+            {/* SQL query input */}
+            <SqlEditor
+              ReactGA={ReactGA}
+              defaultText="SELECT * FROM Doctor"
+              exprFromSql={this.props.exprFromSql}
+              resetAction={this.props.resetAction}
+              types={this.props.types}
+            />
+
+            <div className="relExprContainer">
+              {/* Relational algebra expression display */}
+              <RelExpr
+                ReactGA={ReactGA}
+                expr={this.props.expr}
+                changeExpr={this.props.changeExpr}
+              />
+            </div>
+
+            <MultiTable ReactGA={ReactGA} tables={this.props.sources} />
+
+            {data}
+          </div>
           <div className="email">
             For questions, please email{' '}
             <a href="mailto:mmior@cs.rit.edu">mmior@cs.rit.edu</a>
           </div>
-        </div>
-      </SplitPane>
+        </MobileView>
+      </div>
     );
   }
 }
