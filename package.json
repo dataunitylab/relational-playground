@@ -78,7 +78,7 @@
     "enzyme-adapter-react-16": "^1.15.2",
     "flow-bin": "^0.116.1",
     "husky": "^4.0.10",
-    "jest-each": "^24.9.0",
+    "jest-each": "^25.1.0",
     "jest-enzyme": "^7.1.2",
     "lint-staged": "^10.0.1",
     "markdownlint-cli": "^0.21.0",
