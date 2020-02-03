@@ -11149,10 +11149,10 @@ npm-package-json-lint-config-default@^2.0.0:
   resolved "https://registry.yarnpkg.com/npm-package-json-lint-config-default/-/npm-package-json-lint-config-default-2.0.0.tgz#3d93f7ec8d85ce5e4a795269a752634c0aced8b3"
   integrity sha1-PZP37I2Fzl5KeVJpp1JjTArO2LM=
 
-npm-package-json-lint@^4.5.1:
-  version "4.5.1"
-  resolved "https://registry.yarnpkg.com/npm-package-json-lint/-/npm-package-json-lint-4.5.1.tgz#b575394970c1d93e746dde1fa1ee52c8186ca724"
-  integrity sha512-U+9tIPglZHsc8uO19nVXn8XMWe0GN+73vi+pv/qX4kuZ/aGOYyBpLFVuTEnFm3KzDNUCx5gacPew92iic+Lsig==
+npm-package-json-lint@^4.6.0:
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/npm-package-json-lint/-/npm-package-json-lint-4.6.0.tgz#228cc7bd2d35a7b5ad04b88b17ca7096b543fa06"
+  integrity sha512-opoykADMeyGN2UuvypIYpysUXO4wdAYc8DPklO86kxF1YfxHnTXdEzm0K7BGE5CbEu6lweELQgvFej53din5xg==
   dependencies:
     ajv "^6.11.0"
     ajv-errors "^1.0.1"
@@ -11166,7 +11166,7 @@ npm-package-json-lint@^4.5.1:
     log-symbols "^3.0.0"
     meow "^6.0.0"
     plur "^3.1.1"
-    semver "^7.0.0"
+    semver "^7.1.2"
     slash "^3.0.0"
     strip-json-comments "^3.0.1"
 
@@ -14535,10 +14535,10 @@ semver@7.0.0:
   resolved "https://registry.yarnpkg.com/semver/-/semver-7.0.0.tgz#5f3ca35761e47e05b206c6daff2cf814f0316b8e"
   integrity sha512-+GB6zVA9LWh6zovYQLALHwv5rb2PHGlJi3lfiqIHxR0uuwCgefcOJc59v9fv1w8GbStwxuuqqAjI9NMAOOgq1A==
 
-semver@^7.0.0:
-  version "7.1.1"
-  resolved "https://registry.yarnpkg.com/semver/-/semver-7.1.1.tgz#29104598a197d6cbe4733eeecbe968f7b43a9667"
-  integrity sha512-WfuG+fl6eh3eZ2qAf6goB7nhiCd7NPXhmyFxigB/TOkQyeLP8w8GsVehvtGNtnNmyboz4TgeK40B1Kbql/8c5A==
+semver@^7.1.2:
+  version "7.1.2"
+  resolved "https://registry.yarnpkg.com/semver/-/semver-7.1.2.tgz#847bae5bce68c5d08889824f02667199b70e3d87"
+  integrity sha512-BJs9T/H8sEVHbeigqzIEo57Iu/3DG6c4QoqTfbQB3BPA4zgzAomh/Fk9E7QtjWQ8mx2dgA9YCfSF4y9k9bHNpQ==
 
 semver@~5.3.0:
   version "5.3.0"
