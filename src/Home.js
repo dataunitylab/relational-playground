@@ -2,7 +2,9 @@
 import React, {Component} from 'react';
 
 import {connect} from 'react-redux';
+import PropTypes from "prop-types";
 import fromEntries from 'fromentries';
+import { withRouter } from 'react-router-dom';
 import MultiTable from './MultiTable';
 import RelExpr from './RelExpr';
 import SplitPane from 'react-split-pane';
@@ -25,6 +27,9 @@ type State = {
 };
 
 type Props = {
+  match: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
   expr: {[string]: any},
   data: DataState,
   sources: {[string]: Data},
@@ -182,4 +187,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Home));

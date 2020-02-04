@@ -1,4 +1,6 @@
 // @flow
+import queryString from 'query-string'
+import { useHistory } from "react-router-dom";
 import React, {Component} from 'react';
 import Editor from 'react-simple-code-editor';
 import {highlight, languages} from 'prismjs/components/prism-core';
@@ -12,6 +14,8 @@ import 'prismjs/themes/prism.css';
 const parser = require('@michaelmior/js-sql-parser');
 
 type Props = {
+  location: any,
+  history: any,
   defaultText: string,
   exprFromSql: typeof exprFromSql,
   resetAction: typeof resetAction,
@@ -31,13 +35,22 @@ class SqlEditor extends Component<Props, State> {
     super();
     (this: any).handleChange = this.handleChange.bind(this);
     (this: any).parseQuery = this.parseQuery.bind(this);
-    this.state = {error: null, timeout: null, query: ''};
+    this.state = {error: null, timeout: null, query: '',};
   }
 
   componentDidMount() {
     // Parse the initial query when we start
-    this.parseQuery(this.props.defaultText, true);
-    this.setState({query: this.props.defaultText});
+
+
+    const values = queryString.parse(this.props.location.search);
+    console.log(values);
+    if(values.query === undefined){
+      this.parseQuery(this.props.defaultText, true);
+      this.setState({query: this.props.defaultText});
+    } else {
+      this.parseQuery(values.query, false);
+      this.setState({query: values.query});
+    }
   }
 
   /**
@@ -67,6 +80,8 @@ class SqlEditor extends Component<Props, State> {
 
         // Parse the query
         this.props.exprFromSql(sql.value, this.props.types);
+        this.props.history.push("/?query="+text);
+
         if (!firstLoad) {
           this.setState({error: null});
         }
@@ -95,6 +110,7 @@ class SqlEditor extends Component<Props, State> {
     let handle = setTimeout(() => {
       this.parseQuery(text);
     }, 1000);
+
     this.setState({timeout: handle, query: text});
   }
 
@@ -105,8 +121,8 @@ class SqlEditor extends Component<Props, State> {
       error = <div style={{color: 'red'}}>{this.state.error}</div>;
     }
 
-    return (
-      <div className="SqlEditor">
+    return(
+      <div className={"SqlEditor"}>
         <h4>SQL Query</h4>
         <div className="editor">
           <Editor
@@ -122,6 +138,7 @@ class SqlEditor extends Component<Props, State> {
         <div className="error">{error}</div>
       </div>
     );
+
   }
 }
 
