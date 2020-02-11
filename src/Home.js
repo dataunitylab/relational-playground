@@ -1,5 +1,6 @@
 // @flow
 import React, {Component} from 'react';
+
 import {connect} from 'react-redux';
 import fromEntries from 'fromentries';
 import MultiTable from './MultiTable';
@@ -11,11 +12,17 @@ import {changeExpr} from './modules/data';
 import {exprFromSql} from './modules/relexp';
 import {resetAction} from './modules/data';
 import {BrowserView, MobileView} from 'react-device-detect';
+import Cookies from 'universal-cookie';
 import ReactGA from 'react-ga';
 
 import './Home.css';
 
 import type {Data, State as DataState} from './modules/data';
+import Tutorial from './Tutorial';
+
+type State = {
+  cookies: typeof Cookies,
+};
 
 type Props = {
   expr: {[string]: any},
@@ -30,9 +37,14 @@ type Props = {
 };
 
 /** Container for all components on the main page */
-class Home extends Component<Props> {
-  constructor() {
-    super();
+class Home extends Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+
+    this.state = {
+      cookies: new Cookies(),
+    };
+
     switch (process.env.NODE_ENV) {
       case 'production':
         ReactGA.initialize('UA-143847373-2');
@@ -48,10 +60,14 @@ class Home extends Component<Props> {
   }
 
   render() {
-    let data = <div style={{padding: '2em'}}>Select an expression above.</div>;
+    let data = (
+      <div className="dataContainer" style={{padding: '2em'}}>
+        Select an expression above.
+      </div>
+    );
     if (this.props.data.current) {
       data = (
-        <div style={{margin: '1em'}}>
+        <div className="dataContainer" style={{margin: '1em'}}>
           <h4>Data for selected expression</h4>
           <Table
             tableName={this.props.data.current.name}
@@ -63,41 +79,52 @@ class Home extends Component<Props> {
       );
     }
 
+    let editorContainer = (
+      <div style={{padding: '0em 1em 1em 1em'}}>
+        <h2>Relational Playground</h2>
+        <div>
+          {/* SQL query input */}
+          <SqlEditor
+            ReactGA={ReactGA}
+            defaultText="SELECT * FROM Doctor"
+            exprFromSql={this.props.exprFromSql}
+            resetAction={this.props.resetAction}
+            types={this.props.types}
+          />
+
+          <div className="relExprContainer">
+            {/* Relational algebra expression display */}
+            <RelExpr
+              ReactGA={ReactGA}
+              expr={this.props.expr}
+              changeExpr={this.props.changeExpr}
+            />
+          </div>
+        </div>
+      </div>
+    );
+
+    let dataContainer = (
+      <div className="bottomLeftContainer">
+        {data}
+        <div className="footer">
+          <Tutorial cookies={this.state.cookies} />
+          <p className="email">
+            For questions, please email{' '}
+            <a href="mailto:mmior@cs.rit.edu">mmior@cs.rit.edu</a>
+          </p>
+        </div>
+      </div>
+    );
+
     return (
       <div>
         <BrowserView>
           <SplitPane split="vertical" primary="second" minSize={'30%'}>
             <div>
-              <SplitPane split="horizontal" primary="second" minSize={400}>
-                <div style={{padding: '0em 1em 1em 1em'}}>
-                  <div>
-                    <h2>Relational Playground</h2>
-                    {/* SQL query input */}
-                    <SqlEditor
-                      ReactGA={ReactGA}
-                      defaultText="SELECT * FROM Doctor"
-                      exprFromSql={this.props.exprFromSql}
-                      resetAction={this.props.resetAction}
-                      types={this.props.types}
-                    />
-
-                    <div className="relExprContainer">
-                      {/* Relational algebra expression display */}
-                      <RelExpr
-                        ReactGA={ReactGA}
-                        expr={this.props.expr}
-                        changeExpr={this.props.changeExpr}
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="dataContainer">
-                  {data}
-                  <div className="email">
-                    For questions, please email{' '}
-                    <a href="mailto:mmior@cs.rit.edu">mmior@cs.rit.edu</a>
-                  </div>
-                </div>
+              <SplitPane split="horizontal" primary="second" minSize={'55%'}>
+                {editorContainer}
+                {dataContainer}
               </SplitPane>
             </div>
             {/* Input dataset preview */}
@@ -108,41 +135,19 @@ class Home extends Component<Props> {
         </BrowserView>
 
         <MobileView>
-          <h2>Relational Playground</h2>
           <div style={{padding: '0em 1em 1em 1em'}}>
-            {/* SQL query input */}
-            <SqlEditor
-              ReactGA={ReactGA}
-              defaultText="SELECT * FROM Doctor"
-              exprFromSql={this.props.exprFromSql}
-              resetAction={this.props.resetAction}
-              types={this.props.types}
-            />
-
-            <div className="relExprContainer">
-              {/* Relational algebra expression display */}
-              <RelExpr
-                ReactGA={ReactGA}
-                expr={this.props.expr}
-                changeExpr={this.props.changeExpr}
-              />
-            </div>
+            {editorContainer}
 
             <MultiTable ReactGA={ReactGA} tables={this.props.sources} />
-
-            {data}
           </div>
-          <div className="email">
-            For questions, please email{' '}
-            <a href="mailto:mmior@cs.rit.edu">mmior@cs.rit.edu</a>
-          </div>
+          {dataContainer}
         </MobileView>
       </div>
     );
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, ownProps) => {
   // Get just the column names from the source data
   const types = fromEntries(
     Object.entries(state.data.sourceData).map(([name, data]) => {
@@ -159,6 +164,7 @@ const mapStateToProps = state => {
     types: types,
     sources: state.data.sourceData,
     element: state.data.element,
+    cookies: ownProps.cookies,
   };
 };
 

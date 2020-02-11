@@ -75,25 +75,27 @@ class MultiTable extends Component<Props, State> {
       }
 
       return (
-        <MobileView>
-          <h4>Source relations</h4>
+        <div className="sourceTableContainer">
+          <MobileView>
+            <h4>Source relations</h4>
 
-          <Select
-            className="mobileSelect"
-            value={{value: this.state.selected, label: this.state.selected}}
-            onChange={this.handleChange}
-            options={Object.keys(this.props.tables).map(tbl => {
-              return {value: tbl, label: tbl};
-            })}
-          />
+            <Select
+              className="mobileSelect"
+              value={{value: this.state.selected, label: this.state.selected}}
+              onChange={this.handleChange}
+              options={Object.keys(this.props.tables).map(tbl => {
+                return {value: tbl, label: tbl};
+              })}
+            />
 
-          <div className="tableDiv">
-            {table}
-            <button className="mobileButton" onClick={this.handleButtonPress}>
-              {this.state.buttonText}
-            </button>
-          </div>
-        </MobileView>
+            <div className="tableDiv">
+              {table}
+              <button className="mobileButton" onClick={this.handleButtonPress}>
+                {this.state.buttonText}
+              </button>
+            </div>
+          </MobileView>
+        </div>
       );
     } else if (this.state.selected) {
       const data = this.props.tables[this.state.selected];
@@ -108,20 +110,22 @@ class MultiTable extends Component<Props, State> {
 
     // Render the menu along with the table
     return (
-      <BrowserView>
-        <h4>Source relations</h4>
+      <div className="sourceTableContainer">
+        <BrowserView>
+          <h4>Source relations</h4>
 
-        <Select
-          className="browserSelect"
-          value={{value: this.state.selected, label: this.state.selected}}
-          onChange={this.handleChange}
-          options={Object.keys(this.props.tables).map(tbl => {
-            return {value: tbl, label: tbl};
-          })}
-        />
+          <Select
+            className="browserSelect"
+            value={{value: this.state.selected, label: this.state.selected}}
+            onChange={this.handleChange}
+            options={Object.keys(this.props.tables).map(tbl => {
+              return {value: tbl, label: tbl};
+            })}
+          />
 
-        {table}
-      </BrowserView>
+          {table}
+        </BrowserView>
+      </div>
     );
   }
 }
