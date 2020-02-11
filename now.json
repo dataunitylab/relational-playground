@@ -7,7 +7,11 @@
           "distDir": "build"
       }
   }],
-  "env": {
-    "CI": "1"
+  "build": {
+    "env": {
+      "CI": "1",
+      "SENTRY_AUTH_TOKEN": "@sentry_auth_token",
+      "SENTRY_ORG": "rit-data-lab"
+    }
   }
 }

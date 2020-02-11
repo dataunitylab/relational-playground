@@ -39,3 +39,10 @@ curl --request POST  \
      --url https://api.rollbar.com/api/1/deploy/  \
      --header 'content-type: application/json' \
      --data "{\"access_token\":\"2a3715a647194206984c6078fd092451\",\"environment\":\"$NODE_ENV\",\"revision\":\"$SHA\"}"
+
+if [ -n "$SENTRY_AUTH_TOKEN" ]; then
+  yarn run sentry-cli releases new -p relational-playground $SHA
+  yarn run sentry-cli releases set-commits -c michaelmior/relational-playground@$SHA $SHA
+  yarn run sentry-cli releases deploys $SHA new -e $NODE_ENV
+  yarn run sentry-cli releases finalize $SHA
+fi
