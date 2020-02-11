@@ -15,7 +15,7 @@
     "fast-equals": "^2.0.0",
     "fromentries": "^1.2.0",
     "history": "^4.10.1",
-    "immer": "^5.3.4",
+    "immer": "^5.3.5",
     "prismjs": "^1.19.0",
     "prop-types": "^15.5.0",
     "react": "^16.12.0",
