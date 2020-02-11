@@ -8,7 +8,7 @@ class App extends Component {
     return (
       <div className="App">
         <main>
-          <Route path={process.env.PUBLIC_URL} component={Home} />
+            <Route path={process.env.PUBLIC_URL}component={Home} />
         </main>
       </div>
     );

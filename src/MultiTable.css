@@ -19,3 +19,9 @@
   margin-bottom: 20px;
   font-size: 15px;
 }
+
+.sourceTableContainer {
+  background-color: white;
+  border-radius: 10px;
+  padding: 8px;
+}

@@ -58,14 +58,23 @@
   font-family: Fira Code, Fira Mono, monospace;
   margin-top: 20px;
   margin-bottom: 20px;
+  background-color: white;
+  padding: 8px;
+  border-radius: 10px;
 }
 
-.dataContainer {
+.bottomLeftContainer {
   width: 100%;
   align-items: stretch;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.dataContainer {
+  background-color: white;
+  border-radius: 10px;
+  padding: 0px;
 }
 
 h2 {

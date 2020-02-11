@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`correctly renders tutorial 1`] = `
+<div>
+  <div
+    className="react-joyride"
+  />
+  <button
+    className="button"
+    onClick={[Function]}
+  >
+    Re-do Tutorial
+  </button>
+</div>
+`;
