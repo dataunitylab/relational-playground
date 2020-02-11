@@ -32,7 +32,8 @@
     "react-table": "^6.11.5",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
-    "typescript": "*"
+    "typescript": "*",
+    "universal-cookie": "latest"
   },
   "scripts": {
     "analyze": "source-map-explorer build/static/js/*.js",

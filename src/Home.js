@@ -13,14 +13,22 @@ import {exprFromSql} from './modules/relexp';
 import {resetAction} from './modules/data';
 import {BrowserView, MobileView} from 'react-device-detect';
 import ReactGA from 'react-ga';
-import { withCookies } from 'react-cookie';
+import Cookies from 'universal-cookie';
 
 import './Home.css';
 
 import type {Data, State as DataState} from './modules/data';
-import {TutorialContainer} from "./Tutorial";
+import Tutorial from "./Tutorial";
 
-type Props = {
+type State = {
+  cookies: typeof Cookies,
+}
+
+type CookiesProps = {
+  cookies: any
+}
+
+type OtherProps = {
   expr: {[string]: any},
   data: DataState,
   sources: {[string]: Data},
@@ -33,11 +41,17 @@ type Props = {
   resetAction: typeof resetAction,
 };
 
-/** Container for all components on the main page */
-class Home extends Component<Props> {
+type Props = CookiesProps & OtherProps
 
-  constructor() {
-    super();
+/** Container for all components on the main page */
+class Home extends Component<Props, State> {
+
+  constructor(props: Props) {
+    super(props);
+
+    this.state = {
+      cookies: new Cookies(),
+    };
 
     switch (process.env.NODE_ENV) {
       case 'production':
@@ -56,10 +70,10 @@ class Home extends Component<Props> {
 
 
   render() {
-    let data = <div style={{padding: '2em'}}>Select an expression above.</div>;
+    let data = <div className="dataContainer" style={{padding: '2em'}}>Select an expression above.</div>;
     if (this.props.data.current) {
       data = (
-        <div style={{margin: '1em'}}>
+        <div className="dataContainer" style={{margin: '1em'}}>
           <h4>Data for selected expression</h4>
           <Table
             tableName={this.props.data.current.name}
@@ -73,8 +87,8 @@ class Home extends Component<Props> {
 
     let editorContainer = (
         <div style={{padding: '0em 1em 1em 1em'}}>
+          <h2>Relational Playground</h2>
           <div>
-            <h2>Relational Playground</h2>
             {/* SQL query input */}
             <SqlEditor
                 ReactGA={ReactGA}
@@ -97,10 +111,10 @@ class Home extends Component<Props> {
     );
 
     let dataContainer = (
-        <div className="dataContainer">
+        <div className="bottomLeftContainer">
           {data}
           <div className="email">
-            <TutorialContainer state={{run:false}} cookies={this.props.cookies}/>
+            <Tutorial state={{run:false}} cookies={this.state.cookies}/>
             For questions, please email{' '}
             <a href="mailto:mmior@cs.rit.edu">mmior@cs.rit.edu</a>
           </div>
@@ -110,9 +124,10 @@ class Home extends Component<Props> {
     return (
       <div>
         <BrowserView>
+
           <SplitPane split="vertical" primary="second" minSize={'30%'}>
             <div>
-              <SplitPane split="horizontal" primary="second" minSize={400}>
+              <SplitPane split="horizontal" primary="second" minSize={'55%'}>
                 {editorContainer}
                 {dataContainer}
               </SplitPane>
@@ -125,7 +140,6 @@ class Home extends Component<Props> {
         </BrowserView>
 
         <MobileView>
-          <h2>Relational Playground</h2>
           <div style={{padding: '0em 1em 1em 1em'}}>
             {editorContainer}
 
@@ -139,6 +153,7 @@ class Home extends Component<Props> {
   }
 }
 
+
 const mapStateToProps = (state, ownProps) => {
   // Get just the column names from the source data
   const types = fromEntries(
@@ -147,8 +162,7 @@ const mapStateToProps = (state, ownProps) => {
         name,
         data != null && typeof data === 'object' ? data.columns : [],
       ];
-    })
-  );
+    }));
 
   return {
     expr: state.relexp.expr,
@@ -174,4 +188,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default withCookies(connect(mapStateToProps, mapDispatchToProps)(Home));
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
