@@ -69,7 +69,7 @@
     "@sebastianwessel/esdoc-standard-plugin": "^2.1.0",
     "@storybook/addon-actions": "^5.3.12",
     "@storybook/addon-links": "^5.3.12",
-    "@storybook/addons": "^5.3.12",
+    "@storybook/addons": "^5.3.13",
     "@storybook/cli": "^5.3.12",
     "@storybook/react": "^5.3.12",
     "@testing-library/react": "^9.4.0",
