@@ -108,13 +108,11 @@
     "src/**/*.{js,jsx,json}": [
       "eslint --fix",
       "flow focus-check",
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ],
     "src/**/*.css": [
       "stylelint --fix",
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ],
     "package.json": [
       "npmPkgJsonLint -q .",
