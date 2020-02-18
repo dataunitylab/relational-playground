@@ -28,7 +28,6 @@ type State = {
 
 type Props = {
   match: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   expr: {[string]: any},
   data: DataState,
@@ -142,7 +141,6 @@ class Home extends Component<Props, State> {
         <MobileView>
           <div style={{padding: '0em 1em 1em 1em'}}>
             {editorContainer}
-
             <MultiTable ReactGA={ReactGA} tables={this.props.sources} />
           </div>
           {dataContainer}

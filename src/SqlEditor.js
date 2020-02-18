@@ -14,7 +14,6 @@ import 'prismjs/themes/prism.css';
 const parser = require('@michaelmior/js-sql-parser');
 
 type Props = {
-  location: any,
   history: any,
   defaultText: string,
   exprFromSql: typeof exprFromSql,
@@ -40,7 +39,7 @@ class SqlEditor extends Component<Props, State> {
 
   componentDidMount() {
     // Parse the initial query when we start
-    const values = queryString.parse(this.props.location.search);
+    const values = queryString.parse(window.location.search);
 
     if(values.query === undefined){
       this.parseQuery(this.props.defaultText, true);
