@@ -3,19 +3,31 @@ import {shallow} from 'enzyme';
 
 import Editor from 'react-simple-code-editor';
 import SqlEditor from './SqlEditor';
+import {history} from './store';
 
 it('can parse the initial query', () => {
   const types = {foo: ['bar', 'baz']};
   const mockAction = jest.fn();
   const mockEvent = jest.fn();
   const mockResetAction = jest.fn(() => undefined);
-  shallow(
+
+  global.window = Object.create(window);
+
+  Object.defineProperty(window, 'location', {
+    value: {
+      search: "SELECT * FROM foo"
+    }
+  });
+
+  const wrapper = shallow(
     <SqlEditor
       defaultText="SELECT * FROM foo"
       ReactGA={{event: mockEvent}}
       exprFromSql={mockAction}
       types={types}
       resetAction={mockResetAction}
+      history={history}
+      location={global.window.location}
     />
   );
 

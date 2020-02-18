@@ -40,10 +40,8 @@ class SqlEditor extends Component<Props, State> {
 
   componentDidMount() {
     // Parse the initial query when we start
-
-
     const values = queryString.parse(this.props.location.search);
-    console.log(values);
+
     if(values.query === undefined){
       this.parseQuery(this.props.defaultText, true);
       this.setState({query: this.props.defaultText});
