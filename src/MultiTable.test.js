@@ -1,6 +1,5 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import {BrowserView, MobileView} from 'react-device-detect';
 import * as reactDeviceDetect from 'react-device-detect';
 import MultiTable from './MultiTable';
 import dataReducer from './modules/data';

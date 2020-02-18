@@ -1,4 +1,4 @@
-import {createStore, applyMiddleware, compose} from 'redux';
+import {applyMiddleware} from 'redux';
 
 const OLD_ENV = process.env;
 
@@ -23,7 +23,8 @@ it('initializes dev tools in development', () => {
   const devTools = jest.fn((...args) => applyMiddleware(...args));
   global.__REDUX_DEVTOOLS_EXTENSION__ = devTools;
 
-  const store = require('./store').default;
+  // eslint-disable-next-line no-unused-expressions
+  require('./store').default;
   expect(devTools.mock.calls.length).toBe(1);
 
   process.env.NODE_ENV = 'test';
