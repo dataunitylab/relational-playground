@@ -170,9 +170,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    resetAction: () => {
-      dispatch(resetAction());
-    },
+    resetAction: () => { dispatch(resetAction()); },
     changeExpr: (data, element) => {
       dispatch(changeExpr(data, element));
     },
