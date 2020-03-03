@@ -73,7 +73,7 @@
     "@storybook/addon-actions": "^5.3.13",
     "@storybook/addon-links": "^5.3.13",
     "@storybook/addons": "^5.3.13",
-    "@storybook/cli": "^5.3.13",
+    "@storybook/cli": "^5.3.14",
     "@storybook/react": "^5.3.13",
     "@testing-library/react": "^9.4.1",
     "babel-loader": "8.0.6",
