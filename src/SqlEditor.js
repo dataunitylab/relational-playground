@@ -1,6 +1,5 @@
 // @flow
 import queryString from 'query-string';
-import {useHistory} from 'react-router-dom';
 import React, {Component} from 'react';
 import Editor from 'react-simple-code-editor';
 import {highlight, languages} from 'prismjs/components/prism-core';
