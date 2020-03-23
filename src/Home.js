@@ -2,9 +2,9 @@
 import React, {Component} from 'react';
 
 import {connect} from 'react-redux';
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 import fromEntries from 'fromentries';
-import { withRouter } from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 import MultiTable from './MultiTable';
 import RelExpr from './RelExpr';
 import SplitPane from 'react-split-pane';

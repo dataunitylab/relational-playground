@@ -33,6 +33,9 @@ it('can parse the initial query', () => {
   expect(mockAction.mock.calls[0][0].type).toBe('Select');
   expect(mockAction.mock.calls[0][1]).toEqual(types);
 
+  //comment with the URL
+  console.log(window.location.href);
+
   // No events should be recorded
   expect(mockEvent.mock.calls.length).toBe(0);
   expect(mockResetAction.mock.calls.length).toBe(0);

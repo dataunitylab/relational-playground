@@ -1,6 +1,6 @@
 // @flow
-import queryString from 'query-string'
-import { useHistory } from "react-router-dom";
+import queryString from 'query-string';
+import {useHistory} from 'react-router-dom';
 import React, {Component} from 'react';
 import Editor from 'react-simple-code-editor';
 import {highlight, languages} from 'prismjs/components/prism-core';
@@ -34,14 +34,14 @@ class SqlEditor extends Component<Props, State> {
     super();
     (this: any).handleChange = this.handleChange.bind(this);
     (this: any).parseQuery = this.parseQuery.bind(this);
-    this.state = {error: null, timeout: null, query: '',};
+    this.state = {error: null, timeout: null, query: ''};
   }
 
   componentDidMount() {
     // Parse the initial query when we start
     const values = queryString.parse(window.location.search);
 
-    if(values.query === undefined){
+    if (values.query === undefined) {
       this.parseQuery(this.props.defaultText, true);
       this.setState({query: this.props.defaultText});
     } else {
@@ -77,7 +77,7 @@ class SqlEditor extends Component<Props, State> {
 
         // Parse the query
         this.props.exprFromSql(sql.value, this.props.types);
-        this.props.history.push("/?query="+text);
+        this.props.history.push('/?query=' + text);
 
         if (!firstLoad) {
           this.setState({error: null});
@@ -118,8 +118,8 @@ class SqlEditor extends Component<Props, State> {
       error = <div style={{color: 'red'}}>{this.state.error}</div>;
     }
 
-    return(
-      <div className={"SqlEditor"}>
+    return (
+      <div className={'SqlEditor'}>
         <h4>SQL Query</h4>
         <div className="editor">
           <Editor
@@ -135,7 +135,6 @@ class SqlEditor extends Component<Props, State> {
         <div className="error">{error}</div>
       </div>
     );
-
   }
 }
 
