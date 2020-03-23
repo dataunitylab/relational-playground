@@ -14,7 +14,7 @@ it('can parse the initial query', () => {
   window = Object.create(window);
 
   Object.defineProperty(window, 'location', {
-    value: new URL('http://localhost:3000/')
+    value: new URL('http://localhost:3000/'),
   });
 
   shallow(
@@ -32,9 +32,6 @@ it('can parse the initial query', () => {
   expect(mockAction.mock.calls.length).toBe(1);
   expect(mockAction.mock.calls[0][0].type).toBe('Select');
   expect(mockAction.mock.calls[0][1]).toEqual(types);
-
-  //comment with the URL
-  console.log(window.location.href);
 
   // No events should be recorded
   expect(mockEvent.mock.calls.length).toBe(0);
