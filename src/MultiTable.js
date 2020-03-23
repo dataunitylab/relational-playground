@@ -1,7 +1,6 @@
 // @flow
 import React, {Component} from 'react';
 // $FlowFixMe
-import Select from 'react-select';
 import Table from './Table';
 import {BrowserView, MobileView, isMobile} from 'react-device-detect';
 
@@ -39,12 +38,16 @@ class MultiTable extends Component<Props, State> {
   }
 
   // TODO: Fix type annotation below
-  handleChange = (table: any) => {
-    this.setState({selected: table.value});
-    this.props.ReactGA.event({
-      category: 'User Selecting A Table',
-      action: table.value,
-    });
+  handleChange = (e: Event) => {
+    const targetElem =
+      e.target instanceof HTMLInputElement ? e.target : undefined;
+    if (targetElem !== undefined) {
+      this.setState({selected: targetElem.value});
+      this.props.ReactGA.event({
+        category: 'User Selecting A Table',
+        action: targetElem.value,
+      });
+    }
   };
 
   handleButtonPress() {
@@ -78,15 +81,11 @@ class MultiTable extends Component<Props, State> {
         <div className="sourceTableContainer">
           <MobileView>
             <h4>Source relations</h4>
-
-            <Select
-              className="mobileSelect"
-              value={{value: this.state.selected, label: this.state.selected}}
-              onChange={this.handleChange}
-              options={Object.keys(this.props.tables).map(tbl => {
-                return {value: tbl, label: tbl};
+            <select className="mobileSelect" onChange={this.handleChange}>
+              {Object.keys(this.props.tables).map(tbl => {
+                return <option value={tbl}> {tbl}</option>;
               })}
-            />
+            </select>
 
             <div className="tableDiv">
               {table}
@@ -114,14 +113,11 @@ class MultiTable extends Component<Props, State> {
         <BrowserView>
           <h4>Source relations</h4>
 
-          <Select
-            className="browserSelect"
-            value={{value: this.state.selected, label: this.state.selected}}
-            onChange={this.handleChange}
-            options={Object.keys(this.props.tables).map(tbl => {
-              return {value: tbl, label: tbl};
+          <select className="browserSelect" onChange={this.handleChange}>
+            {Object.keys(this.props.tables).map(tbl => {
+              return <option value={tbl}>{tbl}</option>;
             })}
-          />
+          </select>
 
           {table}
         </BrowserView>
