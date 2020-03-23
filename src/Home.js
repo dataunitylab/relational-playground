@@ -89,6 +89,7 @@ class Home extends Component<Props, State> {
         <div>
           {/* SQL query input */}
           <SqlEditor
+            history={this.props.history}
             ReactGA={ReactGA}
             defaultText="SELECT * FROM Doctor"
             exprFromSql={this.props.exprFromSql}
