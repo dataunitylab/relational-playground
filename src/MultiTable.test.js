@@ -17,7 +17,7 @@ it('can change tables browser', () => {
   let browserSelect = wrapper.find('.browserSelect');
 
   // Change the table
-  browserSelect.simulate('change', {value: 'Patient'});
+  browserSelect.simulate('change', {target: {value: 'Patient'}, test: true});
 
   expect(mockEvent.mock.calls.length).toBe(1);
   expect(mockEvent.mock.calls[0][0].category).toBe('User Selecting A Table');
@@ -40,7 +40,7 @@ it('can change tables mobile', () => {
   );
 
   let mobileSelect = wrapper.find('.mobileSelect');
-  mobileSelect.simulate('change', {value: 'Patient'});
+  mobileSelect.simulate('change', {target: {value: 'Patient'}, test: true});
 
   expect(mockEvent.mock.calls.length).toBe(1);
   expect(mockEvent.mock.calls[0][0].category).toBe('User Selecting A Table');

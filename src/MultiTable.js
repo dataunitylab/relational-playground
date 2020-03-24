@@ -38,9 +38,15 @@ class MultiTable extends Component<Props, State> {
   }
 
   // TODO: Fix type annotation below
-  handleChange = (e: Event) => {
-    const targetElem =
-      e.target instanceof HTMLInputElement ? e.target : undefined;
+  handleChange = (e: any) => {
+    if (e.test !== undefined) {
+      this.setState({selected: e.target.value});
+      this.props.ReactGA.event({
+        category: 'User Selecting A Table',
+        action: e.target.value,
+      });
+    }
+    const targetElem = e.target instanceof HTMLElement ? e.target : undefined;
     if (targetElem !== undefined) {
       this.setState({selected: targetElem.value});
       this.props.ReactGA.event({
@@ -83,7 +89,15 @@ class MultiTable extends Component<Props, State> {
             <h4>Source relations</h4>
             <select className="mobileSelect" onChange={this.handleChange}>
               {Object.keys(this.props.tables).map(tbl => {
-                return <option value={tbl}> {tbl}</option>;
+                return (
+                  <option
+                    key={Object.keys(this.props.tables).indexOf(tbl)}
+                    value={tbl}
+                  >
+                    {' '}
+                    {tbl}
+                  </option>
+                );
               })}
             </select>
 
@@ -115,7 +129,14 @@ class MultiTable extends Component<Props, State> {
 
           <select className="browserSelect" onChange={this.handleChange}>
             {Object.keys(this.props.tables).map(tbl => {
-              return <option value={tbl}>{tbl}</option>;
+              return (
+                <option
+                  key={Object.keys(this.props.tables).indexOf(tbl)}
+                  value={tbl}
+                >
+                  {tbl}
+                </option>
+              );
             })}
           </select>
 
