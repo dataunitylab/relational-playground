@@ -2,7 +2,9 @@
 import React, {Component} from 'react';
 
 import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
 import fromEntries from 'fromentries';
+import {withRouter} from 'react-router-dom';
 import MultiTable from './MultiTable';
 import RelExpr from './RelExpr';
 import SplitPane from 'react-split-pane';
@@ -25,6 +27,8 @@ type State = {
 };
 
 type Props = {
+  match: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
   expr: {[string]: any},
   data: DataState,
   sources: {[string]: Data},
@@ -85,6 +89,7 @@ class Home extends Component<Props, State> {
         <div>
           {/* SQL query input */}
           <SqlEditor
+            history={this.props.history}
             ReactGA={ReactGA}
             defaultText="SELECT * FROM Doctor"
             exprFromSql={this.props.exprFromSql}
@@ -137,7 +142,6 @@ class Home extends Component<Props, State> {
         <MobileView>
           <div style={{padding: '0em 1em 1em 1em'}}>
             {editorContainer}
-
             <MultiTable ReactGA={ReactGA} tables={this.props.sources} />
           </div>
           {dataContainer}
@@ -182,4 +186,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Home));

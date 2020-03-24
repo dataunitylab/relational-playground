@@ -3,12 +3,20 @@ import {shallow} from 'enzyme';
 
 import Editor from 'react-simple-code-editor';
 import SqlEditor from './SqlEditor';
+import {history} from './store';
 
 it('can parse the initial query', () => {
   const types = {foo: ['bar', 'baz']};
   const mockAction = jest.fn();
   const mockEvent = jest.fn();
   const mockResetAction = jest.fn(() => undefined);
+
+  window = Object.create(window);
+
+  Object.defineProperty(window, 'location', {
+    value: new URL('http://localhost:3000/'),
+  });
+
   shallow(
     <SqlEditor
       defaultText="SELECT * FROM foo"
@@ -16,6 +24,7 @@ it('can parse the initial query', () => {
       exprFromSql={mockAction}
       types={types}
       resetAction={mockResetAction}
+      history={history}
     />
   );
 
@@ -23,6 +32,9 @@ it('can parse the initial query', () => {
   expect(mockAction.mock.calls.length).toBe(1);
   expect(mockAction.mock.calls[0][0].type).toBe('Select');
   expect(mockAction.mock.calls[0][1]).toEqual(types);
+
+  //comment with the URL
+  console.log(window.location.href);
 
   // No events should be recorded
   expect(mockEvent.mock.calls.length).toBe(0);

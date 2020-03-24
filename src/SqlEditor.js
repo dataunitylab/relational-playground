@@ -1,4 +1,5 @@
 // @flow
+import queryString from 'query-string';
 import React, {Component} from 'react';
 import Editor from 'react-simple-code-editor';
 import {highlight, languages} from 'prismjs/components/prism-core';
@@ -12,6 +13,7 @@ import 'prismjs/themes/prism.css';
 const parser = require('@michaelmior/js-sql-parser');
 
 type Props = {
+  history: any,
   defaultText: string,
   exprFromSql: typeof exprFromSql,
   resetAction: typeof resetAction,
@@ -36,8 +38,15 @@ class SqlEditor extends Component<Props, State> {
 
   componentDidMount() {
     // Parse the initial query when we start
-    this.parseQuery(this.props.defaultText, true);
-    this.setState({query: this.props.defaultText});
+    const values = queryString.parse(window.location.search);
+
+    if (values.query === undefined) {
+      this.parseQuery(this.props.defaultText, true);
+      this.setState({query: this.props.defaultText});
+    } else {
+      this.parseQuery(values.query, false);
+      this.setState({query: values.query});
+    }
   }
 
   /**
@@ -67,6 +76,8 @@ class SqlEditor extends Component<Props, State> {
 
         // Parse the query
         this.props.exprFromSql(sql.value, this.props.types);
+        this.props.history.push('/?query=' + text);
+
         if (!firstLoad) {
           this.setState({error: null});
         }
@@ -95,6 +106,7 @@ class SqlEditor extends Component<Props, State> {
     let handle = setTimeout(() => {
       this.parseQuery(text);
     }, 1000);
+
     this.setState({timeout: handle, query: text});
   }
 
@@ -106,7 +118,7 @@ class SqlEditor extends Component<Props, State> {
     }
 
     return (
-      <div className="SqlEditor">
+      <div className={'SqlEditor'}>
         <h4>SQL Query</h4>
         <div className="editor">
           <Editor
