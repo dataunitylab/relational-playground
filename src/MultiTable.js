@@ -39,19 +39,11 @@ class MultiTable extends Component<Props, State> {
 
   // TODO: Fix type annotation below
   handleChange = (e: any) => {
-    if (e.test !== undefined) {
+    if (e.target !== undefined) {
       this.setState({selected: e.target.value});
       this.props.ReactGA.event({
         category: 'User Selecting A Table',
         action: e.target.value,
-      });
-    }
-    const targetElem = e.target instanceof HTMLElement ? e.target : undefined;
-    if (targetElem !== undefined) {
-      this.setState({selected: targetElem.value});
-      this.props.ReactGA.event({
-        category: 'User Selecting A Table',
-        action: targetElem.value,
       });
     }
   };
