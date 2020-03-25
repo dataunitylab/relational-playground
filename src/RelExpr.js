@@ -60,13 +60,13 @@ class RelExpr extends Component<Props> {
 
       case 'and':
         exprString = expr.and.clauses
-          .map(c => this.exprToString(c, false))
+          .map((c) => this.exprToString(c, false))
           .join(' ∧ ');
         break;
 
       case 'or':
         exprString = expr.or.clauses
-          .map(c => this.exprToString(c, false))
+          .map((c) => this.exprToString(c, false))
           .join(' ∨ ');
         break;
 

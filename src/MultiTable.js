@@ -80,7 +80,7 @@ class MultiTable extends Component<Props, State> {
           <MobileView>
             <h4>Source relations</h4>
             <select className="mobileSelect" onChange={this.handleChange}>
-              {Object.keys(this.props.tables).map(tbl => {
+              {Object.keys(this.props.tables).map((tbl) => {
                 return (
                   <option
                     key={Object.keys(this.props.tables).indexOf(tbl)}
@@ -120,7 +120,7 @@ class MultiTable extends Component<Props, State> {
           <h4>Source relations</h4>
 
           <select className="browserSelect" onChange={this.handleChange}>
-            {Object.keys(this.props.tables).map(tbl => {
+            {Object.keys(this.props.tables).map((tbl) => {
               return (
                 <option
                   key={Object.keys(this.props.tables).indexOf(tbl)}

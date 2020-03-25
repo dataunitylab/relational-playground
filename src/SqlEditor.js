@@ -124,7 +124,7 @@ class SqlEditor extends Component<Props, State> {
           <Editor
             value={this.state.query}
             onValueChange={this.handleChange}
-            highlight={code => highlight(code, languages.sql)}
+            highlight={(code) => highlight(code, languages.sql)}
             padding={10}
             style={{
               fontFamily: '"Fira Code", "Fira Mono", monospace',

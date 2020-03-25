@@ -218,7 +218,7 @@ function buildRelExp(sql, types, tables) {
       }
 
       // Build an expression for everything in the FROM clause
-      let from = sql.from.value.map(v => buildRelExp(v, types, tables));
+      let from = sql.from.value.map((v) => buildRelExp(v, types, tables));
       if (from.length !== 1) {
         throw new Error('Only single table queries currently supported.');
       }
@@ -241,7 +241,9 @@ function buildRelExp(sql, types, tables) {
         // Don't project anything if SELECT * is used
         return from[0];
       } else {
-        const project = select.map(field => convertExpr(field, types, tables));
+        const project = select.map((field) =>
+          convertExpr(field, types, tables)
+        );
         const projection = {
           projection: {
             arguments: {project},
@@ -251,8 +253,8 @@ function buildRelExp(sql, types, tables) {
 
         // Check for any aliased columns (e.g. SELECT foo AS bar...)
         const rename = select
-          .filter(field => field.hasAs)
-          .map(field => [field.value, field.alias]);
+          .filter((field) => field.hasAs)
+          .map((field) => [field.value, field.alias]);
         if (rename.length === 0) {
           // Don't add a rename if not needed
           return projection;
