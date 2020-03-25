@@ -4,6 +4,13 @@
   font-size: 15px;
 }
 
+.browserSelect,
+.mobileSelect {
+  width: 100%;
+  font-size: 1em;
+  padding: 0.5em;
+}
+
 .mobileButton {
   border-radius: 15px;
   font-weight: bold;
