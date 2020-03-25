@@ -196,7 +196,7 @@ it('converts a selection with a literal on the left', () => {
 });
 
 /** @test {relexp} */
-it.each(['and', 'or'])('converts a selection with %s', op => {
+it.each(['and', 'or'])('converts a selection with %s', (op) => {
   const sql = parser.parse(
     'SELECT * FROM foo WHERE bar > 1 ' + op + ' baz < 3'
   );

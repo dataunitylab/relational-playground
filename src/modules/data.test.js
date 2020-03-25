@@ -230,7 +230,7 @@ it.each(operatorTests)(
 
     expect(current.columns).toStrictEqual(sourceData.foo.columns);
     expect(current.data).toStrictEqual(
-      includeRows.map(i => sourceData.foo.data[i])
+      includeRows.map((i) => sourceData.foo.data[i])
     );
   }
 );

@@ -62,10 +62,7 @@ it('can parse modified query and fire an event', () => {
   // The valueChange event is specific to this component,
   // but triggering it is the easiest way to simulate
   // typing to the underlying textarea
-  wrapper
-    .find(Editor)
-    .first()
-    .simulate('valueChange', query);
+  wrapper.find(Editor).first().simulate('valueChange', query);
 
   // No events should be recorded yet
   expect(mockEvent.mock.calls.length).toBe(0);

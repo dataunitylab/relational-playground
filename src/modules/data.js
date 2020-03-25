@@ -177,13 +177,13 @@ function applyExpr(expr, sourceData) {
       let projData = applyExpr(expr.projection.children[0], sourceData);
 
       // Get the columns which should be deleted
-      const columns = projData.columns.map(col =>
+      const columns = projData.columns.map((col) =>
         resolveColumn(col, projData.data[0])
       );
-      const keep = expr.projection.arguments.project.map(col =>
+      const keep = expr.projection.arguments.project.map((col) =>
         resolveColumn(col, projData.data[0])
       );
-      const deleted = columns.filter(column => keep.indexOf(column) === -1);
+      const deleted = columns.filter((column) => keep.indexOf(column) === -1);
 
       // Make a copy of the list of columns to project
       projData.columns = keep;
@@ -201,7 +201,7 @@ function applyExpr(expr, sourceData) {
       let selData = applyExpr(expr.selection.children[0], sourceData);
 
       let select = expr.selection.arguments.select;
-      selData.data = selData.data.filter(item => applyItem(select, item));
+      selData.data = selData.data.filter((item) => applyItem(select, item));
 
       return selData;
 
@@ -257,7 +257,7 @@ function applyExpr(expr, sourceData) {
         // Add the row if it doesn't exist or we don't want distinct
         if (
           !expr[type].distinct ||
-          setOutput.data.find(row => deepEqual(row, leftRow)) === undefined
+          setOutput.data.find((row) => deepEqual(row, leftRow)) === undefined
         ) {
           setOutput.data.push(leftRow);
         }
@@ -265,7 +265,7 @@ function applyExpr(expr, sourceData) {
 
       // Generate new rows for the right side with the salem
       // column names as those on the left
-      const newRight = setRight.data.map(rightRow => {
+      const newRight = setRight.data.map((rightRow) => {
         const newRow = {};
         for (const rightKey of Object.keys(rightRow)) {
           newRow[setLeft.columns[setRight.columns.indexOf(rightKey)]] =
@@ -277,7 +277,7 @@ function applyExpr(expr, sourceData) {
 
       if (type === 'intersect') {
         // Keep only rows from th left which have a match on the right
-        setOutput.data = setOutput.data.filter(leftRow => {
+        setOutput.data = setOutput.data.filter((leftRow) => {
           for (const rightRow of newRight) {
             if (deepEqual(leftRow, rightRow)) {
               return true;
@@ -290,13 +290,14 @@ function applyExpr(expr, sourceData) {
           if (type === 'except') {
             // Remove any matching rows
             setOutput.data = setOutput.data.filter(
-              row => !deepEqual(row, rightRow)
+              (row) => !deepEqual(row, rightRow)
             );
           } else if (type === 'union') {
             // Add the row if it doesn't exist or we don't want distinct
             if (
               !expr[type].distinct ||
-              setOutput.data.find(row => deepEqual(row, rightRow)) === undefined
+              setOutput.data.find((row) => deepEqual(row, rightRow)) ===
+                undefined
             ) {
               setOutput.data.push(rightRow);
             }
