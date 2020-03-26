@@ -11,6 +11,7 @@ it('can parse the initial query', () => {
   const mockEvent = jest.fn();
   const mockResetAction = jest.fn(() => undefined);
 
+  // eslint-disable-next-line no-native-reassign
   window = Object.create(window);
 
   Object.defineProperty(window, 'location', {

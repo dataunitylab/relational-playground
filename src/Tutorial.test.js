@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import Tutorial from './Tutorial';
 import Cookies from 'universal-cookie/cjs';
 import {shallow} from 'enzyme';
