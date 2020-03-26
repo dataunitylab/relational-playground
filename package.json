@@ -18,7 +18,7 @@
     "immer": "^6.0.2",
     "prismjs": "^1.19.0",
     "prop-types": "^15.5.0",
-    "react": "^16.13.0",
+    "react": "^16.13.1",
     "react-cookie": "^4.0.3",
     "react-device-detect": "^1.11.14",
     "react-dom": "^16.13.0",
