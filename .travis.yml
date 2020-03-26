@@ -8,6 +8,8 @@ os:
 cache:
   directories:
   - node_modules
+git:
+  autocrlf: input
 script:
 - yarn lint
 - yarn flow
