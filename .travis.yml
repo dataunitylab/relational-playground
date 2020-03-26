@@ -18,6 +18,7 @@ script:
 - yarn build
 - yarn run bundlesize
 - yarn esdoc && mv docs/ build/
+- gpgconf --kill gpg-agent
 after_script:
 - if [ "x$TRAVIS_OS_NAME" = "xlinux" -a "x$TRAVIS_BRANCH" = "xmaster" ]; then
     yarn coveralls;
@@ -25,7 +26,3 @@ after_script:
 - if [ "x$TRAVIS_OS_NAME" = "xlinux" ]; then
     yarn snapshot;
   fi
-matrix:
-  allow_failures:
-  - os: windows
-  fast_finish: true
