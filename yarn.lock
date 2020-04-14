@@ -11555,10 +11555,10 @@ npm-package-arg@^6.0.0, npm-package-arg@^6.1.0:
     semver "^5.6.0"
     validate-npm-package-name "^3.0.0"
 
-npm-package-json-lint-config-default@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/npm-package-json-lint-config-default/-/npm-package-json-lint-config-default-2.0.0.tgz#3d93f7ec8d85ce5e4a795269a752634c0aced8b3"
-  integrity sha1-PZP37I2Fzl5KeVJpp1JjTArO2LM=
+npm-package-json-lint-config-default@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/npm-package-json-lint-config-default/-/npm-package-json-lint-config-default-3.0.0.tgz#9076e309a48cc215f4c60a3aab149a7b700b5422"
+  integrity sha512-1eOHUSg4Pg1lDp75NJ/pTnYU3/vn7WIL+3MG5KWtrUEFtIuBX/yLGABTFZ4+sP73bQYu/Nla07icJjezQP6SnA==
 
 npm-package-json-lint@^5.0.0:
   version "5.0.0"
