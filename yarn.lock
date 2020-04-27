@@ -3125,10 +3125,10 @@ ajv-keywords@^3.1.0, ajv-keywords@^3.4.1:
   resolved "https://registry.yarnpkg.com/ajv-keywords/-/ajv-keywords-3.4.1.tgz#ef916e271c64ac12171fd8384eaae6b2345854da"
   integrity sha512-RO1ibKvd27e6FEShVFfPALuHI3WjSVNeK5FIsmme/LYRNxjKuNj+Dt7bucLa6NdSv3JcVTyMlm9kGR84z1XpaQ==
 
-ajv@^6.1.0, ajv@^6.10.0, ajv@^6.10.2, ajv@^6.12.0, ajv@^6.5.5:
-  version "6.12.0"
-  resolved "https://registry.yarnpkg.com/ajv/-/ajv-6.12.0.tgz#06d60b96d87b8454a5adaba86e7854da629db4b7"
-  integrity sha512-D6gFiFA0RRLyUbvijN74DWAjXSFxWKaWP7mldxkVhyhAV3+SWA9HEJPHQ2c9soIeTFJqcSdFDGFgdqs1iUU2Hw==
+ajv@^6.1.0, ajv@^6.10.0, ajv@^6.10.2, ajv@^6.12.0, ajv@^6.12.2, ajv@^6.5.5:
+  version "6.12.2"
+  resolved "https://registry.yarnpkg.com/ajv/-/ajv-6.12.2.tgz#c629c5eced17baf314437918d2da88c99d5958cd"
+  integrity sha512-k+V+hzjm5q/Mr8ef/1Y9goCmlsK4I6Sm74teeyGvFk1XrOsbsKLjEdrvny42CZ+a8sXbk8KWpY/bDwS+FLL2UQ==
   dependencies:
     fast-deep-equal "^3.1.1"
     fast-json-stable-stringify "^2.0.0"
@@ -10503,6 +10503,13 @@ log-symbols@^3.0.0:
   dependencies:
     chalk "^2.4.2"
 
+log-symbols@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/log-symbols/-/log-symbols-4.0.0.tgz#69b3cc46d20f448eccdb75ea1fa733d9e821c920"
+  integrity sha512-FN8JBzLx6CzeMrB0tg6pqlGU1wCrXW+ZXGH481kfsBqer0hToTIiHdjH4Mq8xJUbvATujKCvaREGWpGUionraA==
+  dependencies:
+    chalk "^4.0.0"
+
 log-update@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/log-update/-/log-update-2.3.0.tgz#88328fd7d1ce7938b29283746f0b1bc126b24708"
@@ -11560,12 +11567,12 @@ npm-package-json-lint-config-default@^3.0.0:
   resolved "https://registry.yarnpkg.com/npm-package-json-lint-config-default/-/npm-package-json-lint-config-default-3.0.0.tgz#9076e309a48cc215f4c60a3aab149a7b700b5422"
   integrity sha512-1eOHUSg4Pg1lDp75NJ/pTnYU3/vn7WIL+3MG5KWtrUEFtIuBX/yLGABTFZ4+sP73bQYu/Nla07icJjezQP6SnA==
 
-npm-package-json-lint@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/npm-package-json-lint/-/npm-package-json-lint-5.0.0.tgz#284bf867acca663c7af791356c97dba62654261a"
-  integrity sha512-a7meq98EnSqniPWNhTj0TMJbTFKr8SPEkQep3iPCQVJWfhQ8fKI5+bUSgNyEbYfzfIrIjMTb0r/tCkX7FX+bYQ==
+npm-package-json-lint@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/npm-package-json-lint/-/npm-package-json-lint-5.1.0.tgz#f5e198194d32e3e48e7d31b330b1f6a37ce4339c"
+  integrity sha512-gPGpoFTbt0H4uPlubAKqHORg4+GObXqeYJh5ovkkSv76ua+t29vzRP4Qhm+9N/Q59Z3LT0tCmpoDlbTcNB7Jcg==
   dependencies:
-    ajv "^6.12.0"
+    ajv "^6.12.2"
     ajv-errors "^1.0.1"
     chalk "^4.0.0"
     cosmiconfig "^6.0.0"
@@ -11574,10 +11581,10 @@ npm-package-json-lint@^5.0.0:
     ignore "^5.1.4"
     is-plain-obj "^2.1.0"
     jsonc-parser "^2.2.1"
-    log-symbols "^3.0.0"
+    log-symbols "^4.0.0"
     meow "^6.1.0"
     plur "^4.0.0"
-    semver "^7.2.2"
+    semver "^7.3.2"
     slash "^3.0.0"
     strip-json-comments "^3.1.0"
 
@@ -15050,10 +15057,10 @@ semver@7.0.0:
   resolved "https://registry.yarnpkg.com/semver/-/semver-7.0.0.tgz#5f3ca35761e47e05b206c6daff2cf814f0316b8e"
   integrity sha512-+GB6zVA9LWh6zovYQLALHwv5rb2PHGlJi3lfiqIHxR0uuwCgefcOJc59v9fv1w8GbStwxuuqqAjI9NMAOOgq1A==
 
-semver@^7.2.2:
-  version "7.2.3"
-  resolved "https://registry.yarnpkg.com/semver/-/semver-7.2.3.tgz#3641217233c6382173c76bf2c7ecd1e1c16b0d8a"
-  integrity sha512-utbW9Z7ZxVvwiIWkdOMLOR9G/NFXh2aRucghkVrEMJWuC++r3lCkBC3LwqBinyHzGMAJxY5tn6VakZGHObq5ig==
+semver@^7.3.2:
+  version "7.3.2"
+  resolved "https://registry.yarnpkg.com/semver/-/semver-7.3.2.tgz#604962b052b81ed0786aae84389ffba70ffd3938"
+  integrity sha512-OrOb32TeeambH6UrhtShmF7CRDqhL6/5XpPNp2DuRH6+9QLw/orhp72j87v8Qa1ScDkvrrBNpZcDejAirJmfXQ==
 
 semver@~5.3.0:
   version "5.3.0"
