@@ -80,7 +80,7 @@
     "enzyme-adapter-react-16": "^1.15.2",
     "flow-bin": "^0.123.0",
     "husky": "^4.2.5",
-    "jest-each": "^25.5.0",
+    "jest-each": "^26.0.0",
     "jest-enzyme": "^7.1.2",
     "lint-staged": "^10.2.2",
     "markdownlint-cli": "^0.22.0",
