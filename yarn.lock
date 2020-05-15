@@ -1741,6 +1741,11 @@
   dependencies:
     any-observable "^0.3.0"
 
+"@scarf/scarf@^1.0.4":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@scarf/scarf/-/scarf-1.0.5.tgz#accee0bce88a9047672f7c8faf3cada59c996b81"
+  integrity sha512-9WKaGVpQH905Aqkk+BczFEeLQxS07rl04afFRPUG9IcSlOwmo5EVVuuNu0d4M9LMYucObvK0LoAe+5HfMW2QhQ==
+
 "@sebastianwessel/esdoc-accessor-plugin@latest":
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@sebastianwessel/esdoc-accessor-plugin/-/esdoc-accessor-plugin-2.1.0.tgz#4f240fda5fc2e46cdff7cb69385161c79a915257"
@@ -2670,13 +2675,6 @@
   version "11.0.4"
   resolved "https://registry.yarnpkg.com/@types/react-syntax-highlighter/-/react-syntax-highlighter-11.0.4.tgz#d86d17697db62f98046874f62fdb3e53a0bbc4cd"
   integrity sha512-9GfTo3a0PHwQeTVoqs0g5bS28KkSY48pp5659wA+Dp4MqceDEa8EHBqrllJvvtyusszyJhViUEap0FDvlk/9Zg==
-  dependencies:
-    "@types/react" "*"
-
-"@types/react-table@^6.8.5":
-  version "6.8.6"
-  resolved "https://registry.yarnpkg.com/@types/react-table/-/react-table-6.8.6.tgz#6033868003541777e253478798c4dd0b588f0f3e"
-  integrity sha512-mCgyjD1KiMfZMHixOEzv7qXh5TSfmvgNbOb8qKLcTJbnGgsVSalcEdrNqASyaMp79MvdbMzxAcFQ3lftzmH7MA==
   dependencies:
     "@types/react" "*"
 
@@ -14111,14 +14109,12 @@ react-syntax-highlighter@^11.0.2:
     prismjs "^1.8.4"
     refractor "^2.4.1"
 
-react-table@^6.11.5:
-  version "6.11.5"
-  resolved "https://registry.yarnpkg.com/react-table/-/react-table-6.11.5.tgz#84e52885db426a07a6c4ce2c7e942f2cd4e2aa58"
-  integrity sha512-LM+AS9v//7Y7lAlgTWW/cW6Sn5VOb3EsSkKQfQTzOW8FngB1FUskLLNEVkAYsTX9LjOWR3QlGjykJqCE6eXT/g==
+react-table@^7.0.6:
+  version "7.0.6"
+  resolved "https://registry.yarnpkg.com/react-table/-/react-table-7.0.6.tgz#ab7c9bb527339c49af39a4380884e55bbf67d8bc"
+  integrity sha512-XP+mXWCDd6VNZ/fCq69yc/vCWRGTfhQHc0fsLrnMVwT9m3MmmErMLywMbYQkkDjg1OBbhoDXpuo/R7VKGpFbQg==
   dependencies:
-    "@types/react-table" "^6.8.5"
-    classnames "^2.2.5"
-    react-is "^16.8.1"
+    "@scarf/scarf" "^1.0.4"
 
 react-test-renderer@^16.0.0-0, react-test-renderer@^16.13.1:
   version "16.13.1"
