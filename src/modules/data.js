@@ -387,7 +387,7 @@ export function applyResetAction(currentElement: ?HTMLElement) {
   }
 }
 
-export default produce<State>((draft: State, action: Action) => {
+export default produce<State, Action>((draft: State, action: Action) => {
   // eslint-disable-next-line default-case
   switch (action.type) {
     case RESET_EXPR:
