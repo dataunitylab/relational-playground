@@ -4,6 +4,7 @@ import {storiesOf} from '@storybook/react';
 
 import {BinaryRelOp, Join, Projection, Rename, Selection, UnaryRelOp} from '../src/RelOp';
 import RelExpr from '../src/RelExpr';
+import RelExprTree from '../src/RelExprTree';
 import Relation from '../src/Relation';
 import MultiTable from '../src/MultiTable';
 import Table from '../src/Table';
@@ -98,6 +99,42 @@ storiesOf('RelExpr', module).add('a complex expression', () => (
         ],
       },
     }}
+    changeExpr={(expr, element) => undefined}
+  />
+));
+
+storiesOf('RelExprTree', module).add('a complex expression', () => (
+  <RelExprTree
+    expr={{
+      rename: {
+        arguments: {rename: {firstName: 'name'}},
+        children: [
+          {
+            projection: {
+              arguments: {project: ['firstName', 'lastName']},
+              children: [
+                {
+                  selection: {
+                    arguments: {select: {cmp: {lhs: 'salary', op: '$gt', rhs: 100000}}},
+                    children: [{relation: 'Doctor'}],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    }}
+    changeExpr={(expr, element) => undefined}
+  />
+)).add('a simple join', () => (
+  <RelExprTree
+    expr={{join: {left: {relation: 'Doctor'}, right: {relation: 'Patient'}}}}
+    changeExpr={(expr, element) => undefined}
+  />
+)).add('just a relation', () => (
+  <RelExprTree
+    expr={{relation: 'Doctor'}}
     changeExpr={(expr, element) => undefined}
   />
 ));

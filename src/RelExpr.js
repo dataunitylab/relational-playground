@@ -12,6 +12,7 @@ import {
   Union,
 } from './RelOp';
 import Relation from './Relation';
+import {exprToString} from './util';
 import {changeExpr} from './modules/data';
 import ReactDOM from 'react-dom';
 
@@ -28,62 +29,6 @@ class RelExpr extends Component<Props> {
   constructor() {
     super();
     (this: any).handleExprClick = this.handleExprClick.bind(this);
-  }
-
-  /**
-   * @param expr - an object representing an expression
-   * @param top - whether this is a top-level expression - to avoid unneccessary ()
-   * @return a string representing a query condition
-   */
-  exprToString(expr: {[string]: any}, top: boolean = true): string {
-    // We have reached a simple value
-    if (typeof expr !== 'object') {
-      return expr.toString();
-    }
-
-    const opMap = {
-      $gte: '>=',
-      $gt: '>',
-      $lt: '<',
-      $lte: '<=',
-      $ne: '!=',
-      $eq: '=',
-    };
-
-    const type = Object.keys(expr)[0];
-    let exprString;
-    switch (type) {
-      case 'cmp':
-        exprString =
-          expr.cmp.lhs + ' ' + opMap[expr.cmp.op] + ' ' + expr.cmp.rhs;
-        break;
-
-      case 'and':
-        exprString = expr.and.clauses
-          .map((c) => this.exprToString(c, false))
-          .join(' ∧ ');
-        break;
-
-      case 'or':
-        exprString = expr.or.clauses
-          .map((c) => this.exprToString(c, false))
-          .join(' ∨ ');
-        break;
-
-      case 'not':
-        exprString = '¬' + this.exprToString(expr.not.clause, false);
-        break;
-
-      default:
-        throw new Error('Unhandled expression object');
-    }
-
-    // Parenthesize if we're not at the top level
-    if (top) {
-      return exprString;
-    } else {
-      return '(' + exprString + ')';
-    }
   }
 
   /**
@@ -120,7 +65,7 @@ class RelExpr extends Component<Props> {
             <UnaryRelOp
               operator={
                 <Selection
-                  select={this.exprToString(expr.selection.arguments.select)}
+                  select={exprToString(expr.selection.arguments.select)}
                 />
               }
             >

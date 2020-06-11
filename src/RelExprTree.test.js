@@ -1,11 +1,11 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import RelExpr from './RelExpr';
+import RelExprTree from './RelExprTree';
 import {Selection} from './RelOp';
 import {mount} from 'enzyme';
 
-/** @test {RelExpr} */
+/** @test {RelExprTree} */
 it('correctly renders a complex expression', () => {
   const expr = {
     rename: {
@@ -30,7 +30,7 @@ it('correctly renders a complex expression', () => {
     },
   };
   const tree = renderer
-    .create(<RelExpr expr={expr} changeExpr={jest.fn()} />)
+    .create(<RelExprTree expr={expr} changeExpr={jest.fn()} />)
     .toJSON();
   expect(tree).toMatchSnapshot();
 });
@@ -44,7 +44,7 @@ const condTests = [
   ['$eq', '='],
 ];
 
-/** @test {RelExpr} */
+/** @test {RelExprTree} */
 it.each(condTests)('it correctly renders a %s condition as %s', (op, str) => {
   const expr = {
     selection: {
@@ -52,26 +52,30 @@ it.each(condTests)('it correctly renders a %s condition as %s', (op, str) => {
       children: [{relation: 'Doctor'}],
     },
   };
-  const wrapper = mount(<RelExpr expr={expr} changeExpr={jest.fn()} />);
+  const wrapper = mount(<RelExprTree expr={expr} changeExpr={jest.fn()} />);
   expect(wrapper.find(Selection).text()).toContain('salary ' + str + ' 130000');
 });
 
-/** @test {RelExpr} */
+/** @test {RelExprTree} */
 it('produces an error for an invalid expression', () => {
   expect(() => {
     renderer.create(
-      <RelExpr expr={{invalidExpr: 42}} changeExpr={jest.fn()} />
+      <RelExprTree expr={{invalidExpr: 42}} changeExpr={jest.fn()} />
     );
   }).toThrow();
 });
 
-/** @test {RelExpr} */
+/** @test {RelExprTree} */
 it('doesnt change the expression when clicked and relation', () => {
   const mockAction = jest.fn();
   const mockEvent = jest.fn();
   const expr = {relation: 'foo'};
   const wrapper = mount(
-    <RelExpr ReactGA={{event: mockEvent}} expr={expr} changeExpr={mockAction} />
+    <RelExprTree
+      ReactGA={{event: mockEvent}}
+      expr={expr}
+      changeExpr={mockAction}
+    />
   );
 
   // Click on the expression
@@ -85,7 +89,7 @@ it('doesnt change the expression when clicked and relation', () => {
   expect(mockEvent.mock.calls.length).toBe(0);
 });
 
-/** @test {RelExpr} */
+/** @test {RelExprTree} */
 it('changes the expression when clicked not relation', () => {
   const mockAction = jest.fn();
   const mockEvent = jest.fn();
@@ -98,11 +102,15 @@ it('changes the expression when clicked not relation', () => {
     },
   };
   const wrapper = mount(
-    <RelExpr ReactGA={{event: mockEvent}} expr={expr} changeExpr={mockAction} />
+    <RelExprTree
+      ReactGA={{event: mockEvent}}
+      expr={expr}
+      changeExpr={mockAction}
+    />
   );
 
   // Click on the expression
-  wrapper.simulate('click', {stopPropagation: jest.fn()});
+  wrapper.find('li').first().simulate('click', {stopPropagation: jest.fn()});
 
   // An action changing the expression should fire
   expect(mockAction.mock.calls.length).toBe(1);
@@ -111,7 +119,7 @@ it('changes the expression when clicked not relation', () => {
   // And also an analytics event
   expect(mockEvent.mock.calls.length).toBe(1);
   expect(mockEvent.mock.calls[0][0].category).toBe(
-    'User Selecting Relational Algebra Enclosure'
+    'User Selecting Relational Algebra Tree'
   );
   expect(mockEvent.mock.calls[0][0].action).toBe('selection');
 });

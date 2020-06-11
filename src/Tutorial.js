@@ -124,6 +124,21 @@ class Tutorial extends Component<State, Props> {
         target: '.dataContainer',
         styles: stepStyle,
       },
+      {
+        content: (
+          <div>
+            <h4>Tree view</h4>
+            <p>
+              Toggling this checkbox will enable a tree view for relational
+              algebra expressions. You can switch back to a linear view by
+              unchecking the box.
+            </p>
+          </div>
+        ),
+        spotlightPadding: 4,
+        target: '.relExprContainer .toggle',
+        styles: stepStyle,
+      },
     ];
 
     return (

@@ -396,7 +396,9 @@ export default produce<State, Action>((draft: State, action: Action) => {
       break;
     case CHANGE_EXPR:
       draft.current = applyExpr(action.expr, draft.sourceData);
-      draft.element = highlightExpr(draft.element, action.element);
+      if (draft.element) {
+        draft.element = highlightExpr(draft.element, action.element);
+      }
       break;
   }
 }, initialState);

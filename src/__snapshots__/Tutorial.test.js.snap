@@ -105,6 +105,23 @@ exports[`correctly renders tutorial given no cookie 1`] = `
         },
         "target": ".dataContainer",
       },
+      Object {
+        "content": <div>
+          <h4>
+            Tree view
+          </h4>
+          <p>
+            Toggling this checkbox will enable a tree view for relational algebra expressions. You can switch back to a linear view by unchecking the box.
+          </p>
+        </div>,
+        "spotlightPadding": 4,
+        "styles": Object {
+          "tooltipContainer": Object {
+            "textAlign": "left",
+          },
+        },
+        "target": ".relExprContainer .toggle",
+      },
     ]
   }
   styles={

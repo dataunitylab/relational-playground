@@ -81,12 +81,27 @@
 }
 
 .relExprContainer {
+  margin-top: 2em;
+}
+
+.relExprContainer .expr {
   font-family: Fira Code, Fira Mono, monospace;
   margin-top: 20px;
   margin-bottom: 20px;
   background-color: white;
   padding: 8px;
   border-radius: 10px;
+}
+
+.relExprContainer .toggle {
+  float: right;
+  font-size: 0.75em;
+  position: relative;
+  top: -1.75em;
+}
+
+.relExprContainer .toggle input {
+  vertical-align: middle;
 }
 
 .bottomLeftContainer {

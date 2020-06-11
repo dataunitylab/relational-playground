@@ -1,0 +1,113 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`correctly renders a complex expression 1`] = `
+<div
+  className="RelExprTree"
+>
+  <div>
+    <li
+      aria-pressed={false}
+      className="rstm-tree-item rstm-tree-item-level0"
+      onClick={[Function]}
+      role="button"
+      style={
+        Object {
+          "paddingLeft": "0.75rem",
+        }
+      }
+    >
+      <div
+        className="rstm-toggle-icon"
+        onClick={[Function]}
+      >
+        <div
+          aria-label="Toggle"
+          className="rstm-toggle-icon-symbol"
+          role="img"
+        >
+          -
+        </div>
+      </div>
+      <span>
+        ρ
+        <sub>
+          firstName/name
+        </sub>
+      </span>
+    </li>
+    <li
+      aria-pressed={false}
+      className="rstm-tree-item rstm-tree-item-level1"
+      onClick={[Function]}
+      role="button"
+      style={
+        Object {
+          "paddingLeft": "2.5rem",
+        }
+      }
+    >
+      <div
+        className="rstm-toggle-icon"
+        onClick={[Function]}
+      >
+        <div
+          aria-label="Toggle"
+          className="rstm-toggle-icon-symbol"
+          role="img"
+        >
+          -
+        </div>
+      </div>
+      <span>
+        π
+        <sub>
+          firstName,lastName
+        </sub>
+      </span>
+    </li>
+    <li
+      aria-pressed={false}
+      className="rstm-tree-item rstm-tree-item-level2"
+      onClick={[Function]}
+      role="button"
+      style={
+        Object {
+          "paddingLeft": "4.25rem",
+        }
+      }
+    >
+      <div
+        className="rstm-toggle-icon"
+        onClick={[Function]}
+      >
+        <div
+          aria-label="Toggle"
+          className="rstm-toggle-icon-symbol"
+          role="img"
+        >
+          -
+        </div>
+      </div>
+      <span>
+        σ
+        <sub>
+          salary &gt; 130000
+        </sub>
+      </span>
+    </li>
+    <li
+      aria-pressed={false}
+      className="rstm-tree-item rstm-tree-item-level3"
+      onClick={[Function]}
+      role="button"
+      style={
+        Object {
+          "paddingLeft": "8rem",
+        }
+      }
+    >
+      Doctor
+    </li>
+  </div>
+</div>
+`;
