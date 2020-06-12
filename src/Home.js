@@ -30,9 +30,7 @@ class Home extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    this.state = {
-      cookies: new Cookies(),
-    };
+    this.state = {cookies: new Cookies()};
 
     switch (process.env.NODE_ENV) {
       case 'production':
