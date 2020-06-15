@@ -20,7 +20,7 @@
     "prop-types": "^15.5.0",
     "react": "^16.13.1",
     "react-cookie": "^4.0.3",
-    "react-device-detect": "^1.12.1",
+    "react-device-detect": "^1.13.1",
     "react-dom": "^16.13.1",
     "react-ga": "^2.7.0",
     "react-joyride": "^2.2.1",
