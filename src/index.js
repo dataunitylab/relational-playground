@@ -8,6 +8,7 @@ import ReactDOM from 'react-dom';
 import * as Sentry from '@sentry/browser';
 import './index.css';
 import store, {history} from './store';
+import * as serviceWorker from './serviceWorker';
 import App from './App';
 import CookiesProvider from 'react-cookie/cjs/CookiesProvider';
 
@@ -32,3 +33,5 @@ ReactDOM.render(
   </CookiesProvider>,
   ((document.getElementById('root'): any): HTMLElement)
 );
+
+serviceWorker.register();
