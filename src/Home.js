@@ -9,7 +9,7 @@ import EditorContainer from './EditorContainer';
 import SourceMultiTable from './SourceMultiTable';
 import SplitPane from 'react-split-pane';
 import {changeExpr} from './modules/data';
-import {BrowserView, MobileView} from 'react-device-detect';
+import {BrowserView, MobileOnlyView} from 'react-device-detect';
 import Cookies from 'universal-cookie';
 import ReactGA from 'react-ga';
 
@@ -88,13 +88,13 @@ class Home extends Component<Props, State> {
           </SplitPane>
         </BrowserView>
 
-        <MobileView>
+        <MobileOnlyView>
           <div style={{padding: '0em 1em 1em 1em'}}>
             {editorContainer}
             <SourceMultiTable ReactGA={ReactGA} />
           </div>
           {dataContainer}
-        </MobileView>
+        </MobileOnlyView>
       </div>
     );
   }

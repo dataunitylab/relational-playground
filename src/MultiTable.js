@@ -2,7 +2,7 @@
 import React, {Component} from 'react';
 // $FlowFixMe
 import Table from './Table';
-import {BrowserView, MobileView, isMobile} from 'react-device-detect';
+import {BrowserView, MobileOnlyView, isMobileOnly} from 'react-device-detect';
 
 import './MultiTable.css';
 
@@ -29,7 +29,7 @@ class MultiTable extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      isMobile: isMobile,
+      isMobile: isMobileOnly,
       showTableMobile: false,
       buttonText: tableHiddenText,
       selected: Object.keys(this.props.tables)[0],
@@ -77,7 +77,7 @@ class MultiTable extends Component<Props, State> {
 
       return (
         <div className="sourceTableContainer">
-          <MobileView>
+          <MobileOnlyView>
             <h4>Source relations</h4>
             <select className="mobileSelect" onChange={this.handleChange}>
               {Object.keys(this.props.tables).map((tbl) => {
@@ -99,7 +99,7 @@ class MultiTable extends Component<Props, State> {
                 {this.state.buttonText}
               </button>
             </div>
-          </MobileView>
+          </MobileOnlyView>
         </div>
       );
     } else if (this.state.selected) {
