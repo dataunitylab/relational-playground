@@ -34,7 +34,7 @@ it('can change tables mobile', () => {
   // Fake a reducer call to get the initial state
   const data = dataReducer(undefined, {}).sourceData;
 
-  reactDeviceDetect.isMobile = true;
+  reactDeviceDetect.isMobileOnly = true;
   const wrapper = shallow(
     <MultiTable ReactGA={{event: mockEvent}} tables={data} />
   );
