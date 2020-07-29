@@ -6,7 +6,7 @@ SHA=`([ -n "$NOW_GITHUB_COMMIT_SHA" ] && echo "$NOW_GITHUB_COMMIT_SHA") || git r
 # Try to set a reasonable NODE_ENV if it isn't set
 if [ -z "$NODE_ENV" ]; then
   if [ -n "$NOW_GITHUB_COMMIT_REF" ]; then
-    if [ "$NOW_GITHUB_COMMIT_REF" = "master" ]; then
+    if [ "$NOW_GITHUB_COMMIT_REF" = "main" ]; then
       NODE_ENV="production"
     else
       NODE_ENV="staging"

@@ -20,7 +20,7 @@ script:
 - yarn esdoc && mv docs/ build/
 - gpgconf --kill gpg-agent
 after_script:
-- if [ "x$TRAVIS_OS_NAME" = "xlinux" -a "x$TRAVIS_BRANCH" = "xmaster" ]; then
+- if [ "x$TRAVIS_OS_NAME" = "xlinux" -a "x$TRAVIS_BRANCH" = "xmain" ]; then
     yarn coveralls;
   else true; fi
 - if [ "x$TRAVIS_OS_NAME" = "xlinux" ]; then
