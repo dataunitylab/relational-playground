@@ -1,5 +1,5 @@
 // @flow
-import React, {Component} from 'react';
+import React from 'react';
 
 import './Relation.css';
 
@@ -8,14 +8,12 @@ type Props = {
 };
 
 /** Simple component to display a relation name as part of an expression */
-class Relation extends Component<Props> {
-  render() {
-    return (
-      <span data-testid="span" className="Relation">
-        {this.props.name}
-      </span>
-    );
-  }
+function Relation(props: Props) {
+  return (
+    <span data-testid="span" className="Relation">
+      {props.name}
+    </span>
+  );
 }
 
 export default Relation;

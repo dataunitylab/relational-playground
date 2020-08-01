@@ -1,6 +1,5 @@
 // @flow
-import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
+import React, {useRef, useState} from 'react';
 
 import './RelOp.css';
 
@@ -10,25 +9,16 @@ type Props = {
   children: Node,
 };
 
-type State = {
-  hoverClass: string,
-};
+/** Base for all relational algebra operators */
+function RelOp(props: Props) {
+  const [hoverClass, setHoverClass] = useState('');
+  const elementRef = useRef(null);
 
-/** Base class for all relational algebra operators */
-class RelOp extends Component<Props, State> {
-  constructor() {
-    super();
-    this.state = {
-      hoverClass: '',
-    };
-    (this: any).handleHover = this.handleHover.bind(this);
-  }
-
-  handleHover(e: SyntheticMouseEvent<HTMLElement>) {
+  function handleHover(e: SyntheticMouseEvent<HTMLElement>) {
     const hovering = e.type === 'mouseover';
     e.stopPropagation();
 
-    const node = ReactDOM.findDOMNode(this);
+    const node = elementRef.current;
 
     if (node) {
       let newClassName = node instanceof HTMLElement ? node.className : '';
@@ -37,22 +27,21 @@ class RelOp extends Component<Props, State> {
       newClassName = newClassName.replace(' hovering', '');
       newClassName += ' RelOp' + (hovering ? ' hovering' : '');
 
-      this.setState({hoverClass: newClassName});
+      setHoverClass(newClassName);
       if (node instanceof HTMLElement) node.className = newClassName;
     }
   }
 
-  render() {
-    return (
-      <span
-        className={this.state.hoverClass}
-        onMouseOver={this.handleHover}
-        onMouseOut={this.handleHover}
-      >
-        {this.props.children}
-      </span>
-    );
-  }
+  return (
+    <span
+      ref={elementRef}
+      className={hoverClass}
+      onMouseOver={handleHover}
+      onMouseOut={handleHover}
+    >
+      {props.children}
+    </span>
+  );
 }
 
 type UnaryProps = {
@@ -60,68 +49,55 @@ type UnaryProps = {
   children: Node,
 };
 
-class UnaryRelOpInternal extends Component<UnaryProps> {
-  render() {
-    return (
-      <span>
-        {this.props.operator}({this.props.children})
-      </span>
-    );
-  }
+function UnaryRelOpInternal(props: UnaryProps) {
+  return (
+    <span>
+      {props.operator}({props.children})
+    </span>
+  );
 }
 
-class UnaryRelOp extends Component<UnaryProps> {
-  render() {
-    return (
-      <RelOp>
-        <UnaryRelOpInternal
-          operator={this.props.operator}
-          children={this.props.children}
-        />
-      </RelOp>
-    );
-  }
+function UnaryRelOp(props: UnaryProps) {
+  return (
+    <RelOp>
+      <UnaryRelOpInternal operator={props.operator} children={props.children} />
+    </RelOp>
+  );
 }
 
 /** Projection relational algebra operator */
-class Projection extends Component<{project: Array<string>}> {
-  render() {
-    return (
-      <span>
-        &pi;<sub>{this.props.project.join(',')}</sub>
-      </span>
-    );
-  }
+function Projection(props: {project: Array<string>}) {
+  return (
+    <span>
+      &pi;<sub>{props.project.join(',')}</sub>
+    </span>
+  );
 }
 
 /** Rename relational algebra operator */
-class Rename extends Component<{rename: {[string]: string}}> {
-  render() {
-    return (
-      <span>
-        &rho;
-        <sub>
-          {/* Loop over all columns to rename and combine them */}
-          {Object.entries(this.props.rename)
-            .map(([o, n]) => {
-              return o + '/' + ((n: any): string);
-            })
-            .join(',')}
-        </sub>
-      </span>
-    );
-  }
+function Rename(props: {rename: {[string]: string}}) {
+  return (
+    <span>
+      &rho;
+      <sub>
+        {/* Loop over all columns to rename and combine them */}
+        {Object.entries(props.rename)
+          .map(([o, n]) => {
+            return o + '/' + ((n: any): string);
+          })
+          .join(',')}
+      </sub>
+    </span>
+  );
 }
 
 /** Selection relational algebra operator */
-class Selection extends Component<{select: string}> {
-  render() {
-    return (
-      <span>
-        &sigma;<sub>{this.props.select}</sub>
-      </span>
-    );
-  }
+function Selection(props: {select: string}) {
+  return (
+    <span>
+      &sigma;<sub>{props.select}</sub>
+    </span>
+  );
 }
 
 type BinaryProps = {
@@ -130,53 +106,42 @@ type BinaryProps = {
   right: Node,
 };
 
-class BinaryRelOpInternal extends Component<BinaryProps> {
-  render() {
-    return (
-      <span>
-        {this.props.left}
-        {this.props.operator}
-        {this.props.right}
-      </span>
-    );
-  }
+function BinaryRelOpInternal(props: BinaryProps) {
+  return (
+    <span>
+      {props.left}
+      {props.operator}
+      {props.right}
+    </span>
+  );
 }
 
-class BinaryRelOp extends Component<BinaryProps> {
-  render() {
-    return (
-      <RelOp>
-        <BinaryRelOpInternal
-          left={this.props.left}
-          operator={this.props.operator}
-          right={this.props.right}
-        />
-      </RelOp>
-    );
-  }
+function BinaryRelOp(props: BinaryProps) {
+  return (
+    <RelOp>
+      <BinaryRelOpInternal
+        left={props.left}
+        operator={props.operator}
+        right={props.right}
+      />
+    </RelOp>
+  );
 }
 
-class Except extends Component<{}> {
-  render() {
-    return <span>&minus;</span>;
-  }
-}
-class Intersect extends Component<{}> {
-  render() {
-    return <span>&cap;</span>;
-  }
+function Except() {
+  return <span>&minus;</span>;
 }
 
-class Join extends Component<{}> {
-  render() {
-    return <span>&times;</span>;
-  }
+function Intersect() {
+  return <span>&cap;</span>;
 }
 
-class Union extends Component<{}> {
-  render() {
-    return <span>&cup;</span>;
-  }
+function Join() {
+  return <span>&times;</span>;
+}
+
+function Union() {
+  return <span>&cup;</span>;
 }
 
 export {

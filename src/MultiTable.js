@@ -1,5 +1,5 @@
 // @flow
-import React, {Component} from 'react';
+import React, {useState} from 'react';
 // $FlowFixMe
 import Table from './Table';
 import {BrowserView, MobileOnlyView, isMobileOnly} from 'react-device-detect';
@@ -14,129 +14,104 @@ type Props = {
   testIsMobile?: boolean,
 };
 
-type State = {
-  showTableMobile: boolean,
-  selected: string,
-  isMobile: boolean,
-  buttonText: string,
-};
-
 const tableHiddenText = 'Show Table';
 const tableShownText = 'Hide Table';
 
 /** Displays more than one table with a dropdown to choose */
-class MultiTable extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      isMobile: isMobileOnly,
-      showTableMobile: false,
-      buttonText: tableHiddenText,
-      selected: Object.keys(this.props.tables)[0],
-    };
-    (this: any).handleButtonPress = this.handleButtonPress.bind(this);
-  }
+function MultiTable(props: Props) {
+  const [showTableMobile, setShowTableMobile] = useState(false);
+  const [selected, setSelected] = useState(Object.keys(props.tables)[0]);
+  const [isMobile] = useState(isMobileOnly);
+  const [buttonText, setButtonText] = useState(tableHiddenText);
 
   // TODO: Fix type annotation below
-  handleChange = (e: any) => {
+  const handleChange = (e: any) => {
     if (e.target !== undefined) {
-      this.setState({selected: e.target.value});
-      this.props.ReactGA.event({
+      setSelected(e.target.value);
+      props.ReactGA.event({
         category: 'User Selecting A Table',
         action: e.target.value,
       });
     }
   };
 
-  handleButtonPress() {
-    this.setState({
-      showTableMobile: !this.state.showTableMobile,
-      buttonText:
-        this.state.buttonText === tableShownText
-          ? tableHiddenText
-          : tableShownText,
-    });
+  function handleButtonPress() {
+    setShowTableMobile(!showTableMobile);
+    setButtonText(
+      buttonText === tableShownText ? tableHiddenText : tableShownText
+    );
   }
 
-  render() {
-    // Render the selected table
-    let table = <div>Select a table above.</div>;
-    if (this.state.isMobile) {
-      if (this.state.showTableMobile) {
-        const data = this.props.tables[this.state.selected];
-        table = (
-          <Table
-            className="mobileTable"
-            columns={data.columns}
-            data={data.data}
-          />
-        );
-      } else {
-        table = <div>Select a table above.</div>;
-      }
-
-      return (
-        <div className="sourceTableContainer">
-          <MobileOnlyView>
-            <h4>Source relations</h4>
-            <select className="mobileSelect" onChange={this.handleChange}>
-              {Object.keys(this.props.tables).map((tbl) => {
-                return (
-                  <option
-                    key={Object.keys(this.props.tables).indexOf(tbl)}
-                    value={tbl}
-                  >
-                    {' '}
-                    {tbl}
-                  </option>
-                );
-              })}
-            </select>
-
-            <div className="tableDiv">
-              {table}
-              <button className="mobileButton" onClick={this.handleButtonPress}>
-                {this.state.buttonText}
-              </button>
-            </div>
-          </MobileOnlyView>
-        </div>
-      );
-    } else if (this.state.selected) {
-      const data = this.props.tables[this.state.selected];
+  // Render the selected table
+  let table = <div>Select a table above.</div>;
+  if (isMobile) {
+    if (showTableMobile) {
+      const data = props.tables[selected];
       table = (
         <Table
-          className="browserTable"
+          className="mobileTable"
           columns={data.columns}
           data={data.data}
         />
       );
+    } else {
+      table = <div>Select a table above.</div>;
     }
 
-    // Render the menu along with the table
     return (
       <div className="sourceTableContainer">
-        <BrowserView>
+        <MobileOnlyView>
           <h4>Source relations</h4>
-
-          <select className="browserSelect" onChange={this.handleChange}>
-            {Object.keys(this.props.tables).map((tbl) => {
+          <select className="mobileSelect" onChange={handleChange}>
+            {Object.keys(props.tables).map((tbl) => {
               return (
                 <option
-                  key={Object.keys(this.props.tables).indexOf(tbl)}
+                  key={Object.keys(props.tables).indexOf(tbl)}
                   value={tbl}
                 >
+                  {' '}
                   {tbl}
                 </option>
               );
             })}
           </select>
 
-          {table}
-        </BrowserView>
+          <div className="tableDiv">
+            {table}
+            <button className="mobileButton" onClick={handleButtonPress}>
+              {buttonText}
+            </button>
+          </div>
+        </MobileOnlyView>
       </div>
     );
+  } else if (selected) {
+    const data = props.tables[selected];
+    table = (
+      <Table className="browserTable" columns={data.columns} data={data.data} />
+    );
   }
+
+  // Render the menu along with the table
+  return (
+    <div className="sourceTableContainer">
+      <BrowserView>
+        <h4>Source relations</h4>
+
+        <select className="browserSelect" onChange={handleChange}>
+          {Object.keys(props.tables).map((tbl) => {
+            return (
+              <option key={Object.keys(props.tables).indexOf(tbl)} value={tbl}>
+                {tbl}
+              </option>
+            );
+          })}
+        </select>
+
+        {table}
+      </BrowserView>
+    </div>
+  );
 }
 
 export default MultiTable;

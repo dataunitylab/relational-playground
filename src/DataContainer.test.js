@@ -1,18 +1,15 @@
 import React from 'react';
 import {Provider} from 'react-redux';
-import {shallow} from 'enzyme';
-import configureStore from 'redux-mock-store';
+import {mount} from 'enzyme';
+import {createStore} from 'redux';
 
 import DataContainer from './DataContainer';
 import Table from './Table';
 
-const mockStore = configureStore([]);
-
 describe('DataContainer', () => {
-  let store;
-
-  beforeEach(() => {
-    store = mockStore({
+  /** @test {DataContainer} */
+  it('displays a table with the current data', () => {
+    const mockStore = createStore((state) => state, {
       data: {
         current: {
           name: 'foo',
@@ -21,13 +18,11 @@ describe('DataContainer', () => {
         },
       },
     });
-  });
-
-  /** @test {DataContainer} */
-  it('displays a table with the current data', () => {
-    const wrapper = shallow(<DataContainer store={store} />)
-      .dive()
-      .dive();
+    const wrapper = mount(
+      <Provider store={mockStore}>
+        <DataContainer />
+      </Provider>
+    );
 
     const table = wrapper.find(Table).first();
     expect(table).toHaveProp({
