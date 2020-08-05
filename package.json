@@ -29,7 +29,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "react-simple-code-editor": "^0.11.0",
-    "react-simple-tree-menu": "^1.1.15",
+    "react-simple-tree-menu": "^1.1.18",
     "react-split-pane": "^0.1.91",
     "react-table": "^6.11.5",
     "redux": "^4.0.5",
