@@ -14077,10 +14077,10 @@ react-simple-code-editor@^0.11.0:
   resolved "https://registry.yarnpkg.com/react-simple-code-editor/-/react-simple-code-editor-0.11.0.tgz#bb57c7c29b570f2ab229872599eac184f5bc673c"
   integrity sha512-xGfX7wAzspl113ocfKQAR8lWPhavGWHL3xSzNLeseDRHysT+jzRBi/ExdUqevSMos+7ZtdfeuBOXtgk9HTwsrw==
 
-react-simple-tree-menu@^1.1.15:
-  version "1.1.17"
-  resolved "https://registry.npm.taobao.org/react-simple-tree-menu/download/react-simple-tree-menu-1.1.17.tgz#a8c107e8ca1fbf3954d8a97e0e2e3633bc019bd8"
-  integrity sha1-qMEH6MofvzlU2Kl+Di42M7wBm9g=
+react-simple-tree-menu@^1.1.18:
+  version "1.1.18"
+  resolved "https://registry.yarnpkg.com/react-simple-tree-menu/-/react-simple-tree-menu-1.1.18.tgz#4c35f6c2348da8deac5cd10ab5dd07a5213f74f2"
+  integrity sha512-sW33U4TF6J3CuhDXs40r8KXCZsyd9JKLVHRwCx0hxaWaXFD0p7LeeK1gJB+GLNErSGs1F1847E/kkTIyKi9E0w==
   dependencies:
     classnames "^2.2.6"
     fast-memoize "^2.5.1"
