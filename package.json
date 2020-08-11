@@ -80,7 +80,7 @@
     "bundlesize": "^0.18.0",
     "coveralls": "^3.1.0",
     "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.2",
+    "enzyme-adapter-react-16": "^1.15.3",
     "flow-bin": "^0.131.0",
     "husky": "^4.2.5",
     "jest-each": "^26.3.0",
