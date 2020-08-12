@@ -25,4 +25,12 @@ after_script:
   else true; fi
 - if [ "x$TRAVIS_OS_NAME" = "xlinux" ]; then
     yarn snapshot;
+
+    if [[ $TRAVIS_EVENT_TYPE != "pull_request" || $TRAVIS_PULL_REQUEST_SLUG != $TRAVIS_REPO_SLUG ]]; then
+      if [ "x$TRAVIS_BRANCH" = "xmain" ]; then
+        yarn chromatic --auto-accept-changes;
+      else
+        yarn chromatic --exit-zero-on-changes;
+      fi
+    fi
   fi
