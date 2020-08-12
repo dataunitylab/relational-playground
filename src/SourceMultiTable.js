@@ -8,7 +8,7 @@ type Props = {
 };
 
 function SourceMultiTable(props: Props) {
-  const sources = useSelector(state => state.data.sourceData);
+  const sources = useSelector((state) => state.data.sourceData);
   return <MultiTable ReactGA={props.ReactGA} tables={sources} />;
 }
 

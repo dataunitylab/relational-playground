@@ -4,7 +4,7 @@ import Table from './Table';
 import {useSelector} from 'react-redux';
 
 function DataContainer() {
-  const data = useSelector(state => state.data);
+  const data = useSelector((state) => state.data);
   if (data.current) {
     return (
       <div className="dataContainer" style={{margin: '1em'}}>
