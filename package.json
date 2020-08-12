@@ -70,7 +70,7 @@
     "@sebastianwessel/esdoc-jsx-plugin": "^2.1.0",
     "@sebastianwessel/esdoc-react-plugin": "^2.1.0",
     "@sebastianwessel/esdoc-standard-plugin": "^2.1.0",
-    "@storybook/addon-actions": "^5.3.19",
+    "@storybook/addon-actions": "^6.0.3",
     "@storybook/addon-links": "^5.3.19",
     "@storybook/addons": "^5.3.19",
     "@storybook/cli": "^5.3.19",
