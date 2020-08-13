@@ -28,9 +28,9 @@ after_script:
 
     if [[ $TRAVIS_EVENT_TYPE != "pull_request" || $TRAVIS_PULL_REQUEST_SLUG != $TRAVIS_REPO_SLUG ]]; then
       if [ "x$TRAVIS_BRANCH" = "xmain" ]; then
-        yarn chromatic --auto-accept-changes;
+        yarn chromatic --auto-accept-changes --exit-once-uploaded;
       else
-        yarn chromatic --exit-zero-on-changes;
+        yarn chromatic --exit-zero-on-changes --exit-once-uploaded;
       fi
     fi
   fi
