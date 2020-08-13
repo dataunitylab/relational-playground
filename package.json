@@ -71,7 +71,7 @@
     "@sebastianwessel/esdoc-react-plugin": "^2.1.0",
     "@sebastianwessel/esdoc-standard-plugin": "^2.1.0",
     "@storybook/cli": "^6.0.4",
-    "@storybook/react": "^6.0.5",
+    "@storybook/react": "^6.0.6",
     "@testing-library/react": "^10.4.8",
     "@welldone-software/why-did-you-render": "^4.3.0",
     "bundlesize": "^0.18.0",
