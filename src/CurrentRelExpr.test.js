@@ -29,7 +29,6 @@ describe('CurrentRelExpr', () => {
 
   /** @test {CurrentRelExpr} */
   it('changes the expression when clicked not relation', () => {
-    const mockAction = jest.fn();
     const mockEvent = jest.fn();
     const wrapper = mount(
       <Provider store={store}>
