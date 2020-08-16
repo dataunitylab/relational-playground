@@ -1,4 +1,6 @@
 # Ignore json files
+node_modules/
+storybook-static/
 src/resources/*
 !.github
 !.travis.yml
