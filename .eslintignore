@@ -1,2 +1,4 @@
 # Ignore json files
 src/resources/*
+!.github
+!.travis.yml
