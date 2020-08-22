@@ -10,6 +10,9 @@ cache:
   - node_modules
 git:
   autocrlf: input
+branches:
+  only:
+  - main
 script:
 - yarn lint
 - yarn flow
