@@ -1,6 +1,5 @@
 // @flow
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import CurrentRelExpr from './CurrentRelExpr';
@@ -22,7 +21,7 @@ type State = {
 };
 
 type Props = {
-  history: PropTypes.object,
+  history: {...},
 };
 
 /** Container for all components on the main page */

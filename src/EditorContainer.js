@@ -1,6 +1,5 @@
 // @flow
 import React from 'react';
-import PropTypes from 'prop-types';
 import {useDispatch, useSelector} from 'react-redux';
 import fromEntries from 'fromentries';
 import SqlEditor from './SqlEditor';
@@ -8,7 +7,7 @@ import {exprFromSql} from './modules/relexp';
 import {resetAction} from './modules/data';
 
 type Props = {
-  history: PropTypes.object,
+  history: {...},
   ReactGA: any,
 };
 
