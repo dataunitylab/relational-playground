@@ -22,7 +22,7 @@ type State = {
 };
 
 type Props = {
-  history: PropTypes.object.isRequired,
+  history: PropTypes.object,
 };
 
 /** Container for all components on the main page */

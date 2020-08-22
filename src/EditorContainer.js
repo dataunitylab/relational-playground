@@ -8,7 +8,7 @@ import {exprFromSql} from './modules/relexp';
 import {resetAction} from './modules/data';
 
 type Props = {
-  history: PropTypes.object.isRequired,
+  history: PropTypes.object,
   ReactGA: any,
 };
 
