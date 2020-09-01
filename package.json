@@ -77,7 +77,7 @@
     "chromatic": "^5.1.0",
     "coveralls": "^3.1.0",
     "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.3",
+    "enzyme-adapter-react-16": "^1.15.4",
     "eslint-plugin-yaml": "^0.3.0",
     "flow-bin": "^0.132.0",
     "husky": "^4.2.5",
