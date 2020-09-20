@@ -72,7 +72,7 @@
     "@storybook/preset-create-react-app": "^3.1.4",
     "@storybook/react": "^6.0.21",
     "@testing-library/react": "^11.0.4",
-    "@welldone-software/why-did-you-render": "^4.3.1",
+    "@welldone-software/why-did-you-render": "^4.3.2",
     "bundlesize": "^0.18.0",
     "chromatic": "^5.2.0",
     "coveralls": "^3.1.0",
