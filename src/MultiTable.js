@@ -6,6 +6,7 @@ import {BrowserView, MobileOnlyView, isMobileOnly} from 'react-device-detect';
 
 import './MultiTable.css';
 
+import type {StatelessFunctionalComponent} from 'react';
 import type {Data} from './modules/data';
 
 type Props = {
@@ -18,7 +19,7 @@ const tableHiddenText = 'Show Table';
 const tableShownText = 'Hide Table';
 
 /** Displays more than one table with a dropdown to choose */
-function MultiTable(props: Props) {
+const MultiTable: StatelessFunctionalComponent<Props> = (props) => {
   const [showTableMobile, setShowTableMobile] = useState(false);
   const [selected, setSelected] = useState(Object.keys(props.tables)[0]);
   const [isMobile] = useState(isMobileOnly);
@@ -35,7 +36,7 @@ function MultiTable(props: Props) {
     }
   };
 
-  function handleButtonPress() {
+  function handleButtonPress(): void {
     setShowTableMobile(!showTableMobile);
     setButtonText(
       buttonText === tableShownText ? tableHiddenText : tableShownText
@@ -112,6 +113,6 @@ function MultiTable(props: Props) {
       </BrowserView>
     </div>
   );
-}
+};
 
 export default MultiTable;

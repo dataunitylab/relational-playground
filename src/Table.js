@@ -5,6 +5,8 @@ import 'react-table/react-table.css';
 
 import './Table.css';
 
+import type {StatelessFunctionalComponent} from 'react';
+
 type Props = {
   tableName?: string,
   columns: Array<string>,
@@ -13,7 +15,7 @@ type Props = {
 };
 
 /** A wrapper for {ReactTable} which sets some default options */
-function Table(props: Props) {
+const Table: StatelessFunctionalComponent<Props> = (props) => {
   let columns = [
     {
       Header: props.tableName,
@@ -39,6 +41,6 @@ function Table(props: Props) {
       width={500}
     />
   );
-}
+};
 
 export default Table;

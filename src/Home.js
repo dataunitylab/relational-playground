@@ -16,12 +16,15 @@ import './Home.css';
 
 import Tutorial from './Tutorial';
 
+import type {ComponentType} from 'react';
+import type {RouterHistory} from 'react-router-dom';
+
 type State = {
   cookies: typeof Cookies,
 };
 
 type Props = {
-  history: {...},
+  history: RouterHistory,
 };
 
 /** Container for all components on the main page */
@@ -113,4 +116,8 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Home));
+const ConnectedHome: ComponentType<Props> = connect<_, {||}, _, _, _, _>(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(Home));
+export default ConnectedHome;

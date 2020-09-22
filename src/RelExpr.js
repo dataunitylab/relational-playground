@@ -18,6 +18,8 @@ import ReactDOM from 'react-dom';
 
 import './RelExpr.css';
 
+import type {Node} from 'react';
+
 type Props = {
   changeExpr: typeof changeExpr,
   expr: {[string]: any},
@@ -35,7 +37,7 @@ class RelExpr extends Component<Props> {
    * @param expr - a relational algebra expression object to render
    * @return a component representing the top-most expression
    */
-  buildExpr(expr: {[string]: any}) {
+  buildExpr(expr: {[string]: any}): Node {
     // Don't try to render empty expressions
     if (!expr || Object.keys(expr).length === 0) {
       return '';
@@ -134,7 +136,7 @@ class RelExpr extends Component<Props> {
   /**
    * @param e - the event object which generated the click
    */
-  handleExprClick(e: SyntheticMouseEvent<HTMLElement>) {
+  handleExprClick(e: SyntheticMouseEvent<HTMLElement>): void {
     e.stopPropagation();
     const node =
       ReactDOM.findDOMNode(this) instanceof HTMLElement
@@ -151,7 +153,7 @@ class RelExpr extends Component<Props> {
     });
   }
 
-  render() {
+  render(): Node {
     if (!this.props.expr || Object.keys(this.props.expr).length === 0) {
       return '';
     }

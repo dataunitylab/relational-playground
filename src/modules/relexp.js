@@ -305,11 +305,16 @@ function buildRelExp(sql, types, tables) {
   }
 }
 
-export default produce<State, Action>((draft: State, action: Action) => {
-  // eslint-disable-next-line default-case
-  switch (action.type) {
-    case EXPR_FROM_SQL:
-      draft.expr = buildRelExp(action.sql, action.types, []);
-      break;
-  }
-}, initialState);
+const reducer: (State, Action) => State = produce<State, Action>(
+  (draft: State, action: Action) => {
+    // eslint-disable-next-line default-case
+    switch (action.type) {
+      case EXPR_FROM_SQL:
+        draft.expr = buildRelExp(action.sql, action.types, []);
+        break;
+    }
+  },
+  initialState
+);
+
+export default reducer;

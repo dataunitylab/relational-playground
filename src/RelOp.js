@@ -3,14 +3,14 @@ import React, {useRef, useState} from 'react';
 
 import './RelOp.css';
 
-import type {Element, Node} from 'react';
+import type {Element, Node, StatelessFunctionalComponent} from 'react';
 
 type Props = {
   children: Node,
 };
 
 /** Base for all relational algebra operators */
-function RelOp(props: Props) {
+const RelOp: StatelessFunctionalComponent<Props> = (props) => {
   const [hoverClass, setHoverClass] = useState('');
   const elementRef = useRef(null);
 
@@ -42,63 +42,63 @@ function RelOp(props: Props) {
       {props.children}
     </span>
   );
-}
+};
+
+export default RelOp;
 
 type UnaryProps = {
   operator: Element<any>,
   children: Node,
 };
 
-function UnaryRelOpInternal(props: UnaryProps) {
-  return (
-    <span>
-      {props.operator}({props.children})
-    </span>
-  );
-}
+const UnaryRelOpInternal: StatelessFunctionalComponent<UnaryProps> = (
+  props
+) => (
+  <span>
+    {props.operator}({props.children})
+  </span>
+);
 
-function UnaryRelOp(props: UnaryProps) {
-  return (
-    <RelOp>
-      <UnaryRelOpInternal operator={props.operator} children={props.children} />
-    </RelOp>
-  );
-}
+export const UnaryRelOp: StatelessFunctionalComponent<UnaryProps> = (props) => (
+  <RelOp>
+    <UnaryRelOpInternal operator={props.operator} children={props.children} />
+  </RelOp>
+);
 
 /** Projection relational algebra operator */
-function Projection(props: {project: Array<string>}) {
-  return (
-    <span>
-      &pi;<sub>{props.project.join(',')}</sub>
-    </span>
-  );
-}
+export const Projection: StatelessFunctionalComponent<{
+  project: Array<string>,
+}> = (props) => (
+  <span>
+    &pi;<sub>{props.project.join(',')}</sub>
+  </span>
+);
 
 /** Rename relational algebra operator */
-function Rename(props: {rename: {[string]: string}}) {
-  return (
-    <span>
-      &rho;
-      <sub>
-        {/* Loop over all columns to rename and combine them */}
-        {Object.entries(props.rename)
-          .map(([o, n]) => {
-            return o + '/' + ((n: any): string);
-          })
-          .join(',')}
-      </sub>
-    </span>
-  );
-}
+export const Rename: StatelessFunctionalComponent<{
+  rename: {[string]: string},
+}> = (props) => (
+  <span>
+    &rho;
+    <sub>
+      {/* Loop over all columns to rename and combine them */}
+      {Object.entries(props.rename)
+        .map(([o, n]) => {
+          return o + '/' + ((n: any): string);
+        })
+        .join(',')}
+    </sub>
+  </span>
+);
 
 /** Selection relational algebra operator */
-function Selection(props: {select: string}) {
-  return (
-    <span>
-      &sigma;<sub>{props.select}</sub>
-    </span>
-  );
-}
+export const Selection: StatelessFunctionalComponent<{select: string}> = (
+  props
+) => (
+  <span>
+    &sigma;<sub>{props.select}</sub>
+  </span>
+);
 
 type BinaryProps = {
   operator: Element<any>,
@@ -106,53 +106,40 @@ type BinaryProps = {
   right: Node,
 };
 
-function BinaryRelOpInternal(props: BinaryProps) {
-  return (
-    <span>
-      {props.left}
-      {props.operator}
-      {props.right}
-    </span>
-  );
-}
+const BinaryRelOpInternal: StatelessFunctionalComponent<BinaryProps> = (
+  props
+) => (
+  <span>
+    {props.left}
+    {props.operator}
+    {props.right}
+  </span>
+);
 
-function BinaryRelOp(props: BinaryProps) {
-  return (
-    <RelOp>
-      <BinaryRelOpInternal
-        left={props.left}
-        operator={props.operator}
-        right={props.right}
-      />
-    </RelOp>
-  );
-}
+export const BinaryRelOp: StatelessFunctionalComponent<BinaryProps> = (
+  props
+) => (
+  <RelOp>
+    <BinaryRelOpInternal
+      left={props.left}
+      operator={props.operator}
+      right={props.right}
+    />
+  </RelOp>
+);
 
-function Except() {
-  return <span>&minus;</span>;
-}
+export const Except: StatelessFunctionalComponent<{||}> = () => (
+  <span>&minus;</span>
+);
 
-function Intersect() {
-  return <span>&cap;</span>;
-}
+export const Intersect: StatelessFunctionalComponent<{||}> = () => (
+  <span>&cap;</span>
+);
 
-function Join() {
-  return <span>&times;</span>;
-}
+export const Join: StatelessFunctionalComponent<{||}> = () => (
+  <span>&times;</span>
+);
 
-function Union() {
-  return <span>&cup;</span>;
-}
-
-export {
-  RelOp as default,
-  UnaryRelOp,
-  Projection,
-  Rename,
-  Selection,
-  BinaryRelOp,
-  Except,
-  Intersect,
-  Join,
-  Union,
-};
+export const Union: StatelessFunctionalComponent<{||}> = () => (
+  <span>&cup;</span>
+);

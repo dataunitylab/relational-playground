@@ -3,7 +3,9 @@ import React from 'react';
 import Table from './Table';
 import {useSelector} from 'react-redux';
 
-function DataContainer() {
+import type {StatelessFunctionalComponent} from 'react';
+
+const DataContainer: StatelessFunctionalComponent<{||}> = () => {
   const data = useSelector((state) => state.data);
   if (data.current) {
     return (
@@ -24,6 +26,6 @@ function DataContainer() {
       </div>
     );
   }
-}
+};
 
 export default DataContainer;

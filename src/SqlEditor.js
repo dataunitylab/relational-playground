@@ -10,6 +10,8 @@ import './SqlEditor.css';
 
 import 'prismjs/themes/prism.css';
 
+import type {Node} from 'react';
+
 const parser = require('@michaelmior/js-sql-parser');
 
 type Props = {
@@ -53,7 +55,7 @@ class SqlEditor extends Component<Props, State> {
    * @param text - the query to parse
    * @param firstLoad - whether this is the first call when mounted
    */
-  parseQuery(text: string, firstLoad?: boolean) {
+  parseQuery(text: string, firstLoad?: boolean): void {
     if (!firstLoad) {
       if (this.props.resetAction) {
         this.props.resetAction();
@@ -96,7 +98,7 @@ class SqlEditor extends Component<Props, State> {
     }
   }
 
-  handleChange(text: string) {
+  handleChange(text: string): void {
     // Cancel any pending query parsing
     if (this.state.timeout) {
       clearTimeout(this.state.timeout);
@@ -110,7 +112,7 @@ class SqlEditor extends Component<Props, State> {
     this.setState({timeout: handle, query: text});
   }
 
-  render() {
+  render(): Node {
     // Include any error messaage if needed
     let error = '';
     if (this.state.error) {
