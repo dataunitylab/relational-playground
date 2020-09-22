@@ -5,11 +5,13 @@ import {changeExpr} from './modules/data';
 import RelExpr from './RelExpr';
 import RelExprTree from './RelExprTree';
 
+import type {StatelessFunctionalComponent} from 'react';
+
 type Props = {
   ReactGA: any,
 };
 
-function CurrentRelExpr(props: Props) {
+const CurrentRelExpr: StatelessFunctionalComponent<Props> = (props) => {
   const dispatch = useDispatch();
   const expr = useSelector((state) => state.relexp.expr);
   const [showTree, setShowTree] = useState(false);
@@ -53,6 +55,6 @@ function CurrentRelExpr(props: Props) {
       <div className="expr">{relExp}</div>
     </div>
   );
-}
+};
 
 export default CurrentRelExpr;

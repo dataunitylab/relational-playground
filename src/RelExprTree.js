@@ -17,6 +17,8 @@ import {changeExpr} from './modules/data';
 import '../node_modules/react-simple-tree-menu/dist/main.css';
 import './RelExprTree.css';
 
+import type {Node} from 'react';
+
 type Props = {
   changeExpr: typeof changeExpr,
   expr: {[string]: any},
@@ -35,7 +37,7 @@ class RelExprTree extends Component<Props> {
     expr: {[string]: any},
     keys: Array<string>,
     path: Array<string> = []
-  ) {
+  ): {} {
     // Don't try to render empty expressions
     if (!expr || Object.keys(expr).length === 0) {
       return {};
@@ -78,7 +80,7 @@ class RelExprTree extends Component<Props> {
     }
   }
 
-  getLabel(expr: {[string]: any}) {
+  getLabel(expr: {[string]: any}): Node {
     if (!expr || Object.keys(expr).length === 0) {
       return '';
     }
@@ -111,7 +113,7 @@ class RelExprTree extends Component<Props> {
     }
   }
 
-  render() {
+  render(): Node {
     const keys = [];
     const data = [this.buildTree(this.props.expr, keys)];
     return (

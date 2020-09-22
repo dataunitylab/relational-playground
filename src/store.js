@@ -5,7 +5,10 @@ import thunk from 'redux-thunk';
 import {createBrowserHistory} from 'history';
 import createRootReducer from './modules';
 
-export const history = createBrowserHistory();
+import type {BrowserHistory} from 'history';
+import type {Action, Store} from 'redux';
+
+export const history: BrowserHistory = createBrowserHistory();
 
 const initialState = {};
 const enhancers = [];
@@ -22,7 +25,7 @@ if (process.env.NODE_ENV === 'development') {
 
 const composedEnhancers = compose(applyMiddleware(...middleware), ...enhancers);
 
-const store = createStore(
+const store: Store<{}, Action<{}>> = createStore(
   createRootReducer(history),
   initialState,
   composedEnhancers

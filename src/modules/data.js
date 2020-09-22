@@ -387,18 +387,23 @@ export function applyResetAction(currentElement: ?HTMLElement) {
   }
 }
 
-export default produce<State, Action>((draft: State, action: Action) => {
-  // eslint-disable-next-line default-case
-  switch (action.type) {
-    case RESET_EXPR:
-      applyResetAction(draft.element);
-      draft.element = undefined;
-      break;
-    case CHANGE_EXPR:
-      draft.current = applyExpr(action.expr, draft.sourceData);
-      if (draft.element) {
-        draft.element = highlightExpr(draft.element, action.element);
-      }
-      break;
-  }
-}, initialState);
+const reducer: (State, Action) => State = produce<State, Action>(
+  (draft: State, action: Action) => {
+    // eslint-disable-next-line default-case
+    switch (action.type) {
+      case RESET_EXPR:
+        applyResetAction(draft.element);
+        draft.element = undefined;
+        break;
+      case CHANGE_EXPR:
+        draft.current = applyExpr(action.expr, draft.sourceData);
+        if (draft.element) {
+          draft.element = highlightExpr(draft.element, action.element);
+        }
+        break;
+    }
+  },
+  initialState
+);
+
+export default reducer;

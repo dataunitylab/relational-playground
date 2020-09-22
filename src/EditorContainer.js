@@ -6,12 +6,14 @@ import SqlEditor from './SqlEditor';
 import {exprFromSql} from './modules/relexp';
 import {resetAction} from './modules/data';
 
+import type {StatelessFunctionalComponent} from 'react';
+
 type Props = {
   history: {...},
   ReactGA: any,
 };
 
-function EditorContainer(props: Props) {
+const EditorContainer: StatelessFunctionalComponent<Props> = (props) => {
   const types = useSelector((state) =>
     fromEntries(
       Object.entries(state.data.sourceData).map(([name, data]) => [
@@ -32,6 +34,6 @@ function EditorContainer(props: Props) {
       types={types}
     />
   );
-}
+};
 
 export default EditorContainer;
