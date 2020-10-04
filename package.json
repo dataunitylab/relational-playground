@@ -35,7 +35,7 @@
     "redux-thunk": "^2.3.0",
     "typescript": "*",
     "universal-cookie": "latest",
-    "uuid": "^8.3.0"
+    "uuid": "^8.3.1"
   },
   "scripts": {
     "analyze": "source-map-explorer build/static/js/*.js",
