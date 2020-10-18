@@ -20,7 +20,7 @@
     "react": "^16.14.0",
     "react-cookie": "^4.0.3",
     "react-device-detect": "^1.14.0",
-    "react-dom": "^16.13.1",
+    "react-dom": "^16.14.0",
     "react-ga": "^3.2.0",
     "react-joyride": "^2.2.1",
     "react-redux": "^7.2.1",
