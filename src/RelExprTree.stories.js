@@ -2,10 +2,12 @@ import React from 'react';
 
 import RelExprTree from './RelExprTree';
 
-export default {
+const RelExprTreeStories = {
   title: 'RelExprTree',
   component: RelExprTree,
 };
+
+export default RelExprTreeStories;
 
 export const ComplexExpression = () => (
   <RelExprTree

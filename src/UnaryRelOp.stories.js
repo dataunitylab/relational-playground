@@ -3,10 +3,12 @@ import React from 'react';
 import {Projection, Rename, Selection, UnaryRelOp} from './RelOp';
 import Relation from './Relation';
 
-export default {
+const UnaryRelOpStories = {
   title: 'UnaryRelOp',
   component: UnaryRelOp,
 };
+
+export default UnaryRelOpStories;
 
 export const SimpleProjection = () => (
   <UnaryRelOp operator={<Projection project={['firstName', 'lastName']} />}>

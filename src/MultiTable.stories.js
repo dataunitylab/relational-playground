@@ -2,10 +2,12 @@ import React from 'react';
 
 import MultiTable from '../src/MultiTable';
 
-export default {
+const MultiTableStories = {
   title: 'MultiTable',
   component: MultiTable,
 };
+
+export default MultiTableStories;
 
 export const SeveralSources = () => (
   <MultiTable

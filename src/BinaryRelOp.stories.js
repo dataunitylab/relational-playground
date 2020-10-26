@@ -3,10 +3,12 @@ import React from 'react';
 import {BinaryRelOp, Join} from './RelOp';
 import Relation from '../src/Relation';
 
-export default {
+const BinaryRelOpStories = {
   title: 'BinaryRelOp',
   component: BinaryRelOp,
 };
+
+export default BinaryRelOpStories;
 
 export const SimpleJoin = () => (
   <BinaryRelOp

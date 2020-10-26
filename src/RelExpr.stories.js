@@ -2,10 +2,12 @@ import React from 'react';
 
 import RelExpr from './RelExpr';
 
-export default {
+const RelExprStories = {
   title: 'RelExpr',
   component: RelExpr,
 };
+
+export default RelExprStories;
 
 export const ComplexExpression = () => (
   <RelExpr

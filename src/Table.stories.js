@@ -2,10 +2,12 @@ import React from 'react';
 
 import Table from './Table';
 
-export default {
+const TableStories = {
   title: 'Table',
   component: Table,
 };
+
+export default TableStories;
 
 export const WithData = () => (
   <Table
