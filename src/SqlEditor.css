@@ -1,3 +1,4 @@
+/* If all Google Fonts are removed, remove dns-prefetch from index.html */
 @import url('https://fonts.googleapis.com/css?family=Fira+Code');
 
 h4 {
