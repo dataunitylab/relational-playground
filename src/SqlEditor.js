@@ -129,6 +129,7 @@ class SqlEditor extends Component<Props, State> {
             highlight={(code) => highlight(code, languages.sql)}
             padding={10}
             style={{
+              fontDisplay: 'swap',
               fontFamily: '"Fira Code", "Fira Mono", monospace',
             }}
           />
