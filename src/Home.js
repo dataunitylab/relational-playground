@@ -34,7 +34,7 @@ class Home extends Component<Props, State> {
 
     this.state = {cookies: new Cookies()};
 
-    // If GA is no longer used, remove dns-prefetch from index.html
+    // If GA is no longer used, remove preconnect from index.html
     switch (process.env.NODE_ENV) {
       case 'production':
         ReactGA.initialize('UA-143847373-2');
