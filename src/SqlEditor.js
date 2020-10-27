@@ -130,7 +130,7 @@ class SqlEditor extends Component<Props, State> {
             padding={10}
             style={{
               fontDisplay: 'swap',
-              fontFamily: '"Fira Code", "Fira Mono", monospace',
+              fontFamily: '"Fira Code", monospace',
             }}
           />
         </div>

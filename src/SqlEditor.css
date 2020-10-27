@@ -1,5 +1,5 @@
 /* If all Google Fonts are removed, remove dns-prefetch from index.html */
-@import url('https://fonts.googleapis.com/css?family=Fira+Code');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
 
 h4 {
   margin-top: 0;
