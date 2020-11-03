@@ -81,7 +81,7 @@
     "eslint-plugin-yaml": "^0.3.0",
     "flow-bin": "^0.137.0",
     "husky": "^4.3.0",
-    "jest-each": "^26.6.1",
+    "jest-each": "^26.6.2",
     "jest-enzyme": "^7.1.2",
     "lint-staged": "^10.5.1",
     "markdownlint-cli": "^0.24.0",
