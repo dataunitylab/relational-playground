@@ -92,7 +92,7 @@
     "react-test-renderer": "^16.14.0",
     "redux-mock-store": "^1.5.4",
     "source-map-explorer": "^2.5.0",
-    "stylelint": "^13.7.2",
+    "stylelint": "^13.8.0",
     "stylelint-config-standard": "^20.0.0"
   },
   "engines": {
