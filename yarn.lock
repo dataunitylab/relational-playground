@@ -4446,10 +4446,10 @@
     text-table "^0.2.0"
     webpack-log "^1.1.2"
 
-"@welldone-software/why-did-you-render@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@welldone-software/why-did-you-render/-/why-did-you-render-5.0.0.tgz#5dd8d20ad9f00fd500de852dd06eea0c057a0bce"
-  integrity sha512-A6xUP/55vJQwA1+L6iZbG81cQanSQQVR15yPcjLIp6lHmybXEOXsYcuXaDZHYqiNStZRzv64YPcYJC9wdphfhw==
+"@welldone-software/why-did-you-render@^6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@welldone-software/why-did-you-render/-/why-did-you-render-6.0.1.tgz#e63d662f7fb350b7a1d84507802c28c8e0314687"
+  integrity sha512-Sq4yksQk2oBuNbYnv1QbS8RkR/bfj9M/74C0pac2OqIUKHNZ/hTSTXrW/S4TsLy2qgBv1DP8WWnCLdmFDoE96g==
   dependencies:
     lodash "^4"
 
