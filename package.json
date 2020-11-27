@@ -70,7 +70,7 @@
     "@sebastianwessel/esdoc-react-plugin": "^2.1.0",
     "@sebastianwessel/esdoc-standard-plugin": "^2.1.0",
     "@storybook/preset-create-react-app": "^3.1.5",
-    "@storybook/react": "^6.1.7",
+    "@storybook/react": "^6.1.8",
     "@testing-library/react": "^11.2.2",
     "@welldone-software/why-did-you-render": "^6.0.3",
     "bundlesize": "^0.18.0",
