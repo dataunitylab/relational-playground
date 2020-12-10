@@ -79,7 +79,7 @@
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.5",
     "eslint-plugin-yaml": "^0.3.0",
-    "flow-bin": "^0.139.0",
+    "flow-bin": "^0.140.0",
     "husky": "^4.3.5",
     "jest-each": "^26.6.2",
     "jest-enzyme": "^7.1.2",
