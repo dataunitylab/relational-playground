@@ -2,10 +2,10 @@ on:
   schedule:
     - cron: '0 2 * * 0'  # every Sunday at 2am
   workflow_dispatch:
-name: Prettier
+name: Flow Typed
 jobs:
-  prettier:
-    name: Prettier
+  flow-typed:
+    name: Flow Typed
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
