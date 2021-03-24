@@ -1,6 +1,7 @@
 on:
   schedule:
     - cron: '0 2 * * 0'  # every Sunday at 2am
+  workflow_dispatch:
 name: Prettier
 jobs:
   prettier:
