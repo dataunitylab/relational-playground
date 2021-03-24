@@ -1,0 +1,33 @@
+on:
+  schedule:
+    - cron: '0 2 * * 0'  # every Sunday at 2am
+name: Prettier
+jobs:
+  prettier:
+    name: Prettier
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        ref: main
+
+    - name: Set up node
+      uses: actions/setup-node@v2
+      with:
+        node-version: 12
+    - run: yarn install --frozen-lockfile --non-interactive
+    - run: npx flow-typed install
+
+    - name: Commit files
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        (! git diff-index --quiet HEAD -- && git commit -m "Update flow-typed definitions" -a) || true
+
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v3
+      with:
+          title: 'Update flow-typed definitions'
+          branch: flow-typed
+          delete-branch: true
