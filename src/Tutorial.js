@@ -123,10 +123,10 @@ function Tutorial(props: Props) {
     <div>
       <Joyride
         callback={handleJoyrideCallback}
-        continuous={true}
-        scrollToFirstStep={true}
-        showProgress={true}
-        showSkipButton={true}
+        continuous
+        scrollToFirstStep
+        showProgress
+        showSkipButton
         styles={{
           options: {
             zIndex: 10000,

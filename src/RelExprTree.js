@@ -122,7 +122,7 @@ class RelExprTree extends Component<Props> {
           data={data}
           initialOpenNodes={keys}
           hasSearch={false}
-          disableKeyboard={true}
+          disableKeyboard
           onClickItem={(props) => {
             this.props.changeExpr(props.expr, null);
 
