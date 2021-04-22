@@ -7666,12 +7666,12 @@ eslint-plugin-testing-library@^3.9.2:
   dependencies:
     "@typescript-eslint/experimental-utils" "^3.10.1"
 
-eslint-plugin-yaml@^0.4.1:
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-yaml/-/eslint-plugin-yaml-0.4.1.tgz#cc0f33890b42f1e0c8c2ac53680afe2b8ee88c84"
-  integrity sha512-KS0evlxfJVxuFqXkZINTLa1koZvzSIC9WSrzcNvoW04QjJpBp6P6YuCi0J3YAaEy31poEHcm4o30iiNTnuxCEw==
+eslint-plugin-yaml@^0.4.2:
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-yaml/-/eslint-plugin-yaml-0.4.2.tgz#32fc55e462dd436a38e05edf42244973c6702a52"
+  integrity sha512-spYMsdvr63XMTCb41w30L46B/rTmt2PKFKQsG8wbRzjBXhvikYwu0yxeMMfxvMXFkLBoKk5v7Cv7WOQe8z2o8w==
   dependencies:
-    js-yaml "^4.0.0"
+    js-yaml "^4.1.0"
     jshint "^2.12.0"
 
 eslint-scope@^4.0.3:
@@ -10722,10 +10722,10 @@ js-yaml@^3.13.1:
     argparse "^1.0.7"
     esprima "^4.0.0"
 
-js-yaml@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-4.0.0.tgz#f426bc0ff4b4051926cd588c71113183409a121f"
-  integrity sha512-pqon0s+4ScYUvX30wxQi3PogGFAlUyH0awepWvwkj4jD4v+ova3RiYw8bmA6x2rDrEaj8i/oWKoRxpVNW+Re8Q==
+js-yaml@^4.0.0, js-yaml@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-4.1.0.tgz#c1fb65f8f5017901cdd2c951864ba18458a10602"
+  integrity sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==
   dependencies:
     argparse "^2.0.1"
 
