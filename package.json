@@ -8,7 +8,7 @@
   "bugs": "https://github.com/michaelmior/relational-playground/issues",
   "dependencies": {
     "@michaelmior/js-sql-parser": "^1.3.0",
-    "@sentry/browser": "^6.5.1",
+    "@sentry/browser": "^6.7.2",
     "@sentry/cli": "^1.64.2",
     "@testing-library/jest-dom": "^5.13.0",
     "connected-react-router": "^6.9.1",
@@ -76,7 +76,7 @@
     "@welldone-software/why-did-you-render": "^6.1.4",
     "@wojtekmaj/enzyme-adapter-react-17": "^0.6.1",
     "bundlesize": "^0.18.1",
-    "chromatic": "^5.9.0",
+    "chromatic": "^5.9.2",
     "coveralls": "^3.1.0",
     "enzyme": "^3.11.0",
     "eslint-plugin-yaml": "^0.4.2",
