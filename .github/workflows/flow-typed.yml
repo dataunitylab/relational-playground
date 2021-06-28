@@ -24,6 +24,6 @@ jobs:
       uses: peter-evans/create-pull-request@v3
       with:
           title: 'Update flow-typed definitions'
-          branch: flow-typed
+          branch: flow-typed-update
           commit-message: "Update flow-typed definitions"
           delete-branch: true
