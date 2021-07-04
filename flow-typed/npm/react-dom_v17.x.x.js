@@ -1,5 +1,5 @@
-// flow-typed signature: 883d1ffd89c1dd19944fb3d4876938c0
-// flow-typed version: 302d4b65e2/react-dom_v17.x.x/flow_>=v0.127.x
+// flow-typed signature: e556c06e721548417501c08b01fec911
+// flow-typed version: ad3adf2de8/react-dom_v17.x.x/flow_>=v0.127.x
 
 declare module 'react-dom' {
   declare var version: string;
@@ -61,10 +61,9 @@ declare module 'react-dom/server' {
 }
 
 declare module 'react-dom/test-utils' {
-  declare type Thenable = {
+  declare interface Thenable {
     then(resolve: () => mixed, reject?: () => mixed): mixed,
-    ...
-  };
+  }
 
   declare var Simulate: {
     [eventName: string]: (
