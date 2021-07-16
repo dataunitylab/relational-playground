@@ -74,7 +74,7 @@
     "@storybook/react": "^6.1.21",
     "@testing-library/react": "^12.0.0",
     "@welldone-software/why-did-you-render": "^6.2.0",
-    "@wojtekmaj/enzyme-adapter-react-17": "^0.6.2",
+    "@wojtekmaj/enzyme-adapter-react-17": "^0.6.3",
     "bundlesize": "^0.18.1",
     "chromatic": "^5.9.2",
     "coveralls": "^3.1.1",
