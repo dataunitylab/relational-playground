@@ -9,7 +9,7 @@
   "dependencies": {
     "@michaelmior/js-sql-parser": "^1.3.0",
     "@sentry/browser": "^6.9.0",
-    "@sentry/cli": "^1.67.1",
+    "@sentry/cli": "^1.67.2",
     "@testing-library/jest-dom": "^5.14.1",
     "connected-react-router": "^6.9.1",
     "fast-equals": "^2.0.3",
