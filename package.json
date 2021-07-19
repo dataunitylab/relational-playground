@@ -80,7 +80,7 @@
     "coveralls": "^3.1.1",
     "enzyme": "^3.11.0",
     "eslint-plugin-yaml": "^0.5.0",
-    "flow-bin": "^0.151.0",
+    "flow-bin": "^0.155.1",
     "husky": "7",
     "jest-each": "^27.0.6",
     "jest-enzyme": "^7.1.2",
