@@ -12455,10 +12455,10 @@ npm-package-json-lint-config-default@^3.0.0:
   resolved "https://registry.yarnpkg.com/npm-package-json-lint-config-default/-/npm-package-json-lint-config-default-3.0.0.tgz#9076e309a48cc215f4c60a3aab149a7b700b5422"
   integrity sha512-1eOHUSg4Pg1lDp75NJ/pTnYU3/vn7WIL+3MG5KWtrUEFtIuBX/yLGABTFZ4+sP73bQYu/Nla07icJjezQP6SnA==
 
-npm-package-json-lint@^5.2.1:
-  version "5.2.1"
-  resolved "https://registry.yarnpkg.com/npm-package-json-lint/-/npm-package-json-lint-5.2.1.tgz#cade00216b23009684fc95876153591bba70aed6"
-  integrity sha512-Gn78E5QwKtc1B4dTBfqqFdH7cg1EBXkPSLCPvMau866w79SiB5JoGNunYp5OGlSe2cnAmiRmW7oupHsU/iz5hw==
+npm-package-json-lint@^5.2.2:
+  version "5.2.2"
+  resolved "https://registry.yarnpkg.com/npm-package-json-lint/-/npm-package-json-lint-5.2.2.tgz#5d24d77112423a90ef7423f11e538a0ed363bb52"
+  integrity sha512-rs+mTLK31dRHzOrPcA33VoVgPxib0WecKGKOm6XkE186/FqiZGmGgkNLpxx1baUORkSmU1ETyi7aQXlZUzqZIA==
   dependencies:
     ajv "^6.12.6"
     ajv-errors "^1.0.1"
