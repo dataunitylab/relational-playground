@@ -33,7 +33,9 @@ type State = {
 class SqlEditor extends Component<Props, State> {
   constructor() {
     super();
+    // $FlowFixMe[method-unbinding]
     (this: any).handleChange = this.handleChange.bind(this);
+    // $FlowFixMe[method-unbinding]
     (this: any).parseQuery = this.parseQuery.bind(this);
     this.state = {error: null, timeout: null, query: ''};
   }
@@ -125,6 +127,7 @@ class SqlEditor extends Component<Props, State> {
         <div className="editor">
           <Editor
             value={this.state.query}
+            // $FlowFixMe[method-unbinding]
             onValueChange={this.handleChange}
             highlight={(code) => highlight(code, languages.sql)}
             padding={10}

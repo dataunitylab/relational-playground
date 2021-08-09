@@ -30,6 +30,7 @@ type Props = {
 class RelExpr extends Component<Props> {
   constructor() {
     super();
+    // $FlowFixMe[method-unbinding]
     (this: any).handleExprClick = this.handleExprClick.bind(this);
   }
 
@@ -168,6 +169,7 @@ class RelExpr extends Component<Props> {
       return (
         <span
           className="RelExpr"
+          // $FlowFixMe[method-unbinding]
           onClick={this.handleExprClick}
           style={{margin: '.4em'}}
         >
