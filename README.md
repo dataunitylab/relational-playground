@@ -2,7 +2,6 @@
 
 [![Build Status](https://travis-ci.com/michaelmior/relational-playground.svg?branch=main)](https://travis-ci.com/michaelmior/relational-playground)
 [![Coverage Status](https://coveralls.io/repos/github/michaelmior/relational-playground/badge.svg?branch=main)](https://coveralls.io/github/michaelmior/relational-playground?branch=main)
-[![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=michaelmior/relational-playground)](https://dependabot.com)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
