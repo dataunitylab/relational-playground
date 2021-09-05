@@ -1,5 +1,5 @@
-// flow-typed signature: 9d34662c5787141eac86b223d34a2dd5
-// flow-typed version: 396e08d508/react-redux_v7.x.x/flow_>=v0.142.x
+// flow-typed signature: 26f1dc826b8b86051119d2c57683305a
+// flow-typed version: 7f872d55e3/react-redux_v7.x.x/flow_>=v0.142.x
 
 /**
 The order of type arguments for connect() is as follows:
@@ -203,7 +203,15 @@ declare module "react-redux" {
   // Typings for Hooks
   // ------------------------------------------------------------
 
-  declare export function useDispatch<D>(): D;
+  declare export function useDispatch<D>(): (
+    & (<T: { [key: string]: any }>(T) => T)
+    // Supports thunks at their various lengths and use cases depending if user has typed them as tuple vs array
+    & (<T>((...args: [any]) => T) => T)
+    & (<T>((...args: [any, any]) => T) => T)
+    & (<T>((...args: [any, any, any]) => T) => T)
+    & (<T>((...args: Array<any>) => T) => T)
+    & D
+  );
 
   declare export function useSelector<S, SS>(
     selector: (state: S) => SS,
