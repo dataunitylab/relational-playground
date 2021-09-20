@@ -13,5 +13,13 @@
       "SENTRY_AUTH_TOKEN": "@sentry_auth_token",
       "SENTRY_ORG": "rit-data-lab"
     }
+  },
+  "headers": {
+    "source": "*",
+    "headers": {
+      "X-Content-Type-Options": "nosniff",
+      "X-Frame-Options": "DENY",
+      "X-XSS-Protection": "1; mode=block"
+    }
   }
 }
