@@ -72,7 +72,7 @@
     "@sebastianwessel/esdoc-standard-plugin": "^2.1.0",
     "@storybook/preset-create-react-app": "^3.2.0",
     "@storybook/react": "^6.1.21",
-    "@testing-library/react": "^12.1.1",
+    "@testing-library/react": "^12.1.2",
     "@welldone-software/why-did-you-render": "^6.2.1",
     "@wojtekmaj/enzyme-adapter-react-17": "^0.6.3",
     "bundlesize": "^0.18.1",
