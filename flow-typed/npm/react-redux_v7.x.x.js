@@ -1,5 +1,5 @@
-// flow-typed signature: 26f1dc826b8b86051119d2c57683305a
-// flow-typed version: 7f872d55e3/react-redux_v7.x.x/flow_>=v0.142.x
+// flow-typed signature: 7e27199b61fbb510d3c849101ee9c26a
+// flow-typed version: cbfc4e71b7/react-redux_v7.x.x/flow_>=v0.142.x
 
 /**
 The order of type arguments for connect() is as follows:
@@ -293,6 +293,8 @@ declare module "react-redux" {
   ): (component: Com) => React$ComponentType<OP> & $Shape<ST>;
 
   declare export function batch(() => void): void
+
+  declare export function shallowEqual<T>(left: T, right: any): boolean
 
   declare export default {
     Provider: typeof Provider,
