@@ -47,15 +47,3 @@ jobs:
         if: ${{ matrix.os == 'ubuntu-latest' && github.ref == 'refs/heads/main' }}
         run: yarn coveralls
         shell: bash
-
-      - name: Publish to Chromatic
-        if: ${{ matrix.os == 'ubuntu-latest' }}
-        uses: chromaui/action@v1
-        env:
-          CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-          autoAcceptChanges: main
-          exitZeroOnChanges: true
-          exitOnceUploaded: true
