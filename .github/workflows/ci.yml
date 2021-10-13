@@ -12,7 +12,7 @@ jobs:
         with:
           cancel_others: true
           concurrent_skipping: same_content
-          do_not_skip: ['pull_request', 'schedule', 'workflow_dispatch']
+          do_not_skip: '["pull_request", "schedule", "workflow_dispatch"]'
 
   build:
     name: Test
