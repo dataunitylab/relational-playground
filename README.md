@@ -1,6 +1,6 @@
 # Relational Playground
 
-[![Build Status](https://travis-ci.com/michaelmior/relational-playground.svg?branch=main)](https://travis-ci.com/michaelmior/relational-playground)
+[![CI](https://github.com/michaelmior/relational-playground/actions/workflows/ci.yml/badge.svg)](https://github.com/michaelmior/relational-playground/actions/workflows/ci.yml)
 [![Coverage Status](https://coveralls.io/repos/github/michaelmior/relational-playground/badge.svg?branch=main)](https://coveralls.io/github/michaelmior/relational-playground?branch=main)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
