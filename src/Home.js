@@ -9,7 +9,6 @@ import SourceMultiTable from './SourceMultiTable';
 import SplitPane from 'react-split-pane';
 import {changeExpr} from './modules/data';
 import {BrowserView, MobileOnlyView} from 'react-device-detect';
-import Cookies from 'universal-cookie';
 import ReactGA from 'react-ga';
 
 import './Home.css';
@@ -19,9 +18,7 @@ import Tutorial from './Tutorial';
 import type {ComponentType} from 'react';
 import type {RouterHistory} from 'react-router-dom';
 
-type State = {
-  cookies: typeof Cookies,
-};
+type State = {};
 
 type Props = {
   history: RouterHistory,
@@ -31,8 +28,6 @@ type Props = {
 class Home extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
-
-    this.state = {cookies: new Cookies()};
 
     // If GA is no longer used, remove preconnect from index.html
     switch (process.env.NODE_ENV) {
@@ -65,7 +60,7 @@ class Home extends Component<Props, State> {
       <div className="bottomLeftContainer">
         <DataContainer />
         <div className="footer">
-          <Tutorial cookies={this.state.cookies} />
+          <Tutorial />
           <p className="email">
             For questions, please email{' '}
             <a href="mailto:mmior@cs.rit.edu">mmior@cs.rit.edu</a>

@@ -1,20 +1,18 @@
 import Joyride, {CallBackProps, STATUS} from 'react-joyride';
 import React, {useState} from 'react';
-
-type Props = {
-  cookies: any,
-};
+import {useCookies} from 'react-cookie';
 
 const redoText = 'Redo tutorial';
 const stepStyle = {tooltipContainer: {textAlign: 'left'}};
 
 /** Container for all components of the tutorial */
-function Tutorial(props: Props) {
+function Tutorial() {
   let initialText, shouldRun;
-  if (props.cookies.get('tutorial') === undefined) {
+  const [cookies, setCookie] = useCookies(['tutorial']);
+  if (cookies.tutorial === undefined) {
     initialText = 'Tutorial';
     shouldRun = true;
-    props.cookies.set('tutorial', 'true', {path: '/'});
+    setCookie('tutorial', 'true', {path: '/'});
   } else {
     initialText = redoText;
     shouldRun = false;
