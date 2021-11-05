@@ -1,5 +1,5 @@
 // @flow
-import React, {Component} from 'react';
+import React from 'react';
 import TreeMenu, {ItemComponent} from 'react-simple-tree-menu';
 import {v4 as uuidv4} from 'uuid';
 import {
@@ -17,7 +17,7 @@ import {changeExpr} from './modules/data';
 import '../node_modules/react-simple-tree-menu/dist/main.css';
 import './RelExprTree.css';
 
-import type {Node} from 'react';
+import type {Node, StatelessFunctionalComponent} from 'react';
 
 type Props = {
   changeExpr: typeof changeExpr,
@@ -26,18 +26,18 @@ type Props = {
 };
 
 /** A graphical representation of a relational algebra expression */
-class RelExprTree extends Component<Props> {
+const RelExprTree: StatelessFunctionalComponent<Props> = (props) => {
   /**
    * @param expr - a relational algebra expression object to render
    * @param keys - an array where all created paths should be saved
    * @param path - the path to the current node
    * @return a tree structure representing the exppression
    */
-  buildTree(
+  const buildTree = (
     expr: {[string]: any},
     keys: Array<string>,
     path: Array<string> = []
-  ): {} {
+  ): {} => {
     // Don't try to render empty expressions
     if (!expr || Object.keys(expr).length === 0) {
       return {};
@@ -56,7 +56,7 @@ class RelExprTree extends Component<Props> {
         return {
           key: key,
           expr: expr,
-          nodes: [this.buildTree(expr[type].children[0], keys, newPath)],
+          nodes: [buildTree(expr[type].children[0], keys, newPath)],
         };
       case 'relation':
         return {
@@ -71,16 +71,16 @@ class RelExprTree extends Component<Props> {
           key: key,
           expr: expr,
           nodes: [
-            this.buildTree(expr[type].left, keys, newPath),
-            this.buildTree(expr[type].right, keys, newPath),
+            buildTree(expr[type].left, keys, newPath),
+            buildTree(expr[type].right, keys, newPath),
           ],
         };
       default:
         throw new Error('Invalid expression ' + JSON.stringify(expr) + '.');
     }
-  }
+  };
 
-  getLabel(expr: {[string]: any}): Node {
+  const getLabel = (expr: {[string]: any}): Node => {
     if (!expr || Object.keys(expr).length === 0) {
       return '';
     }
@@ -111,40 +111,38 @@ class RelExprTree extends Component<Props> {
       default:
         throw new Error('Invalid expression ' + JSON.stringify(expr) + '.');
     }
-  }
+  };
 
-  render(): Node {
-    const keys = [];
-    const data = [this.buildTree(this.props.expr, keys)];
-    return (
-      <div className="RelExprTree">
-        <TreeMenu
-          data={data}
-          initialOpenNodes={keys}
-          hasSearch={false}
-          disableKeyboard
-          onClickItem={(props) => {
-            this.props.changeExpr(props.expr, null);
+  const keys = [];
+  const data = [buildTree(props.expr, keys)];
+  return (
+    <div className="RelExprTree">
+      <TreeMenu
+        data={data}
+        initialOpenNodes={keys}
+        hasSearch={false}
+        disableKeyboard
+        onClickItem={(clickProps) => {
+          props.changeExpr(clickProps.expr, null);
 
-            this.props.ReactGA.event({
-              category: 'User Selecting Relational Algebra Tree',
-              action: Object.keys(props.expr)[0],
-            });
-          }}
-        >
-          {({search, items}) => (
-            <div>
-              {items.map(({key, ...props}) => {
-                const newProps = {label: this.getLabel(props.expr)};
-                Object.assign(props, newProps);
-                return <ItemComponent key={key} {...props} />;
-              })}
-            </div>
-          )}
-        </TreeMenu>
-      </div>
-    );
-  }
-}
+          props.ReactGA.event({
+            category: 'User Selecting Relational Algebra Tree',
+            action: Object.keys(clickProps.expr)[0],
+          });
+        }}
+      >
+        {({search, items}) => (
+          <div>
+            {items.map(({key, ...props}) => {
+              const newProps = {label: getLabel(props.expr)};
+              Object.assign(props, newProps);
+              return <ItemComponent key={key} {...props} />;
+            })}
+          </div>
+        )}
+      </TreeMenu>
+    </div>
+  );
+};
 
 export default RelExprTree;
