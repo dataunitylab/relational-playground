@@ -1,5 +1,5 @@
 // @flow
-import React, {Component} from 'react';
+import React, {useRef} from 'react';
 import {
   UnaryRelOp,
   Projection,
@@ -18,7 +18,7 @@ import ReactDOM from 'react-dom';
 
 import './RelExpr.css';
 
-import type {Node} from 'react';
+import type {Node, StatelessFunctionalComponent} from 'react';
 
 type Props = {
   changeExpr: typeof changeExpr,
@@ -27,18 +27,14 @@ type Props = {
 };
 
 /** A graphical representation of a relational algebra expression */
-class RelExpr extends Component<Props> {
-  constructor() {
-    super();
-    // $FlowFixMe[method-unbinding]
-    (this: any).handleExprClick = this.handleExprClick.bind(this);
-  }
+const RelExpr: StatelessFunctionalComponent<Props> = (props) => {
+  const nodeRef = useRef();
 
   /**
    * @param expr - a relational algebra expression object to render
    * @return a component representing the top-most expression
    */
-  buildExpr(expr: {[string]: any}): Node {
+  const buildExpr = (expr: {[string]: any}): Node => {
     // Don't try to render empty expressions
     if (!expr || Object.keys(expr).length === 0) {
       return '';
@@ -55,8 +51,8 @@ class RelExpr extends Component<Props> {
             >
               <RelExpr
                 expr={expr.projection.children[0]}
-                changeExpr={this.props.changeExpr}
-                ReactGA={this.props.ReactGA}
+                changeExpr={props.changeExpr}
+                ReactGA={props.ReactGA}
               />
             </UnaryRelOp>
           </span>
@@ -74,8 +70,8 @@ class RelExpr extends Component<Props> {
             >
               <RelExpr
                 expr={expr.selection.children[0]}
-                changeExpr={this.props.changeExpr}
-                ReactGA={this.props.ReactGA}
+                changeExpr={props.changeExpr}
+                ReactGA={props.ReactGA}
               />
             </UnaryRelOp>
           </span>
@@ -89,8 +85,8 @@ class RelExpr extends Component<Props> {
             >
               <RelExpr
                 expr={expr.rename.children[0]}
-                changeExpr={this.props.changeExpr}
-                ReactGA={this.props.ReactGA}
+                changeExpr={props.changeExpr}
+                ReactGA={props.ReactGA}
               />
             </UnaryRelOp>
           </span>
@@ -115,15 +111,15 @@ class RelExpr extends Component<Props> {
             left={
               <RelExpr
                 expr={expr[type].left}
-                ReactGA={this.props.ReactGA}
-                changeExpr={this.props.changeExpr}
+                ReactGA={props.ReactGA}
+                changeExpr={props.changeExpr}
               />
             }
             right={
               <RelExpr
                 expr={expr[type].right}
-                ReactGA={this.props.ReactGA}
-                changeExpr={this.props.changeExpr}
+                ReactGA={props.ReactGA}
+                changeExpr={props.changeExpr}
               />
             }
           />
@@ -132,52 +128,51 @@ class RelExpr extends Component<Props> {
       default:
         throw new Error('Invalid expression ' + JSON.stringify(expr) + '.');
     }
-  }
+  };
 
   /**
    * @param e - the event object which generated the click
    */
-  handleExprClick(e: SyntheticMouseEvent<HTMLElement>): void {
+  const handleExprClick = (e: SyntheticMouseEvent<HTMLElement>): void => {
     e.stopPropagation();
     const node =
-      ReactDOM.findDOMNode(this) instanceof HTMLElement
-        ? ReactDOM.findDOMNode(this)
+      ReactDOM.findDOMNode(nodeRef.current) instanceof HTMLElement
+        ? ReactDOM.findDOMNode(nodeRef.current)
         : undefined;
 
-    if (node instanceof HTMLElement && this.props.changeExpr) {
-      this.props.changeExpr(this.props.expr, node);
+    if (node instanceof HTMLElement && props.changeExpr) {
+      props.changeExpr(props.expr, node);
     }
 
-    this.props.ReactGA.event({
+    props.ReactGA.event({
       category: 'User Selecting Relational Algebra Enclosure',
-      action: Object.keys(this.props.expr)[0],
+      action: Object.keys(props.expr)[0],
     });
-  }
+  };
 
-  render(): Node {
-    if (!this.props.expr || Object.keys(this.props.expr).length === 0) {
-      return '';
-    }
-    const type = Object.keys(this.props.expr)[0];
-    if (type === 'relation') {
-      return (
-        <span className="RelExpr" style={{margin: '.4em'}}>
-          {this.buildExpr(this.props.expr)}
-        </span>
-      );
-    } else {
-      return (
-        <span
-          className="RelExpr"
-          // $FlowFixMe[method-unbinding]
-          onClick={this.handleExprClick}
-          style={{margin: '.4em'}}
-        >
-          {this.buildExpr(this.props.expr)}
-        </span>
-      );
-    }
+  if (!props.expr || Object.keys(props.expr).length === 0) {
+    return '';
   }
-}
+  const type = Object.keys(props.expr)[0];
+  if (type === 'relation') {
+    return (
+      <span className="RelExpr" style={{margin: '.4em'}}>
+        {buildExpr(props.expr)}
+      </span>
+    );
+  } else {
+    return (
+      <span
+        className="RelExpr"
+        // $FlowFixMe[method-unbinding]
+        onClick={handleExprClick}
+        style={{margin: '.4em'}}
+        ref={nodeRef}
+      >
+        {buildExpr(props.expr)}
+      </span>
+    );
+  }
+};
 
 export default RelExpr;
