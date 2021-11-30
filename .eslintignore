@@ -1,4 +1,6 @@
 # Ignore json files
+build/
+flow-typed/
 node_modules/
 storybook-static/
 src/resources/*
