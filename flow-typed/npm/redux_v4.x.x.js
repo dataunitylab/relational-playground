@@ -1,5 +1,5 @@
-// flow-typed signature: cf5a251230b87bfccb7000d63228c501
-// flow-typed version: 7735fcd9c6/redux_v4.x.x/flow_>=v0.134.x
+// flow-typed signature: cce1b300a21a6aab890fdc2ae01ba2b4
+// flow-typed version: 9c4a846b8a/redux_v4.x.x/flow_>=v0.134.x
 
 declare module 'redux' {
   /*
@@ -31,7 +31,7 @@ declare module 'redux' {
     ...
   };
 
-  declare export type Reducer<S, A> = (state: S | void, action: A) => S;
+  declare export type Reducer<S, A> = (state: S, action: A) => S;
 
   declare export type CombinedReducer<S, A> = (
     state: ($Shape<S> & {...}) | void,
