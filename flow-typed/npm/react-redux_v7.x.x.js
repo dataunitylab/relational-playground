@@ -1,5 +1,5 @@
-// flow-typed signature: 7e27199b61fbb510d3c849101ee9c26a
-// flow-typed version: cbfc4e71b7/react-redux_v7.x.x/flow_>=v0.142.x
+// flow-typed signature: f44585b6c74a3a432907f7fe9938cfc1
+// flow-typed version: efb2c53f8b/react-redux_v7.x.x/flow_>=v0.142.x
 
 /**
 The order of type arguments for connect() is as follows:
@@ -67,16 +67,19 @@ declare module "react-redux" {
     // and provide the DispatchProps type to the DP type parameter.
     | ((dispatch: D, ownProps: OP) => (dispatch: D, ownProps: OP) => DP);
 
-  declare class ConnectedComponent<OP, +WC> extends React$Component<OP> {
+  declare class ConnectedComponentClass<OP, +WC> extends React$Component<OP> {
     static +WrappedComponent: WC;
     getWrappedInstance(): React$ElementRef<WC>;
   }
+
+  declare export type ConnectedComponent = typeof ConnectedComponentClass;
+
   // The connection of the Wrapped Component and the Connected Component
   // happens here in `MP: P`. It means that type wise MP belongs to P,
   // so to say MP >= P.
   declare type Connector<P, OP, MP: P> = <WC: React$ComponentType<P>>(
     WC,
-  ) => Class<ConnectedComponent<OP, WC>> & WC;
+  ) => Class<ConnectedComponentClass<OP, WC>> & WC;
 
   // No `mergeProps` argument
 
