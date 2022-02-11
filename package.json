@@ -79,7 +79,7 @@
     "coveralls": "^3.1.1",
     "enzyme": "^3.11.0",
     "eslint-plugin-yaml": "^0.5.0",
-    "flow-bin": "^0.170.0",
+    "flow-bin": "^0.171.0",
     "husky": "7",
     "jest-each": "^27.4.6",
     "jest-enzyme": "^7.1.2",
@@ -93,7 +93,7 @@
     "redux-mock-store": "^1.5.4",
     "source-map-explorer": "^2.5.2",
     "stylelint": "^14.4.0",
-    "stylelint-config-standard": "^24.0.0"
+    "stylelint-config-standard": "^25.0.0"
   },
   "engines": {
     "node": "12.x"
