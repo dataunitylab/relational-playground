@@ -1,5 +1,5 @@
-// flow-typed signature: 9a9284022fbe8c1691213d2eb55f3bd2
-// flow-typed version: d287131bf9/@testing-library/react_v12.x.x/flow_>=v0.104.x
+// flow-typed signature: 190d9e81b44ea2bb588cf6473940804f
+// flow-typed version: bb611c8bba/@testing-library/react_v12.x.x/flow_>=v0.104.x
 
 /**
  * A local copy from:
@@ -267,6 +267,7 @@ declare module '@testing-library/react' {
     | HTMLInputElement
     | HTMLAnchorElement
     | HTMLButtonElement
+    | HTMLLabelElement
     | HTMLSelectElement;
 
   declare export type IntersectionHTMLElement =
@@ -274,6 +275,7 @@ declare module '@testing-library/react' {
     & HTMLInputElement
     & HTMLAnchorElement
     & HTMLButtonElement
+    & HTMLLabelElement
     & HTMLSelectElement;
   // End mixed html types
 
