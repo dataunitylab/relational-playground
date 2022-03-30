@@ -96,7 +96,7 @@
     "stylelint-config-standard": "^25.0.0"
   },
   "engines": {
-    "node": "12.x"
+    "node": "16.x"
   },
   "lint-staged": {
     "*.yml": [
