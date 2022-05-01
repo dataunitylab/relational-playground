@@ -1,5 +1,5 @@
-// flow-typed signature: cce1b300a21a6aab890fdc2ae01ba2b4
-// flow-typed version: 9c4a846b8a/redux_v4.x.x/flow_>=v0.134.x
+// flow-typed signature: 0a9ceac15c8e9ef5e623a5fe760a4e99
+// flow-typed version: 9220b1a1e3/redux_v4.x.x/flow_>=v0.134.x
 
 declare module 'redux' {
   /*
@@ -61,6 +61,16 @@ declare module 'redux' {
     enhancer?: StoreEnhancer<S, A, D>
   ): Store<S, A, D>;
   declare export function createStore<S, A, D>(
+    reducer: Reducer<S, A>,
+    preloadedState?: S,
+    enhancer?: StoreEnhancer<S, A, D>
+  ): Store<S, A, D>;
+
+  declare export function legacy_createStore<S, A, D>(
+    reducer: Reducer<S, A>,
+    enhancer?: StoreEnhancer<S, A, D>
+  ): Store<S, A, D>;
+  declare export function legacy_createStore<S, A, D>(
     reducer: Reducer<S, A>,
     preloadedState?: S,
     enhancer?: StoreEnhancer<S, A, D>
