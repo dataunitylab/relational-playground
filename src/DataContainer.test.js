@@ -1,7 +1,8 @@
 import React from 'react';
 import {Provider} from 'react-redux';
 import {mount} from 'enzyme';
-import {createStore} from 'redux';
+import produce from 'immer';
+import {configureStore} from '@reduxjs/toolkit';
 
 import DataContainer from './DataContainer';
 import Table from './Table';
@@ -9,7 +10,7 @@ import Table from './Table';
 describe('DataContainer', () => {
   /** @test {DataContainer} */
   it('displays a table with the current data', () => {
-    const mockStore = createStore((state) => state, {
+    const initialState = {
       data: {
         current: {
           name: 'foo',
@@ -17,6 +18,12 @@ describe('DataContainer', () => {
           data: [{bar: 1, baz: 2}],
         },
       },
+    };
+    const mockStore = configureStore({
+      reducer: {
+        data: produce((state, action) => state, initialState),
+      },
+      preloadedState: initialState,
     });
     const wrapper = mount(
       <Provider store={mockStore}>
