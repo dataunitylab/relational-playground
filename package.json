@@ -8,6 +8,7 @@
   "bugs": "https://github.com/michaelmior/relational-playground/issues",
   "dependencies": {
     "@michaelmior/js-sql-parser": "^1.3.0",
+    "@reduxjs/toolkit": "^1.8.1",
     "@sentry/browser": "^6.18.2",
     "@sentry/cli": "^1.74.3",
     "@testing-library/jest-dom": "^5.16.4",
@@ -31,7 +32,7 @@
     "react-simple-tree-menu": "^1.1.18",
     "react-split-pane": "^0.1.92",
     "react-table": "^6.11.5",
-    "redux": "^4.1.2",
+    "redux": "^4.2.0",
     "redux-thunk": "^2.4.1",
     "typescript": "*",
     "uuid": "^8.3.2"
@@ -92,7 +93,7 @@
     "react-test-renderer": "^17.0.2",
     "redux-mock-store": "^1.5.4",
     "source-map-explorer": "^2.5.2",
-    "stylelint": "^14.6.1",
+    "stylelint": "^14.8.2",
     "stylelint-config-standard": "^25.0.0"
   },
   "engines": {
