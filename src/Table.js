@@ -1,9 +1,7 @@
 // @flow
 import React from 'react';
-import ReactTable from 'react-table';
-import 'react-table/react-table.css';
-
-import './Table.css';
+import {Grid} from 'gridjs-react';
+import 'gridjs/dist/theme/mermaid.css';
 
 import type {StatelessFunctionalComponent} from 'react';
 
@@ -14,30 +12,17 @@ type Props = {
   sortable?: boolean,
 };
 
-/** A wrapper for {ReactTable} which sets some default options */
+/** A wrapper for {Grid} which sets some default options */
 const Table: StatelessFunctionalComponent<Props> = (props) => {
-  let columns = [
-    {
-      Header: props.tableName,
-
-      // Define the column with a default accessor to ignore the
-      // default behaviour of asking nested properties via dots
-      columns: props.columns.map((c) => ({
-        id: c,
-        Header: c,
-        accessor: (d) => d[c],
-      })),
-    },
-  ];
-
   return (
-    <ReactTable
-      className={props.tableName ? '' : 'no-header'}
+    <Grid
       data={props.data}
-      columns={columns}
-      defaultPageSize={5}
-      showPageSizeOptions={false}
-      sortable={props.sortable}
+      columns={props.columns}
+      pagination={{
+        enabled: true,
+        limit: 5,
+      }}
+      sort={props.sortable}
       width={500}
     />
   );
