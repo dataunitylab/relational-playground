@@ -1,7 +1,7 @@
 // @flow
 import './wydr';
 
-import {ConnectedRouter} from 'connected-react-router';
+import {ReduxRouter} from '@lagunovsky/redux-react-router'
 import {Provider} from 'react-redux';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -21,11 +21,11 @@ Sentry.init(sentryConfig);
 
 ReactDOM.render(
   <Provider store={store}>
-    <ConnectedRouter history={history}>
+    <ReduxRouter history={history}>
       <div>
         <App />
       </div>
-    </ConnectedRouter>
+    </ReduxRouter>
   </Provider>,
   ((document.getElementById('root'): any): HTMLElement)
 );

@@ -1,6 +1,6 @@
 // @flow
 import {configureStore} from '@reduxjs/toolkit';
-import {connectRouter, routerMiddleware} from 'connected-react-router';
+import {createRouterReducer, createRouterMiddleware} from '@lagunovsky/redux-react-router'
 import thunk from 'redux-thunk';
 import {createBrowserHistory} from 'history';
 
@@ -13,7 +13,7 @@ import type {Action, Store} from '@reduxjs/toolkit';
 export const history: BrowserHistory = createBrowserHistory();
 
 const enhancers = [];
-const middleware = [thunk, routerMiddleware(history)];
+const middleware = [thunk, createRouterMiddleware(history)];
 
 // Enable Redux dev tools in development mode
 if (process.env.NODE_ENV === 'development') {
@@ -26,7 +26,7 @@ if (process.env.NODE_ENV === 'development') {
 
 const store: Store<{}, Action<{}>> = configureStore({
   reducer: {
-    router: connectRouter(history),
+    router: createRouterReducer(history),
 
     data,
     relexp,

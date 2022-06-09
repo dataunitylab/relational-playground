@@ -7,12 +7,12 @@
   "repository": "https://github.com/michaelmior/relational-playground",
   "bugs": "https://github.com/michaelmior/relational-playground/issues",
   "dependencies": {
+    "@lagunovsky/redux-react-router": "^3.2.0",
     "@michaelmior/js-sql-parser": "^1.3.0",
     "@reduxjs/toolkit": "^1.8.1",
     "@sentry/browser": "^7.1.1",
     "@sentry/cli": "^1.74.3",
     "@testing-library/jest-dom": "^5.16.4",
-    "connected-react-router": "^6.9.2",
     "fast-equals": "^3.0.2",
     "fromentries": "^1.3.2",
     "history": "^4.10.1",
