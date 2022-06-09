@@ -8,7 +8,7 @@ import data from './modules/data';
 import relexp from './modules/relexp';
 
 import type {BrowserHistory} from 'history';
-import type {Action, Store} from 'redux';
+import type {Action, Store} from '@reduxjs/toolkit';
 
 export const history: BrowserHistory = createBrowserHistory();
 
