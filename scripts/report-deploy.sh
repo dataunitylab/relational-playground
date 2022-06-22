@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # Get the current commit
-SHA=`([ -n "$VERCEL_GIT_COMMIT_SHA" ] && echo "$VERCEL_GIT_COMMIT_SHA") || git rev-parse --short HEAD`
+SHA=`([ -n "$VERCEL_GIT_COMMIT_SHA" ] && echo "$VERCEL_GIT_COMMIT_SHA") || git rev-parse HEAD`
 
 # Try to set a reasonable NODE_ENV if it isn't set
 if [ -z "$NODE_ENV" ]; then
-  if [ -n "$VERCEL_GIT_COMMIT_SHA" ]; then
-    if [ "$VERCEL_GIT_COMMIT_SHA" = "main" ]; then
+  if [ -n "$VERCEL_GIT_COMMIT_REF" ]; then
+    if [ "$VERCEL_GIT_COMMIT_REF" = "main" ]; then
       NODE_ENV="production"
     else
       NODE_ENV="staging"
