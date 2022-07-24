@@ -1,5 +1,5 @@
-// flow-typed signature: 190d9e81b44ea2bb588cf6473940804f
-// flow-typed version: bb611c8bba/@testing-library/react_v12.x.x/flow_>=v0.104.x
+// flow-typed signature: 1bfed43601f5ac4f032e1a250de00275
+// flow-typed version: 7f3f5d1a07/@testing-library/react_v12.x.x/flow_>=v0.104.x
 
 /**
  * A local copy from:
@@ -187,7 +187,7 @@ declare module '@testing-library/react' {
 
   declare type MatcherFunction = (
     content: string,
-    element: ?Element
+    element: HTMLElement
   ) => boolean;
 
   declare type Matcher = MatcherFunction | RegExp | string | number;
