@@ -44,8 +44,13 @@ jobs:
       - run: yarn flow
       - run: yarn test --coverage
       - run: yarn build
-      - run: yarn run bundlesize
       - run: yarn esdoc
+
+      - name: BundleWatch
+        env:
+          BUNDLEWATCH_GITHUB_TOKEN: ${{ secrets.BUNDLEWATCH_GITHUB_TOKEN }}
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: yarn run bundlewatch
 
       - name: Coveralls
         env:

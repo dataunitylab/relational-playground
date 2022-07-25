@@ -75,7 +75,7 @@
     "@testing-library/react": "^12.1.5",
     "@welldone-software/why-did-you-render": "^7.0.1",
     "@wojtekmaj/enzyme-adapter-react-17": "^0.6.7",
-    "bundlesize": "^0.18.1",
+    "bundlewatch": "^0.3.3",
     "chromatic": "^6.7.0",
     "coveralls": "^3.1.1",
     "enzyme": "^3.11.0",
@@ -105,5 +105,21 @@
       "!src/*.stories.js",
       "!src/index.js"
     ]
+  },
+  "bundlewatch": {
+    "files": [
+      {
+        "path": "build/static/js/2.*.chunk.js",
+        "maxSize": "200 kB"
+      },
+      {
+        "path": "build/static/js/main.*.chunk.js",
+        "maxSize": "10 kB"
+      },
+      {
+        "path": "build/static/js/runtime-main.*.js",
+        "maxSize": "1 kB"
+      }
+      ]
   }
 }
