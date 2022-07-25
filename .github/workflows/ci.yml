@@ -19,15 +19,9 @@ jobs:
     needs: pre_job
     if: ${{ needs.pre_job.outputs.should_skip != 'true' }}
     runs-on: ${{ matrix.os }}
-    continue-on-error: ${{ matrix.experimental }}
     strategy:
-      fail-fast: false
       matrix:
-        os: [macos-latest, ubuntu-latest]
-        experimental: [false]
-        include:
-          - os: windows-latest
-            experimental: true
+        os: [macos-latest, ubuntu-latest, windows-latest]
     steps:
       - run: git config --global core.autocrlf input
       - uses: actions/checkout@v3
