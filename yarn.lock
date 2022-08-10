@@ -13875,14 +13875,14 @@ prompts@2.4.0, prompts@^2.0.1:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.0, prop-types@^15.7.2:
-  version "15.7.2"
-  resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
-  integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
+prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.0, prop-types@^15.7.2, prop-types@^15.8.1:
+  version "15.8.1"
+  resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
+  integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
   dependencies:
     loose-envify "^1.4.0"
     object-assign "^4.1.1"
-    react-is "^16.8.1"
+    react-is "^16.13.1"
 
 property-information@^5.0.0:
   version "5.3.0"
@@ -14234,15 +14234,16 @@ react-fast-compare@^3.0.1:
   resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-3.2.0.tgz#641a9da81b6a6320f270e89724fb45a0b39e43bb"
   integrity sha512-rtGImPZ0YyLrscKI9xTpV8psd6I8VAtjKCzQDlzyDvqJA8XOW78TXYQwNRNd8g8JZnDu8q9Fu/1v4HPAVwVdHA==
 
-react-floater@^0.7.5:
-  version "0.7.5"
-  resolved "https://registry.yarnpkg.com/react-floater/-/react-floater-0.7.5.tgz#23e1d7d0d3be8228239595b6071cd97e2c9d261f"
-  integrity sha512-CHfWP/8NdJmkk0h03MxDmAikmPh6WzGNX2st+KQFHRE5JjUsiTy9lLCIwQ7Plf8Ox/zG4lb+ePfSUN7RZ3uGXg==
+react-floater@^0.7.6:
+  version "0.7.6"
+  resolved "https://registry.yarnpkg.com/react-floater/-/react-floater-0.7.6.tgz#a98ee90e3d51200c6e6a564ff33496f3c0d7cfee"
+  integrity sha512-tt/15k/HpaShbtvWCwsQYLR+ebfUuYbl+oAUJ3DcEDkgYKeUcSkDey2PdAIERdVwzdFZANz47HbwoET2/Rduxg==
   dependencies:
     deepmerge "^4.2.2"
     exenv "^1.2.2"
     is-lite "^0.8.2"
     popper.js "^1.16.0"
+    prop-types "^15.8.1"
     react-proptype-conditional-require "^1.0.4"
     tree-changes "^0.9.1"
 
@@ -14284,15 +14285,16 @@ react-is@^18.0.0:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-18.1.0.tgz#61aaed3096d30eacf2a2127118b5b41387d32a67"
   integrity sha512-Fl7FuabXsJnV5Q1qIOQwx/sagGF18kogb4gpfcG4gjLBWO0WDiiz1ko/ExayuxE7InyQkBLkxRFG5oxY6Uu3Kg==
 
-react-joyride@^2.5.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/react-joyride/-/react-joyride-2.5.0.tgz#26b1ab6dde4951a43eb81767ecf43f183a37c373"
-  integrity sha512-uh4cxU0XFgfwXtlEJss1E+JcEsbmxoER+iAKS4I4WKEGLNcwmXaEBUjLr/Q0+UiitqXlei/S9bOhitFZprpxQA==
+react-joyride@^2.5.1:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/react-joyride/-/react-joyride-2.5.1.tgz#5315d28438028581f7531905d6bb4071c6fba92b"
+  integrity sha512-R98wcz7Du5XpJ60ZDw951aSeVo7RxxaA3PiznOtvSGf8r6JOfyBGLY6CmRrqte9lUq0t2IDYBhwOpEpUFGkfaw==
   dependencies:
     deepmerge "^4.2.2"
     exenv "^1.2.2"
     is-lite "^0.8.2"
-    react-floater "^0.7.5"
+    prop-types "^15.8.1"
+    react-floater "^0.7.6"
     react-is "^16.13.1"
     scroll "^3.0.1"
     scrollparent "^2.0.1"
