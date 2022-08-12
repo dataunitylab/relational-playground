@@ -26,7 +26,7 @@
     "react-joyride": "^2.5.1",
     "react-redux": "^7.2.8",
     "react-router": "^5.1.0",
-    "react-router-dom": "^5.3.0",
+    "react-router-dom": "^6.3.0",
     "react-scripts": "4.0.3",
     "react-simple-code-editor": "^0.11.3",
     "react-simple-tree-menu": "^1.1.18",
