@@ -1,5 +1,5 @@
 // @flow
-import React, {useState} from 'react';
+import * as React from 'react';
 // $FlowFixMe
 import Table from './Table';
 import {BrowserView, MobileOnlyView, isMobileOnly} from 'react-device-detect';
@@ -20,10 +20,10 @@ const tableShownText = 'Hide Table';
 
 /** Displays more than one table with a dropdown to choose */
 const MultiTable: StatelessFunctionalComponent<Props> = (props) => {
-  const [showTableMobile, setShowTableMobile] = useState(false);
-  const [selected, setSelected] = useState(Object.keys(props.tables)[0]);
-  const [isMobile] = useState(isMobileOnly);
-  const [buttonText, setButtonText] = useState(tableHiddenText);
+  const [showTableMobile, setShowTableMobile] = React.useState(false);
+  const [selected, setSelected] = React.useState(Object.keys(props.tables)[0]);
+  const [isMobile] = React.useState(isMobileOnly);
+  const [buttonText, setButtonText] = React.useState(tableHiddenText);
 
   // TODO: Fix type annotation below
   const handleChange = (e: any) => {
@@ -44,7 +44,7 @@ const MultiTable: StatelessFunctionalComponent<Props> = (props) => {
   }
 
   // Render the selected table
-  let table = <div>Select a table above.</div>;
+  let table: React.Node = <div>Select a table above.</div>;
   if (isMobile) {
     if (showTableMobile) {
       const data = props.tables[selected];
