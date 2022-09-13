@@ -48,14 +48,23 @@
     "lint": "node_modules/.bin/prettier --check src/**/*.{js,json} && eslint --ext .js,.yml . && npmPkgJsonLint -q . && pkg-ok && markdownlint *.md",
     "postinstall": "husky install",
     "report-deploy": "bash ./scripts/report-deploy.sh",
-    "snapshot": "build-storybook",
     "start": "react-scripts start",
     "storybook": "start-storybook -p 9009 -s public",
     "test": "react-scripts test",
     "vercel-build": "REACT_APP_GIT_SHA=`([ -n \"$VERCEL_GIT_COMMIT_SHA\" ] && echo \"$VERCEL_GIT_COMMIT_SHA\") || git rev-parse HEAD` react-scripts build && build-storybook -o build/storybook/ && esdoc && mv docs/ build/ && yarn report-deploy"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "overrides": [
+      {
+        "files": [
+          "**/*.stories.*"
+        ],
+        "rules": {
+          "import/no-anonymous-default-export": "off"
+        }
+      }
+    ]
   },
   "browserslist": [
     ">0.2%",
@@ -70,13 +79,20 @@
     "@sebastianwessel/esdoc-jsx-plugin": "^2.1.0",
     "@sebastianwessel/esdoc-react-plugin": "^2.1.0",
     "@sebastianwessel/esdoc-standard-plugin": "^2.1.0",
-    "@storybook/preset-create-react-app": "^4.1.0",
-    "@storybook/react": "^6.1.21",
+    "@storybook/addon-actions": "^6.5.10",
+    "@storybook/addon-essentials": "^6.5.10",
+    "@storybook/addon-interactions": "^6.5.10",
+    "@storybook/addon-links": "^6.5.10",
+    "@storybook/builder-webpack4": "^6.5.10",
+    "@storybook/manager-webpack4": "^6.5.10",
+    "@storybook/node-logger": "^6.5.10",
+    "@storybook/preset-create-react-app": "^3.2.0",
+    "@storybook/react": "^6.5.10",
+    "@storybook/testing-library": "^0.0.13",
     "@testing-library/react": "^12.1.5",
     "@welldone-software/why-did-you-render": "^7.0.1",
     "@wojtekmaj/enzyme-adapter-react-17": "^0.6.7",
     "bundlewatch": "^0.3.3",
-    "chromatic": "^6.7.3",
     "coveralls": "^3.1.1",
     "enzyme": "^3.11.0",
     "eslint-plugin-yaml": "^0.5.0",
@@ -120,6 +136,6 @@
         "path": "build/static/js/runtime-main.*.js",
         "maxSize": "1 kB"
       }
-      ]
+    ]
   }
 }
