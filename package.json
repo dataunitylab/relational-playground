@@ -35,7 +35,7 @@
     "redux": "^4.2.0",
     "redux-thunk": "^2.4.1",
     "typescript": "*",
-    "uuid": "^8.3.2"
+    "uuid": "^9.0.0"
   },
   "scripts": {
     "analyze": "source-map-explorer build/static/js/*.js",
