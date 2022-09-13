@@ -12,3 +12,12 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.light .SplitPane {
+  background-color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+.dark .SplitPane {
+  background-color: #1a1919;
+}

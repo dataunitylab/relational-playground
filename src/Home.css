@@ -118,9 +118,19 @@
   padding: 0;
 }
 
+.darkMode {
+  padding: 0 32px;
+  margin-top: auto;
+  margin-left: auto;
+}
+
 h2 {
   margin-top: 8px;
   margin-bottom: 8px;
+}
+
+.dark h2 {
+  color: #999;
 }
 
 @media only screen and (max-width: 600px) {
