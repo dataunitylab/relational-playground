@@ -14,6 +14,7 @@ import ReactGA from 'react-ga';
 import './Home.css';
 
 import Tutorial from './Tutorial';
+import DarkMode from './DarkMode';
 
 import type {ComponentType} from 'react';
 import type {RouterHistory} from 'react-router-dom';
@@ -59,6 +60,9 @@ class Home extends Component<Props, State> {
     let dataContainer = (
       <div className="bottomLeftContainer">
         <DataContainer />
+        <div className="darkMode">
+          <DarkMode />
+        </div>
         <div className="footer">
           <Tutorial />
           <p className="email">
