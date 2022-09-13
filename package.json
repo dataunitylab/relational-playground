@@ -115,6 +115,9 @@
   "engines": {
     "node": "14.x"
   },
+  "resolutions": {
+    "babel-loader": "8.1.0"
+  },
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.js",
