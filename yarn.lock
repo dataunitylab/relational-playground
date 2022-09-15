@@ -16415,10 +16415,10 @@ react-is@^18.0.0:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-18.1.0.tgz#61aaed3096d30eacf2a2127118b5b41387d32a67"
   integrity sha512-Fl7FuabXsJnV5Q1qIOQwx/sagGF18kogb4gpfcG4gjLBWO0WDiiz1ko/ExayuxE7InyQkBLkxRFG5oxY6Uu3Kg==
 
-react-joyride@^2.5.1:
-  version "2.5.1"
-  resolved "https://registry.yarnpkg.com/react-joyride/-/react-joyride-2.5.1.tgz#5315d28438028581f7531905d6bb4071c6fba92b"
-  integrity sha512-R98wcz7Du5XpJ60ZDw951aSeVo7RxxaA3PiznOtvSGf8r6JOfyBGLY6CmRrqte9lUq0t2IDYBhwOpEpUFGkfaw==
+react-joyride@^2.5.2:
+  version "2.5.2"
+  resolved "https://registry.yarnpkg.com/react-joyride/-/react-joyride-2.5.2.tgz#f3e8536a5ddb4f7c3a65d8af4e9bf4c9cb2d6120"
+  integrity sha512-wsSYX3PhVrdzdd0/fv5f6ySGvb7QyAzleQv/x9IH+x+SXO6b5MUJUkefS+189bgLPkuHMwtSRcPE/oMupfmCVQ==
   dependencies:
     deepmerge "^4.2.2"
     exenv "^1.2.2"
