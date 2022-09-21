@@ -2,6 +2,8 @@ import React from "react";
 import useDarkMode from 'use-dark-mode';
 import { DarkModeToggle } from "react-dark-mode-toggle-2";
 
+import './DarkMode.css';
+
 function DarkMode() {
     const darkMode = useDarkMode(false);
 

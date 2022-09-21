@@ -60,11 +60,9 @@ class Home extends Component<Props, State> {
     let dataContainer = (
       <div className="bottomLeftContainer">
         <DataContainer />
-        <div className="darkMode">
-          <DarkMode />
-        </div>
         <div className="footer">
           <Tutorial />
+          <DarkMode />
           <p className="email">
             For questions, please email{' '}
             <a href="mailto:mmior@cs.rit.edu">mmior@cs.rit.edu</a>

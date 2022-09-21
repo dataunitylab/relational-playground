@@ -55,6 +55,10 @@
   font-size: 0.75em;
 }
 
+.dark .footer {
+  color: #999;
+}
+
 .button {
   border-radius: 15px;
   font-weight: bold;
@@ -116,12 +120,6 @@
   background-color: white;
   border-radius: 10px;
   padding: 0;
-}
-
-.darkMode {
-  padding: 0 32px;
-  margin-top: auto;
-  margin-left: auto;
 }
 
 h2 {

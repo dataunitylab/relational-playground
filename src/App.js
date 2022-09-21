@@ -11,11 +11,9 @@ function App() {
 
     return (
     <div className="App">
-        <div className={darkMode.value ? "dark" : "light"}>
-            <main>
-                <Route path={process.env.PUBLIC_URL} component={Home} />
-            </main>
-        </div>
+        <main className={darkMode.value ? "dark" : "light"}>
+            <Route path={process.env.PUBLIC_URL} component={Home} />
+        </main>
     </div>
   );
 }

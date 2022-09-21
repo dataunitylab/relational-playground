@@ -5,6 +5,8 @@ import {changeExpr} from './modules/data';
 import RelExpr from './RelExpr';
 import RelExprTree from './RelExprTree';
 
+import './CurrentRelExpr.css';
+
 import type {StatelessFunctionalComponent} from 'react';
 
 type Props = {
