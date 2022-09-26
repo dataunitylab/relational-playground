@@ -8,7 +8,7 @@
   "bugs": "https://github.com/michaelmior/relational-playground/issues",
   "dependencies": {
     "@michaelmior/js-sql-parser": "^1.3.0",
-    "@reduxjs/toolkit": "^1.8.4",
+    "@reduxjs/toolkit": "^1.8.5",
     "@sentry/browser": "^7.12.1",
     "@sentry/cli": "^2.5.0",
     "@testing-library/jest-dom": "^5.16.5",
@@ -79,7 +79,7 @@
     "@sebastianwessel/esdoc-jsx-plugin": "^2.1.0",
     "@sebastianwessel/esdoc-react-plugin": "^2.1.0",
     "@sebastianwessel/esdoc-standard-plugin": "^2.1.0",
-    "@storybook/addon-actions": "^6.5.10",
+    "@storybook/addon-actions": "^6.5.12",
     "@storybook/addon-essentials": "^6.5.10",
     "@storybook/addon-interactions": "^6.5.12",
     "@storybook/addon-links": "^6.5.10",
@@ -109,7 +109,7 @@
     "react-test-renderer": "^17.0.2",
     "redux-mock-store": "^1.5.4",
     "source-map-explorer": "^2.5.2",
-    "stylelint": "^14.10.0",
+    "stylelint": "^14.12.1",
     "stylelint-config-standard": "^27.0.0"
   },
   "engines": {
