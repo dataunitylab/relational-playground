@@ -221,6 +221,123 @@ it.each(['and', 'or'])('converts a selection with %s', (op) => {
 });
 
 /** @test {relexp} */
+it("converts a basic selection with both 'AND's in 'OR'", () => {
+  const sql = parser.parse(
+    'SELECT * FROM foo WHERE bar > 1 and baz < 3 or baz > 1 and bar < 3'
+  );
+  const action = exprFromSql(sql.value, {foo: ['bar', 'baz']});
+  expect(reducer({}, action)).toStrictEqual({
+    expr: {
+      selection: {
+        arguments: {
+          select: {
+            or: {
+              clauses: [
+                {
+                  and: {
+                    clauses: [
+                      {cmp: {lhs: 'bar', op: '$gt', rhs: '1'}},
+                      {cmp: {lhs: 'baz', op: '$lt', rhs: '3'}},
+                    ],
+                  },
+                },
+                {
+                  and: {
+                    clauses: [
+                      {cmp: {lhs: 'baz', op: '$gt', rhs: '1'}},
+                      {cmp: {lhs: 'bar', op: '$lt', rhs: '3'}},
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        },
+        children: [{relation: 'foo'}],
+      },
+    },
+  });
+});
+
+/** @test {relexp} */
+it("converts a basic selection with both 'OR's in 'AND'", () => {
+  const sql = parser.parse(
+    'SELECT * FROM foo WHERE bar > 1 or baz < 3 and baz > 1 or bar < 3'
+  );
+  const action = exprFromSql(sql.value, {foo: ['bar', 'baz']});
+  expect(reducer({}, action)).toStrictEqual({
+    expr: {
+      selection: {
+        arguments: {
+          select: {
+            or: {
+              clauses: [
+                {
+                  or: {
+                    clauses: [
+                      {cmp: {lhs: 'bar', op: '$gt', rhs: '1'}},
+                      {
+                        and: {
+                          clauses: [
+                            {cmp: {lhs: 'baz', op: '$lt', rhs: '3'}},
+                            {cmp: {lhs: 'baz', op: '$gt', rhs: '1'}},
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {cmp: {lhs: 'bar', op: '$lt', rhs: '3'}},
+              ],
+            },
+          },
+        },
+        children: [{relation: 'foo'}],
+      },
+    },
+  });
+});
+
+/** @test {relexp} */
+it("converts a basic selection with both 'OR's in 'AND'", () => {
+  const sql = parser.parse(
+    'SELECT * FROM foo WHERE (bar > 1 or baz < 3) and (baz > 1 or bar < 3)'
+  );
+  const action = exprFromSql(sql.value, {foo: ['bar', 'baz']});
+  expect(reducer({}, action)).toStrictEqual({
+    expr: {
+      selection: {
+        arguments: {
+          select: {
+            and: {
+              clauses: [
+                {
+                  or: {
+                    clauses: [
+                      {cmp: {lhs: 'bar', op: '$gt', rhs: '1'}},
+                      {cmp: {lhs: 'baz', op: '$lt', rhs: '3'}},
+                    ],
+                  },
+                },
+                {
+                  or: {
+                    clauses: [
+                      {cmp: {lhs: 'baz', op: '$gt', rhs: '1'}},
+                      {cmp: {lhs: 'bar', op: '$lt', rhs: '3'}},
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        },
+        children: [{relation: 'foo'}],
+      },
+    },
+  });
+});
+
+/** @test {relexp} */
 it('converts a selection with NOT', () => {
   const sql = parser.parse('SELECT * FROM foo WHERE NOT bar > 1');
   const action = exprFromSql(sql.value, {foo: ['bar', 'baz']});

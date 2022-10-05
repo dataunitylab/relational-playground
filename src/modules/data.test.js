@@ -207,6 +207,58 @@ const operatorTests = [
 
   [
     {
+      and: {
+        clauses: [
+          {
+            or: {
+              clauses: [
+                {cmp: {lhs: '1', op: '$ne', rhs: 'bar'}},
+                {cmp: {lhs: 'bar', op: '$eq', rhs: '1'}},
+              ],
+            },
+          },
+          {
+            or: {
+              clauses: [
+                {cmp: {lhs: 'bar', op: '$eq', rhs: '1'}},
+                {cmp: {lhs: 'bar', op: '$gt', rhs: '3'}},
+              ],
+            },
+          },
+        ],
+      },
+    },
+    [0, 2],
+  ],
+
+  [
+    {
+      or: {
+        clauses: [
+          {
+            and: {
+              clauses: [
+                {cmp: {lhs: 'bar', op: '$gte', rhs: '1'}},
+                {cmp: {lhs: 'bar', op: '$ne', rhs: '1'}},
+              ],
+            },
+          },
+          {
+            and: {
+              clauses: [
+                {cmp: {lhs: 'bar', op: '$gte', rhs: '1'}},
+                {cmp: {lhs: 'bar', op: '$eq', rhs: '1'}},
+              ],
+            },
+          },
+        ],
+      },
+    },
+    [0, 1, 2],
+  ],
+
+  [
+    {
       not: {
         clause: {cmp: {lhs: 'bar', op: '$eq', rhs: '1'}},
       },
