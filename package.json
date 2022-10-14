@@ -108,7 +108,7 @@
     "prettier": "^2.7.1",
     "react-test-renderer": "^17.0.2",
     "redux-mock-store": "^1.5.4",
-    "source-map-explorer": "^2.5.2",
+    "source-map-explorer": "^2.5.3",
     "stylelint": "^14.12.1",
     "stylelint-config-standard": "^27.0.0"
   },
