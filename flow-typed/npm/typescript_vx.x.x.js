@@ -1,4 +1,4 @@
-// flow-typed signature: eb57cf8ffa8ace0fa0350deceea8da96
+// flow-typed signature: fc19d2ac83771b3e4095672f72ecdf48
 // flow-typed version: <<STUB>>/typescript_v*/flow_v0.186.0
 
 /**
@@ -23,6 +23,10 @@ declare module 'typescript' {
  * needed.
  */
 declare module 'typescript/lib/cancellationToken' {
+  declare module.exports: any;
+}
+
+declare module 'typescript/lib/dynamicImportCompat' {
   declare module.exports: any;
 }
 
@@ -57,6 +61,9 @@ declare module 'typescript/lib/watchGuard' {
 // Filename aliases
 declare module 'typescript/lib/cancellationToken.js' {
   declare module.exports: $Exports<'typescript/lib/cancellationToken'>;
+}
+declare module 'typescript/lib/dynamicImportCompat.js' {
+  declare module.exports: $Exports<'typescript/lib/dynamicImportCompat'>;
 }
 declare module 'typescript/lib/tsc.js' {
   declare module.exports: $Exports<'typescript/lib/tsc'>;
