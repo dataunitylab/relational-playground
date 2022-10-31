@@ -58,11 +58,16 @@ it.each(condTests)('it correctly renders a %s condition as %s', (op, str) => {
 
 /** @test {RelExprTree} */
 it('produces an error for an invalid expression', () => {
+  const errorObject = console.error;
+  console.error = jest.fn();
+
   expect(() => {
     renderer.create(
       <RelExprTree expr={{invalidExpr: 42}} changeExpr={jest.fn()} />
     );
   }).toThrow();
+
+  console.error = errorObject;
 });
 
 /** @test {RelExprTree} */
