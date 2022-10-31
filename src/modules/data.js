@@ -107,7 +107,7 @@ function resolveValue(path: string, row: {[string]: any}): string {
  * @param item - an item to evaluate against
  * @return result of evaluating the expression
  */
-function applyItem(expr, item) {
+function applyItem(expr: {[string]: any}, item: {[string]: any}) {
   const type = Object.keys(expr)[0];
   switch (type) {
     case 'cmp':
@@ -167,7 +167,10 @@ function applyItem(expr, item) {
  * @param sourceData - source data from relations
  * @return result of evaluating the expression
  */
-function applyExpr(expr, sourceData) {
+function applyExpr(
+  expr: {[string]: any},
+  sourceData: {[string]: any}
+): {[string]: any} {
   const type = Object.keys(expr)[0];
   switch (type) {
     case 'projection':
@@ -264,7 +267,7 @@ function applyExpr(expr, sourceData) {
       // Generate new rows for the right side with the salem
       // column names as those on the left
       const newRight = setRight.data.map((rightRow) => {
-        const newRow = {};
+        const newRow: {[string]: any} = {};
         for (const rightKey of Object.keys(rightRow)) {
           newRow[setLeft.columns[setRight.columns.indexOf(rightKey)]] =
             rightRow[rightKey];
@@ -337,7 +340,7 @@ function applyExpr(expr, sourceData) {
       for (const leftRow of left.data) {
         for (const rightRow of right.data) {
           // Combine data from the two objects including the relation name
-          const combinedData = {};
+          const combinedData: {[string]: any} = {};
           for (const leftKey in leftRow) {
             combinedData[left.name + '.' + leftKey] = leftRow[leftKey];
           }
@@ -347,7 +350,7 @@ function applyExpr(expr, sourceData) {
 
           // Resolve the output data according to the combined data
           // This may remove relation names where they are not needed
-          const outputData = {};
+          const outputData: {[string]: any} = {};
           for (const column of combinedColumns) {
             outputData[column] =
               combinedData[resolveColumn(column, combinedData)];
