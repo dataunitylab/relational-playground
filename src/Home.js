@@ -1,5 +1,5 @@
 // @flow
-import React, {Component} from 'react';
+import * as React from 'react';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import CurrentRelExpr from './CurrentRelExpr';
@@ -25,7 +25,7 @@ type Props = {
 };
 
 /** Container for all components on the main page */
-class Home extends Component<Props, State> {
+class Home extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
@@ -44,7 +44,7 @@ class Home extends Component<Props, State> {
     ReactGA.pageview('/');
   }
 
-  render() {
+  render(): React.Node {
     let editorContainer = (
       <div style={{padding: '0em 1em 1em 1em'}}>
         <h2>Relational Playground</h2>
@@ -98,15 +98,15 @@ class Home extends Component<Props, State> {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: {[string]: any}) => {
   return {
     expr: state.relexp.expr,
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch: (any) => void) => {
   return {
-    changeExpr: (data, element) => {
+    changeExpr: (data: {[string]: any}, element: ?HTMLElement) => {
       dispatch(changeExpr(data, element));
     },
   };

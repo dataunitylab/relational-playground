@@ -16,7 +16,7 @@ const CurrentRelExpr: StatelessFunctionalComponent<Props> = (props) => {
   const expr = useSelector((state) => state.relexp.expr);
   const [showTree, setShowTree] = useState(false);
 
-  function handleInputChange(event) {
+  function handleInputChange(event: SyntheticInputEvent<HTMLInputElement>) {
     props.ReactGA.event({
       category: 'Toggle Expression Display',
       action: event.target.checked ? 'tree' : 'linear',

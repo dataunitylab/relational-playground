@@ -103,11 +103,13 @@ function convertExpr(
       }
 
     case 'ComparisonBooleanPrimary':
-      let ret = {};
-      ret.lhs = convertExpr(expr.left, types, tables);
-      ret.op = opMap[expr.operator];
-      ret.rhs = convertExpr(expr.right, types, tables);
-      return {cmp: ret};
+      return {
+        cmp: {
+          lhs: convertExpr(expr.left, types, tables),
+          op: opMap[expr.operator],
+          rhs: convertExpr(expr.right, types, tables),
+        },
+      };
 
     case 'Identifier':
       // Splt into table, column parts
@@ -186,7 +188,11 @@ function convertExpr(
  * @param tables - all tables used in the expression
  * @return a relational algebra expression object representing the query
  */
-function buildRelExp(sql, types, tables) {
+function buildRelExp(
+  sql: {[string]: any},
+  types: {[string]: Array<string>},
+  tables: Array<string>
+) {
   switch (sql.type) {
     case 'Except':
     case 'Intersect':
