@@ -140,5 +140,6 @@
         "maxSize": "1 kB"
       }
     ]
-  }
+  },
+  "packageManager": "yarn@1.22.19"
 }
