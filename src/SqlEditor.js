@@ -1,5 +1,4 @@
 // @flow
-import queryString from 'query-string';
 import * as React from 'react';
 import Editor from 'react-simple-code-editor';
 import {highlight, languages} from 'prismjs/components/prism-core';
@@ -42,14 +41,15 @@ class SqlEditor extends React.Component<Props, State> {
 
   componentDidMount() {
     // Parse the initial query when we start
-    const values = queryString.parse(window.location.search);
+    const values = new URL(window.location.toString()).searchParams;
+    const query = values.get('query');
 
-    if (values.query === undefined) {
+    if (query) {
+      this.parseQuery(query, false);
+      this.setState({query: query});
+    } else {
       this.parseQuery(this.props.defaultText, true);
       this.setState({query: this.props.defaultText});
-    } else {
-      this.parseQuery(values.query, false);
-      this.setState({query: values.query});
     }
   }
 
