@@ -128,16 +128,12 @@
   "bundlewatch": {
     "files": [
       {
-        "path": "build/static/js/2.*.chunk.js",
+        "path": "build/static/js/main.*.js",
         "maxSize": "200 kB"
       },
       {
-        "path": "build/static/js/main.*.chunk.js",
-        "maxSize": "10 kB"
-      },
-      {
-        "path": "build/static/js/runtime-main.*.js",
-        "maxSize": "1 kB"
+        "path": "build/static/css/main.*.css",
+        "maxSize": "5 kB"
       }
     ]
   },
