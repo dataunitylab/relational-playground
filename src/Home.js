@@ -1,7 +1,6 @@
 // @flow
 import * as React from 'react';
 import {connect} from 'react-redux';
-import {withRouter} from 'react-router-dom';
 import CurrentRelExpr from './CurrentRelExpr';
 import DataContainer from './DataContainer';
 import EditorContainer from './EditorContainer';
@@ -16,13 +15,10 @@ import './Home.css';
 import Tutorial from './Tutorial';
 
 import type {ComponentType} from 'react';
-import type {RouterHistory} from 'react-router-dom';
 
 type State = {};
 
-type Props = {
-  history: RouterHistory,
-};
+type Props = {};
 
 /** Container for all components on the main page */
 class Home extends React.Component<Props, State> {
@@ -50,7 +46,7 @@ class Home extends React.Component<Props, State> {
         <h2>Relational Playground</h2>
         <div>
           {/* SQL query input */}
-          <EditorContainer ReactGA={ReactGA} history={this.props.history} />
+          <EditorContainer ReactGA={ReactGA} />
           <CurrentRelExpr ReactGA={ReactGA} />
         </div>
       </div>
@@ -115,5 +111,5 @@ const mapDispatchToProps = (dispatch: (any) => void) => {
 const ConnectedHome: ComponentType<Props> = connect<_, {||}, _, _, _, _>(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(Home));
+)(Home);
 export default ConnectedHome;

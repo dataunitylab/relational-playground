@@ -14,7 +14,7 @@ import type {Node} from 'react';
 const parser = require('@michaelmior/js-sql-parser');
 
 type Props = {
-  history: any,
+  navigate: any,
   defaultText: string,
   exprFromSql: typeof exprFromSql,
   resetAction: typeof resetAction,
@@ -80,7 +80,7 @@ class SqlEditor extends React.Component<Props, State> {
 
         // Parse the query
         this.props.exprFromSql(sql.value, this.props.types);
-        this.props.history.push('/?query=' + text);
+        this.props.navigate('/?query=' + text);
 
         if (!firstLoad) {
           this.setState({error: null});

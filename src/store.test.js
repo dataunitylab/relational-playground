@@ -15,17 +15,3 @@ it('has a valid initial state', () => {
   expect(initialState).toHaveProperty('relexp');
   expect(initialState).toHaveProperty('router');
 });
-
-it('initializes dev tools in development', () => {
-  process.env.NODE_ENV = 'development';
-
-  // Pretend the dev tools are installed
-  const devTools = jest.fn((...args) => applyMiddleware(...args));
-  global.__REDUX_DEVTOOLS_EXTENSION__ = devTools;
-
-  // eslint-disable-next-line no-unused-expressions
-  require('./store').default;
-  expect(devTools.mock.calls.length).toBe(1);
-
-  process.env.NODE_ENV = 'test';
-});

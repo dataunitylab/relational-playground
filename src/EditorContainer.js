@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
+import {useNavigate} from 'react-router-dom';
 import fromEntries from 'fromentries';
 import SqlEditor from './SqlEditor';
 import {exprFromSql} from './modules/relexp';
@@ -9,7 +10,6 @@ import {resetAction} from './modules/data';
 import type {StatelessFunctionalComponent} from 'react';
 
 type Props = {
-  history: {...},
   ReactGA: any,
 };
 
@@ -23,10 +23,11 @@ const EditorContainer: StatelessFunctionalComponent<Props> = (props) => {
     )
   );
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   return (
     <SqlEditor
-      history={props.history}
+      navigate={navigate}
       ReactGA={props.ReactGA}
       defaultText="SELECT * FROM Doctor"
       exprFromSql={(sql, types) => dispatch(exprFromSql(sql, types))}

@@ -1,13 +1,13 @@
 // @flow
 import './wydr';
 
-import {ConnectedRouter} from 'connected-react-router';
+import {BrowserRouter} from 'react-router-dom';
 import {Provider} from 'react-redux';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import * as Sentry from '@sentry/browser';
 import './index.css';
-import store, {history} from './store';
+import store from './store';
 import App from './App';
 
 let sentryConfig = {
@@ -24,11 +24,11 @@ Sentry.init(sentryConfig);
 
 ReactDOM.render(
   <Provider store={store}>
-    <ConnectedRouter history={history}>
+    <BrowserRouter>
       <div>
         <App />
       </div>
-    </ConnectedRouter>
+    </BrowserRouter>
   </Provider>,
   ((document.getElementById('root'): any): HTMLElement)
 );
