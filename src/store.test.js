@@ -1,5 +1,3 @@
-import {applyMiddleware} from 'redux';
-
 const OLD_ENV = process.env;
 
 beforeEach(() => {

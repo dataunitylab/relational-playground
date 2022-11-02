@@ -1,6 +1,5 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import {MemoryRouter} from 'react-router';
 
 import Editor from 'react-simple-code-editor';
 import SqlEditor from './SqlEditor';
