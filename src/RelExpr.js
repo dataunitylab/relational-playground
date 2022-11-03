@@ -164,7 +164,6 @@ const RelExpr: StatelessFunctionalComponent<Props> = (props) => {
     return (
       <span
         className="RelExpr"
-        // $FlowFixMe[method-unbinding]
         onClick={handleExprClick}
         style={{margin: '.4em'}}
         ref={nodeRef}

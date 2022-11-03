@@ -1,6 +1,5 @@
 // @flow
 import * as React from 'react';
-// $FlowFixMe
 import Table from './Table';
 import {BrowserView, MobileOnlyView, isMobileOnly} from 'react-device-detect';
 
