@@ -12,7 +12,7 @@ function Tutorial() {
   if (cookies.tutorial === undefined) {
     initialText = 'Tutorial';
     shouldRun = true;
-    setCookie('tutorial', 'true', {path: '/'});
+    setCookie('tutorial', 'true', {path: '/', sameSite: 'strict'});
   } else {
     initialText = redoText;
     shouldRun = false;
