@@ -1,3 +1,4 @@
+/* stylelint-disable */
 .Resizer {
   background: #000;
   opacity: 0.2;
@@ -49,6 +50,7 @@
 .Resizer.disabled:hover {
   border-color: transparent;
 }
+/* stylelint-enable */
 
 .footer {
   padding: 20px;
@@ -85,7 +87,8 @@
 }
 
 .relExprContainer .expr {
-  font-family: Fira Code, Fira Mono, monospace;
+  font-family: 'Fira Code', 'Fira Mono', monospace;
+  font-display: swap;
   margin-top: 20px;
   margin-bottom: 20px;
   background-color: white;
