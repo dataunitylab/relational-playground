@@ -57,7 +57,7 @@ const Home: StatelessFunctionalComponent<Props> = (props) => {
         </Suspense>
         <p className="email">
           For questions, please email{' '}
-          <a href="mailto:mmior@cs.rit.edu">mmior@cs.rit.edu</a>
+          <a href="mailto:mmior@mail.rit.edu">mmior@mail.rit.edu</a>
         </p>
       </div>
     </div>
