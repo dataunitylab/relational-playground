@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react';
-import {useEffect} from 'react';
+import {lazy, useEffect, Suspense} from 'react';
 import {connect} from 'react-redux';
 import CurrentRelExpr from './CurrentRelExpr';
 import DataContainer from './DataContainer';
@@ -13,9 +13,9 @@ import ReactGA from 'react-ga';
 
 import './Home.css';
 
-import Tutorial from './Tutorial';
-
 import type {ComponentType, StatelessFunctionalComponent} from 'react';
+
+const Tutorial = lazy(() => import('./Tutorial'));
 
 type Props = {};
 
@@ -52,7 +52,9 @@ const Home: StatelessFunctionalComponent<Props> = (props) => {
     <div className="bottomLeftContainer">
       <DataContainer />
       <div className="footer">
-        <Tutorial />
+        <Suspense fallback={<React.Fragment />}>
+          <Tutorial />
+        </Suspense>
         <p className="email">
           For questions, please email{' '}
           <a href="mailto:mmior@cs.rit.edu">mmior@cs.rit.edu</a>
