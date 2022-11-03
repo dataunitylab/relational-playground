@@ -123,7 +123,9 @@ class SqlEditor extends React.Component<Props, State> {
 
     return (
       <div className={'SqlEditor'}>
-        <h4>SQL Query</h4>
+        <label htmlFor="sqlInput">
+          <h4>SQL Query</h4>
+        </label>
         <div className="editor">
           <Editor
             value={this.state.query}
@@ -135,6 +137,7 @@ class SqlEditor extends React.Component<Props, State> {
               fontDisplay: 'swap',
               fontFamily: '"Fira Code", monospace',
             }}
+            textareaId="sqlInput"
           />
         </div>
         <div className="error">{error}</div>
