@@ -1,4 +1,4 @@
-/* If all Google Fonts are removed, remove dns-prefetch from index.html */
+/* If all Google Fonts are removed, remove preconnect from index.html */
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
 
 h4 {
