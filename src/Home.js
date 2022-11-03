@@ -1,5 +1,6 @@
 // @flow
 import * as React from 'react';
+import {useEffect} from 'react';
 import {connect} from 'react-redux';
 import CurrentRelExpr from './CurrentRelExpr';
 import DataContainer from './DataContainer';
@@ -14,17 +15,13 @@ import './Home.css';
 
 import Tutorial from './Tutorial';
 
-import type {ComponentType} from 'react';
-
-type State = {};
+import type {ComponentType, StatelessFunctionalComponent} from 'react';
 
 type Props = {};
 
 /** Container for all components on the main page */
-class Home extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-
+const Home: StatelessFunctionalComponent<Props> = (props) => {
+  useEffect(() => {
     // If GA is no longer used, remove preconnect from index.html
     switch (process.env.NODE_ENV) {
       case 'production':
@@ -38,61 +35,59 @@ class Home extends React.Component<Props, State> {
         break;
     }
     ReactGA.pageview('/');
-  }
+  }, []);
 
-  render(): React.Node {
-    let editorContainer = (
-      <div style={{padding: '0em 1em 1em 1em'}}>
-        <h2>Relational Playground</h2>
-        <div>
-          {/* SQL query input */}
-          <EditorContainer ReactGA={ReactGA} />
-          <CurrentRelExpr ReactGA={ReactGA} />
-        </div>
-      </div>
-    );
-
-    let dataContainer = (
-      <div className="bottomLeftContainer">
-        <DataContainer />
-        <div className="footer">
-          <Tutorial />
-          <p className="email">
-            For questions, please email{' '}
-            <a href="mailto:mmior@cs.rit.edu">mmior@cs.rit.edu</a>
-          </p>
-        </div>
-      </div>
-    );
-
-    return (
+  let editorContainer = (
+    <div style={{padding: '0em 1em 1em 1em'}}>
+      <h2>Relational Playground</h2>
       <div>
-        <BrowserView>
-          <SplitPane split="vertical" primary="second" minSize={'30%'}>
-            <div>
-              <SplitPane split="horizontal" primary="second" minSize={'55%'}>
-                {editorContainer}
-                {dataContainer}
-              </SplitPane>
-            </div>
-            {/* Input dataset preview */}
-            <div style={{margin: '2em'}}>
-              <SourceMultiTable ReactGA={ReactGA} />
-            </div>
-          </SplitPane>
-        </BrowserView>
+        {/* SQL query input */}
+        <EditorContainer ReactGA={ReactGA} />
+        <CurrentRelExpr ReactGA={ReactGA} />
+      </div>
+    </div>
+  );
 
-        <MobileOnlyView>
-          <div style={{padding: '0em 1em 1em 1em'}}>
-            {editorContainer}
+  let dataContainer = (
+    <div className="bottomLeftContainer">
+      <DataContainer />
+      <div className="footer">
+        <Tutorial />
+        <p className="email">
+          For questions, please email{' '}
+          <a href="mailto:mmior@cs.rit.edu">mmior@cs.rit.edu</a>
+        </p>
+      </div>
+    </div>
+  );
+
+  return (
+    <div>
+      <BrowserView>
+        <SplitPane split="vertical" primary="second" minSize={'30%'}>
+          <div>
+            <SplitPane split="horizontal" primary="second" minSize={'55%'}>
+              {editorContainer}
+              {dataContainer}
+            </SplitPane>
+          </div>
+          {/* Input dataset preview */}
+          <div style={{margin: '2em'}}>
             <SourceMultiTable ReactGA={ReactGA} />
           </div>
-          {dataContainer}
-        </MobileOnlyView>
-      </div>
-    );
-  }
-}
+        </SplitPane>
+      </BrowserView>
+
+      <MobileOnlyView>
+        <div style={{padding: '0em 1em 1em 1em'}}>
+          {editorContainer}
+          <SourceMultiTable ReactGA={ReactGA} />
+        </div>
+        {dataContainer}
+      </MobileOnlyView>
+    </div>
+  );
+};
 
 const mapStateToProps = (state: {[string]: any}) => {
   return {
