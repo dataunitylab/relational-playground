@@ -161,6 +161,42 @@ it('converts a join with a condition', () => {
 });
 
 /** @test {relexp} */
+it('converts a left outer join with a condition', () => {
+  const sql = parser.parse(
+    'SELECT * FROM foo LEFT JOIN bar ON foo.baz = bar.corge'
+  );
+  const action = exprFromSql(sql.value, {foo: ['baz'], bar: ['corge']});
+  expect(reducer({}, action)).toStrictEqual({
+    expr: {
+      join: {
+        left: {relation: 'foo'},
+        right: {relation: 'bar'},
+        type: 'left',
+        condition: {cmp: {lhs: 'foo.baz', op: '$eq', rhs: 'bar.corge'}},
+      },
+    },
+  });
+});
+
+/** @test {relexp} */
+it('converts a right outer join with a condition', () => {
+  const sql = parser.parse(
+    'SELECT * FROM foo RIGHT JOIN bar ON foo.baz = bar.corge'
+  );
+  const action = exprFromSql(sql.value, {foo: ['baz'], bar: ['corge']});
+  expect(reducer({}, action)).toStrictEqual({
+    expr: {
+      join: {
+        left: {relation: 'foo'},
+        right: {relation: 'bar'},
+        type: 'right',
+        condition: {cmp: {lhs: 'foo.baz', op: '$eq', rhs: 'bar.corge'}},
+      },
+    },
+  });
+});
+
+/** @test {relexp} */
 it('converts a selection', () => {
   const sql = parser.parse('SELECT * FROM foo WHERE bar > 1');
   const action = exprFromSql(sql.value, {foo: ['bar']});

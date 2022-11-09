@@ -304,6 +304,21 @@ function buildRelExp(
         };
       }
 
+    case 'LeftRightJoinTable':
+      // Add the condition if it exists
+      if (sql.condition) {
+        return {
+          join: {
+            left: buildRelExp(sql.left, types, tables),
+            right: buildRelExp(sql.right, types, tables),
+            type: sql.leftRight.toLowerCase(),
+            condition: convertExpr(sql.condition.value, types, tables),
+          },
+        };
+      } else {
+        throw new Error('Condition-less ' + sql.leftRight + ' Join');
+      }
+
     default:
       throw new Error('Unsupported statement ' + sql.type + '.');
   }

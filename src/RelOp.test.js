@@ -11,9 +11,11 @@ import {
   BinaryRelOp,
   Except,
   Intersect,
+  Product,
   Join,
   Union,
 } from './RelOp';
+import {exprToString} from './util';
 
 each([
   ['unary operators', <UnaryRelOp />],
@@ -77,10 +79,34 @@ it('renders a Intersect', () => {
   expect(container).toContainHTML('∩');
 });
 
-/** @test {Join} */
-it('renders a Join', () => {
-  const {container} = render(<Join />);
+/** @test {Product} */
+it('renders a Product', () => {
+  const {container} = render(<Product />);
   expect(container).toContainHTML('×');
+});
+
+/** @test {Join} */
+it('renders an Inner Join', () => {
+  const {container} = render(
+    <Join type={'inner'} condition={'foo=3 ∧ bar=2'} />
+  );
+  expect(container).toContainHTML('⋈<sub>foo=3 ∧ bar=2</sub>');
+});
+
+/** @test {Join} */
+it('renders a Left Outer Join', () => {
+  const {container} = render(
+    <Join type={'left'} condition={'foo=3 ∧ bar=2'} />
+  );
+  expect(container).toContainHTML('⟕<sub>foo=3 ∧ bar=2</sub>');
+});
+
+/** @test {Join} */
+it('renders a Right Outer Join', () => {
+  const {container} = render(
+    <Join type={'right'} condition={'foo=3 ∧ bar=2'} />
+  );
+  expect(container).toContainHTML('⟖<sub>foo=3 ∧ bar=2</sub>');
 });
 
 /** @test {Union} */
