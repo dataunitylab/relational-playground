@@ -65,10 +65,13 @@ function resolveColumn(path: string, row: {[string]: any}): string {
   }
 
   const pathParts = path.split('.');
-  let [table, maybeColumn]: [string, ?string] = [pathParts[0], pathParts[1]];
-  const column = maybeColumn || table;
+  let [table, maybeColumn]: [?string, ?string] = [pathParts[0], pathParts[1]];
+  const column: string = maybeColumn || pathParts[0];
+  if (!maybeColumn) {
+    table = undefined;
+  }
 
-  if (!maybeColumn && table) {
+  if (table) {
     if (row.hasOwnProperty(path)) {
       // Use the dotted path
       return path;
