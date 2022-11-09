@@ -143,19 +143,19 @@ export const Join: StatelessFunctionalComponent<{
   if (props.type === 'left') {
     return (
       <span>
-        &#10197;<sub>{props.condition}</sub>
+        ⟕<sub>{props.condition}</sub>
       </span>
     );
   } else if (props.type === 'right') {
     return (
       <span>
-        &#10198;<sub>{props.condition}</sub>
+        ⟖<sub>{props.condition}</sub>
       </span>
     );
   } else {
     return (
       <span>
-        &#8904;<sub>{props.condition}</sub>
+        ⋈<sub>{props.condition}</sub>
       </span>
     );
   }

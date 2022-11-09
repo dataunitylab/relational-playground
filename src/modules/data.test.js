@@ -206,8 +206,6 @@ it('can evaluate an right join', () => {
 
   expect(current.columns).toStrictEqual(['bar', 'baz', 'grault']);
   expect(current.data).toStrictEqual([
-    // {bar: null, baz: null, grault: 7},
-    // {bar: null, baz: null, grault: 8},
     {bar: null, baz: null, grault: 7},
     {bar: 1, baz: 2, grault: 8},
     {bar: 3, baz: 4, grault: 8},
