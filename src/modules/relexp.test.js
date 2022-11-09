@@ -136,7 +136,7 @@ it('converts a simple cross join', () => {
   const action = exprFromSql(sql.value, {});
   expect(reducer({}, action)).toStrictEqual({
     expr: {
-      join: {
+      product: {
         left: {relation: 'foo'},
         right: {relation: 'bar'},
       },
@@ -150,18 +150,11 @@ it('converts a join with a condition', () => {
   const action = exprFromSql(sql.value, {foo: ['baz'], bar: ['corge']});
   expect(reducer({}, action)).toStrictEqual({
     expr: {
-      selection: {
-        arguments: {
-          select: {cmp: {lhs: 'foo.baz', op: '$eq', rhs: 'bar.corge'}},
-        },
-        children: [
-          {
-            join: {
-              left: {relation: 'foo'},
-              right: {relation: 'bar'},
-            },
-          },
-        ],
+      join: {
+        left: {relation: 'foo'},
+        right: {relation: 'bar'},
+        type: 'inner',
+        condition: {cmp: {lhs: 'foo.baz', op: '$eq', rhs: 'bar.corge'}},
       },
     },
   });

@@ -149,9 +149,31 @@ it('can evaluate a union', () => {
 });
 
 /** @test {data} */
-it('can evaluate a join', () => {
+it('can evaluate an inner join', () => {
   const expr = {
     join: {
+      left: {relation: 'foo'},
+      right: {relation: 'corge'},
+      type: 'inner',
+      condition: {cmp: {lhs: 'bar', op: '$gt', rhs: '1'}},
+    },
+  };
+  const action = changeExpr(expr);
+  const current = reducer({sourceData: sourceData}, action).current;
+
+  expect(current.columns).toStrictEqual(['bar', 'baz', 'grault']);
+  expect(current.data).toStrictEqual([
+    {bar: 3, baz: 4, grault: 7},
+    {bar: 3, baz: 4, grault: 8},
+    {bar: 5, baz: 6, grault: 7},
+    {bar: 5, baz: 6, grault: 8},
+  ]);
+});
+
+/** @test {data} */
+it('can evaluate a cross-product', () => {
+  const expr = {
+    product: {
       left: {relation: 'foo'},
       right: {relation: 'corge'},
     },
