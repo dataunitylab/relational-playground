@@ -285,26 +285,24 @@ function buildRelExp(
       return {relation: sql.value.value};
 
     case 'InnerCrossJoinTable':
-      const join = {
-        join: {
-          left: buildRelExp(sql.left, types, tables),
-          right: buildRelExp(sql.right, types, tables),
-        },
-      };
-
-      // Add the join condition if it exists
+      // Add the condition if it exists
       if (sql.condition) {
         return {
-          selection: {
-            arguments: {
-              select: convertExpr(sql.condition.value, types, tables),
-            },
-            children: [join],
+          join: {
+            left: buildRelExp(sql.left, types, tables),
+            right: buildRelExp(sql.right, types, tables),
+            type: 'inner',
+            condition: convertExpr(sql.condition.value, types, tables),
+          },
+        };
+      } else {
+        return {
+          product: {
+            left: buildRelExp(sql.left, types, tables),
+            right: buildRelExp(sql.right, types, tables),
           },
         };
       }
-
-      return join;
 
     default:
       throw new Error('Unsupported statement ' + sql.type + '.');

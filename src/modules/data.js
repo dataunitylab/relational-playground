@@ -58,6 +58,53 @@ const initialState = {
   element: undefined,
 };
 
+function getCombinedColumns(left, right) {
+  // Combine columns adding relation name where needed
+  const combinedColumns: Array<string> = [];
+  for (const leftColumn of left.columns) {
+    if (right.columns.includes(leftColumn)) {
+      combinedColumns.push(left.name + '.' + leftColumn);
+    } else {
+      combinedColumns.push(leftColumn);
+    }
+  }
+  for (const rightColumn of right.columns) {
+    if (left.columns.includes(rightColumn)) {
+      combinedColumns.push(right.name + '.' + rightColumn);
+    } else {
+      combinedColumns.push(rightColumn);
+    }
+  }
+
+  return combinedColumns;
+}
+
+function getCombinedData(
+  leftName,
+  leftRow,
+  rightName,
+  rightRow,
+  combinedColumns
+) {
+  // Combine data from the two objects including the relation name
+  const combinedData: {[string]: any} = {};
+  for (const leftKey in leftRow) {
+    combinedData[leftName + '.' + leftKey] = leftRow[leftKey];
+  }
+  for (const rightKey in rightRow) {
+    combinedData[rightName + '.' + rightKey] = rightRow[rightKey];
+  }
+
+  // Resolve the output data according to the combined data
+  // This may remove relation names where they are not needed
+  const outputData: {[string]: any} = {};
+  for (const column of combinedColumns) {
+    outputData[column] = combinedData[resolveColumn(column, combinedData)];
+  }
+
+  return outputData;
+}
+
 function resolveColumn(path: string, row: {[string]: any}): string {
   // Avoid an error if we're projecting nothing
   if (!row) {
@@ -65,10 +112,13 @@ function resolveColumn(path: string, row: {[string]: any}): string {
   }
 
   const pathParts = path.split('.');
-  let [table, maybeColumn]: [string, ?string] = [pathParts[0], pathParts[1]];
-  const column = maybeColumn || table;
+  let [table, maybeColumn]: [?string, ?string] = [pathParts[0], pathParts[1]];
+  const column: string = maybeColumn || pathParts[0];
+  if (!maybeColumn) {
+    table = undefined;
+  }
 
-  if (!maybeColumn && table) {
+  if (table) {
     if (row.hasOwnProperty(path)) {
       // Use the dotted path
       return path;
@@ -310,25 +360,39 @@ function applyExpr(
 
     case 'join':
       // Process each side of the join
-      const left = applyExpr(expr.join.left, sourceData);
-      const right = applyExpr(expr.join.right, sourceData);
+      const joinLeft = applyExpr(expr.join.left, sourceData);
+      const joinRight = applyExpr(expr.join.right, sourceData);
+      const combinedJoinColumns = getCombinedColumns(joinLeft, joinRight);
 
-      // Combine columns adding relation name where needed
-      const combinedColumns: Array<string> = [];
-      for (const leftColumn of left.columns) {
-        if (right.columns.includes(leftColumn)) {
-          combinedColumns.push(left.name + '.' + leftColumn);
-        } else {
-          combinedColumns.push(leftColumn);
+      const joinOutput = {
+        name: joinLeft.name + ' ⨝ ' + joinRight.name,
+        columns: combinedJoinColumns,
+        data: [],
+      };
+
+      // Perform the join
+      for (const leftRow of joinLeft.data) {
+        for (const rightRow of joinRight.data) {
+          const combinedJoinData = getCombinedData(
+            joinLeft.name,
+            leftRow,
+            joinRight.name,
+            rightRow,
+            combinedJoinColumns
+          );
+          if (applyItem(expr.join.condition, combinedJoinData)) {
+            joinOutput.data.push(combinedJoinData);
+          }
         }
       }
-      for (const rightColumn of right.columns) {
-        if (left.columns.includes(rightColumn)) {
-          combinedColumns.push(right.name + '.' + rightColumn);
-        } else {
-          combinedColumns.push(rightColumn);
-        }
-      }
+
+      return joinOutput;
+
+    case 'product':
+      // Process each side of the product
+      const left = applyExpr(expr.product.left, sourceData);
+      const right = applyExpr(expr.product.right, sourceData);
+      const combinedColumns = getCombinedColumns(left, right);
 
       const output = {
         name: left.name + ' × ' + right.name,
@@ -339,24 +403,15 @@ function applyExpr(
       // Perform the cross product
       for (const leftRow of left.data) {
         for (const rightRow of right.data) {
-          // Combine data from the two objects including the relation name
-          const combinedData: {[string]: any} = {};
-          for (const leftKey in leftRow) {
-            combinedData[left.name + '.' + leftKey] = leftRow[leftKey];
-          }
-          for (const rightKey in rightRow) {
-            combinedData[right.name + '.' + rightKey] = rightRow[rightKey];
-          }
-
-          // Resolve the output data according to the combined data
-          // This may remove relation names where they are not needed
-          const outputData: {[string]: any} = {};
-          for (const column of combinedColumns) {
-            outputData[column] =
-              combinedData[resolveColumn(column, combinedData)];
-          }
-
-          output.data.push(outputData);
+          output.data.push(
+            getCombinedData(
+              left.name,
+              leftRow,
+              right.name,
+              rightRow,
+              combinedColumns
+            )
+          );
         }
       }
 
