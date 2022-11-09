@@ -7,6 +7,7 @@ import {
   Rename,
   Selection,
   Except,
+  Product,
   Join,
   Intersect,
   Union,
@@ -66,6 +67,7 @@ const RelExprTree: StatelessFunctionalComponent<Props> = (props) => {
       case 'except':
       case 'intersect':
       case 'join':
+      case 'product':
       case 'union':
         return {
           key: key,
@@ -97,14 +99,21 @@ const RelExprTree: StatelessFunctionalComponent<Props> = (props) => {
         return <Rename rename={expr.rename.arguments.rename} />;
       case 'relation':
         return expr.relation;
+      case 'join':
+        return (
+          <Join
+            type={expr.join.type}
+            condition={exprToString(expr.join.condition)}
+          />
+        );
       case 'except':
       case 'intersect':
-      case 'join':
+      case 'product':
       case 'union':
         const operator = {
           except: <Except />,
           intersect: <Intersect />,
-          join: <Join />,
+          product: <Product />,
           union: <Union />,
         }[type];
         return operator;

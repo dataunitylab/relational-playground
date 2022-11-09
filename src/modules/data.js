@@ -58,7 +58,7 @@ const initialState = {
   element: undefined,
 };
 
-function getCombinedColumns(left, right) {
+function getCombinedColumns(left: {[string]: any}, right: {[string]: any}) {
   // Combine columns adding relation name where needed
   const combinedColumns: Array<string> = [];
   for (const leftColumn of left.columns) {
@@ -80,11 +80,12 @@ function getCombinedColumns(left, right) {
 }
 
 function getCombinedData(
-  leftName,
-  leftRow,
-  rightName,
-  rightRow,
-  combinedColumns
+  leftName: string,
+  leftRow: {[string]: any},
+  rightName: string,
+  rightRow: {[string]: any},
+  combinedColumns: Array<string>,
+  outerJoin: ?boolean
 ) {
   // Combine data from the two objects including the relation name
   const combinedData: {[string]: any} = {};
@@ -92,7 +93,11 @@ function getCombinedData(
     combinedData[leftName + '.' + leftKey] = leftRow[leftKey];
   }
   for (const rightKey in rightRow) {
-    combinedData[rightName + '.' + rightKey] = rightRow[rightKey];
+    if (outerJoin) {
+      combinedData[rightName + '.' + rightKey] = null;
+    } else {
+      combinedData[rightName + '.' + rightKey] = rightRow[rightKey];
+    }
   }
 
   // Resolve the output data according to the combined data
@@ -360,18 +365,33 @@ function applyExpr(
 
     case 'join':
       // Process each side of the join
-      const joinLeft = applyExpr(expr.join.left, sourceData);
-      const joinRight = applyExpr(expr.join.right, sourceData);
+      let joinLeft = applyExpr(expr.join.left, sourceData);
+      let joinRight = applyExpr(expr.join.right, sourceData);
       const combinedJoinColumns = getCombinedColumns(joinLeft, joinRight);
+      let joinType = expr.join.type;
+
+      let joinSymbol = ' ⋈ ';
+      if (joinType === 'left') {
+        joinSymbol = ' ⟕ ';
+      } else if (joinType === 'right') {
+        joinSymbol = ' ⟖ ';
+      }
 
       const joinOutput = {
-        name: joinLeft.name + ' ⨝ ' + joinRight.name,
+        name: joinLeft.name + joinSymbol + joinRight.name,
         columns: combinedJoinColumns,
         data: [],
       };
 
+      if (joinType === 'right') {
+        let temp = joinLeft;
+        joinLeft = joinRight;
+        joinRight = temp;
+      }
+
       // Perform the join
       for (const leftRow of joinLeft.data) {
+        let matchFound = false;
         for (const rightRow of joinRight.data) {
           const combinedJoinData = getCombinedData(
             joinLeft.name,
@@ -382,7 +402,19 @@ function applyExpr(
           );
           if (applyItem(expr.join.condition, combinedJoinData)) {
             joinOutput.data.push(combinedJoinData);
+            matchFound = true;
           }
+        }
+        if (!matchFound && joinType !== 'inner') {
+          const combinedJoinData = getCombinedData(
+            joinLeft.name,
+            leftRow,
+            joinRight.name,
+            joinRight.data[0],
+            combinedJoinColumns,
+            true
+          );
+          joinOutput.data.push(combinedJoinData);
         }
       }
 

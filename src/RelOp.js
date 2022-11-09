@@ -136,7 +136,32 @@ export const Intersect: StatelessFunctionalComponent<{||}> = () => (
   <span>&cap;</span>
 );
 
-export const Join: StatelessFunctionalComponent<{||}> = () => (
+export const Join: StatelessFunctionalComponent<{
+  type: string,
+  condition: string,
+}> = (props) => {
+  if (props.type === 'left') {
+    return (
+      <span>
+        ⟕<sub>{props.condition}</sub>
+      </span>
+    );
+  } else if (props.type === 'right') {
+    return (
+      <span>
+        ⟖<sub>{props.condition}</sub>
+      </span>
+    );
+  } else {
+    return (
+      <span>
+        ⋈<sub>{props.condition}</sub>
+      </span>
+    );
+  }
+};
+
+export const Product: StatelessFunctionalComponent<{||}> = () => (
   <span>&times;</span>
 );
 

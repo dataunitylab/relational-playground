@@ -7,6 +7,7 @@ import {
   Selection,
   BinaryRelOp,
   Except,
+  Product,
   Join,
   Intersect,
   Union,
@@ -95,14 +96,22 @@ const RelExpr: StatelessFunctionalComponent<Props> = (props) => {
       case 'relation':
         return <Relation name={expr.relation} />;
 
+      case 'join':
+        return (
+          <Join
+            type={expr.join.type}
+            condition={exprToString(expr.join.condition)}
+          />
+        );
+
       case 'except':
       case 'intersect':
-      case 'join':
+      case 'product':
       case 'union':
         const operator = {
           except: <Except />,
           intersect: <Intersect />,
-          join: <Join />,
+          product: <Product />,
           union: <Union />,
         }[type];
         return (

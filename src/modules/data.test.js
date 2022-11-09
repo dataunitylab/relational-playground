@@ -170,6 +170,49 @@ it('can evaluate an inner join', () => {
   ]);
 });
 
+it('can evaluate an left join', () => {
+  const expr = {
+    join: {
+      left: {relation: 'foo'},
+      right: {relation: 'corge'},
+      type: 'left',
+      condition: {cmp: {lhs: 'bar', op: '$gt', rhs: '1'}},
+    },
+  };
+  const action = changeExpr(expr);
+  const current = reducer({sourceData: sourceData}, action).current;
+
+  expect(current.columns).toStrictEqual(['bar', 'baz', 'grault']);
+  expect(current.data).toStrictEqual([
+    {bar: 1, baz: 2, grault: null},
+    {bar: 3, baz: 4, grault: 7},
+    {bar: 3, baz: 4, grault: 8},
+    {bar: 5, baz: 6, grault: 7},
+    {bar: 5, baz: 6, grault: 8},
+  ]);
+});
+
+it('can evaluate an right join', () => {
+  const expr = {
+    join: {
+      left: {relation: 'foo'},
+      right: {relation: 'corge'},
+      type: 'right',
+      condition: {cmp: {lhs: 'grault', op: '$gt', rhs: '7'}},
+    },
+  };
+  const action = changeExpr(expr);
+  const current = reducer({sourceData: sourceData}, action).current;
+
+  expect(current.columns).toStrictEqual(['bar', 'baz', 'grault']);
+  expect(current.data).toStrictEqual([
+    {bar: null, baz: null, grault: 7},
+    {bar: 1, baz: 2, grault: 8},
+    {bar: 3, baz: 4, grault: 8},
+    {bar: 5, baz: 6, grault: 8},
+  ]);
+});
+
 /** @test {data} */
 it('can evaluate a cross-product', () => {
   const expr = {
