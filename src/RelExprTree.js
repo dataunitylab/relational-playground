@@ -67,6 +67,7 @@ const RelExprTree: StatelessFunctionalComponent<Props> = (props) => {
       case 'except':
       case 'intersect':
       case 'join':
+      case 'product':
       case 'union':
         return {
           key: key,

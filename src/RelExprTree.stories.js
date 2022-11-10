@@ -38,13 +38,31 @@ export const ComplexExpression = () => (
 );
 ComplexExpression.storyName = 'a complex expression';
 
-export const SimpleJoin = () => (
+export const SimpleJoin = ({joinType}) => (
   <RelExprTree
-    expr={{join: {left: {relation: 'Doctor'}, right: {relation: 'Patient'}}}}
+    expr={{
+      join: {
+        type: joinType,
+        left: {relation: 'Doctor'},
+        right: {relation: 'Patient'},
+        condition: {
+          cmp: {lhs: 'Doctor.id', op: '$eq', rhs: 'Patient.primaryDoctor'},
+        },
+      },
+    }}
     changeExpr={(expr, element) => undefined}
   />
 );
 SimpleJoin.storyName = 'a simple join';
+SimpleJoin.args = {
+  joinType: 'left',
+};
+SimpleJoin.argTypes = {
+  joinType: {
+    options: ['left', 'right', 'inner'],
+    control: {type: 'inline-radio'},
+  },
+};
 
 export const JustARelation = () => (
   <RelExprTree
