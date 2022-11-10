@@ -58,7 +58,7 @@ const initialState = {
   element: undefined,
 };
 
-function getCombinedColumns(left, right) {
+function getCombinedColumns(left: {[string]: any}, right: {[string]: any}) {
   // Combine columns adding relation name where needed
   const combinedColumns: Array<string> = [];
   for (const leftColumn of left.columns) {
@@ -80,12 +80,12 @@ function getCombinedColumns(left, right) {
 }
 
 function getCombinedData(
-  leftName,
-  leftRow,
-  rightName,
-  rightRow,
-  combinedColumns,
-  outerJoin?
+  leftName: string,
+  leftRow: {[string]: any},
+  rightName: string,
+  rightRow: {[string]: any},
+  combinedColumns: Array<string>,
+  outerJoin: ?boolean
 ) {
   // Combine data from the two objects including the relation name
   const combinedData: {[string]: any} = {};
