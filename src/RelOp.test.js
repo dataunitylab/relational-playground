@@ -86,7 +86,7 @@ it('renders a Product', () => {
 });
 
 /** @test {Join} */
-it('renders an Inner Join', () => {
+it('renders an inner Join', () => {
   const {container} = render(
     <Join type={'inner'} condition={'foo=3 ∧ bar=2'} />
   );
@@ -94,7 +94,7 @@ it('renders an Inner Join', () => {
 });
 
 /** @test {Join} */
-it('renders a Left Outer Join', () => {
+it('renders a left outer Join', () => {
   const {container} = render(
     <Join type={'left'} condition={'foo=3 ∧ bar=2'} />
   );
@@ -102,7 +102,7 @@ it('renders a Left Outer Join', () => {
 });
 
 /** @test {Join} */
-it('renders a Right Outer Join', () => {
+it('renders a right outer Join', () => {
   const {container} = render(
     <Join type={'right'} condition={'foo=3 ∧ bar=2'} />
   );
