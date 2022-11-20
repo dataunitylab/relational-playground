@@ -1,5 +1,5 @@
-// flow-typed signature: 221f0a0ff0581c8171e7db43b8f1d964
-// flow-typed version: efe3d0abb1/react-redux_v7.x.x/flow_>=v0.142.x
+// flow-typed signature: ac3c3bfd0c0a853cc9f58c16521d8a9f
+// flow-typed version: efe3d0abb1/react-redux_v8.x.x/flow_>=v0.142.x
 
 /**
 The order of type arguments for connect() is as follows:
@@ -29,7 +29,6 @@ Decrypting the abbreviations:
   Com = React Component
   SS = Selected state
   ST = Static properties of Com
-  EFO = Extra factory options (used only in connectAdvanced)
 */
 
 declare module "react-redux" {
@@ -38,7 +37,6 @@ declare module "react-redux" {
   // ------------------------------------------------------------
 
   declare export type Options<S, OP, SP, MP> = {|
-    pure?: boolean,
     forwardRef?: boolean,
     areStatesEqual?: (next: S, prev: S) => boolean,
     areOwnPropsEqual?: (next: OP, prev: OP) => boolean,
@@ -207,13 +205,13 @@ declare module "react-redux" {
   // ------------------------------------------------------------
 
   /* Action and AnyAction are taken from the redux TypeScript types defined here:
-   * https://github.com/reduxjs/redux/blob/d794c56f78eccb56ba3c67971c26df8ee34dacc1/src/types/actions.ts
-   *
-   * We turn them into objects so that they can be spread.
-   *
-   * We use AnyAction as the default for useDispatch as DefinitelyTyped does:
-   * https://github.com/DefinitelyTyped/DefinitelyTyped/blob/f7ec78508c6797e42f87a4390735bc2c650a1bfd/types/react-redux/index.d.ts#L540
-   */
+    * https://github.com/reduxjs/redux/blob/d794c56f78eccb56ba3c67971c26df8ee34dacc1/src/types/actions.ts
+    *
+    * We turn them into objects so that they can be spread.
+    *
+    * We use AnyAction as the default for useDispatch as DefinitelyTyped does:
+    * https://github.com/DefinitelyTyped/DefinitelyTyped/blob/f7ec78508c6797e42f87a4390735bc2c650a1bfd/types/react-redux/index.d.ts#L540
+    */
   declare export type Action<T> = {
     type: T,
     ...
@@ -260,63 +258,6 @@ declare module "react-redux" {
     subKey?: string,
   ): Class<Provider<*>>;
 
-  // ------------------------------------------------------------
-  // Typings for connectAdvanced()
-  // ------------------------------------------------------------
-
-  declare type ConnectAdvancedOptions = {
-    getDisplayName?: (name: string) => string,
-    methodName?: string,
-    renderCountProp?: string,
-    shouldHandleStateChanges?: boolean,
-    storeKey?: string,
-    forwardRef?: boolean,
-    ...
-  };
-
-  declare type SelectorFactoryOptions<Com> = {
-    getDisplayName: (name: string) => string,
-    methodName: string,
-    renderCountProp: ?string,
-    shouldHandleStateChanges: boolean,
-    storeKey: string,
-    forwardRef: boolean,
-    displayName: string,
-    wrappedComponentName: string,
-    WrappedComponent: Com,
-    ...
-  };
-
-  declare type MapStateToPropsEx<S: Object, SP: Object, RSP: Object> = (
-    state: S,
-    props: SP,
-  ) => RSP;
-
-  declare type SelectorFactory<
-    Com: React$ComponentType<*>,
-    Dispatch,
-    S: Object,
-    OP: Object,
-    EFO: Object,
-    CP: Object,
-  > = (
-    dispatch: Dispatch,
-    factoryOptions: SelectorFactoryOptions<Com> & EFO,
-  ) => MapStateToPropsEx<S, OP, CP>;
-
-  declare export function connectAdvanced<
-    Com: React$ComponentType<*>,
-    D,
-    S: Object,
-    OP: Object,
-    CP: Object,
-    EFO: Object,
-    ST: { [_: $Keys<Com>]: any, ... },
-  >(
-    selectorFactory: SelectorFactory<Com, D, S, OP, EFO, CP>,
-    connectAdvancedOptions: ?(ConnectAdvancedOptions & EFO),
-  ): (component: Com) => React$ComponentType<OP> & $Shape<ST>;
-
   declare export function batch(() => void): void
 
   declare export function shallowEqual<T>(left: T, right: any): boolean
@@ -325,7 +266,6 @@ declare module "react-redux" {
     Provider: typeof Provider,
     createProvider: typeof createProvider,
     connect: typeof connect,
-    connectAdvanced: typeof connectAdvanced,
     useDispatch: typeof useDispatch,
     useSelector: typeof useSelector,
     useStore: typeof useStore,
