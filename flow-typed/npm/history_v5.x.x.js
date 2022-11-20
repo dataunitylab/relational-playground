@@ -1,5 +1,5 @@
-// flow-typed signature: 58cc95d240510cd0f952113ab5fd1910
-// flow-typed version: 72313e0b69/history_v4.x.x/flow_>=v0.104.x
+// flow-typed signature: 6168687222dfcafc9c4a07fbbef813ad
+// flow-typed version: bb2f6ae824/history_v5.x.x/flow_>=v0.104.x
 
 declare module 'history' {
   declare type Unregister = () => void;
@@ -23,14 +23,15 @@ declare module 'history' {
     replace: ((path: string, state?: { ... }) => void) &
       ((location: $Shape<HistoryLocation>) => void),
     go(n: number): void,
-    goBack(): void,
-    goForward(): void,
-    listen((location: HistoryLocation, action: Action) => void): Unregister,
+    back(): void,
+    forward(): void,
+    listen(({| location: HistoryLocation, action: Action |}) => void): Unregister,
     block(
-      prompt:
-        | string
-        | boolean
-        | ((location: HistoryLocation, action: Action) => string | false | void)
+      blocker: (transition: {|
+        action: Action,
+        location: HistoryLocation,
+        retry: () => void,
+      |}) => void,
     ): Unregister,
     createHref(location: $Shape<HistoryLocation>): string,
   |};
@@ -40,11 +41,6 @@ declare module 'history' {
   declare type BrowserHistoryOpts = {|
     basename?: string,
     forceRefresh?: boolean,
-    getUserConfirmation?: (
-      message: string,
-      callback: (willContinue: boolean) => void
-    ) => void,
-    keyLength?: number,
   |};
 
   declare function createBrowserHistory(
@@ -61,11 +57,6 @@ declare module 'history' {
   declare type MemoryHistoryOpts = {|
     initialEntries?: Array<string>,
     initialIndex?: number,
-    keyLength?: number,
-    getUserConfirmation?: (
-      message: string,
-      callback: (willContinue: boolean) => void
-    ) => void,
   |};
 
   declare function createMemoryHistory(opts?: MemoryHistoryOpts): MemoryHistory;
@@ -80,11 +71,6 @@ declare module 'history' {
 
   declare type HashHistoryOpts = {|
     basename?: string,
-    hashType: 'slash' | 'noslash' | 'hashbang',
-    getUserConfirmation?: (
-      message: string,
-      callback: (willContinue: boolean) => void
-    ) => void,
   |};
 
   declare function createHashHistory(opts?: HashHistoryOpts): HashHistory;
