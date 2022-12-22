@@ -101,6 +101,8 @@ const RelExpr: StatelessFunctionalComponent<Props> = (props) => {
           <Join
             type={expr.join.type}
             condition={exprToString(expr.join.condition)}
+            left={exprToString(expr.join.left.relation)}
+            right={exprToString(expr.join.right.relation)}
           />
         );
 
