@@ -1,5 +1,5 @@
 import reducer from './relexp';
-import {exprFromSql} from './relexp';
+import {exprFromSql, enableOptimization, disableOptimization} from './relexp';
 
 const parser = require('@michaelmior/js-sql-parser');
 
@@ -194,6 +194,90 @@ it('converts a right outer join with a condition', () => {
       },
     },
   });
+});
+
+/** @test {relexp} */
+it('converts a pre-optimized select-join with a condition', () => {
+  const sql = parser.parse(
+    'SELECT * FROM foo JOIN bar ON foo.baz = bar.corge WHERE foo.baz = 1'
+  );
+  const action = exprFromSql(sql.value, {foo: ['baz'], bar: ['corge']});
+  expect(reducer({}, action)).toStrictEqual({
+    expr: {
+      selection: {
+        arguments: {
+          select: {cmp: {lhs: 'foo.baz', op: '$eq', rhs: '1'}},
+        },
+        children: [
+          {
+            join: {
+              condition: {cmp: {lhs: 'foo.baz', op: '$eq', rhs: 'bar.corge'}},
+              left: {relation: 'foo'},
+              right: {relation: 'bar'},
+              type: 'inner',
+            },
+          },
+        ],
+      },
+    },
+  });
+});
+
+/** @test {relexp} */
+it('converts a post-optimized select-join with a condition', () => {
+  const sql = parser.parse(
+    'SELECT * FROM foo JOIN bar ON foo.baz = bar.corge WHERE foo.baz = 1'
+  );
+  const action = exprFromSql(sql.value, {foo: ['baz'], bar: ['corge']});
+  const draft = reducer({}, action);
+  const optimizeAction = enableOptimization('join');
+  expect(reducer(draft, optimizeAction)).toStrictEqual({
+    expr: {
+      join: {
+        condition: {cmp: {lhs: 'foo.baz', op: '$eq', rhs: 'bar.corge'}},
+        left: {
+          selection: {
+            arguments: {
+              select: {cmp: {lhs: 'foo.baz', op: '$eq', rhs: '1'}},
+            },
+            children: [{relation: 'foo'}],
+          },
+        },
+        right: {relation: 'bar'},
+        type: 'inner',
+      },
+    },
+    unoptimizedExpr: {
+      selection: {
+        arguments: {
+          select: {cmp: {lhs: 'foo.baz', op: '$eq', rhs: '1'}},
+        },
+        children: [
+          {
+            join: {
+              condition: {cmp: {lhs: 'foo.baz', op: '$eq', rhs: 'bar.corge'}},
+              left: {relation: 'foo'},
+              right: {relation: 'bar'},
+              type: 'inner',
+            },
+          },
+        ],
+      },
+    },
+  });
+});
+
+/** @test {relexp} */
+it('converts a optimize-disabled select-join with a condition', () => {
+  const sql = parser.parse(
+    'SELECT * FROM foo JOIN bar ON foo.baz = bar.corge WHERE foo.baz = 1'
+  );
+  const action = exprFromSql(sql.value, {foo: ['baz'], bar: ['corge']});
+  const preOptDraft = reducer({}, action);
+  const optimizeAction = enableOptimization('join');
+  const draft = reducer(preOptDraft, optimizeAction);
+  const disableOptimizeAction = disableOptimization();
+  expect(reducer(draft, disableOptimizeAction)).toStrictEqual(preOptDraft);
 });
 
 /** @test {relexp} */

@@ -139,8 +139,8 @@ export const Intersect: StatelessFunctionalComponent<{||}> = () => (
 export const Join: StatelessFunctionalComponent<{
   type: string,
   condition: string,
-  left: string,
-  right: string,
+  left?: Node,
+  right?: Node,
 }> = (props) => {
   if (props.type === 'left') {
     return (

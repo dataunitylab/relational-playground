@@ -18,8 +18,6 @@ type Props = {
 const Table: StatelessFunctionalComponent<Props> = (props) => {
   let columns = [
     {
-      Header: props.tableName,
-
       // Define the column with a default accessor to ignore the
       // default behaviour of asking nested properties via dots
       columns: props.columns.map((c) => ({
