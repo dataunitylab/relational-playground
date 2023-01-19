@@ -41,14 +41,20 @@ describe('CurrentRelExpr', () => {
     expect(wrapper.find(RelExprTree).length).toBe(0);
 
     // Click the checkbox to toggle the tree view
-    wrapper.find('input').simulate('change', {target: {checked: true}});
+    wrapper
+      .find('input')
+      .at(0)
+      .simulate('change', {target: {checked: true}});
 
     // Now only the tree view should display
     expect(wrapper.find(RelExpr).length).toBe(0);
     expect(wrapper.find(RelExprTree).length).toBe(1);
 
     // Click the checkbox again to toggle back
-    wrapper.find('input').simulate('change', {target: {checked: false}});
+    wrapper
+      .find('input')
+      .at(0)
+      .simulate('change', {target: {checked: false}});
 
     // We should have analytics events for the checkbox
     expect(mockEvent.mock.calls.length).toBe(2);

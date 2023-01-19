@@ -3,11 +3,22 @@ import fromEntries from 'fromentries';
 import produce from 'immer';
 
 export const EXPR_FROM_SQL = 'EXPR_FROM_SQL';
+export const ENABLE_OPTIMIZATION = 'ENABLE_OPTIMIZATION';
+export const DISABLE_OPTIMIZATION = 'DISABLE_OPTIMIZATION';
 
-type Action = {
+type ExprFromSqlAction = {
   type: 'EXPR_FROM_SQL',
   sql: {[string]: any},
   types: {[string]: Array<string>},
+};
+
+type EnableOptimizationAction = {
+  type: 'ENABLE_OPTIMIZATION',
+  optimization: string,
+};
+
+type DisableOptimizationAction = {
+  type: 'DISABLE_OPTIMIZATION',
 };
 
 /**
@@ -18,12 +29,30 @@ type Action = {
 export function exprFromSql(
   sql: {[string]: any},
   types: {[string]: Array<string>}
-): Action {
+): ExprFromSqlAction {
   return {type: EXPR_FROM_SQL, sql, types};
+}
+
+/**
+ * @param optimization - a string denoting the type of optimization performed
+ * @return a new ENABLE_OPTIMIZATION action
+ */
+export function enableOptimization(
+  optimization: string
+): EnableOptimizationAction {
+  return {type: ENABLE_OPTIMIZATION, optimization};
+}
+
+/**
+ * @return a new DISABLE_OPTIMIZATION action
+ */
+export function disableOptimization(): DisableOptimizationAction {
+  return {type: DISABLE_OPTIMIZATION};
 }
 
 type State = {
   expr: {[string]: any},
+  unoptimizedExpr?: {[string]: any},
 };
 
 const initialState = {
@@ -324,13 +353,121 @@ function buildRelExp(
   }
 }
 
-const reducer: (State, Action) => State = produce<State, Action>(
-  (draft: State, action: Action) => {
+/**
+ * Returns a join expression, with the given left, right and join configurations
+ * @param left config
+ * @param right config
+ * @param join config
+ * @returns {{join: {condition: {cmp: {op, lhs, rhs}}, left: {[p: string]: *}, right: {[p: string]: *}, type: *}}}
+ */
+function joinExpr(
+  left: {[string]: any},
+  right: {[string]: any},
+  join: {[string]: any}
+) {
+  return {
+    join: {
+      left: left,
+      right: right,
+      type: join.type,
+      condition: {
+        cmp: {
+          lhs: join.condition.cmp.lhs,
+          op: join.condition.cmp.op,
+          rhs: join.condition.cmp.rhs,
+        },
+      },
+    },
+  };
+}
+
+/**
+ * Optimizes a given relational algebra expression, if possible
+ * @param type string denoting the type of optimization
+ * @param expr object denoting the expression to optimize
+ * @returns {{join: {condition: {cmp: {op, lhs, rhs}}, left: {[p: string]: *}, right: {[p: string]: *}, type: *}}|{[p: string]: *}}
+ */
+function optimize(type: string, expr: {[string]: any}) {
+  switch (type) {
+    case 'join':
+      const selectChildren = 'selection' in expr ? expr.selection.children : [];
+      for (const child of selectChildren) {
+        if ('join' in child) {
+          // relation names
+          let selectLeft =
+            expr.selection.arguments.select.cmp.lhs.split('.')[0];
+          let selectRight =
+            expr.selection.arguments.select.cmp.rhs.split('.')[0];
+          let joinLeft = child.join.left.relation;
+          let joinRight = child.join.right.relation;
+
+          if (selectLeft === joinLeft || selectRight === joinLeft) {
+            let left = {
+              selection: {
+                arguments: expr.selection.arguments,
+                children: [
+                  {
+                    relation: child.join.left.relation,
+                  },
+                ],
+              },
+            };
+            let right = child.join.right;
+            let join = child.join;
+            return joinExpr(left, right, join);
+          } else if (selectLeft === joinRight || selectRight === joinRight) {
+            let left = child.join.left;
+            let right = {
+              selection: {
+                arguments: expr.selection.arguments,
+                children: [
+                  {
+                    relation: child.join.right.relation,
+                  },
+                ],
+              },
+            };
+            let join = child.join;
+            return joinExpr(left, right, join);
+          }
+        } else {
+          return expr;
+        }
+      }
+      return expr;
+    default:
+      return expr;
+  }
+}
+
+const reducer: (
+  State,
+  ExprFromSqlAction | EnableOptimizationAction | DisableOptimizationAction
+) => State = produce<
+  State,
+  ExprFromSqlAction | EnableOptimizationAction | DisableOptimizationAction
+>(
+  (
+    draft: State,
+    action:
+      | ExprFromSqlAction
+      | EnableOptimizationAction
+      | DisableOptimizationAction
+  ) => {
     // eslint-disable-next-line default-case
     switch (action.type) {
       case EXPR_FROM_SQL:
         draft.expr = buildRelExp(action.sql, action.types, []);
         break;
+      case ENABLE_OPTIMIZATION:
+        draft.unoptimizedExpr = draft.expr;
+        draft.expr = optimize(action.optimization, draft.expr);
+        break;
+      case DISABLE_OPTIMIZATION:
+        if (draft.unoptimizedExpr) {
+          draft.expr = draft.unoptimizedExpr;
+          delete draft.unoptimizedExpr;
+        }
     }
   },
   initialState
