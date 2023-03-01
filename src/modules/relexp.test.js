@@ -424,6 +424,33 @@ it('converts a selection with BETWEEN', () => {
 });
 
 /** @test {relexp} */
+it("converts a basic selection with multiple 'AND's", () => {
+  const sql = parser.parse(
+    'SELECT * FROM foo WHERE bar > 1 and bar < 3 and baz > 1 and baz < 3'
+  );
+  const action = exprFromSql(sql.value, {foo: ['bar', 'baz']});
+  expect(reducer({}, action)).toStrictEqual({
+    expr: {
+      selection: {
+        arguments: {
+          select: {
+            and: {
+              clauses: [
+                {cmp: {lhs: 'bar', op: '$gt', rhs: '1'}},
+                {cmp: {lhs: 'bar', op: '$lt', rhs: '3'}},
+                {cmp: {lhs: 'baz', op: '$gt', rhs: '1'}},
+                {cmp: {lhs: 'baz', op: '$lt', rhs: '3'}},
+              ],
+            },
+          },
+        },
+        children: [{relation: 'foo'}],
+      },
+    },
+  });
+});
+
+/** @test {relexp} */
 it("converts a basic selection with both 'AND's in 'OR'", () => {
   const sql = parser.parse(
     'SELECT * FROM foo WHERE bar > 1 and baz < 3 or baz > 1 and bar < 3'

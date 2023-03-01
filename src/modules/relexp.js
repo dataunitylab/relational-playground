@@ -131,14 +131,14 @@ function convertExpr(
     case 'AndExpression':
       // Collect all expressions on either side of the AND
       let and: Array<any> = [];
-      if (expr.left.type === 'AndExpression') {
-        addToExpr(and, expr.left.left, types, tables);
-        addToExpr(and, expr.left.right, types, tables);
-      } else {
-        addToExpr(and, expr.left, types, tables);
+      let exprLeft = Object.assign({}, expr);
+      let exprRight: Array<any> = [];
+      while (exprLeft.type === 'AndExpression') {
+        exprRight.unshift(exprLeft.right);
+        exprLeft = exprLeft.left;
       }
-
-      addToExpr(and, expr.right, types, tables);
+      addToExpr(and, exprLeft, types, tables);
+      exprRight.forEach((element) => addToExpr(and, element, types, tables));
 
       return {and: {clauses: and}};
 
@@ -414,6 +414,17 @@ function buildRelExp(
   }
 }
 
+function selectionExpr(select: {[string]: any}, children: {[string]: any}) {
+  return {
+    selection: {
+      arguments: {
+        select: select,
+      },
+      children: [children],
+    },
+  };
+}
+
 /**
  * Returns a join expression, with the given left, right and join configurations
  * @param left config
@@ -454,40 +465,119 @@ function optimize(type: string, expr: {[string]: any}) {
       const selectChildren = 'selection' in expr ? expr.selection.children : [];
       for (const child of selectChildren) {
         if ('join' in child) {
+          let joinLeft = child.join.left.relation;
+          let joinRight = child.join.right.relation;
+
+          // optimize selection statements with 'and'
+          if ('and' in expr.selection.arguments.select) {
+            // let select0Left =
+            //   expr.selection.arguments.select.and.clauses[0].cmp.lhs.split(
+            //     '.'
+            //   )[0];
+            // let select0Right =
+            //   expr.selection.arguments.select.and.clauses[0].cmp.rhs.split(
+            //     '.'
+            //   )[0];
+            // let select1Left =
+            //   expr.selection.arguments.select.and.clauses[1].cmp.lhs.split(
+            //     '.'
+            //   )[0];
+            // let select1Right =
+            //   expr.selection.arguments.select.and.clauses[1].cmp.rhs.split(
+            //     '.'
+            //   )[0];
+            // // split select statements with 'and' into two selects on each side of a join
+            // // this is only possible when each condition in the 'and' deals with (compares)
+            // // different tables
+            // if (
+            //   (select0Left === joinLeft || select0Right === joinLeft) &&
+            //   (select1Left === joinRight || select1Right === joinRight)
+            // ) {
+            //   let left = selectionExpr(
+            //     {cmp: expr.selection.arguments.select.and.clauses[0].cmp},
+            //     {
+            //       relation: joinLeft,
+            //     }
+            //   );
+            //   let right = selectionExpr(
+            //     {cmp: expr.selection.arguments.select.and.clauses[1].cmp},
+            //     {
+            //       relation: joinRight,
+            //     }
+            //   );
+            //   let join = child.join;
+            //   return joinExpr(left, right, join);
+            // } else if (
+            //   (select0Left === joinRight || select0Right === joinRight) &&
+            //   (select1Left === joinLeft || select1Right === joinLeft)
+            // ) {
+            //   let left = selectionExpr(
+            //     {cmp: expr.selection.arguments.select.and.clauses[1].cmp},
+            //     {
+            //       relation: joinLeft,
+            //     }
+            //   );
+            //   let right = selectionExpr(
+            //     {cmp: expr.selection.arguments.select.and.clauses[0].cmp},
+            //     {
+            //       relation: joinRight,
+            //     }
+            //   );
+            //   let join = child.join;
+            //   return joinExpr(left, right, join);
+            // } else if (
+            //   (select0Left === joinLeft || select0Right === joinLeft) &&
+            //   (select1Left === joinLeft || select1Right === joinLeft)
+            // ) {
+            //   let left = selectionExpr(
+            //     {and: expr.selection.arguments.select.and},
+            //     {relation: joinLeft}
+            //   );
+            //   let right = child.join.right;
+            //   let join = child.join;
+            //   return joinExpr(left, right, join);
+            // } else if (
+            //   (select0Left === joinRight || select0Right === joinRight) &&
+            //   (select1Left === joinRight || select1Right === joinRight)
+            // ) {
+            //   let left = child.join.left;
+            //   let right = selectionExpr(
+            //     {and: expr.selection.arguments.select.and},
+            //     {relation: joinRight}
+            //   );
+            //   let join = child.join;
+            //   return joinExpr(left, right, join);
+            // } else {
+            //   return expr;
+            // }
+          } else if ('or' in expr.selection.arguments.select) {
+            return expr;
+          }
+
           // relation names
           let selectLeft =
             expr.selection.arguments.select.cmp.lhs.split('.')[0];
           let selectRight =
             expr.selection.arguments.select.cmp.rhs.split('.')[0];
-          let joinLeft = child.join.left.relation;
-          let joinRight = child.join.right.relation;
 
           if (selectLeft === joinLeft || selectRight === joinLeft) {
-            let left = {
-              selection: {
-                arguments: expr.selection.arguments,
-                children: [
-                  {
-                    relation: child.join.left.relation,
-                  },
-                ],
-              },
-            };
+            let left = selectionExpr(
+              {cmp: expr.selection.arguments.select.cmp},
+              {
+                relation: child.join.left.relation,
+              }
+            );
             let right = child.join.right;
             let join = child.join;
             return joinExpr(left, right, join);
           } else if (selectLeft === joinRight || selectRight === joinRight) {
             let left = child.join.left;
-            let right = {
-              selection: {
-                arguments: expr.selection.arguments,
-                children: [
-                  {
-                    relation: child.join.right.relation,
-                  },
-                ],
-              },
-            };
+            let right = selectionExpr(
+              {cmp: expr.selection.arguments.select.cmp},
+              {
+                relation: child.join.right.relation,
+              }
+            );
             let join = child.join;
             return joinExpr(left, right, join);
           }
