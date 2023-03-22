@@ -103,7 +103,13 @@ function convertExpr(
     case 'AndExpression':
       // Collect all expressions on either side of the AND
       let and: Array<any> = [];
-      addToExpr(and, expr.left, types, tables);
+      if (expr.left.type === 'AndExpression') {
+        addToExpr(and, expr.left.left, types, tables);
+        addToExpr(and, expr.left.right, types, tables);
+      } else {
+        addToExpr(and, expr.left, types, tables);
+      }
+
       addToExpr(and, expr.right, types, tables);
 
       return {and: {clauses: and}};
