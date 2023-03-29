@@ -20,6 +20,12 @@ type ResetAction = {
 
 type Action = ChangeAction | ResetAction;
 
+type Output = {
+  name: string,
+  columns: Array<string>,
+  data: Array<{[string]: any}>,
+};
+
 /**
  * @param expr - a relational algebra expression object
  * @param element
@@ -86,7 +92,7 @@ function getCombinedData(
   rightRow: {[string]: any},
   combinedColumns: Array<string>,
   outerJoin: ?boolean
-) {
+): {[string]: any} {
   // Combine data from the two objects including the relation name
   const combinedData: {[string]: any} = {};
   for (const leftKey in leftRow) {
@@ -162,7 +168,7 @@ function resolveValue(path: string, row: {[string]: any}): string {
  * @param item - an item to evaluate against
  * @return result of evaluating the expression
  */
-function applyItem(expr: {[string]: any}, item: {[string]: any}) {
+function applyItem(expr: {[string]: any}, item: {[string]: any}): any {
   const type = Object.keys(expr)[0];
   switch (type) {
     case 'cmp':
@@ -303,7 +309,7 @@ function applyExpr(
       }
 
       const outColumns: Array<string> = setLeft.columns.slice();
-      const setOutput = {
+      const setOutput: Output = {
         name: setLeft.name + ' ∪ ' + setRight.name,
         columns: outColumns,
         data: [],
@@ -377,7 +383,7 @@ function applyExpr(
         joinSymbol = ' ⟖ ';
       }
 
-      const joinOutput = {
+      const joinOutput: Output = {
         name: joinLeft.name + joinSymbol + joinRight.name,
         columns: combinedJoinColumns,
         data: [],
@@ -426,7 +432,7 @@ function applyExpr(
       const right = applyExpr(expr.product.right, sourceData);
       const combinedColumns = getCombinedColumns(left, right);
 
-      const output = {
+      const output: Output = {
         name: left.name + ' × ' + right.name,
         columns: combinedColumns,
         data: [],

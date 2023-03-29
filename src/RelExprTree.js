@@ -122,7 +122,7 @@ const RelExprTree: StatelessFunctionalComponent<Props> = (props) => {
     }
   };
 
-  const keys = [];
+  const keys: Array<string> = [];
   const data = [buildTree(props.expr, keys)];
   return (
     <div className="RelExprTree">

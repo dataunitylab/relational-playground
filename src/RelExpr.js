@@ -29,7 +29,7 @@ type Props = {
 
 /** A graphical representation of a relational algebra expression */
 const RelExpr: StatelessFunctionalComponent<Props> = (props) => {
-  const nodeRef = useRef();
+  const nodeRef = useRef<?HTMLSpanElement>();
 
   /**
    * @param expr - a relational algebra expression object to render

@@ -9,12 +9,14 @@ import {resetAction} from './modules/data';
 
 import type {StatelessFunctionalComponent} from 'react';
 
+import type {State} from './modules/data';
+
 type Props = {
   ReactGA: any,
 };
 
 const EditorContainer: StatelessFunctionalComponent<Props> = (props) => {
-  const types = useSelector((state) =>
+  const types = useSelector<{data: State}, _>((state) =>
     fromEntries(
       Object.entries(state.data.sourceData).map(([name, data]) => [
         name,
