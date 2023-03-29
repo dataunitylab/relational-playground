@@ -50,7 +50,7 @@ export function disableOptimization(): DisableOptimizationAction {
   return {type: DISABLE_OPTIMIZATION};
 }
 
-type State = {
+export type State = {
   expr: {[string]: any},
   unoptimizedExpr?: {[string]: any},
 };
@@ -98,7 +98,7 @@ function convertExpr(
   expr: {[string]: any},
   types: {[string]: Array<string>},
   tables: Array<string>
-) {
+): {[string]: any} {
   switch (expr.type) {
     case 'AndExpression':
       // Collect all expressions on either side of the AND
@@ -227,7 +227,7 @@ function buildRelExp(
   sql: {[string]: any},
   types: {[string]: Array<string>},
   tables: Array<string>
-) {
+): {[string]: any} {
   switch (sql.type) {
     case 'Except':
     case 'Intersect':

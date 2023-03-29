@@ -91,7 +91,7 @@ const Home: StatelessFunctionalComponent<Props> = (props) => {
   );
 };
 
-const mapStateToProps = (state: {[string]: any}) => {
+const mapStateToProps = (state: {[string]: any}): {[string]: any} => {
   return {
     expr: state.relexp.expr,
   };
@@ -105,7 +105,14 @@ const mapDispatchToProps = (dispatch: (any) => void) => {
   };
 };
 
-const ConnectedHome: ComponentType<Props> = connect<_, {||}, _, _, _, _>(
+const ConnectedHome: ComponentType<Props> = connect<
+  {expr: {[string]: any}},
+  {||},
+  _,
+  _,
+  _,
+  _
+>(
   mapStateToProps,
   mapDispatchToProps
 )(Home);

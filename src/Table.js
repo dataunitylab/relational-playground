@@ -23,7 +23,7 @@ const Table: StatelessFunctionalComponent<Props> = (props) => {
       columns: props.columns.map((c) => ({
         id: c,
         Header: c,
-        accessor: (d) => d[c],
+        accessor: (d: {[string]: any}) => d[c],
       })),
     },
   ];

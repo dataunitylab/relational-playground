@@ -8,13 +8,15 @@ import RelExprTree from './RelExprTree';
 import type {StatelessFunctionalComponent} from 'react';
 import {disableOptimization, enableOptimization} from './modules/relexp';
 
+import type {State} from './modules/relexp';
+
 type Props = {
   ReactGA: any,
 };
 
 const CurrentRelExpr: StatelessFunctionalComponent<Props> = (props) => {
   const dispatch = useDispatch();
-  const expr = useSelector((state) => state.relexp.expr);
+  const expr = useSelector<{relexp: State}, _>((state) => state.relexp.expr);
   const [showTree, setShowTree] = useState(false);
   const [optimizeQuery, setOptimizeQuery] = useState(false);
 

@@ -12,7 +12,7 @@ type Props = {
 /** Base for all relational algebra operators */
 const RelOp: StatelessFunctionalComponent<Props> = (props) => {
   const [hoverClass, setHoverClass] = useState('');
-  const elementRef = useRef(null);
+  const elementRef = useRef<?HTMLSpanElement>(null);
 
   function handleHover(e: SyntheticMouseEvent<HTMLElement>) {
     const hovering = e.type === 'mouseover';

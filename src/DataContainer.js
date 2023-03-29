@@ -5,8 +5,10 @@ import {useSelector} from 'react-redux';
 
 import type {StatelessFunctionalComponent} from 'react';
 
+import type {State} from './modules/data';
+
 const DataContainer: StatelessFunctionalComponent<{||}> = () => {
-  const data = useSelector((state) => state.data);
+  const data = useSelector<{data: State}, _>((state) => state.data);
   if (data.current) {
     return (
       <div className="dataContainer" style={{margin: '1em'}}>
