@@ -5,6 +5,9 @@
   # Publish diretory
   publish = "build/"
 
+  # Ignore deploys for dependabot branches
+  ignore = "node ignore_build.js"
+
 [[headers]]
   # Define which paths this specific [[headers]] block will cover.
   for = "/*"
