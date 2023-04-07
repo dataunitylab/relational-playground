@@ -62,6 +62,7 @@ export type State = {
 
 const initialState = {
   expr: {},
+  optimized: false,
 };
 
 const opMap = {
@@ -577,16 +578,20 @@ const reducer: (
     switch (action.type) {
       case EXPR_FROM_SQL:
         draft.expr = buildRelExp(action.sql, action.types, []);
+        delete draft.unoptimizedExpr;
+        draft.optimized = false;
         break;
       case ENABLE_OPTIMIZATION:
         draft.unoptimizedExpr = draft.expr;
         draft.expr = optimize(action.optimization, draft.expr);
+        draft.optimized = true;
         break;
       case DISABLE_OPTIMIZATION:
         if (draft.unoptimizedExpr) {
           draft.expr = draft.unoptimizedExpr;
           delete draft.unoptimizedExpr;
         }
+        draft.optimized = false;
     }
   },
   initialState

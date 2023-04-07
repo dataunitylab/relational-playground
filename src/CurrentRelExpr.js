@@ -18,7 +18,7 @@ const CurrentRelExpr: StatelessFunctionalComponent<Props> = (props) => {
   const dispatch = useDispatch();
   const expr = useSelector<{relexp: State}, _>((state) => state.relexp.expr);
   const [showTree, setShowTree] = useState(false);
-  const [optimizeQuery, setOptimizeQuery] = useState(false);
+  const optimized = useSelector((state) => state.relexp.optimized);
 
   function handleTreeInputChange(event: SyntheticInputEvent<HTMLInputElement>) {
     props.ReactGA.event({
@@ -36,7 +36,6 @@ const CurrentRelExpr: StatelessFunctionalComponent<Props> = (props) => {
     } else {
       dispatch(disableOptimization());
     }
-    setOptimizeQuery(event.target.checked);
   }
 
   const relExp = showTree ? (
@@ -70,7 +69,7 @@ const CurrentRelExpr: StatelessFunctionalComponent<Props> = (props) => {
           Query Optimization
           <input
             type="checkbox"
-            checked={optimizeQuery}
+            checked={optimized}
             onChange={handleOptimizeInputChange}
           />
         </label>
