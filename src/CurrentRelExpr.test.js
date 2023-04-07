@@ -50,10 +50,22 @@ describe('CurrentRelExpr', () => {
     expect(wrapper.find(RelExpr).length).toBe(0);
     expect(wrapper.find(RelExprTree).length).toBe(1);
 
-    // Click the checkbox again to toggle back
+    // Click the checkbox again to toggle the tree view back
     wrapper
       .find('input')
       .at(0)
+      .simulate('change', {target: {checked: false}});
+
+    // Click the checkbox to toggle query optimization
+    wrapper
+      .find('input')
+      .at(1)
+      .simulate('change', {target: {checked: true}});
+
+    // Click the checkbox again to toggle query optimization back
+    wrapper
+      .find('input')
+      .at(1)
       .simulate('change', {target: {checked: false}});
 
     // We should have analytics events for the checkbox

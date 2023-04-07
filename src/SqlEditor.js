@@ -115,7 +115,7 @@ class SqlEditor extends React.Component<Props, State> {
   }
 
   render(): Node {
-    // Include any error messaage if needed
+    // Include any error message if needed
     let error: React.Node = <React.Fragment />;
     if (this.state.error) {
       error = <div style={{color: 'red'}}>{this.state.error}</div>;
