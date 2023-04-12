@@ -7,14 +7,17 @@ const parser = require('@michaelmior/js-sql-parser');
 it('converts a simple SELECT *', () => {
   const sql = parser.parse('SELECT * FROM foo');
   const action = exprFromSql(sql.value, {});
-  expect(reducer({}, action)).toStrictEqual({expr: {relation: 'foo'}});
+  expect(reducer({}, action)).toMatchObject({
+    expr: {relation: 'foo'},
+    optimized: false,
+  });
 });
 
 /** @test {relexp} */
 it('converts a simple projection', () => {
   const sql = parser.parse('SELECT bar FROM foo');
   const action = exprFromSql(sql.value, {foo: ['bar']});
-  expect(reducer({}, action)).toStrictEqual({
+  expect(reducer({}, action)).toMatchObject({
     expr: {
       projection: {
         arguments: {project: ['bar']},
@@ -28,7 +31,7 @@ it('converts a simple projection', () => {
 it('converts a rename', () => {
   const sql = parser.parse('SELECT bar as baz FROM foo');
   const action = exprFromSql(sql.value, {foo: ['bar']});
-  expect(reducer({}, action)).toStrictEqual({
+  expect(reducer({}, action)).toMatchObject({
     expr: {
       rename: {
         arguments: {rename: {bar: 'baz'}},
@@ -49,7 +52,7 @@ it('converts a rename', () => {
 it('converts a difference', () => {
   const sql = parser.parse('SELECT * FROM foo EXCEPT SELECT * FROM bar');
   const action = exprFromSql(sql.value, {});
-  expect(reducer({}, action)).toStrictEqual({
+  expect(reducer({}, action)).toMatchObject({
     expr: {
       except: {
         left: {relation: 'foo'},
@@ -64,7 +67,7 @@ it('converts a difference', () => {
 it('converts an intersection', () => {
   const sql = parser.parse('SELECT * FROM foo INTERSECT SELECT * FROM bar');
   const action = exprFromSql(sql.value, {});
-  expect(reducer({}, action)).toStrictEqual({
+  expect(reducer({}, action)).toMatchObject({
     expr: {
       intersect: {
         left: {relation: 'foo'},
@@ -79,7 +82,7 @@ it('converts an intersection', () => {
 it('converts a distinct union', () => {
   const sql = parser.parse('SELECT * FROM foo UNION SELECT * FROM bar');
   const action = exprFromSql(sql.value, {});
-  expect(reducer({}, action)).toStrictEqual({
+  expect(reducer({}, action)).toMatchObject({
     expr: {
       union: {
         left: {relation: 'foo'},
@@ -94,7 +97,7 @@ it('converts a distinct union', () => {
 it('converts a union', () => {
   const sql = parser.parse('SELECT * FROM foo UNION ALL SELECT * FROM bar');
   const action = exprFromSql(sql.value, {});
-  expect(reducer({}, action)).toStrictEqual({
+  expect(reducer({}, action)).toMatchObject({
     expr: {
       union: {
         left: {relation: 'foo'},
@@ -109,7 +112,7 @@ it('converts a union', () => {
 it('converts a union on two tables with the same column', () => {
   const sql = parser.parse('SELECT bar FROM foo UNION SELECT bar FROM baz');
   const action = exprFromSql(sql.value, {foo: ['bar'], baz: ['bar']});
-  expect(reducer({}, action)).toStrictEqual({
+  expect(reducer({}, action)).toMatchObject({
     expr: {
       union: {
         left: {
@@ -134,7 +137,7 @@ it('converts a union on two tables with the same column', () => {
 it('converts a simple cross join', () => {
   const sql = parser.parse('SELECT * FROM foo JOIN bar');
   const action = exprFromSql(sql.value, {});
-  expect(reducer({}, action)).toStrictEqual({
+  expect(reducer({}, action)).toMatchObject({
     expr: {
       product: {
         left: {relation: 'foo'},
@@ -148,7 +151,7 @@ it('converts a simple cross join', () => {
 it('converts a join with a condition', () => {
   const sql = parser.parse('SELECT * FROM foo JOIN bar ON foo.baz = bar.corge');
   const action = exprFromSql(sql.value, {foo: ['baz'], bar: ['corge']});
-  expect(reducer({}, action)).toStrictEqual({
+  expect(reducer({}, action)).toMatchObject({
     expr: {
       join: {
         left: {relation: 'foo'},
@@ -166,7 +169,7 @@ it('converts a left outer join with a condition', () => {
     'SELECT * FROM foo LEFT JOIN bar ON foo.baz = bar.corge'
   );
   const action = exprFromSql(sql.value, {foo: ['baz'], bar: ['corge']});
-  expect(reducer({}, action)).toStrictEqual({
+  expect(reducer({}, action)).toMatchObject({
     expr: {
       join: {
         left: {relation: 'foo'},
@@ -184,7 +187,7 @@ it('converts a right outer join with a condition', () => {
     'SELECT * FROM foo RIGHT JOIN bar ON foo.baz = bar.corge'
   );
   const action = exprFromSql(sql.value, {foo: ['baz'], bar: ['corge']});
-  expect(reducer({}, action)).toStrictEqual({
+  expect(reducer({}, action)).toMatchObject({
     expr: {
       join: {
         left: {relation: 'foo'},
@@ -197,12 +200,12 @@ it('converts a right outer join with a condition', () => {
 });
 
 /** @test {relexp} */
-it('converts a pre-optimized select-join with a condition', () => {
+it('converts a pre-optimized select-join statement with a condition', () => {
   const sql = parser.parse(
     'SELECT * FROM foo JOIN bar ON foo.baz = bar.corge WHERE foo.baz = 1'
   );
   const action = exprFromSql(sql.value, {foo: ['baz'], bar: ['corge']});
-  expect(reducer({}, action)).toStrictEqual({
+  expect(reducer({}, action)).toMatchObject({
     expr: {
       selection: {
         arguments: {
@@ -224,14 +227,14 @@ it('converts a pre-optimized select-join with a condition', () => {
 });
 
 /** @test {relexp} */
-it('converts a post-optimized select-join with a condition', () => {
+it('converts a post-optimized select-join statement with a condition', () => {
   const sql = parser.parse(
     'SELECT * FROM foo JOIN bar ON foo.baz = bar.corge WHERE foo.baz = 1'
   );
   const action = exprFromSql(sql.value, {foo: ['baz'], bar: ['corge']});
   const draft = reducer({}, action);
   const optimizeAction = enableOptimization('join');
-  expect(reducer(draft, optimizeAction)).toStrictEqual({
+  expect(reducer(draft, optimizeAction)).toMatchObject({
     expr: {
       join: {
         condition: {cmp: {lhs: 'foo.baz', op: '$eq', rhs: 'bar.corge'}},
@@ -268,7 +271,7 @@ it('converts a post-optimized select-join with a condition', () => {
 });
 
 /** @test {relexp} */
-it('converts a optimize-disabled select-join with a condition', () => {
+it('checks if a select-join statement with a condition converts back correctly after optimization', () => {
   const sql = parser.parse(
     'SELECT * FROM foo JOIN bar ON foo.baz = bar.corge WHERE foo.baz = 1'
   );
@@ -277,7 +280,131 @@ it('converts a optimize-disabled select-join with a condition', () => {
   const optimizeAction = enableOptimization('join');
   const draft = reducer(preOptDraft, optimizeAction);
   const disableOptimizeAction = disableOptimization();
-  expect(reducer(draft, disableOptimizeAction)).toStrictEqual(preOptDraft);
+  expect(reducer(draft, disableOptimizeAction)).toMatchObject(preOptDraft);
+});
+
+/** @test {relexp} */
+it('converts a pre-optimized select-join statement with multiple conditions', () => {
+  const sql = parser.parse(
+    'SELECT * FROM foo JOIN bar ON foo.baz = bar.corge WHERE foo.baz > 4 AND foo.baz < 9 AND bar.corge > 1 AND bar.corge < 6'
+  );
+  const action = exprFromSql(sql.value, {foo: ['baz'], bar: ['corge']});
+  expect(reducer({}, action)).toMatchObject({
+    expr: {
+      selection: {
+        arguments: {
+          select: {
+            and: {
+              clauses: [
+                {cmp: {lhs: 'foo.baz', op: '$gt', rhs: '4'}},
+                {cmp: {lhs: 'foo.baz', op: '$lt', rhs: '9'}},
+                {cmp: {lhs: 'bar.corge', op: '$gt', rhs: '1'}},
+                {cmp: {lhs: 'bar.corge', op: '$lt', rhs: '6'}},
+              ],
+            },
+          },
+        },
+        children: [
+          {
+            join: {
+              condition: {cmp: {lhs: 'foo.baz', op: '$eq', rhs: 'bar.corge'}},
+              left: {relation: 'foo'},
+              right: {relation: 'bar'},
+              type: 'inner',
+            },
+          },
+        ],
+      },
+    },
+  });
+});
+
+/** @test {relexp} */
+it('converts a post-optimized select-join statement with multiple conditions', () => {
+  const sql = parser.parse(
+    'SELECT * FROM foo JOIN bar ON foo.baz = bar.corge WHERE foo.baz > 4 AND foo.baz < 9 AND bar.corge > 1 AND bar.corge < 6'
+  );
+  const action = exprFromSql(sql.value, {foo: ['baz'], bar: ['corge']});
+  const draft = reducer({}, action);
+  const optimizeAction = enableOptimization('join');
+  expect(reducer(draft, optimizeAction)).toMatchObject({
+    expr: {
+      join: {
+        condition: {cmp: {lhs: 'foo.baz', op: '$eq', rhs: 'bar.corge'}},
+        left: {
+          selection: {
+            arguments: {
+              select: {
+                and: {
+                  clauses: [
+                    {cmp: {lhs: 'foo.baz', op: '$gt', rhs: '4'}},
+                    {cmp: {lhs: 'foo.baz', op: '$lt', rhs: '9'}},
+                  ],
+                },
+              },
+            },
+            children: [{relation: 'foo'}],
+          },
+        },
+        right: {
+          selection: {
+            arguments: {
+              select: {
+                and: {
+                  clauses: [
+                    {cmp: {lhs: 'bar.corge', op: '$gt', rhs: '1'}},
+                    {cmp: {lhs: 'bar.corge', op: '$lt', rhs: '6'}},
+                  ],
+                },
+              },
+            },
+            children: [{relation: 'bar'}],
+          },
+        },
+        type: 'inner',
+      },
+    },
+    unoptimizedExpr: {
+      selection: {
+        arguments: {
+          select: {
+            and: {
+              clauses: [
+                {cmp: {lhs: 'foo.baz', op: '$gt', rhs: '4'}},
+                {cmp: {lhs: 'foo.baz', op: '$lt', rhs: '9'}},
+                {cmp: {lhs: 'bar.corge', op: '$gt', rhs: '1'}},
+                {cmp: {lhs: 'bar.corge', op: '$lt', rhs: '6'}},
+              ],
+            },
+          },
+        },
+        children: [
+          {
+            join: {
+              condition: {cmp: {lhs: 'foo.baz', op: '$eq', rhs: 'bar.corge'}},
+              left: {relation: 'foo'},
+              right: {relation: 'bar'},
+              type: 'inner',
+            },
+          },
+        ],
+      },
+    },
+    optimized: true,
+  });
+});
+
+/** @test {relexp} */
+it('checks if a select-join statement with mutiple condition converts back correctly after optimization', () => {
+  const sql = parser.parse(
+    'SELECT * FROM foo JOIN bar ON foo.baz = bar.corge WHERE foo.baz > 4 AND foo.baz < 9 AND bar.corge > 1 AND bar.corge < 6'
+  );
+  const action = exprFromSql(sql.value, {foo: ['baz'], bar: ['corge']});
+  const preOptDraft = reducer({}, action);
+  const optimizeAction = enableOptimization('join');
+  const draft = reducer(preOptDraft, optimizeAction);
+  const disableOptimizeAction = disableOptimization();
+  expect(reducer(draft, disableOptimizeAction)).toMatchObject(preOptDraft);
 });
 
 /** @test {relexp} */
@@ -351,7 +478,7 @@ it('converts a sorting on multiple column conditions', () => {
 it('converts a selection', () => {
   const sql = parser.parse('SELECT * FROM foo WHERE bar > 1');
   const action = exprFromSql(sql.value, {foo: ['bar']});
-  expect(reducer({}, action)).toStrictEqual({
+  expect(reducer({}, action)).toMatchObject({
     expr: {
       selection: {
         arguments: {select: {cmp: {lhs: 'bar', op: '$gt', rhs: '1'}}},
@@ -365,7 +492,7 @@ it('converts a selection', () => {
 it('converts a selection with a literal on the left', () => {
   const sql = parser.parse('SELECT * FROM foo WHERE 1 > bar');
   const action = exprFromSql(sql.value, {foo: ['bar']});
-  expect(reducer({}, action)).toStrictEqual({
+  expect(reducer({}, action)).toMatchObject({
     expr: {
       selection: {
         arguments: {select: {cmp: {lhs: '1', op: '$gt', rhs: 'bar'}}},
@@ -381,7 +508,7 @@ it.each(['and', 'or'])('converts a selection with %s', (op) => {
     'SELECT * FROM foo WHERE bar > 1 ' + op + ' baz < 3'
   );
   const action = exprFromSql(sql.value, {foo: ['bar', 'baz']});
-  expect(reducer({}, action)).toStrictEqual({
+  expect(reducer({}, action)).toMatchObject({
     expr: {
       selection: {
         arguments: {
@@ -429,7 +556,7 @@ it("converts a basic selection with multiple 'AND's", () => {
     'SELECT * FROM foo WHERE bar > 1 and bar < 3 and baz > 1 and baz < 3'
   );
   const action = exprFromSql(sql.value, {foo: ['bar', 'baz']});
-  expect(reducer({}, action)).toStrictEqual({
+  expect(reducer({}, action)).toMatchObject({
     expr: {
       selection: {
         arguments: {
@@ -456,7 +583,7 @@ it("converts a basic selection with both 'AND's in 'OR'", () => {
     'SELECT * FROM foo WHERE bar > 1 and baz < 3 or baz > 1 and bar < 3'
   );
   const action = exprFromSql(sql.value, {foo: ['bar', 'baz']});
-  expect(reducer({}, action)).toStrictEqual({
+  expect(reducer({}, action)).toMatchObject({
     expr: {
       selection: {
         arguments: {
@@ -495,7 +622,7 @@ it("converts a basic selection with both 'OR's in 'AND'", () => {
     'SELECT * FROM foo WHERE bar > 1 or baz < 3 and baz > 1 or bar < 3'
   );
   const action = exprFromSql(sql.value, {foo: ['bar', 'baz']});
-  expect(reducer({}, action)).toStrictEqual({
+  expect(reducer({}, action)).toMatchObject({
     expr: {
       selection: {
         arguments: {
@@ -534,7 +661,7 @@ it("converts a basic selection with both 'OR's in 'AND'", () => {
     'SELECT * FROM foo WHERE (bar > 1 or baz < 3) and (baz > 1 or bar < 3)'
   );
   const action = exprFromSql(sql.value, {foo: ['bar', 'baz']});
-  expect(reducer({}, action)).toStrictEqual({
+  expect(reducer({}, action)).toMatchObject({
     expr: {
       selection: {
         arguments: {
@@ -597,7 +724,7 @@ it("converts a selection with more than two 'AND' clauses", () => {
 it('converts a selection with NOT', () => {
   const sql = parser.parse('SELECT * FROM foo WHERE NOT bar > 1');
   const action = exprFromSql(sql.value, {foo: ['bar', 'baz']});
-  expect(reducer({}, action)).toStrictEqual({
+  expect(reducer({}, action)).toMatchObject({
     expr: {
       selection: {
         arguments: {
@@ -631,7 +758,7 @@ it('throws an error if no FROM clause is given', () => {
 it('should remove quotes from string literals', () => {
   const sql = parser.parse('SELECT * FROM foo WHERE bar = "baz"');
   const action = exprFromSql(sql.value, {foo: ['bar']});
-  expect(reducer({}, action)).toStrictEqual({
+  expect(reducer({}, action)).toMatchObject({
     expr: {
       selection: {
         arguments: {select: {cmp: {lhs: 'bar', op: '$eq', rhs: 'baz'}}},

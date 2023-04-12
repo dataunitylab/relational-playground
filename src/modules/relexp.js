@@ -58,6 +58,7 @@ export function disableOptimization(): DisableOptimizationAction {
 export type State = {
   expr: {[string]: any},
   unoptimizedExpr?: {[string]: any},
+  optimized: boolean,
 };
 
 const initialState = {
@@ -474,9 +475,7 @@ function optimize(type: string, expr: {[string]: any}) {
             let andClauses = expr.selection.arguments.select.and.clauses;
             let leftClauses: Array<any> = [];
             let rightClauses: Array<any> = [];
-            console.log('test0:' + JSON.stringify(andClauses, null, 4));
             for (let clause of andClauses) {
-              console.log('test:' + JSON.stringify(clause, null, 4));
               let leftRelation = clause.cmp.lhs.split('.')[0];
               let rightRelation = clause.cmp.rhs.split('.')[0];
               if (leftRelation === joinLeft || rightRelation === joinLeft) {
@@ -488,11 +487,9 @@ function optimize(type: string, expr: {[string]: any}) {
                 rightClauses.push(clause);
               }
             }
-            console.log('testLeft:' + JSON.stringify(leftClauses, null, 4));
-            console.log('testRight:' + JSON.stringify(rightClauses, null, 4));
 
             let leftExpr =
-              leftClauses.length == 0
+              leftClauses.length === 0
                 ? child.join.left
                 : selectionExpr(
                     {
@@ -505,7 +502,7 @@ function optimize(type: string, expr: {[string]: any}) {
                     }
                   );
             let rightExpr =
-              rightClauses.length == 0
+              rightClauses.length === 0
                 ? child.join.right
                 : selectionExpr(
                     {
