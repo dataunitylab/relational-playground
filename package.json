@@ -83,7 +83,7 @@
     "@storybook/addon-links": "^7.0.2",
     "@storybook/node-logger": "^7.0.2",
     "@storybook/preset-create-react-app": "^7.0.2",
-    "@storybook/react": "^7.0.2",
+    "@storybook/react": "^7.0.3",
     "@storybook/react-webpack5": "^7.0.2",
     "@storybook/testing-library": "^0.1.0",
     "@testing-library/react": "^12.1.5",
