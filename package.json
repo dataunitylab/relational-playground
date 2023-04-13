@@ -84,7 +84,7 @@
     "@storybook/node-logger": "^7.0.2",
     "@storybook/preset-create-react-app": "^7.0.2",
     "@storybook/react": "^7.0.2",
-    "@storybook/react-webpack5": "^7.0.2",
+    "@storybook/react-webpack5": "^7.0.4",
     "@storybook/testing-library": "^0.1.0",
     "@testing-library/react": "^12.1.5",
     "@welldone-software/why-did-you-render": "^7.0.1",
