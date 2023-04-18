@@ -310,6 +310,7 @@ function buildRelExp(
         }
       }
 
+    case 'SubQuery':
     case 'TableReference':
       return buildRelExp(sql.value, types, tables);
 
