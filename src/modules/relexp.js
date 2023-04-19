@@ -100,6 +100,29 @@ function convertExpr(
   tables: Array<string>
 ): {[string]: any} {
   switch (expr.type) {
+    case 'BetweenPredicate':
+      const lhs = convertExpr(expr.left, types, tables);
+      return {
+        and: {
+          clauses: [
+            {
+              cmp: {
+                lhs,
+                op: '$gte',
+                rhs: convertExpr(expr.right.left, types, tables),
+              },
+            },
+            {
+              cmp: {
+                lhs,
+                op: '$lte',
+                rhs: convertExpr(expr.right.right, types, tables),
+              },
+            },
+          ],
+        },
+      };
+
     case 'AndExpression':
       // Collect all expressions on either side of the AND
       let and: Array<any> = [];
