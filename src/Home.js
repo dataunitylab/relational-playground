@@ -1,13 +1,11 @@
 // @flow
 import * as React from 'react';
 import {lazy, useEffect, Suspense} from 'react';
-import {connect} from 'react-redux';
 import CurrentRelExpr from './CurrentRelExpr';
 import DataContainer from './DataContainer';
 import EditorContainer from './EditorContainer';
 import SourceMultiTable from './SourceMultiTable';
 import SplitPane from 'react-split-pane';
-import {changeExpr} from './modules/data';
 import {BrowserView, MobileOnlyView} from 'react-device-detect';
 import ReactGA from 'react-ga';
 
@@ -91,29 +89,4 @@ const Home: StatelessFunctionalComponent<Props> = (props) => {
   );
 };
 
-const mapStateToProps = (state: {[string]: any}): {[string]: any} => {
-  return {
-    expr: state.relexp.expr,
-  };
-};
-
-const mapDispatchToProps = (dispatch: (any) => void) => {
-  return {
-    changeExpr: (data: {[string]: any}, element: ?HTMLElement) => {
-      dispatch(changeExpr(data, element));
-    },
-  };
-};
-
-const ConnectedHome: ComponentType<Props> = connect<
-  {expr: {[string]: any}},
-  {||},
-  _,
-  _,
-  _,
-  _
->(
-  mapStateToProps,
-  mapDispatchToProps
-)(Home);
-export default ConnectedHome;
+export default Home;
