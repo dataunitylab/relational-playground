@@ -11,7 +11,7 @@ import ReactGA from 'react-ga';
 
 import './Home.css';
 
-import type {ComponentType, StatelessFunctionalComponent} from 'react';
+import type {StatelessFunctionalComponent} from 'react';
 
 const Tutorial = lazy(() => import('./Tutorial'));
 
