@@ -1,6 +1,6 @@
 {
   "name": "Doctor",
-  "columns": ["id", "firstName", "lastName", "salary"],
+  "columns": ["id", "firstName", "lastName", "salary", "departmentId"],
   "data": [
     {
       "id": 1,
