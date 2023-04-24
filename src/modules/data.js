@@ -140,19 +140,51 @@ function resolveColumn(path: string, row: {[string]: any}): string {
     }
   }
 
+  // Check for bare columns first
   const columns = [];
   for (const rowCol in row) {
-    if (rowCol === column || rowCol.endsWith('.' + column)) {
+    if (rowCol === column) {
       columns.push(rowCol);
     }
   }
 
-  // Ensure we find the correct column
+  // Check if we found the correct column
   if (columns.length === 1) {
     return columns[0];
+  } else if (columns.length > 1) {
+    throw new Error('Invalid column ' + path);
   }
 
-  throw new Error('Invalid column ' + path);
+  // Then check for the column with a prefix
+  columns.splice(0);
+  for (const rowCol in row) {
+    const rowColParts = rowCol.split('.').length;
+    if (!table && rowColParts < 3 && rowCol.endsWith('.' + column)) {
+      columns.push(rowCol);
+    }
+  }
+
+  // Check if we found the correct column
+  if (columns.length === 1) {
+    return columns[0];
+  } else if (columns.length > 1) {
+    throw new Error('Invalid column ' + path);
+  }
+
+  // Finally check with a table and column prefix
+  columns.splice(0);
+  for (const rowCol in row) {
+    if (table && rowCol.endsWith('.' + table + '.' + column)) {
+      columns.push(rowCol);
+    }
+  }
+
+  // Check if we found the correct column
+  if (columns.length === 1) {
+    return columns[0];
+  } else {
+    throw new Error('Invalid column ' + path);
+  }
 }
 
 // Try to resolve a column, otherwise treat it as a literal
@@ -293,7 +325,7 @@ function applyExpr(
 
     case 'relation':
       // Make a copy of the data from a source table and return it
-      return JSON.parse(JSON.stringify(sourceData[expr.relation]));
+      return {...sourceData[expr.relation]};
 
     case 'except':
     case 'intersect':

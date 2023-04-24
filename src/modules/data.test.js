@@ -170,6 +170,40 @@ it('can evaluate an inner join', () => {
   ]);
 });
 
+/** @test {data} */
+it('can project after multiple joins', () => {
+  const expr = {
+    projection: {
+      arguments: {project: ['bar', 'waldo']},
+      children: [
+        {
+          join: {
+            left: {
+              join: {
+                left: {relation: 'foo'},
+                right: {relation: 'corge'},
+                type: 'inner',
+                condition: {cmp: {lhs: 'bar', op: '$gt', rhs: '1'}},
+              },
+            },
+            right: {relation: 'garply'},
+            type: 'inner',
+            condition: {cmp: {lhs: 'grault', op: '$eq', rhs: 'waldo'}},
+          },
+        },
+      ],
+    },
+  };
+  const action = changeExpr(expr);
+  const current = reducer({sourceData: sourceData}, action).current;
+
+  expect(current.columns).toStrictEqual(['bar', 'waldo']);
+  expect(current.data).toStrictEqual([
+    {bar: 3, waldo: 7},
+    {bar: 5, waldo: 7},
+  ]);
+});
+
 it('can evaluate an left join', () => {
   const expr = {
     join: {
