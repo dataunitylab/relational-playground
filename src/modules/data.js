@@ -2,8 +2,9 @@
 import {deepEqual} from 'fast-equals';
 import produce from 'immer';
 
-import patient from '../resources/Patient.json';
+import department from '../resources/Department.json';
 import doctor from '../resources/Doctor.json';
+import patient from '../resources/Patient.json';
 
 export const CHANGE_EXPR = 'CHANGE_EXPR';
 export const RESET_EXPR = 'RESET_EXPR';
@@ -57,8 +58,8 @@ export type State = {
 // Source data which can be used in SQL queries
 const initialState = {
   sourceData: {
+    Department: department,
     Doctor: doctor,
-
     Patient: patient,
   },
   element: undefined,
