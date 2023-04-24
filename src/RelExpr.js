@@ -1,5 +1,5 @@
 // @flow
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {
   UnaryRelOp,
   Projection,
@@ -21,6 +21,8 @@ import ReactDOM from 'react-dom';
 import './RelExpr.css';
 
 import type {Node, StatelessFunctionalComponent} from 'react';
+import {useSelector} from 'react-redux';
+import type {State} from './modules/relexp';
 
 type Props = {
   changeExpr: typeof changeExpr,
@@ -31,6 +33,24 @@ type Props = {
 /** A graphical representation of a relational algebra expression */
 const RelExpr: StatelessFunctionalComponent<Props> = (props) => {
   const nodeRef = useRef<?HTMLSpanElement>();
+  const currentNode = useSelector<{data: State}, _>((state) => state.data.expr);
+
+  useEffect(() => {
+    // Adjust 'clicked' highlighting based on any changes to currentNode selected
+    const node =
+      ReactDOM.findDOMNode(nodeRef.current) instanceof HTMLElement
+        ? ReactDOM.findDOMNode(nodeRef.current)
+        : undefined;
+    if (node instanceof HTMLElement) {
+      const clicked = props.expr === currentNode;
+      let newClassName = node.className;
+      if (!clicked) {
+        newClassName = newClassName.replace(' clicked', '');
+        newClassName = newClassName.replace(' hovering', '');
+      }
+      node.className = newClassName;
+    }
+  }, [currentNode, props.expr]);
 
   /**
    * @param expr - a relational algebra expression object to render
@@ -159,15 +179,46 @@ const RelExpr: StatelessFunctionalComponent<Props> = (props) => {
       ReactDOM.findDOMNode(nodeRef.current) instanceof HTMLElement
         ? ReactDOM.findDOMNode(nodeRef.current)
         : undefined;
+    if (node instanceof HTMLElement) {
+      let newClassName = node.className;
+      const clicked = e.type === 'click' && !newClassName.includes(' clicked');
 
-    if (node instanceof HTMLElement && props.changeExpr) {
-      props.changeExpr(props.expr, node);
+      if (props.changeExpr) {
+        if (clicked) {
+          props.changeExpr(props.expr, node);
+        } else {
+          props.changeExpr({}, node);
+        }
+      }
+
+      newClassName = newClassName.replace(' clicked', '');
+      newClassName = newClassName.replace(' hovering', '');
+      newClassName += clicked ? ' clicked' : '';
+
+      node.className = newClassName;
     }
 
     props.ReactGA.event({
       category: 'User Selecting Relational Algebra Enclosure',
       action: Object.keys(props.expr)[0],
     });
+  };
+
+  const handleExprHover = (e: SyntheticMouseEvent<HTMLElement>): void => {
+    e.stopPropagation();
+    const node =
+      ReactDOM.findDOMNode(nodeRef.current) instanceof HTMLElement
+        ? ReactDOM.findDOMNode(nodeRef.current)
+        : undefined;
+
+    if (node instanceof HTMLElement) {
+      const hovering = e.type === 'mouseover';
+      let newClassName = node.className;
+      newClassName = newClassName.replace(' hovering', '');
+      newClassName += hovering ? ' hovering' : '';
+
+      node.className = newClassName;
+    }
   };
 
   if (!props.expr || Object.keys(props.expr).length === 0) {
@@ -184,6 +235,8 @@ const RelExpr: StatelessFunctionalComponent<Props> = (props) => {
     return (
       <span
         className="RelExpr"
+        onMouseOver={handleExprHover}
+        onMouseOut={handleExprHover}
         onClick={handleExprClick}
         style={{margin: '.4em'}}
         ref={nodeRef}

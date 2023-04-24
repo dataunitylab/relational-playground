@@ -1,9 +1,11 @@
-.RelExpr .highlighted,
-.RelExpr.highlighted {
-  background-color: #ff3;
+.RelExpr .clicked,
+.RelExpr.clicked {
+  background: #ff3;
+  cursor: pointer;
 }
 
-.RelExpr .clicked {
-  background: #ff3;
+.RelExpr .hovering,
+.RelExpr.hovering {
+  background: #ffffb8;
   cursor: pointer;
 }

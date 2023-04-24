@@ -53,6 +53,7 @@ export type State = {
   current?: Data,
   sourceData: {[string]: Data},
   element: ?HTMLElement,
+  expr: {[string]: any},
 };
 
 // Source data which can be used in SQL queries
@@ -63,6 +64,7 @@ const initialState = {
     Patient: patient,
   },
   element: undefined,
+  expr: {},
 };
 
 function getCombinedColumns(left: {[string]: any}, right: {[string]: any}) {
@@ -521,39 +523,21 @@ function applyExpr(
   }
 }
 
-function highlightExpr(currentElement: ?HTMLElement, newElement: ?HTMLElement) {
-  if (currentElement !== newElement) {
-    if (currentElement) {
-      let newClassName = currentElement.className.replace(' highlighted', '');
-      currentElement.className = newClassName;
-    }
-    if (newElement) {
-      newElement.className = newElement.className + ' highlighted';
-    }
-  }
-  return newElement;
-}
-
-export function applyResetAction(currentElement: ?HTMLElement) {
-  if (currentElement) {
-    let newClassName = currentElement.className.replace(' highlighted', '');
-    currentElement.className = newClassName;
-  }
-}
-
 const reducer: (State, Action) => State = produce<State, Action>(
   (draft: State, action: Action) => {
     // eslint-disable-next-line default-case
     switch (action.type) {
       case RESET_EXPR:
-        applyResetAction(draft.element);
+        draft.expr = {};
+        draft.current = undefined;
         draft.element = undefined;
         break;
       case CHANGE_EXPR:
-        draft.current = applyExpr(action.expr, draft.sourceData);
-        if (draft.element) {
-          draft.element = highlightExpr(draft.element, action.element);
-        }
+        draft.expr = action.expr;
+        draft.current =
+          JSON.stringify(action.expr) === JSON.stringify({})
+            ? undefined
+            : applyExpr(action.expr, draft.sourceData);
         break;
     }
   },

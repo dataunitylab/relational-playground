@@ -1,7 +1,5 @@
 // @flow
-import React, {useRef, useState} from 'react';
-
-import './RelOp.css';
+import React from 'react';
 
 import type {Element, Node, StatelessFunctionalComponent} from 'react';
 import type {OrderByColumn} from './modules/relexp';
@@ -12,37 +10,7 @@ type Props = {
 
 /** Base for all relational algebra operators */
 const RelOp: StatelessFunctionalComponent<Props> = (props) => {
-  const [hoverClass, setHoverClass] = useState('');
-  const elementRef = useRef<?HTMLSpanElement>(null);
-
-  function handleHover(e: SyntheticMouseEvent<HTMLElement>) {
-    const hovering = e.type === 'mouseover';
-    e.stopPropagation();
-
-    const node = elementRef.current;
-
-    if (node) {
-      let newClassName = node instanceof HTMLElement ? node.className : '';
-
-      newClassName = newClassName.replace(' RelOp', '');
-      newClassName = newClassName.replace(' hovering', '');
-      newClassName += ' RelOp' + (hovering ? ' hovering' : '');
-
-      setHoverClass(newClassName);
-      if (node instanceof HTMLElement) node.className = newClassName;
-    }
-  }
-
-  return (
-    <span
-      ref={elementRef}
-      className={hoverClass}
-      onMouseOver={handleHover}
-      onMouseOut={handleHover}
-    >
-      {props.children}
-    </span>
-  );
+  return <span>{props.children}</span>;
 };
 
 export default RelOp;
