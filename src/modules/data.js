@@ -1,6 +1,6 @@
 // @flow
 import {deepEqual} from 'fast-equals';
-import produce from 'immer';
+import {produce} from 'immer';
 
 import department from '../resources/Department.json';
 import doctor from '../resources/Doctor.json';

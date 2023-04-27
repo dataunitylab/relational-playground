@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import {MemoryRouter} from 'react-router';
 import {configureStore} from '@reduxjs/toolkit';
 import {Provider} from 'react-redux';
-import produce from 'immer';
+import {produce} from 'immer';
 import App from './App';
 
 /** @test {App} */
