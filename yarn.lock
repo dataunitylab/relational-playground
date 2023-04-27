@@ -5071,7 +5071,7 @@
     npmlog "^5.0.1"
     pretty-hrtime "^1.0.3"
 
-"@storybook/node-logger@7.0.5", "@storybook/node-logger@^7.0.5":
+"@storybook/node-logger@7.0.5":
   version "7.0.5"
   resolved "https://registry.yarnpkg.com/@storybook/node-logger/-/node-logger-7.0.5.tgz#7619f65015701e1ca17026467b0f277c118342f6"
   integrity sha512-REBIMItpBVn9tpo2JXP3eyHg9lsYSt1JqWFaEncdKEiXWArv5c8pN6/od7MB3sU3NdHwEDKwLel2fZaDbg3jBQ==
@@ -5081,7 +5081,7 @@
     npmlog "^5.0.1"
     pretty-hrtime "^1.0.3"
 
-"@storybook/node-logger@7.0.7":
+"@storybook/node-logger@7.0.7", "@storybook/node-logger@^7.0.7":
   version "7.0.7"
   resolved "https://registry.yarnpkg.com/@storybook/node-logger/-/node-logger-7.0.7.tgz#114e6d1994e0445dd9e579768bdb89adbf1055cd"
   integrity sha512-5Y4LLgKeCStq1ktCKZ5eNPzQQSQ+CYZAlkEdzQ3Pp//0KXaZvVxEvGtaYhAymP2HatLpI8Oneo4lHrJioRfgww==
