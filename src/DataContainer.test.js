@@ -1,7 +1,7 @@
 import React from 'react';
 import {Provider} from 'react-redux';
 import {mount} from 'enzyme';
-import produce from 'immer';
+import {produce} from 'immer';
 import {configureStore} from '@reduxjs/toolkit';
 
 import DataContainer from './DataContainer';

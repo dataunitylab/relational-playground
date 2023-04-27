@@ -1,6 +1,6 @@
 // @flow
 import fromEntries from 'fromentries';
-import produce from 'immer';
+import {produce} from 'immer';
 
 export const EXPR_FROM_SQL = 'EXPR_FROM_SQL';
 export const ENABLE_OPTIMIZATION = 'ENABLE_OPTIMIZATION';
