@@ -108,7 +108,7 @@
     "redux-mock-store": "^1.5.4",
     "source-map-explorer": "^2.5.3",
     "storybook": "^7.0.5",
-    "stylelint": "^15.5.0",
+    "stylelint": "^15.6.0",
     "stylelint-config-standard": "^33.0.0",
     "webpack": "5"
   },
