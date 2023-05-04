@@ -4384,21 +4384,21 @@
     "@storybook/global" "^5.0.0"
     "@storybook/preview-api" "7.0.2"
 
-"@storybook/addon-interactions@^7.0.2":
-  version "7.0.2"
-  resolved "https://registry.yarnpkg.com/@storybook/addon-interactions/-/addon-interactions-7.0.2.tgz#0d03b98da000f633a4c9320e190d363913fa7b79"
-  integrity sha512-vPWnyGND4s9nVp+U21N/jE00dCRsHcKU68SoL4OiIZioTTRbLvrTG9eAdBkZXsVPpFHq8gndma3nXfplOSSckg==
+"@storybook/addon-interactions@^7.0.8":
+  version "7.0.8"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-interactions/-/addon-interactions-7.0.8.tgz#58ab54c749eb025e6a865c728aa603273bd59ced"
+  integrity sha512-fVAOJnWZ3Ce9TAnqR42xM/x0yiRK5qSnBPYGbZyg5Q2y4dg8jBvs8HRh44XMgUSs0XmtLVauAlA+Co549zKtwA==
   dependencies:
-    "@storybook/client-logger" "7.0.2"
-    "@storybook/components" "7.0.2"
-    "@storybook/core-common" "7.0.2"
-    "@storybook/core-events" "7.0.2"
+    "@storybook/client-logger" "7.0.8"
+    "@storybook/components" "7.0.8"
+    "@storybook/core-common" "7.0.8"
+    "@storybook/core-events" "7.0.8"
     "@storybook/global" "^5.0.0"
-    "@storybook/instrumenter" "7.0.2"
-    "@storybook/manager-api" "7.0.2"
-    "@storybook/preview-api" "7.0.2"
-    "@storybook/theming" "7.0.2"
-    "@storybook/types" "7.0.2"
+    "@storybook/instrumenter" "7.0.8"
+    "@storybook/manager-api" "7.0.8"
+    "@storybook/preview-api" "7.0.8"
+    "@storybook/theming" "7.0.8"
+    "@storybook/types" "7.0.8"
     jest-mock "^27.0.6"
     polished "^4.2.2"
     ts-dedent "^2.2.0"
@@ -4890,6 +4890,31 @@
     resolve-from "^5.0.0"
     ts-dedent "^2.0.0"
 
+"@storybook/core-common@7.0.8":
+  version "7.0.8"
+  resolved "https://registry.yarnpkg.com/@storybook/core-common/-/core-common-7.0.8.tgz#05c87cc48b1ae748ce43193171de06db195e44e5"
+  integrity sha512-W0/jtHndO4GO98g9bWnkMB9rZrH+aZCefEGZcUrTpgOa+Ws/b6l8YDEoR1V1hGPROT5cn82+9zU4s5y1d462Sg==
+  dependencies:
+    "@storybook/node-logger" "7.0.8"
+    "@storybook/types" "7.0.8"
+    "@types/node" "^16.0.0"
+    "@types/pretty-hrtime" "^1.0.0"
+    chalk "^4.1.0"
+    esbuild "^0.17.0"
+    esbuild-register "^3.4.0"
+    file-system-cache "^2.0.0"
+    find-up "^5.0.0"
+    fs-extra "^11.1.0"
+    glob "^8.1.0"
+    glob-promise "^6.0.2"
+    handlebars "^4.7.7"
+    lazy-universal-dotenv "^4.0.0"
+    picomatch "^2.3.0"
+    pkg-dir "^5.0.0"
+    pretty-hrtime "^1.0.3"
+    resolve-from "^5.0.0"
+    ts-dedent "^2.0.0"
+
 "@storybook/core-events@7.0.2":
   version "7.0.2"
   resolved "https://registry.yarnpkg.com/@storybook/core-events/-/core-events-7.0.2.tgz#5038aa5ea1e035099ed1dc48aa233e232ff882e7"
@@ -5050,16 +5075,16 @@
   resolved "https://registry.yarnpkg.com/@storybook/global/-/global-5.0.0.tgz#b793d34b94f572c1d7d9e0f44fac4e0dbc9572ed"
   integrity sha512-FcOqPAXACP0I3oJ/ws6/rrPT9WGhu915Cg8D02a9YxLo0DE9zI+a9A5gRGvmQ09fiWPukqI8ZAEoQEdWUKMQdQ==
 
-"@storybook/instrumenter@7.0.2", "@storybook/instrumenter@^7.0.0-beta.0 || ^7.0.0-rc.0 || ^7.0.0":
-  version "7.0.2"
-  resolved "https://registry.yarnpkg.com/@storybook/instrumenter/-/instrumenter-7.0.2.tgz#a94031d3678d7a7829e6ebe0d07e2b986f96593a"
-  integrity sha512-zr9/fuaYtGVUtcL8XgjA4Iq5jtzdcqQyOSH4XLXtz6JtSad3lkRagbJo2Vzbw7dO/4vzjfTMxEzvWjUuPxLOhA==
+"@storybook/instrumenter@7.0.8", "@storybook/instrumenter@^7.0.0-beta.0 || ^7.0.0-rc.0 || ^7.0.0":
+  version "7.0.8"
+  resolved "https://registry.yarnpkg.com/@storybook/instrumenter/-/instrumenter-7.0.8.tgz#8ecff9ed0dc8479a59e6346b012d1ef8c80240bf"
+  integrity sha512-wFXSeUOOi4nyYv2+TkNic7qmSxO5VuFFt4qmTYv/MmZUAfIZKGq8S5K+McIKFUcYEnjkcvYvOWTNM6hEhlQpQw==
   dependencies:
-    "@storybook/channels" "7.0.2"
-    "@storybook/client-logger" "7.0.2"
-    "@storybook/core-events" "7.0.2"
+    "@storybook/channels" "7.0.8"
+    "@storybook/client-logger" "7.0.8"
+    "@storybook/core-events" "7.0.8"
     "@storybook/global" "^5.0.0"
-    "@storybook/preview-api" "7.0.2"
+    "@storybook/preview-api" "7.0.8"
 
 "@storybook/manager-api@7.0.2":
   version "7.0.2"
@@ -5158,6 +5183,16 @@
   version "7.0.7"
   resolved "https://registry.yarnpkg.com/@storybook/node-logger/-/node-logger-7.0.7.tgz#114e6d1994e0445dd9e579768bdb89adbf1055cd"
   integrity sha512-5Y4LLgKeCStq1ktCKZ5eNPzQQSQ+CYZAlkEdzQ3Pp//0KXaZvVxEvGtaYhAymP2HatLpI8Oneo4lHrJioRfgww==
+  dependencies:
+    "@types/npmlog" "^4.1.2"
+    chalk "^4.1.0"
+    npmlog "^5.0.1"
+    pretty-hrtime "^1.0.3"
+
+"@storybook/node-logger@7.0.8":
+  version "7.0.8"
+  resolved "https://registry.yarnpkg.com/@storybook/node-logger/-/node-logger-7.0.8.tgz#bd917919aa1af93f7d1f7c43536bdd620c80c35d"
+  integrity sha512-POO1iXohTJbkQidp76GZR+HoVeFIuRBHlwWNtHZOgR1PnwocGvf43NJ/GMZLvxiwf/d2wyObXy4n1/R1jPw5Ew==
   dependencies:
     "@types/npmlog" "^4.1.2"
     chalk "^4.1.0"
