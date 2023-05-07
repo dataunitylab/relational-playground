@@ -1,11 +1,11 @@
-// flow-typed signature: 00d6ea338042ee72102feb2cbe613e6c
-// flow-typed version: f33280d2b4/@testing-library/react_v12.x.x/flow_>=v0.104.x
+// flow-typed signature: 010daf0541ac66ae2acf4cf9ca378818
+// flow-typed version: 9a968c602c/@testing-library/react_v12.x.x/flow_>=v0.201.x
 
 /**
  * A local copy from:
  * https://github.com/A11yance/aria-query/blob/2e6a3011a0d8987655f3a14853934fe3df38a8d8/flow/aria.js
  */
- declare module '@@aria-query' {
+declare module '@@aria-query' {
   declare export type ARIAAbstractRole =
     | 'command'
     | 'composite'
@@ -165,7 +165,7 @@
 }
 
 declare module '@testing-library/react' {
-  import type { ARIARole } from '@@aria-query';
+  import type {ARIARole} from '@@aria-query';
 
   // This type comes from react-dom_v17.x.x.js
   declare interface ReactDOMTestUtilsThenable {
@@ -258,7 +258,7 @@ declare module '@testing-library/react' {
   declare type SelectorMatcherOptions = {|
     ...MatcherOptions,
     selector?: string,
-    ignore?: string | boolean
+    ignore?: string | boolean,
   |};
 
   // These two types must be updated kept in sync
@@ -270,13 +270,12 @@ declare module '@testing-library/react' {
     | HTMLLabelElement
     | HTMLSelectElement;
 
-  declare export type IntersectionHTMLElement =
-    & HTMLElement
-    & HTMLInputElement
-    & HTMLAnchorElement
-    & HTMLButtonElement
-    & HTMLLabelElement
-    & HTMLSelectElement;
+  declare export type IntersectionHTMLElement = HTMLElement &
+    HTMLInputElement &
+    HTMLAnchorElement &
+    HTMLButtonElement &
+    HTMLLabelElement &
+    HTMLSelectElement;
   // End mixed html types
 
   declare type MaybeIntersectionHTMLElement = null | IntersectionHTMLElement;
@@ -437,7 +436,7 @@ declare module '@testing-library/react' {
         | DocumentFragment
         | Array<HTMLElement | DocumentFragment>,
       maxLength?: number,
-      options?: { ... } // @TODO pretty format OptionsReceived
+      options?: {...} // @TODO pretty format OptionsReceived
     ) => void,
     /**
      * Convenience function for `Testing Playground` which logs URL that
@@ -460,7 +459,7 @@ declare module '@testing-library/react' {
         | Array<HTMLElement | DocumentFragment>,
       maxLength?: number
     ) => void,
-    rerender: (ui: React$Element<*>) => void,
+    rerender: (ui: React$Element<any>) => void,
     ...
   };
 
@@ -471,9 +470,7 @@ declare module '@testing-library/react' {
     wrapper?: React$ComponentType<any>,
   |};
 
-  declare export type RenderOptionsWithCustomQueries<
-    CustomQueries: { ... }
-  > = {|
+  declare export type RenderOptionsWithCustomQueries<CustomQueries: {...}> = {|
     queries: CustomQueries,
     container?: HTMLElement,
     baseElement?: HTMLElement,
@@ -486,7 +483,7 @@ declare module '@testing-library/react' {
     options?: RenderOptionsWithoutCustomQueries
   ): RenderResult<>;
   declare export function render<
-    CustomQueries: { [string]: (...args: Array<any>) => any, ... }
+    CustomQueries: {[string]: (...args: Array<any>) => any, ...}
   >(
     ui: React$Element<any>,
     options: RenderOptionsWithCustomQueries<CustomQueries>
@@ -612,7 +609,7 @@ declare module '@testing-library/react' {
   declare export function getByText(
     container: UnionHTMLElement,
     text: Matcher,
-    options?: { selector?: string, ... } & MatcherOptions
+    options?: {selector?: string, ...} & MatcherOptions
   ): IntersectionHTMLElement;
   declare export function queryByPlaceholderText(
     container: UnionHTMLElement,
@@ -632,7 +629,7 @@ declare module '@testing-library/react' {
   declare export function getByLabelText(
     container: UnionHTMLElement,
     text: Matcher,
-    options?: { selector?: string, ... } & MatcherOptions
+    options?: {selector?: string, ...} & MatcherOptions
   ): IntersectionHTMLElement;
   declare export function queryByAltText(
     container: UnionHTMLElement,

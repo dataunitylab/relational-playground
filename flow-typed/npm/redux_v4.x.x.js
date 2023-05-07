@@ -1,5 +1,5 @@
-// flow-typed signature: 0a9ceac15c8e9ef5e623a5fe760a4e99
-// flow-typed version: 9220b1a1e3/redux_v4.x.x/flow_>=v0.134.x
+// flow-typed signature: 211ee1952009bc69f9ace7ebc9e3a0d5
+// flow-typed version: 9a968c602c/redux_v4.x.x/flow_>=v0.201.x
 
 declare module 'redux' {
   /*
@@ -10,11 +10,11 @@ declare module 'redux' {
 
   */
 
-  declare export type Action<T> = { type: T, ... }
+  declare export type Action<T> = {type: T, ...};
 
   declare export type DispatchAPI<A> = (action: A) => A;
 
-  declare export type Dispatch<A: { type: *, ... }> = DispatchAPI<A>;
+  declare export type Dispatch<A: {type: any, ...}> = DispatchAPI<A>;
 
   declare export type MiddlewareAPI<S, A, D = Dispatch<A>> = {
     dispatch: D,
@@ -81,7 +81,10 @@ declare module 'redux' {
   ): StoreEnhancer<S, A, D>;
 
   declare export type ActionCreator<A, B> = (...args: Array<B>) => A;
-  declare export type ActionCreators<K, A> = { [key: K]: ActionCreator<A, any>, ... };
+  declare export type ActionCreators<K, A> = {
+    [key: K]: ActionCreator<A, any>,
+    ...
+  };
 
   declare export function bindActionCreators<
     A,
