@@ -4735,7 +4735,7 @@
     "@storybook/client-logger" "7.0.7"
     "@storybook/preview-api" "7.0.7"
 
-"@storybook/client-logger@7.0.10":
+"@storybook/client-logger@7.0.10", "@storybook/client-logger@^7.0.0-beta.0 || ^7.0.0-rc.0 || ^7.0.0":
   version "7.0.10"
   resolved "https://registry.yarnpkg.com/@storybook/client-logger/-/client-logger-7.0.10.tgz#941f6cf54638a422732b40ec31b2414872cdf4a8"
   integrity sha512-hb8tO+w28ErzjEw69ERMtZT81Xyg835FQjH6Y42ejoGcBA9Z0W6RZmx4RgkcIUOlYXkU6lSnNVne9gXodV4/Hw==
@@ -4763,7 +4763,7 @@
   dependencies:
     "@storybook/global" "^5.0.0"
 
-"@storybook/client-logger@7.0.9", "@storybook/client-logger@^7.0.0-beta.0 || ^7.0.0-rc.0 || ^7.0.0":
+"@storybook/client-logger@7.0.9":
   version "7.0.9"
   resolved "https://registry.yarnpkg.com/@storybook/client-logger/-/client-logger-7.0.9.tgz#2f94d4378912c753e27e647880d429bb1ed23104"
   integrity sha512-EJnXWvpTFEj462ixZbDouTN9X/FinRgaKKN6zXdhSSZUnm5PcZBtnoX5S+982z3LiAjdNIuAdZE/4vwBIAF88A==
@@ -4830,6 +4830,14 @@
     memoizerific "^1.11.3"
     use-resize-observer "^9.1.0"
     util-deprecate "^1.0.2"
+
+"@storybook/core-client@7.0.10":
+  version "7.0.10"
+  resolved "https://registry.yarnpkg.com/@storybook/core-client/-/core-client-7.0.10.tgz#dc00959418c52f1a10590f83260f386bff5d6c86"
+  integrity sha512-sN/TKB7QHWP6josdjyNtoqDXihROPtgvzo5+akfW6+S7hhfsQ4BJd09nkBqEX9E7z81blmFFDUOU3a8bQbPdKQ==
+  dependencies:
+    "@storybook/client-logger" "7.0.10"
+    "@storybook/preview-api" "7.0.10"
 
 "@storybook/core-client@7.0.7":
   version "7.0.7"
@@ -5047,6 +5055,19 @@
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@storybook/docs-mdx/-/docs-mdx-0.1.0.tgz#33ba0e39d1461caf048b57db354b2cc410705316"
   integrity sha512-JDaBR9lwVY4eSH5W8EGHrhODjygPd6QImRbwjAuJNEnY0Vw4ie3bPkeGfnacB3OBW6u/agqPv2aRlR46JcAQLg==
+
+"@storybook/docs-tools@7.0.10":
+  version "7.0.10"
+  resolved "https://registry.yarnpkg.com/@storybook/docs-tools/-/docs-tools-7.0.10.tgz#b3be393b122fcdbbf256c1487ca0a1bf0a8649e0"
+  integrity sha512-w3m7+LlQGI50i07XjiOzIfoap8rnmsrs8hXGUTodbs9vvLt8HBdUaapOGnYr/1BzA0YQJ7Nz2z1nTirQEphmsQ==
+  dependencies:
+    "@babel/core" "^7.12.10"
+    "@storybook/core-common" "7.0.10"
+    "@storybook/preview-api" "7.0.10"
+    "@storybook/types" "7.0.10"
+    "@types/doctrine" "^0.0.3"
+    doctrine "^3.0.0"
+    lodash "^4.17.21"
 
 "@storybook/docs-tools@7.0.2":
   version "7.0.2"
@@ -5387,6 +5408,11 @@
     react-docgen-typescript "^2.2.2"
     tslib "^2.0.0"
 
+"@storybook/react-dom-shim@7.0.10":
+  version "7.0.10"
+  resolved "https://registry.yarnpkg.com/@storybook/react-dom-shim/-/react-dom-shim-7.0.10.tgz#0409eaa06f23f4bf3c3ca3d0318195a55ad7aef2"
+  integrity sha512-NLuE2Be/BGmXHufwLp1Gje+IsTb0HWvwzHlci2U430WgwGU8fsTPNgALMrwCpqN9o1KnrRGpysQEoyIYStQBdg==
+
 "@storybook/react-dom-shim@7.0.2":
   version "7.0.2"
   resolved "https://registry.yarnpkg.com/@storybook/react-dom-shim/-/react-dom-shim-7.0.2.tgz#50ca149ad76c226301d273d7870bb2f94d380ce6"
@@ -5407,7 +5433,7 @@
     "@storybook/react" "7.0.7"
     "@types/node" "^16.0.0"
 
-"@storybook/react@7.0.7", "@storybook/react@^7.0.7":
+"@storybook/react@7.0.7":
   version "7.0.7"
   resolved "https://registry.yarnpkg.com/@storybook/react/-/react-7.0.7.tgz#cec5c1866cb7bcf235da4b0a3e391ef3ba5c4197"
   integrity sha512-eEsIfAGumzo7KRi/WKFpn/PGFhwLv72oiEM/8l5MMX/6poIkiekunqJLfx2BoL4cCtiS4g7OYzOdWjN01DwVCg==
@@ -5419,6 +5445,33 @@
     "@storybook/preview-api" "7.0.7"
     "@storybook/react-dom-shim" "7.0.7"
     "@storybook/types" "7.0.7"
+    "@types/escodegen" "^0.0.6"
+    "@types/estree" "^0.0.51"
+    "@types/node" "^16.0.0"
+    acorn "^7.4.1"
+    acorn-jsx "^5.3.1"
+    acorn-walk "^7.2.0"
+    escodegen "^2.0.0"
+    html-tags "^3.1.0"
+    lodash "^4.17.21"
+    prop-types "^15.7.2"
+    react-element-to-jsx-string "^15.0.0"
+    ts-dedent "^2.0.0"
+    type-fest "^2.19.0"
+    util-deprecate "^1.0.2"
+
+"@storybook/react@^7.0.10":
+  version "7.0.10"
+  resolved "https://registry.yarnpkg.com/@storybook/react/-/react-7.0.10.tgz#f4aa447c31748c66bae9a0fed303b5f4a78f9d0c"
+  integrity sha512-/DDUGFz0bk5c/HCfSr7fL74rQc+3s317TDDKY6ZrgUzdIkze4D/TlAbWV78XV/ceeFNi1fLAUzGjFzuDwmVkJw==
+  dependencies:
+    "@storybook/client-logger" "7.0.10"
+    "@storybook/core-client" "7.0.10"
+    "@storybook/docs-tools" "7.0.10"
+    "@storybook/global" "^5.0.0"
+    "@storybook/preview-api" "7.0.10"
+    "@storybook/react-dom-shim" "7.0.10"
+    "@storybook/types" "7.0.10"
     "@types/escodegen" "^0.0.6"
     "@types/estree" "^0.0.51"
     "@types/node" "^16.0.0"
