@@ -281,6 +281,73 @@ it('converts a optimize-disabled select-join with a condition', () => {
 });
 
 /** @test {relexp} */
+it('converts a default (ascending) sorting', () => {
+  const sql = parser.parse('SELECT * FROM foo ORDER BY bar');
+  const action = exprFromSql(sql.value, {foo: ['bar']});
+  expect(reducer({}, action)).toStrictEqual({
+    expr: {
+      order_by: {
+        arguments: {
+          order_by: [
+            {
+              ascending: true,
+              column_name: 'bar',
+            },
+          ],
+        },
+        children: [{relation: 'foo'}],
+      },
+    },
+  });
+});
+
+/** @test {relexp} */
+it('converts a descending sorting', () => {
+  const sql = parser.parse('SELECT * FROM foo ORDER BY bar DESC');
+  const action = exprFromSql(sql.value, {foo: ['bar']});
+  expect(reducer({}, action)).toStrictEqual({
+    expr: {
+      order_by: {
+        arguments: {
+          order_by: [
+            {
+              ascending: false,
+              column_name: 'bar',
+            },
+          ],
+        },
+        children: [{relation: 'foo'}],
+      },
+    },
+  });
+});
+
+/** @test {relexp} */
+it('converts a sorting on multiple column conditions', () => {
+  const sql = parser.parse('SELECT * FROM foo ORDER BY bar DESC, baz ASC');
+  const action = exprFromSql(sql.value, {foo: ['bar', 'baz']});
+  expect(reducer({}, action)).toStrictEqual({
+    expr: {
+      order_by: {
+        arguments: {
+          order_by: [
+            {
+              ascending: false,
+              column_name: 'bar',
+            },
+            {
+              ascending: true,
+              column_name: 'baz',
+            },
+          ],
+        },
+        children: [{relation: 'foo'}],
+      },
+    },
+  });
+});
+
+/** @test {relexp} */
 it('converts a selection', () => {
   const sql = parser.parse('SELECT * FROM foo WHERE bar > 1');
   const action = exprFromSql(sql.value, {foo: ['bar']});

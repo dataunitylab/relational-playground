@@ -4,6 +4,7 @@ import React, {useRef, useState} from 'react';
 import './RelOp.css';
 
 import type {Element, Node, StatelessFunctionalComponent} from 'react';
+import type {OrderByColumn} from './modules/relexp';
 
 type Props = {
   children: Node,
@@ -135,6 +136,20 @@ export const Except: StatelessFunctionalComponent<{||}> = () => (
 export const Intersect: StatelessFunctionalComponent<{||}> = () => (
   <span>&cap;</span>
 );
+
+export const OrderBy: StatelessFunctionalComponent<{
+  columns: Array<OrderByColumn>,
+  relation: Node,
+}> = (props) => {
+  const columnSort = props.columns
+    .map((c) => c.column_name + (c.ascending ? ' ↑' : ' ↓'))
+    .join(', ');
+  return (
+    <span>
+      τ<sub>{columnSort}</sub> {props.relation}
+    </span>
+  );
+};
 
 export const Join: StatelessFunctionalComponent<{
   type: string,

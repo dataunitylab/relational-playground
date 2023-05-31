@@ -327,6 +327,31 @@ function applyExpr(
       // Make a copy of the data from a source table and return it
       return {...sourceData[expr.relation]};
 
+    case 'order_by':
+      let ordData = applyExpr(expr.order_by.children[0], sourceData);
+
+      ordData.data.sort((a, b) => {
+        let sortOrder = 0;
+        expr.order_by.arguments.order_by.every((c) => {
+          // Continue as long as column values are equal
+          if (sortOrder !== 0) {
+            return false;
+          }
+
+          if (a[c.column_name] < b[c.column_name]) {
+            sortOrder = c.ascending ? -1 : 1;
+          } else if (a[c.column_name] > b[c.column_name]) {
+            sortOrder = c.ascending ? 1 : -1;
+          }
+
+          return true;
+        });
+
+        return sortOrder;
+      });
+
+      return ordData;
+
     case 'except':
     case 'intersect':
     case 'union':

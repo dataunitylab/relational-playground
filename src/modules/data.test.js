@@ -21,6 +21,16 @@ const sourceData = {
     columns: ['waldo'],
     data: [{waldo: 7}, {waldo: 9}],
   },
+  rome: {
+    name: 'rome',
+    columns: ['julius', 'marcus'],
+    data: [
+      {julius: 5, marcus: 4},
+      {julius: 1, marcus: 8},
+      {julius: 1, marcus: 6},
+      {julius: 3, marcus: 2},
+    ],
+  },
 };
 
 /** @test {data} */
@@ -145,6 +155,89 @@ it('can evaluate a union', () => {
     {grault: 8},
     {grault: 7},
     {grault: 9},
+  ]);
+});
+
+/** @test {data} */
+it('can evaluate a default (ascending) sorting', () => {
+  const expr = {
+    order_by: {
+      arguments: {
+        order_by: [
+          {
+            ascending: true,
+            column_name: 'bar',
+          },
+        ],
+      },
+      children: [{relation: 'foo'}],
+    },
+  };
+  const action = changeExpr(expr);
+  const current = reducer({sourceData: sourceData}, action).current;
+
+  expect(current.columns).toStrictEqual(['bar', 'baz']);
+  expect(current.data).toStrictEqual([
+    {bar: 1, baz: 2},
+    {bar: 3, baz: 4},
+    {bar: 5, baz: 6},
+  ]);
+});
+
+/** @test {data} */
+it('can evaluate a descending sorting', () => {
+  const expr = {
+    order_by: {
+      arguments: {
+        order_by: [
+          {
+            ascending: false,
+            column_name: 'bar',
+          },
+        ],
+      },
+      children: [{relation: 'foo'}],
+    },
+  };
+  const action = changeExpr(expr);
+  const current = reducer({sourceData: sourceData}, action).current;
+
+  expect(current.columns).toStrictEqual(['bar', 'baz']);
+  expect(current.data).toStrictEqual([
+    {bar: 5, baz: 6},
+    {bar: 3, baz: 4},
+    {bar: 1, baz: 2},
+  ]);
+});
+
+/** @test {data} */
+it('converts a sorting on multiple column conditions', () => {
+  const expr = {
+    order_by: {
+      arguments: {
+        order_by: [
+          {
+            ascending: false,
+            column_name: 'julius',
+          },
+          {
+            ascending: true,
+            column_name: 'marcus',
+          },
+        ],
+      },
+      children: [{relation: 'rome'}],
+    },
+  };
+  const action = changeExpr(expr);
+  const current = reducer({sourceData: sourceData}, action).current;
+
+  expect(current.columns).toStrictEqual(['julius', 'marcus']);
+  expect(current.data).toStrictEqual([
+    {julius: 5, marcus: 4},
+    {julius: 3, marcus: 2},
+    {julius: 1, marcus: 6},
+    {julius: 1, marcus: 8},
   ]);
 });
 
