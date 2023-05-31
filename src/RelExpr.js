@@ -100,7 +100,7 @@ const RelExpr: StatelessFunctionalComponent<Props> = (props) => {
       case 'order_by':
         return (
           <OrderBy
-            column={expr.order_by.arguments.order_by}
+            columns={expr.order_by.arguments.order_by}
             relation={buildExpr(expr.order_by.children[0])}
           />
         );

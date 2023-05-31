@@ -21,6 +21,11 @@ type DisableOptimizationAction = {
   type: 'DISABLE_OPTIMIZATION',
 };
 
+export type OrderByColumn = {
+  column_name: string,
+  ascending: boolean,
+};
+
 /**
  * @param sql - a parsed SQL query
  * @param types - an object mapping table names to lists of columns
