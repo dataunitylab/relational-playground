@@ -141,21 +141,12 @@ export const OrderBy: StatelessFunctionalComponent<{
   columns: Array<OrderByColumn>,
   relation: Node,
 }> = (props) => {
-  let column_name = '';
-  for (let i = 0; i < props.columns.length; i++) {
-    column_name = column_name.concat(props.columns[i].column_name);
-    if (props.columns[i].ascending) {
-      column_name = column_name.concat(' ↑');
-    } else {
-      column_name = column_name.concat(' ↓');
-    }
-    if (i < props.columns.length - 1) {
-      column_name = column_name.concat(',');
-    }
-  }
+  const columnSort = props.columns
+    .map((c) => c.column_name + (c.ascending ? ' ↑' : ' ↓'))
+    .join(', ');
   return (
     <span>
-      τ<sub>{column_name}</sub> {props.relation}
+      τ<sub>{columnSort}</sub> {props.relation}
     </span>
   );
 };
