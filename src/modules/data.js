@@ -332,23 +332,21 @@ function applyExpr(
 
       ordData.data.sort((a, b) => {
         let sortOrder = 0;
-        for (
-          let i = 0;
-          i < expr.order_by.arguments.order_by.length && sortOrder === 0;
-          i++
-        ) {
-          if (
-            a[expr.order_by.arguments.order_by[i].column_name] <
-            b[expr.order_by.arguments.order_by[i].column_name]
-          ) {
-            sortOrder = expr.order_by.arguments.order_by[i].ascending ? -1 : 1;
-          } else if (
-            a[expr.order_by.arguments.order_by[i].column_name] >
-            b[expr.order_by.arguments.order_by[i].column_name]
-          ) {
-            sortOrder = expr.order_by.arguments.order_by[i].ascending ? 1 : -1;
+        expr.order_by.arguments.order_by.every((c) => {
+          // Continue as long as column values are equal
+          if (sortOrder !== 0) {
+            return false;
           }
-        }
+
+          if (a[c.column_name] < b[c.column_name]) {
+            sortOrder = c.ascending ? -1 : 1;
+          } else if (a[c.column_name] > b[c.column_name]) {
+            sortOrder = c.ascending ? 1 : -1;
+          }
+
+          return true;
+        });
+
         return sortOrder;
       });
 
