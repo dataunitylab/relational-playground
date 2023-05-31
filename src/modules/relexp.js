@@ -169,6 +169,21 @@ function convertExpr(
         },
       };
 
+    case 'OrderBy':
+      const values = [];
+      for (const value of expr.value) {
+        values.push(convertExpr(value, types, tables));
+      }
+      return {
+        order_by: values,
+      };
+
+    case 'GroupByOrderByItem':
+      return {
+        column_name: convertExpr(expr.value, types, tables),
+        ascending: (expr.sortOpt || 'ASC').toUpperCase() === 'ASC',
+      };
+
     case 'Identifier':
       // Splt into table, column parts
       let [table, column] = expr.value.split('.');
@@ -293,6 +308,17 @@ function buildRelExp(
           {
             selection: {
               arguments: {select: convertExpr(sql.where, types, tables)},
+              children: from,
+            },
+          },
+        ];
+      }
+
+      if (sql.orderBy) {
+        from = [
+          {
+            order_by: {
+              arguments: convertExpr(sql.orderBy, types, tables),
               children: from,
             },
           },

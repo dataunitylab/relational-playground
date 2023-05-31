@@ -136,6 +136,29 @@ export const Intersect: StatelessFunctionalComponent<{||}> = () => (
   <span>&cap;</span>
 );
 
+export const OrderBy: StatelessFunctionalComponent<{
+  column: Array<{[string]: any}>,
+  relation: Node,
+}> = (props) => {
+  let column_name = '';
+  for (let i = 0; i < props.column.length; i++) {
+    column_name = column_name.concat(props.column[i].column_name);
+    if (props.column[i].ascending) {
+      column_name = column_name.concat(' ↑');
+    } else {
+      column_name = column_name.concat(' ↓');
+    }
+    if (i < props.column.length - 1) {
+      column_name = column_name.concat(',');
+    }
+  }
+  return (
+    <span>
+      τ<sub>{column_name}</sub> {props.relation}
+    </span>
+  );
+};
+
 export const Join: StatelessFunctionalComponent<{
   type: string,
   condition: string,

@@ -7,6 +7,7 @@ import {
   Selection,
   BinaryRelOp,
   Except,
+  OrderBy,
   Product,
   Join,
   Intersect,
@@ -95,6 +96,14 @@ const RelExpr: StatelessFunctionalComponent<Props> = (props) => {
 
       case 'relation':
         return <Relation name={expr.relation} />;
+
+      case 'order_by':
+        return (
+          <OrderBy
+            column={expr.order_by.arguments.order_by}
+            relation={buildExpr(expr.order_by.children[0])}
+          />
+        );
 
       case 'join':
         return (
