@@ -18,7 +18,9 @@ const CurrentRelExpr: StatelessFunctionalComponent<Props> = (props) => {
   const dispatch = useDispatch();
   const expr = useSelector<{relexp: State}, _>((state) => state.relexp.expr);
   const [showTree, setShowTree] = useState(false);
-  const optimized = useSelector((state) => state.relexp.optimized);
+  const optimized = useSelector<{relexp: State}, _>(
+    (state) => state.relexp.optimized
+  );
 
   function handleTreeInputChange(event: SyntheticInputEvent<HTMLInputElement>) {
     props.ReactGA.event({
