@@ -58,6 +58,7 @@ export function disableOptimization(): DisableOptimizationAction {
 export type State = {
   expr: {[string]: any},
   unoptimizedExpr?: {[string]: any},
+  optimized?: true,
 };
 
 const initialState = {
@@ -131,14 +132,14 @@ function convertExpr(
     case 'AndExpression':
       // Collect all expressions on either side of the AND
       let and: Array<any> = [];
-      if (expr.left.type === 'AndExpression') {
-        addToExpr(and, expr.left.left, types, tables);
-        addToExpr(and, expr.left.right, types, tables);
-      } else {
-        addToExpr(and, expr.left, types, tables);
+      let exprLeft = Object.assign({}, expr);
+      let exprRight: Array<any> = [];
+      while (exprLeft.type === 'AndExpression') {
+        exprRight.unshift(exprLeft.right);
+        exprLeft = exprLeft.left;
       }
-
-      addToExpr(and, expr.right, types, tables);
+      addToExpr(and, exprLeft, types, tables);
+      exprRight.forEach((element) => addToExpr(and, element, types, tables));
 
       return {and: {clauses: and}};
 
@@ -414,6 +415,17 @@ function buildRelExp(
   }
 }
 
+function selectionExpr(select: {[string]: any}, children: {[string]: any}) {
+  return {
+    selection: {
+      arguments: {
+        select: select,
+      },
+      children: [children],
+    },
+  };
+}
+
 /**
  * Returns a join expression, with the given left, right and join configurations
  * @param left config
@@ -454,42 +466,85 @@ function optimize(type: string, expr: {[string]: any}) {
       const selectChildren = 'selection' in expr ? expr.selection.children : [];
       for (const child of selectChildren) {
         if ('join' in child) {
-          // relation names
-          let selectLeft =
-            expr.selection.arguments.select.cmp.lhs.split('.')[0];
-          let selectRight =
-            expr.selection.arguments.select.cmp.rhs.split('.')[0];
           let joinLeft = child.join.left.relation;
           let joinRight = child.join.right.relation;
 
-          if (selectLeft === joinLeft || selectRight === joinLeft) {
-            let left = {
-              selection: {
-                arguments: expr.selection.arguments,
-                children: [
-                  {
-                    relation: child.join.left.relation,
-                  },
-                ],
-              },
-            };
-            let right = child.join.right;
+          // optimize selection statements with 'and'
+          if ('and' in expr.selection.arguments.select) {
+            let andClauses = expr.selection.arguments.select.and.clauses;
+            let leftClauses: Array<any> = [];
+            let rightClauses: Array<any> = [];
+            for (let clause of andClauses) {
+              let leftRelation = clause.cmp.lhs.split('.')[0];
+              let rightRelation = clause.cmp.rhs.split('.')[0];
+              if (leftRelation === joinLeft || rightRelation === joinLeft) {
+                leftClauses.push(clause);
+              } else if (
+                leftRelation === joinRight ||
+                rightRelation === joinRight
+              ) {
+                rightClauses.push(clause);
+              }
+            }
+
+            let leftExpr =
+              leftClauses.length === 0
+                ? child.join.left
+                : selectionExpr(
+                    {
+                      and: {
+                        clauses: leftClauses,
+                      },
+                    },
+                    {
+                      relation: joinLeft,
+                    }
+                  );
+            let rightExpr =
+              rightClauses.length === 0
+                ? child.join.right
+                : selectionExpr(
+                    {
+                      and: {
+                        clauses: rightClauses,
+                      },
+                    },
+                    {
+                      relation: joinRight,
+                    }
+                  );
             let join = child.join;
-            return joinExpr(left, right, join);
-          } else if (selectLeft === joinRight || selectRight === joinRight) {
-            let left = child.join.left;
-            let right = {
-              selection: {
-                arguments: expr.selection.arguments,
-                children: [
-                  {
-                    relation: child.join.right.relation,
-                  },
-                ],
-              },
-            };
-            let join = child.join;
-            return joinExpr(left, right, join);
+            return joinExpr(leftExpr, rightExpr, join);
+          } else if ('or' in expr.selection.arguments.select) {
+            return expr;
+          } else {
+            // relation names
+            let selectLeft =
+              expr.selection.arguments.select.cmp.lhs.split('.')[0];
+            let selectRight =
+              expr.selection.arguments.select.cmp.rhs.split('.')[0];
+
+            if (selectLeft === joinLeft || selectRight === joinLeft) {
+              let leftExpr = selectionExpr(
+                {cmp: expr.selection.arguments.select.cmp},
+                {
+                  relation: joinLeft,
+                }
+              );
+              let rightExpr = child.join.right;
+              let join = child.join;
+              return joinExpr(leftExpr, rightExpr, join);
+            } else if (selectLeft === joinRight || selectRight === joinRight) {
+              let leftExpr = child.join.left;
+              let rightExpr = selectionExpr(
+                {cmp: expr.selection.arguments.select.cmp},
+                {
+                  relation: joinRight,
+                }
+              );
+              let join = child.join;
+              return joinExpr(leftExpr, rightExpr, join);
+            }
           }
         } else {
           return expr;
@@ -519,16 +574,20 @@ const reducer: (
     switch (action.type) {
       case EXPR_FROM_SQL:
         draft.expr = buildRelExp(action.sql, action.types, []);
+        delete draft.unoptimizedExpr;
+        delete draft.optimized;
         break;
       case ENABLE_OPTIMIZATION:
         draft.unoptimizedExpr = draft.expr;
         draft.expr = optimize(action.optimization, draft.expr);
+        draft.optimized = true;
         break;
       case DISABLE_OPTIMIZATION:
         if (draft.unoptimizedExpr) {
           draft.expr = draft.unoptimizedExpr;
           delete draft.unoptimizedExpr;
         }
+        delete draft.optimized;
     }
   },
   initialState
