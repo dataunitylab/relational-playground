@@ -58,12 +58,11 @@ export function disableOptimization(): DisableOptimizationAction {
 export type State = {
   expr: {[string]: any},
   unoptimizedExpr?: {[string]: any},
-  optimized: boolean,
+  optimized?: true,
 };
 
 const initialState = {
   expr: {},
-  optimized: false,
 };
 
 const opMap = {
@@ -576,7 +575,7 @@ const reducer: (
       case EXPR_FROM_SQL:
         draft.expr = buildRelExp(action.sql, action.types, []);
         delete draft.unoptimizedExpr;
-        draft.optimized = false;
+        delete draft.optimized;
         break;
       case ENABLE_OPTIMIZATION:
         draft.unoptimizedExpr = draft.expr;
@@ -588,7 +587,7 @@ const reducer: (
           draft.expr = draft.unoptimizedExpr;
           delete draft.unoptimizedExpr;
         }
-        draft.optimized = false;
+        delete draft.optimized;
     }
   },
   initialState

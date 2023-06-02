@@ -9,7 +9,6 @@ it('converts a simple SELECT *', () => {
   const action = exprFromSql(sql.value, {});
   expect(reducer({}, action)).toMatchObject({
     expr: {relation: 'foo'},
-    optimized: false,
   });
 });
 
