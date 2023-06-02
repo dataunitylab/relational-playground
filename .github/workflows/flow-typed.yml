@@ -1,6 +1,6 @@
 on:
   schedule:
-    - cron: '0 2 * * 0' # every Sunday at 2am
+    - cron: '0 2 * * 0'  # every Sunday at 2am
   workflow_dispatch:
 name: Flow Typed
 jobs:
@@ -8,22 +8,22 @@ jobs:
     name: Flow Typed
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          ref: main
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        ref: main
 
-      - name: Set up node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-      - run: yarn install --frozen-lockfile --non-interactive
-      - run: npx flow-typed install
+    - name: Set up node
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
+    - run: yarn install --frozen-lockfile --non-interactive
+    - run: npx flow-typed install
 
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v3
-        with:
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v3
+      with:
           title: 'Update flow-typed definitions'
           branch: flow-typed-update
-          commit-message: 'Update flow-typed definitions'
+          commit-message: "Update flow-typed definitions"
           delete-branch: true
