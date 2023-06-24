@@ -254,6 +254,30 @@ function convertExpr(
         return expr.value;
       }
 
+    case 'InExpressionListPredicate':
+      if (expr.right.type !== 'ExpressionList') {
+        // Currently IN expressions are only supported with lists of values
+        throw new Error('Query not supported');
+      }
+
+      let orIn: Array<any> = [];
+      for (const inSetElem of expr.right.value) {
+        const inExpr = {
+          type: 'ComparisonBooleanPrimary',
+          left: expr.left,
+          operator: '=',
+          right: inSetElem,
+        };
+        addToExpr(orIn, inExpr, types, tables);
+      }
+      const inOrExpr = {or: {clauses: orIn}};
+
+      if (expr.hasNot === 'NOT') {
+        return {not: {clause: inOrExpr}};
+      } else {
+        return inOrExpr;
+      }
+
     default:
       console.log(expr);
       // Produce an error if the expression is unsupported

@@ -766,3 +766,53 @@ it('should remove quotes from string literals', () => {
     },
   });
 });
+
+/** @test {relexp} */
+it('should convert conditions with IN', () => {
+  const sql = parser.parse('SELECT * FROM foo WHERE id IN (1, 2)');
+  const action = exprFromSql(sql.value, {foo: ['id']});
+  expect(reducer({}, action)).toMatchObject({
+    expr: {
+      selection: {
+        arguments: {
+          select: {
+            or: {
+              clauses: [
+                {cmp: {lhs: 'id', op: '$eq', rhs: '1'}},
+                {cmp: {lhs: 'id', op: '$eq', rhs: '2'}},
+              ],
+            },
+          },
+        },
+        children: [{relation: 'foo'}],
+      },
+    },
+  });
+});
+
+/** @test {relexp} */
+it('should convert conditions with IN', () => {
+  const sql = parser.parse('SELECT * FROM foo WHERE id NOT IN (1, 2)');
+  const action = exprFromSql(sql.value, {foo: ['id']});
+  expect(reducer({}, action)).toMatchObject({
+    expr: {
+      selection: {
+        arguments: {
+          select: {
+            not: {
+              clause: {
+                or: {
+                  clauses: [
+                    {cmp: {lhs: 'id', op: '$eq', rhs: '1'}},
+                    {cmp: {lhs: 'id', op: '$eq', rhs: '2'}},
+                  ],
+                },
+              },
+            },
+          },
+        },
+        children: [{relation: 'foo'}],
+      },
+    },
+  });
+});
