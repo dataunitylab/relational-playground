@@ -305,7 +305,7 @@ function applyExpr(
       let renData = applyExpr(expr.rename.children[0], sourceData);
 
       // Loop over all pairs of things to rename
-      Object.entries(expr.rename.arguments.rename).forEach(([from, to]) => {
+      Object.entries(expr.rename.arguments.rename.columns).forEach(([from, to]) => {
         // Ensure target name is a string
         if (typeof to !== 'string') {
           throw new Error('Invalid target for rename');

@@ -83,7 +83,7 @@ export const Rename: StatelessFunctionalComponent<{
     &rho;
     <sub>
       {/* Loop over all columns to rename and combine them */}
-      {Object.entries(props.rename)
+      {Object.entries(props.rename.columns)
         .map(([o, n]) => {
           return o + '/' + ((n: any): string);
         })
