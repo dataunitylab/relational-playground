@@ -77,13 +77,13 @@ export const Projection: StatelessFunctionalComponent<{
 
 /** Rename relational algebra operator */
 export const Rename: StatelessFunctionalComponent<{
-  rename: {[string]: string},
+  rename: {[string]: any},
 }> = (props) => (
   <span>
     &rho;
     <sub>
       {/* Loop over all columns to rename and combine them */}
-      {Object.entries(props.rename)
+      {Object.entries(props.rename.columns)
         .map(([o, n]) => {
           return o + '/' + ((n: any): string);
         })

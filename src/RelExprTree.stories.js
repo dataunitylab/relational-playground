@@ -13,7 +13,7 @@ export const ComplexExpression = () => (
   <RelExprTree
     expr={{
       rename: {
-        arguments: {rename: {firstName: 'name'}},
+        arguments: {rename: {columns: {firstName: 'name'}}},
         children: [
           {
             projection: {

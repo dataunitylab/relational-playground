@@ -33,7 +33,7 @@ it('converts a rename', () => {
   expect(reducer({}, action)).toMatchObject({
     expr: {
       rename: {
-        arguments: {rename: {bar: 'baz'}},
+        arguments: {rename: {columns: {bar: 'baz'}}},
         children: [
           {
             projection: {

@@ -25,14 +25,14 @@ export const SimpleSelection = () => (
 SimpleSelection.storyName = 'a simple selection';
 
 export const SimpleRename = () => (
-  <UnaryRelOp operator={<Rename rename={{firstName: 'name'}} />}>
+  <UnaryRelOp operator={<Rename rename={{columns: {firstName: 'name'}}} />}>
     <Relation name="Doctor" />
   </UnaryRelOp>
 );
 SimpleRename.storyName = 'a simple rename';
 
 export const NestedOperations = () => (
-  <UnaryRelOp operator={<Rename rename={{firstName: 'name'}} />}>
+  <UnaryRelOp operator={<Rename rename={{columns: {firstName: 'name'}}} />}>
     <UnaryRelOp operator={<Projection project={['firstName', 'lastName']} />}>
       <UnaryRelOp operator={<Selection select={'salary > 100K'} />}>
         <Relation name="Doctor" />
