@@ -382,7 +382,7 @@ function buildRelExp(
           // Perform any necessary renames
           return {
             rename: {
-              arguments: {rename: fromEntries(rename)},
+              arguments: {rename: {columns: fromEntries(rename)}},
               children: [projection],
             },
           };

@@ -75,7 +75,7 @@ it('can evaluate a projection with dots', () => {
 it('can evaluate a rename', () => {
   const expr = {
     rename: {
-      arguments: {rename: {bar: 'quux'}},
+      arguments: {rename: {columns: {bar: 'quux'}}},
       children: [{relation: 'foo'}],
     },
   };

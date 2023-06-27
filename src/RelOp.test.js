@@ -44,13 +44,15 @@ it('renders a projection', () => {
 
 /** @test {Rename} */
 it('renders a Rename', () => {
-  const {container} = render(<Rename rename={{foo: 'bar'}} />);
+  const {container} = render(<Rename rename={{columns: {foo: 'bar'}}} />);
   expect(container).toContainHTML('ρ<sub>foo/bar</sub>');
 });
 
 /** @test {Rename} */
 it('renders a Rename with multiple fields', () => {
-  const {container} = render(<Rename rename={{foo: 'bar', baz: 'quux'}} />);
+  const {container} = render(
+    <Rename rename={{columns: {foo: 'bar', baz: 'quux'}}} />
+  );
   expect(container).toContainHTML('ρ<sub>foo/bar,baz/quux</sub>');
 });
 
