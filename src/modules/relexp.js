@@ -279,7 +279,6 @@ function convertExpr(
       }
 
     default:
-      console.log(expr);
       // Produce an error if the expression is unsupported
       throw new Error('Invalid expression.');
   }
@@ -396,9 +395,16 @@ function buildRelExp(
     case 'TableFactor':
       // Store this table as one referenced by the query
       tables.push(sql.value.value);
-
-      return {relation: sql.value.value};
-
+      if (sql.hasAs) {
+        return {
+          alias: {
+            value: sql.value.value,
+            alias_value: sql.alias.value,
+          },
+        };
+      } else {
+        return {relation: sql.value.value};
+      }
     case 'InnerCrossJoinTable':
       // Add the condition if it exists
       if (sql.condition) {

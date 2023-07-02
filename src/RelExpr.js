@@ -1,6 +1,7 @@
 // @flow
 import React, {useRef} from 'react';
 import {
+  Alias,
   UnaryRelOp,
   Projection,
   Rename,
@@ -96,6 +97,14 @@ const RelExpr: StatelessFunctionalComponent<Props> = (props) => {
 
       case 'relation':
         return <Relation name={expr.relation} />;
+
+      case 'alias':
+        return (
+          <Alias
+            value={expr.alias.value}
+            alias_value={expr.alias.alias_value}
+          />
+        );
 
       case 'order_by':
         return (

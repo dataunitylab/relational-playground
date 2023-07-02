@@ -137,6 +137,17 @@ export const Intersect: StatelessFunctionalComponent<{||}> = () => (
   <span>&cap;</span>
 );
 
+export const Alias: StatelessFunctionalComponent<{
+  value: string,
+  alias_value: string,
+}> = (props) => {
+  return (
+    <span>
+      &rho;<sub>{props.alias_value}</sub> {props.value}
+    </span>
+  );
+};
+
 export const OrderBy: StatelessFunctionalComponent<{
   columns: Array<OrderByColumn>,
   relation: Node,
@@ -146,7 +157,7 @@ export const OrderBy: StatelessFunctionalComponent<{
     .join(', ');
   return (
     <span>
-      τ<sub>{columnSort}</sub> {props.relation}
+      &tau;<sub>{columnSort}</sub> {props.relation}
     </span>
   );
 };

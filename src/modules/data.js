@@ -5,6 +5,7 @@ import {produce} from 'immer';
 import department from '../resources/Department.json';
 import doctor from '../resources/Doctor.json';
 import patient from '../resources/Patient.json';
+import relation from '../Relation';
 
 export const CHANGE_EXPR = 'CHANGE_EXPR';
 export const RESET_EXPR = 'RESET_EXPR';
@@ -84,6 +85,29 @@ function getCombinedColumns(left: {[string]: any}, right: {[string]: any}) {
   }
 
   return combinedColumns;
+}
+
+function getAliasedOutput(relation: {[string]: any}, alias: string) {
+  const newColumns: Array<string> = [];
+  const newData: Array<{[string]: any}> = [];
+  for (const column of relation.columns) {
+    const newColumnName = alias + '.' + column;
+    newColumns.push(newColumnName);
+  }
+  for (const datum of relation.data) {
+    let newDatum: {[string]: any} = {};
+    for (const column of relation.columns) {
+      newDatum[alias + '.' + column] = datum[column];
+    }
+    newData.push(newDatum);
+  }
+
+  const output: Output = {
+    name: alias,
+    columns: newColumns,
+    data: newData,
+  };
+  return output;
 }
 
 function getCombinedData(
@@ -326,6 +350,12 @@ function applyExpr(
     case 'relation':
       // Make a copy of the data from a source table and return it
       return {...sourceData[expr.relation]};
+
+    case 'alias':
+      return getAliasedOutput(
+        sourceData[expr.alias.value],
+        expr.alias.alias_value
+      );
 
     case 'order_by':
       let ordData = applyExpr(expr.order_by.children[0], sourceData);
