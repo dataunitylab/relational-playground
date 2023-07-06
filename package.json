@@ -109,7 +109,7 @@
     "source-map-explorer": "^2.5.3",
     "storybook": "^7.0.18",
     "stylelint": "^15.10.1",
-    "stylelint-config-standard": "^33.0.0",
+    "stylelint-config-standard": "^34.0.0",
     "webpack": "5"
   },
   "engines": {
