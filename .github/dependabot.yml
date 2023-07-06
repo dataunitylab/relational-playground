@@ -7,7 +7,26 @@ updates:
       time: '10:00'
     open-pull-requests-limit: 10
     groups:
+      esdoc:
+        patterns:
+          - '@sebastianwessel/esdoc*'
+      lint:
+        patterns:
+          - 'eslint-plugin-*'
+          - 'markdownlint-cli'
+          - 'npm-package-json-lint*'
+          - 'pkg-ok'
+          - 'prettier'
+          - 'pretty-quick'
+          - 'stylelint*'
       storybook:
         patterns:
           - 'storybook'
           - '@storybook/*'
+      test:
+        patterns:
+          - '@wojtekmaj/enzyme-adapter-*'
+          - 'enzyme'
+          - 'jest-*'
+          - 'react-test-renderer'
+          - 'redux-mock-store'
