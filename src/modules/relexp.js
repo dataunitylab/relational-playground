@@ -585,7 +585,7 @@ const reducer: (
   ExprFromSqlAction | EnableOptimizationAction | DisableOptimizationAction
 ) => State = produce<
   State,
-  ExprFromSqlAction | EnableOptimizationAction | DisableOptimizationAction
+  ExprFromSqlAction | EnableOptimizationAction | DisableOptimizationAction,
 >(
   (
     draft: State,
