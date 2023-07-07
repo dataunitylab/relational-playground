@@ -17,7 +17,6 @@ updates:
           - 'npm-package-json-lint*'
           - 'pkg-ok'
           - 'prettier'
-          - 'pretty-quick'
           - 'stylelint*'
       storybook:
         patterns:
