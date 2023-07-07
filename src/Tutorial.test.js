@@ -7,7 +7,7 @@ import JoyrideTooltipContainer from 'react-joyride';
 /** @test {Tutorial} */
 it('correctly renders tutorial given no cookie', () => {
   let cookies = new Cookies();
-  const wrapper = shallow(<Tutorial cookies={cookies} />);
+  const wrapper = shallow(<Tutorial />);
   let tooltip = wrapper.find(JoyrideTooltipContainer);
 
   // expect(tooltip).toBeDefined();
@@ -19,7 +19,7 @@ it('cookie exists, no tutorial', () => {
   let cookies = new Cookies();
   cookies.set('tutorial', 'true', {path: '/'});
 
-  const wrapper = shallow(<Tutorial cookies={cookies} />);
+  const wrapper = shallow(<Tutorial />);
   let button = wrapper.find('.button').text();
 
   expect(button).toContain('Redo tutorial');

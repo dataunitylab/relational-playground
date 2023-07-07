@@ -1,12 +1,19 @@
-import Joyride, {CallBackProps, STATUS} from 'react-joyride';
+// @flow
+import Joyride, {STATUS} from 'react-joyride';
 import React, {useState} from 'react';
 import {useCookies} from 'react-cookie';
+
+import type {StatelessFunctionalComponent} from 'react';
+
+type CallBackProps = {
+  status: string,
+};
 
 const redoText = 'Redo tutorial';
 const stepStyle = {tooltipContainer: {textAlign: 'left'}};
 
 /** Container for all components of the tutorial */
-function Tutorial() {
+const Tutorial: StatelessFunctionalComponent<{}> = (props) => {
   let initialText, shouldRun;
   const [cookies, setCookie] = useCookies(['tutorial']);
   if (cookies.tutorial === undefined) {
@@ -138,6 +145,6 @@ function Tutorial() {
       </button>
     </div>
   );
-}
+};
 
 export default Tutorial;
