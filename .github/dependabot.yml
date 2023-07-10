@@ -19,6 +19,14 @@ updates:
           - 'pkg-ok'
           - 'prettier'
           - 'stylelint*'
+      react:
+        patterns:
+          - 'react'
+          - 'react-dom'
+          - 'react-test-renderer'
+      react-router:
+        patterns:
+          - 'react-router-*'
       storybook:
         patterns:
           - 'storybook'
