@@ -13,6 +13,7 @@ updates:
       lint:
         patterns:
           - 'eslint-plugin-*'
+          - 'lint-staged'
           - 'markdownlint-cli'
           - 'npm-package-json-lint*'
           - 'pkg-ok'
