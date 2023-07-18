@@ -26,7 +26,7 @@ updates:
           - 'react-test-renderer'
       react-router:
         patterns:
-          - 'react-router-*'
+          - 'react-router*'
       storybook:
         patterns:
           - 'storybook'
