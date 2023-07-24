@@ -36,5 +36,4 @@ updates:
           - '@wojtekmaj/enzyme-adapter-*'
           - 'enzyme'
           - 'jest-*'
-          - 'react-test-renderer'
           - 'redux-mock-store'
