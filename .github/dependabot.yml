@@ -27,6 +27,9 @@ updates:
       react-router:
         patterns:
           - 'react-router*'
+      sentry:
+        patterns:
+          - '@sentry/*'
       storybook:
         patterns:
           - 'storybook'
