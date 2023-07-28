@@ -77,7 +77,7 @@ export const Projection: StatelessFunctionalComponent<{
 
 /** Rename relational algebra operator */
 export const Rename: StatelessFunctionalComponent<{
-  rename: {[string]: string},
+  rename: {[string]: any},
 }> = (props) => (
   <span>
     &rho;
