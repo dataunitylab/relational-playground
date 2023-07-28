@@ -305,22 +305,24 @@ function applyExpr(
       let renData = applyExpr(expr.rename.children[0], sourceData);
 
       // Loop over all pairs of things to rename
-      Object.entries(expr.rename.arguments.rename.columns).forEach(([from, to]) => {
-        // Ensure target name is a string
-        if (typeof to !== 'string') {
-          throw new Error('Invalid target for rename');
-        }
+      Object.entries(expr.rename.arguments.rename.columns).forEach(
+        ([from, to]) => {
+          // Ensure target name is a string
+          if (typeof to !== 'string') {
+            throw new Error('Invalid target for rename');
+          }
 
-        // Add a new column with the new name
-        const fromColumn = resolveColumn(from, renData.data[0]);
-        renData.columns[renData.columns.indexOf(fromColumn)] = to;
+          // Add a new column with the new name
+          const fromColumn = resolveColumn(from, renData.data[0]);
+          renData.columns[renData.columns.indexOf(fromColumn)] = to;
 
-        // Copy all column data and delete the original column
-        for (let j = 0; j < renData.data.length; j++) {
-          renData.data[j][to] = renData.data[j][fromColumn];
-          delete renData.data[j][fromColumn];
+          // Copy all column data and delete the original column
+          for (let j = 0; j < renData.data.length; j++) {
+            renData.data[j][to] = renData.data[j][fromColumn];
+            delete renData.data[j][fromColumn];
+          }
         }
-      });
+      );
       return renData;
 
     case 'relation':
