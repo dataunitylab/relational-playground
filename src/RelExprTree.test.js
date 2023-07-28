@@ -9,7 +9,7 @@ import {mount} from 'enzyme';
 it('correctly renders a complex expression', () => {
   const expr = {
     rename: {
-      arguments: {rename: {firstName: 'name'}},
+      arguments: {rename: {columns: {firstName: 'name'}}},
       children: [
         {
           projection: {
