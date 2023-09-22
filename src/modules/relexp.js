@@ -1,6 +1,8 @@
 // @flow
 import fromEntries from 'fromentries';
 import {produce} from 'immer';
+import {joinOrderOptimization} from './joinOrderOptimization';
+import {constructRelationalGraph} from './constructRelationalGraph';
 
 export const EXPR_FROM_SQL = 'EXPR_FROM_SQL';
 export const ENABLE_OPTIMIZATION = 'ENABLE_OPTIMIZATION';
@@ -279,7 +281,6 @@ function convertExpr(
       }
 
     default:
-      console.log(expr);
       // Produce an error if the expression is unsupported
       throw new Error('Invalid expression.');
   }
@@ -439,142 +440,20 @@ function buildRelExp(
   }
 }
 
-function selectionExpr(select: {[string]: any}, children: {[string]: any}) {
-  return {
-    selection: {
-      arguments: {
-        select: select,
-      },
-      children: [children],
-    },
-  };
-}
-
-/**
- * Returns a join expression, with the given left, right and join configurations
- * @param left config
- * @param right config
- * @param join config
- * @returns {{join: {condition: {cmp: {op, lhs, rhs}}, left: {[p: string]: *}, right: {[p: string]: *}, type: *}}}
- */
-function joinExpr(
-  left: {[string]: any},
-  right: {[string]: any},
-  join: {[string]: any}
-) {
-  return {
-    join: {
-      left: left,
-      right: right,
-      type: join.type,
-      condition: {
-        cmp: {
-          lhs: join.condition.cmp.lhs,
-          op: join.condition.cmp.op,
-          rhs: join.condition.cmp.rhs,
-        },
-      },
-    },
-  };
-}
-
 /**
  * Optimizes a given relational algebra expression, if possible
  * @param type string denoting the type of optimization
  * @param expr object denoting the expression to optimize
  * @returns {{join: {condition: {cmp: {op, lhs, rhs}}, left: {[p: string]: *}, right: {[p: string]: *}, type: *}}|{[p: string]: *}}
  */
-function optimize(type: string, expr: {[string]: any}) {
+function optimize(type: string, expr: {[key: string]: any}) {
   switch (type) {
     case 'join':
-      const selectChildren = 'selection' in expr ? expr.selection.children : [];
-      for (const child of selectChildren) {
-        if ('join' in child) {
-          let joinLeft = child.join.left.relation;
-          let joinRight = child.join.right.relation;
-
-          // optimize selection statements with 'and'
-          if ('and' in expr.selection.arguments.select) {
-            let andClauses = expr.selection.arguments.select.and.clauses;
-            let leftClauses: Array<any> = [];
-            let rightClauses: Array<any> = [];
-            for (let clause of andClauses) {
-              let leftRelation = clause.cmp.lhs.split('.')[0];
-              let rightRelation = clause.cmp.rhs.split('.')[0];
-              if (leftRelation === joinLeft || rightRelation === joinLeft) {
-                leftClauses.push(clause);
-              } else if (
-                leftRelation === joinRight ||
-                rightRelation === joinRight
-              ) {
-                rightClauses.push(clause);
-              }
-            }
-
-            let leftExpr =
-              leftClauses.length === 0
-                ? child.join.left
-                : selectionExpr(
-                    {
-                      and: {
-                        clauses: leftClauses,
-                      },
-                    },
-                    {
-                      relation: joinLeft,
-                    }
-                  );
-            let rightExpr =
-              rightClauses.length === 0
-                ? child.join.right
-                : selectionExpr(
-                    {
-                      and: {
-                        clauses: rightClauses,
-                      },
-                    },
-                    {
-                      relation: joinRight,
-                    }
-                  );
-            let join = child.join;
-            return joinExpr(leftExpr, rightExpr, join);
-          } else if ('or' in expr.selection.arguments.select) {
-            return expr;
-          } else {
-            // relation names
-            let selectLeft =
-              expr.selection.arguments.select.cmp.lhs.split('.')[0];
-            let selectRight =
-              expr.selection.arguments.select.cmp.rhs.split('.')[0];
-
-            if (selectLeft === joinLeft || selectRight === joinLeft) {
-              let leftExpr = selectionExpr(
-                {cmp: expr.selection.arguments.select.cmp},
-                {
-                  relation: joinLeft,
-                }
-              );
-              let rightExpr = child.join.right;
-              let join = child.join;
-              return joinExpr(leftExpr, rightExpr, join);
-            } else if (selectLeft === joinRight || selectRight === joinRight) {
-              let leftExpr = child.join.left;
-              let rightExpr = selectionExpr(
-                {cmp: expr.selection.arguments.select.cmp},
-                {
-                  relation: joinRight,
-                }
-              );
-              let join = child.join;
-              return joinExpr(leftExpr, rightExpr, join);
-            }
-          }
-        } else {
-          return expr;
-        }
-      }
-      return expr;
+      const {graph, globalSelections, canOptimize} =
+        constructRelationalGraph(expr);
+      if (!canOptimize) return expr;
+      const optimizedExpr = joinOrderOptimization(graph, globalSelections);
+      return optimizedExpr;
     default:
       return expr;
   }

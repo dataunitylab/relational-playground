@@ -228,38 +228,49 @@ it('converts a pre-optimized select-join statement with a condition', () => {
 /** @test {relexp} */
 it('converts a post-optimized select-join statement with a condition', () => {
   const sql = parser.parse(
-    'SELECT * FROM foo JOIN bar ON foo.baz = bar.corge WHERE foo.baz = 1'
+    'SELECT * FROM Doctor JOIN Patient ON Doctor.id = Patient.primaryDoctor WHERE Patient.id = 1'
   );
-  const action = exprFromSql(sql.value, {foo: ['baz'], bar: ['corge']});
+  const action = exprFromSql(sql.value, {
+    Doctor: ['id'],
+    Patient: ['primaryDoctor', 'id'],
+  });
   const draft = reducer({}, action);
   const optimizeAction = enableOptimization('join');
   expect(reducer(draft, optimizeAction)).toMatchObject({
     expr: {
       join: {
-        condition: {cmp: {lhs: 'foo.baz', op: '$eq', rhs: 'bar.corge'}},
+        condition: {
+          cmp: {lhs: 'Doctor.id', op: '$eq', rhs: 'Patient.primaryDoctor'},
+        },
         left: {
           selection: {
             arguments: {
-              select: {cmp: {lhs: 'foo.baz', op: '$eq', rhs: '1'}},
+              select: {cmp: {lhs: 'Patient.id', op: '$eq', rhs: '1'}},
             },
-            children: [{relation: 'foo'}],
+            children: [{relation: 'Patient'}],
           },
         },
-        right: {relation: 'bar'},
+        right: {relation: 'Doctor'},
         type: 'inner',
       },
     },
     unoptimizedExpr: {
       selection: {
         arguments: {
-          select: {cmp: {lhs: 'foo.baz', op: '$eq', rhs: '1'}},
+          select: {cmp: {lhs: 'Patient.id', op: '$eq', rhs: '1'}},
         },
         children: [
           {
             join: {
-              condition: {cmp: {lhs: 'foo.baz', op: '$eq', rhs: 'bar.corge'}},
-              left: {relation: 'foo'},
-              right: {relation: 'bar'},
+              condition: {
+                cmp: {
+                  lhs: 'Doctor.id',
+                  op: '$eq',
+                  rhs: 'Patient.primaryDoctor',
+                },
+              },
+              left: {relation: 'Doctor'},
+              right: {relation: 'Patient'},
               type: 'inner',
             },
           },
@@ -272,9 +283,12 @@ it('converts a post-optimized select-join statement with a condition', () => {
 /** @test {relexp} */
 it('checks if a select-join statement with a condition converts back correctly after optimization', () => {
   const sql = parser.parse(
-    'SELECT * FROM foo JOIN bar ON foo.baz = bar.corge WHERE foo.baz = 1'
+    'SELECT * FROM Patient JOIN Doctor ON Patient.primaryDoctor = Doctor.id WHERE Patient.id = 1'
   );
-  const action = exprFromSql(sql.value, {foo: ['baz'], bar: ['corge']});
+  const action = exprFromSql(sql.value, {
+    Patient: ['primaryDoctor', 'id'],
+    Doctor: ['id'],
+  });
   const preOptDraft = reducer({}, action);
   const optimizeAction = enableOptimization('join');
   const draft = reducer(preOptDraft, optimizeAction);
@@ -321,28 +335,33 @@ it('converts a pre-optimized select-join statement with multiple conditions', ()
 /** @test {relexp} */
 it('converts a post-optimized select-join statement with multiple conditions', () => {
   const sql = parser.parse(
-    'SELECT * FROM foo JOIN bar ON foo.baz = bar.corge WHERE foo.baz > 4 AND foo.baz < 9 AND bar.corge > 1 AND bar.corge < 6'
+    'SELECT * FROM Doctor JOIN Patient ON Doctor.id = Patient.primaryDoctor WHERE Doctor.id > 4 AND Doctor.id < 9 AND Patient.id > 1 AND Patient.id < 6'
   );
-  const action = exprFromSql(sql.value, {foo: ['baz'], bar: ['corge']});
+  const action = exprFromSql(sql.value, {
+    Doctor: ['id'],
+    Patient: ['id', 'primaryDoctor'],
+  });
   const draft = reducer({}, action);
   const optimizeAction = enableOptimization('join');
   expect(reducer(draft, optimizeAction)).toMatchObject({
     expr: {
       join: {
-        condition: {cmp: {lhs: 'foo.baz', op: '$eq', rhs: 'bar.corge'}},
+        condition: {
+          cmp: {lhs: 'Doctor.id', op: '$eq', rhs: 'Patient.primaryDoctor'},
+        },
         left: {
           selection: {
             arguments: {
               select: {
                 and: {
                   clauses: [
-                    {cmp: {lhs: 'foo.baz', op: '$gt', rhs: '4'}},
-                    {cmp: {lhs: 'foo.baz', op: '$lt', rhs: '9'}},
+                    {cmp: {lhs: 'Doctor.id', op: '$gt', rhs: '4'}},
+                    {cmp: {lhs: 'Doctor.id', op: '$lt', rhs: '9'}},
                   ],
                 },
               },
             },
-            children: [{relation: 'foo'}],
+            children: [{relation: 'Doctor'}],
           },
         },
         right: {
@@ -351,13 +370,13 @@ it('converts a post-optimized select-join statement with multiple conditions', (
               select: {
                 and: {
                   clauses: [
-                    {cmp: {lhs: 'bar.corge', op: '$gt', rhs: '1'}},
-                    {cmp: {lhs: 'bar.corge', op: '$lt', rhs: '6'}},
+                    {cmp: {lhs: 'Patient.id', op: '$gt', rhs: '1'}},
+                    {cmp: {lhs: 'Patient.id', op: '$lt', rhs: '6'}},
                   ],
                 },
               },
             },
-            children: [{relation: 'bar'}],
+            children: [{relation: 'Patient'}],
           },
         },
         type: 'inner',
@@ -369,10 +388,10 @@ it('converts a post-optimized select-join statement with multiple conditions', (
           select: {
             and: {
               clauses: [
-                {cmp: {lhs: 'foo.baz', op: '$gt', rhs: '4'}},
-                {cmp: {lhs: 'foo.baz', op: '$lt', rhs: '9'}},
-                {cmp: {lhs: 'bar.corge', op: '$gt', rhs: '1'}},
-                {cmp: {lhs: 'bar.corge', op: '$lt', rhs: '6'}},
+                {cmp: {lhs: 'Doctor.id', op: '$gt', rhs: '4'}},
+                {cmp: {lhs: 'Doctor.id', op: '$lt', rhs: '9'}},
+                {cmp: {lhs: 'Patient.id', op: '$gt', rhs: '1'}},
+                {cmp: {lhs: 'Patient.id', op: '$lt', rhs: '6'}},
               ],
             },
           },
@@ -380,9 +399,15 @@ it('converts a post-optimized select-join statement with multiple conditions', (
         children: [
           {
             join: {
-              condition: {cmp: {lhs: 'foo.baz', op: '$eq', rhs: 'bar.corge'}},
-              left: {relation: 'foo'},
-              right: {relation: 'bar'},
+              condition: {
+                cmp: {
+                  lhs: 'Doctor.id',
+                  op: '$eq',
+                  rhs: 'Patient.primaryDoctor',
+                },
+              },
+              left: {relation: 'Doctor'},
+              right: {relation: 'Patient'},
               type: 'inner',
             },
           },
@@ -396,9 +421,12 @@ it('converts a post-optimized select-join statement with multiple conditions', (
 /** @test {relexp} */
 it('checks if a select-join statement with mutiple condition converts back correctly after optimization', () => {
   const sql = parser.parse(
-    'SELECT * FROM foo JOIN bar ON foo.baz = bar.corge WHERE foo.baz > 4 AND foo.baz < 9 AND bar.corge > 1 AND bar.corge < 6'
+    'SELECT * FROM Doctor JOIN Patient ON Doctor.id = Patient.primaryDoctor WHERE Patient.id > 4 AND Doctor.id < 9 AND Patient.primaryDoctor > 1 AND Doctor.id < 6'
   );
-  const action = exprFromSql(sql.value, {foo: ['baz'], bar: ['corge']});
+  const action = exprFromSql(sql.value, {
+    Doctor: ['id'],
+    Patient: ['id', 'primaryDoctor'],
+  });
   const preOptDraft = reducer({}, action);
   const optimizeAction = enableOptimization('join');
   const draft = reducer(preOptDraft, optimizeAction);

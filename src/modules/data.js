@@ -57,7 +57,7 @@ export type State = {
 };
 
 // Source data which can be used in SQL queries
-const initialState = {
+export const initialState = {
   sourceData: {
     Department: department,
     Doctor: doctor,
@@ -263,7 +263,7 @@ function applyItem(expr: {[string]: any}, item: {[string]: any}): any {
  * @param sourceData - source data from relations
  * @return result of evaluating the expression
  */
-function applyExpr(
+export function applyExpr(
   expr: {[string]: any},
   sourceData: {[string]: any}
 ): {[string]: any} {
