@@ -1,6 +1,6 @@
 // @flow
 import fromEntries from 'fromentries';
-import {produce} from 'immer';
+import {produce, original} from 'immer';
 
 export const EXPR_FROM_SQL = 'EXPR_FROM_SQL';
 export const ENABLE_OPTIMIZATION = 'ENABLE_OPTIMIZATION';
@@ -439,44 +439,47 @@ function buildRelExp(
   }
 }
 
-function selectionExpr(select: {[string]: any}, children: {[string]: any}) {
+const joinExpression = (left, right, type, condition) => {
+  return {
+    join: {
+      left: left,
+      right: right,
+      type: type,
+      condition: {
+        cmp: {
+          lhs: condition.cmp.lhs,
+          op: condition.cmp.op,
+          rhs: condition.cmp.rhs,
+        },
+      },
+    },
+  };
+};
+
+const getSelectionExpression = (tableName, selections) => {
+  let relation = {relation: tableName};
+  if (selections.length === 0) {
+    return relation;
+  }
+  let select = {};
+  if (selections.length === 1) {
+    select = selections[0];
+  } else {
+    select = {
+      and: {
+        clauses: selections,
+      },
+    };
+  }
   return {
     selection: {
       arguments: {
         select: select,
       },
-      children: [children],
+      children: [relation],
     },
   };
-}
-
-/**
- * Returns a join expression, with the given left, right and join configurations
- * @param left config
- * @param right config
- * @param join config
- * @returns {{join: {condition: {cmp: {op, lhs, rhs}}, left: {[p: string]: *}, right: {[p: string]: *}, type: *}}}
- */
-function joinExpr(
-  left: {[string]: any},
-  right: {[string]: any},
-  join: {[string]: any}
-) {
-  return {
-    join: {
-      left: left,
-      right: right,
-      type: join.type,
-      condition: {
-        cmp: {
-          lhs: join.condition.cmp.lhs,
-          op: join.condition.cmp.op,
-          rhs: join.condition.cmp.rhs,
-        },
-      },
-    },
-  };
-}
+};
 
 /**
  * Optimizes a given relational algebra expression, if possible
@@ -484,101 +487,166 @@ function joinExpr(
  * @param expr object denoting the expression to optimize
  * @returns {{join: {condition: {cmp: {op, lhs, rhs}}, left: {[p: string]: *}, right: {[p: string]: *}, type: *}}|{[p: string]: *}}
  */
-function optimize(type: string, expr: {[string]: any}) {
+function optimize(type, expr) {
   switch (type) {
     case 'join':
-      const selectChildren = 'selection' in expr ? expr.selection.children : [];
-      for (const child of selectChildren) {
-        if ('join' in child) {
-          let joinLeft = child.join.left.relation;
-          let joinRight = child.join.right.relation;
-
-          // optimize selection statements with 'and'
-          if ('and' in expr.selection.arguments.select) {
-            let andClauses = expr.selection.arguments.select.and.clauses;
-            let leftClauses: Array<any> = [];
-            let rightClauses: Array<any> = [];
-            for (let clause of andClauses) {
-              let leftRelation = clause.cmp.lhs.split('.')[0];
-              let rightRelation = clause.cmp.rhs.split('.')[0];
-              if (leftRelation === joinLeft || rightRelation === joinLeft) {
-                leftClauses.push(clause);
-              } else if (
-                leftRelation === joinRight ||
-                rightRelation === joinRight
-              ) {
-                rightClauses.push(clause);
-              }
-            }
-
-            let leftExpr =
-              leftClauses.length === 0
-                ? child.join.left
-                : selectionExpr(
-                    {
-                      and: {
-                        clauses: leftClauses,
-                      },
-                    },
-                    {
-                      relation: joinLeft,
-                    }
-                  );
-            let rightExpr =
-              rightClauses.length === 0
-                ? child.join.right
-                : selectionExpr(
-                    {
-                      and: {
-                        clauses: rightClauses,
-                      },
-                    },
-                    {
-                      relation: joinRight,
-                    }
-                  );
-            let join = child.join;
-            return joinExpr(leftExpr, rightExpr, join);
-          } else if ('or' in expr.selection.arguments.select) {
-            return expr;
-          } else {
-            // relation names
-            let selectLeft =
-              expr.selection.arguments.select.cmp.lhs.split('.')[0];
-            let selectRight =
-              expr.selection.arguments.select.cmp.rhs.split('.')[0];
-
-            if (selectLeft === joinLeft || selectRight === joinLeft) {
-              let leftExpr = selectionExpr(
-                {cmp: expr.selection.arguments.select.cmp},
-                {
-                  relation: joinLeft,
-                }
-              );
-              let rightExpr = child.join.right;
-              let join = child.join;
-              return joinExpr(leftExpr, rightExpr, join);
-            } else if (selectLeft === joinRight || selectRight === joinRight) {
-              let leftExpr = child.join.left;
-              let rightExpr = selectionExpr(
-                {cmp: expr.selection.arguments.select.cmp},
-                {
-                  relation: joinRight,
-                }
-              );
-              let join = child.join;
-              return joinExpr(leftExpr, rightExpr, join);
-            }
-          }
-        } else {
-          return expr;
-        }
-      }
-      return expr;
+      const graph = constructRelationalGraph(expr);
+      const optimizedExpr = optimizeJoinOrder(graph);
+      return optimizedExpr;
     default:
       return expr;
   }
 }
+
+/**
+ * Optimize the join order of a given relational graph
+ * Currently optimizes join order by
+ * @param {*} graph
+ */
+const optimizeJoinOrder = (graph) => {
+  const nodes = graph.nodes;
+  const edges = Object.entries(nodes).map(([tableName, node]) => {
+    return {tableName, edges: node.edges};
+  });
+  // create a set for the edges to remove duplicates
+  const edgeSet = new Set();
+  for (const edge of edges) {
+    for (const e of edge.edges) {
+      edgeSet.add(e);
+    }
+  }
+  // cast the set back to an array
+  const edgeArray = Array.from(edgeSet);
+  // Dummy join order logic
+  // sort the edgeArray so that the tables with ascending table names are joined first
+  edgeArray.sort((a, b) => {
+    const aleftTable = a.cmp.lhs.split('.')[0];
+    const arightTable = a.cmp.rhs.split('.')[0];
+    const bleftTable = b.cmp.lhs.split('.')[0];
+    const brightTable = b.cmp.rhs.split('.')[0];
+    return (
+      aleftTable.localeCompare(bleftTable) +
+      aleftTable.localeCompare(brightTable) +
+      arightTable.localeCompare(bleftTable) +
+      arightTable.localeCompare(brightTable)
+    );
+  });
+
+  // this function should return the best edge to join based on selectivity in the future
+  // at the moment it just returns the first edge because array is sorted
+  const getBestEdgeToJoin = (edgeArray) => {
+    // get the first edge from the edgeArray and remove it from the array
+    const bestEdge = edgeArray.shift();
+    return bestEdge;
+  };
+
+  // recursively construct the join expression using joinexpr function from edgeArray
+  const constructJoinExpr = (edgeArray, joinMap, joinExpr) => {
+    if (edgeArray.length === 0) {
+      return joinExpr;
+    }
+    const bestEdge = getBestEdgeToJoin(edgeArray);
+    const leftTable = bestEdge.cmp.lhs.split('.')[0];
+    const leftRelation =
+      leftTable in joinMap
+        ? joinMap[leftTable]
+        : getSelectionExpression(leftTable, nodes[leftTable].selections);
+    const rightTable = bestEdge.cmp.rhs.split('.')[0];
+    const rightRelation =
+      rightTable in joinMap
+        ? joinMap[rightTable]
+        : getSelectionExpression(rightTable, nodes[rightTable].selections);
+    const type = 'inner';
+    joinExpr = joinExpression(leftRelation, rightRelation, type, bestEdge);
+    joinMap[leftTable] = joinExpr;
+    joinMap[rightTable] = joinExpr;
+    return constructJoinExpr(edgeArray, joinMap, joinExpr);
+  };
+  // default joinExpr is the first node in the graph
+  const firstTable = Object.keys(nodes)[0];
+  const selectExpr = getSelectionExpression(
+    firstTable,
+    nodes[firstTable].selections
+  );
+  return constructJoinExpr(edgeArray, {}, selectExpr);
+};
+
+/**
+ * Constructs a relational graph from the expr
+ * Nodes will have (tableName and selection criteria if any on that table)
+ * Edges are the join relations
+ * @param {*} expr
+ */
+const constructRelationalGraph = (expr) => {
+  // enums for selection and join
+  const SELECTION_TYPE = 'selection';
+  const JOIN_TYPE = 'join';
+  const RELATION_TYPE = 'relation';
+
+  const graph = {
+    nodes: {},
+  };
+
+  // Create a node of table name with relevant fields
+  const addNode = (tableName, selection = null) => {
+    if (!(tableName in graph.nodes)) {
+      graph.nodes[tableName] = {
+        tableName: tableName,
+        selections: [],
+        edges: [],
+      };
+    }
+    if (selection) {
+      graph.nodes[tableName]['selections'].push(selection);
+    }
+  };
+
+  // Add an edge for two tables if there's a valid join relation between them
+  const addEdge = (
+    leftTable,
+    rightTable,
+    joinCondition,
+    leftSelection = null,
+    rightSelection = null
+  ) => {
+    addNode(leftTable, leftSelection);
+    addNode(rightTable, rightSelection);
+    graph.nodes[leftTable]['edges'].push(joinCondition);
+    graph.nodes[rightTable]['edges'].push(joinCondition);
+  };
+
+  const parseExpression = (expr) => {
+    if (SELECTION_TYPE in expr) {
+      const selection = expr[SELECTION_TYPE].arguments.select;
+      // conditions = [{cmp: {lhs: 'Doctor.id', op: '$eq', rhs: '1'}}, ...]
+      const conditions = selection?.and?.clauses || [selection];
+      for (const condition of conditions) {
+        const table = condition.cmp.lhs.split('.')[0];
+        addNode(table, condition);
+      }
+      // these should be the 'join' type or 'relation' type
+      const children = expr[SELECTION_TYPE].children;
+      for (const child of children) {
+        parseExpression(child);
+      }
+    } else if (JOIN_TYPE in expr) {
+      const joinExpr = expr[JOIN_TYPE];
+      const {left, right, condition} = joinExpr;
+      parseExpression(left);
+      parseExpression(right);
+      const leftTable = condition.cmp.lhs.split('.')[0];
+      const rightTable = condition.cmp.rhs.split('.')[0];
+      addEdge(leftTable, rightTable, original(condition));
+    } else if (RELATION_TYPE in expr) {
+      const table = expr[RELATION_TYPE];
+      addNode(table);
+    } else {
+      console.error('Invalid expression type', expr);
+    }
+  };
+  parseExpression(expr);
+  return graph;
+};
 
 const reducer: (
   State,
@@ -598,11 +666,13 @@ const reducer: (
     switch (action.type) {
       case EXPR_FROM_SQL:
         draft.expr = buildRelExp(action.sql, action.types, []);
+        console.log('Building relational expression', original(draft));
         delete draft.unoptimizedExpr;
         delete draft.optimized;
         break;
       case ENABLE_OPTIMIZATION:
         draft.unoptimizedExpr = draft.expr;
+        console.log('Optimizing now', original(draft));
         draft.expr = optimize(action.optimization, draft.expr);
         draft.optimized = true;
         break;
@@ -618,3 +688,44 @@ const reducer: (
 );
 
 export default reducer;
+
+/**
+ * Expected Object should look like this:
+ * 
+ * {
+    "expr": {
+        "join": {
+            "left": {
+                "selection": {
+                    "arguments": {
+                        "select": {
+                            "cmp": {
+                                "lhs": "Doctor.id",
+                                "op": "$eq",
+                                "rhs": "1"
+                            }
+                        }
+                    },
+                    "children": [
+                        {
+                            "relation": "Doctor"
+                        }
+                    ]
+                }
+            },
+            "right": {
+                "relation": "Department"
+            },
+            "type": "inner",
+            "condition": {
+                "cmp": {
+                    "lhs": "Doctor.departmentId",
+                    "op": "$eq",
+                    "rhs": "Department.id"
+                }
+            }
+        }
+    }
+}
+ * 
+ */
