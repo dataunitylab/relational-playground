@@ -439,7 +439,30 @@ function buildRelExp(
   }
 }
 
-const joinExpression = (left, right, type, condition) => {
+type CONDITION_TYPE = {
+  cmp: {
+    lhs: any,
+    op: string,
+    rhs: any,
+  },
+};
+
+type GRAPH = {
+  nodes: {
+    [key: string]: {
+      tableName: string,
+      selections: Array<{[key: string]: any}>,
+      edges: Array<{[key: string]: any}>,
+    },
+  },
+};
+
+const joinExpression = (
+  left: {[key: string]: any},
+  right: {[key: string]: any},
+  type: string,
+  condition: CONDITION_TYPE
+) => {
   return {
     join: {
       left: left,
@@ -456,12 +479,15 @@ const joinExpression = (left, right, type, condition) => {
   };
 };
 
-const getSelectionExpression = (tableName, selections) => {
+const getSelectionExpression = (
+  tableName: string,
+  selections: Array<{[key: string]: any}>
+) => {
   let relation = {relation: tableName};
   if (selections.length === 0) {
     return relation;
   }
-  let select = {};
+  let select: {[key: string]: any} = {};
   if (selections.length === 1) {
     select = selections[0];
   } else {
@@ -487,7 +513,7 @@ const getSelectionExpression = (tableName, selections) => {
  * @param expr object denoting the expression to optimize
  * @returns {{join: {condition: {cmp: {op, lhs, rhs}}, left: {[p: string]: *}, right: {[p: string]: *}, type: *}}|{[p: string]: *}}
  */
-function optimize(type, expr) {
+function optimize(type: string, expr: {[key: string]: any}) {
   switch (type) {
     case 'join':
       const graph = constructRelationalGraph(expr);
@@ -503,13 +529,13 @@ function optimize(type, expr) {
  * Currently optimizes join order by
  * @param {*} graph
  */
-const optimizeJoinOrder = (graph) => {
+const optimizeJoinOrder = (graph: GRAPH): {[key: string]: any} => {
   const nodes = graph.nodes;
   const edges = Object.entries(nodes).map(([tableName, node]) => {
     return {tableName, edges: node.edges};
   });
   // create a set for the edges to remove duplicates
-  const edgeSet = new Set();
+  const edgeSet: Set<any> = new Set();
   for (const edge of edges) {
     for (const e of edge.edges) {
       edgeSet.add(e);
@@ -533,15 +559,19 @@ const optimizeJoinOrder = (graph) => {
   });
 
   // this function should return the best edge to join based on selectivity in the future
-  // at the moment it just returns the first edge because array is sorted
-  const getBestEdgeToJoin = (edgeArray) => {
+  // at the moment it just returns the first edge because the array is sorted
+  const getBestEdgeToJoin = (edgeArray: Array<CONDITION_TYPE>) => {
     // get the first edge from the edgeArray and remove it from the array
     const bestEdge = edgeArray.shift();
     return bestEdge;
   };
 
   // recursively construct the join expression using joinexpr function from edgeArray
-  const constructJoinExpr = (edgeArray, joinMap, joinExpr) => {
+  const constructJoinExpr = (
+    edgeArray: Array<CONDITION_TYPE>,
+    joinMap: {[key: string]: any},
+    joinExpr: {[key: string]: any}
+  ): {[key: string]: any} => {
     if (edgeArray.length === 0) {
       return joinExpr;
     }
@@ -556,7 +586,7 @@ const optimizeJoinOrder = (graph) => {
       rightTable in joinMap
         ? joinMap[rightTable]
         : getSelectionExpression(rightTable, nodes[rightTable].selections);
-    const type = 'inner';
+    const type: string = 'inner';
     joinExpr = joinExpression(leftRelation, rightRelation, type, bestEdge);
     joinMap[leftTable] = joinExpr;
     joinMap[rightTable] = joinExpr;
@@ -577,18 +607,21 @@ const optimizeJoinOrder = (graph) => {
  * Edges are the join relations
  * @param {*} expr
  */
-const constructRelationalGraph = (expr) => {
+const constructRelationalGraph = (expr: {[key: string]: any}): GRAPH => {
   // enums for selection and join
   const SELECTION_TYPE = 'selection';
   const JOIN_TYPE = 'join';
   const RELATION_TYPE = 'relation';
 
-  const graph = {
+  const graph: GRAPH = {
     nodes: {},
   };
 
-  // Create a node of table name with relevant fields
-  const addNode = (tableName, selection = null) => {
+  // Create a node of the table name with relevant fields
+  const addNode = (
+    tableName: string,
+    selection?: {[key: string]: any} | null = null
+  ) => {
     if (!(tableName in graph.nodes)) {
       graph.nodes[tableName] = {
         tableName: tableName,
@@ -603,11 +636,11 @@ const constructRelationalGraph = (expr) => {
 
   // Add an edge for two tables if there's a valid join relation between them
   const addEdge = (
-    leftTable,
-    rightTable,
-    joinCondition,
-    leftSelection = null,
-    rightSelection = null
+    leftTable: string,
+    rightTable: string,
+    joinCondition: {[key: string]: any},
+    leftSelection: {[key: string]: any} | null = null,
+    rightSelection: {[key: string]: any} | null = null
   ) => {
     addNode(leftTable, leftSelection);
     addNode(rightTable, rightSelection);
@@ -615,7 +648,7 @@ const constructRelationalGraph = (expr) => {
     graph.nodes[rightTable]['edges'].push(joinCondition);
   };
 
-  const parseExpression = (expr) => {
+  const parseExpression = (expr: {[key: string]: any}) => {
     if (SELECTION_TYPE in expr) {
       const selection = expr[SELECTION_TYPE].arguments.select;
       // conditions = [{cmp: {lhs: 'Doctor.id', op: '$eq', rhs: '1'}}, ...]
@@ -636,7 +669,7 @@ const constructRelationalGraph = (expr) => {
       parseExpression(right);
       const leftTable = condition.cmp.lhs.split('.')[0];
       const rightTable = condition.cmp.rhs.split('.')[0];
-      addEdge(leftTable, rightTable, original(condition));
+      addEdge(leftTable, rightTable, condition);
     } else if (RELATION_TYPE in expr) {
       const table = expr[RELATION_TYPE];
       addNode(table);

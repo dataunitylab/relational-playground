@@ -4,6 +4,7 @@ module.exports = {
   ],
   "src/**/*.{js,json}": [
     "eslint --fix",
+    "flow focus-check",
     "prettier --write"
   ],
   "src/**/*.css": [
