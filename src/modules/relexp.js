@@ -1,6 +1,7 @@
 // @flow
 import fromEntries from 'fromentries';
 import {produce, original} from 'immer';
+import {joinOrderOptimization} from './joinOrderOptimization';
 
 export const EXPR_FROM_SQL = 'EXPR_FROM_SQL';
 export const ENABLE_OPTIMIZATION = 'ENABLE_OPTIMIZATION';
@@ -543,26 +544,29 @@ const optimizeJoinOrder = (graph: GRAPH): {[key: string]: any} => {
   }
   // cast the set back to an array
   const edgeArray = Array.from(edgeSet);
-  // Dummy join order logic
-  // sort the edgeArray so that the tables with ascending table names are joined first
-  edgeArray.sort((a, b) => {
-    const aleftTable = a.cmp.lhs.split('.')[0];
-    const arightTable = a.cmp.rhs.split('.')[0];
-    const bleftTable = b.cmp.lhs.split('.')[0];
-    const brightTable = b.cmp.rhs.split('.')[0];
-    return (
-      aleftTable.localeCompare(bleftTable) +
-      aleftTable.localeCompare(brightTable) +
-      arightTable.localeCompare(bleftTable) +
-      arightTable.localeCompare(brightTable)
-    );
-  });
-
+  const joinOrder = joinOrderOptimization(graph);
   // this function should return the best edge to join based on selectivity in the future
   // at the moment it just returns the first edge because the array is sorted
-  const getBestEdgeToJoin = (edgeArray: Array<CONDITION_TYPE>) => {
-    // get the first edge from the edgeArray and remove it from the array
-    const bestEdge = edgeArray.shift();
+  const getBestEdgeToJoin = (
+    edgeArray: Array<CONDITION_TYPE>
+  ): {[key: string]: any} => {
+    const bestLeftTable = joinOrder[0];
+    const bestRightTable = joinOrder[1];
+    let bestEdge = {};
+    for (const edge of edgeArray) {
+      const leftTable = edge.cmp.lhs.split('.')[0];
+      const rightTable = edge.cmp.rhs.split('.')[0];
+      if (
+        (leftTable === bestLeftTable && rightTable === bestRightTable) ||
+        (leftTable === bestRightTable && rightTable === bestLeftTable)
+      ) {
+        bestEdge = edge;
+        break;
+      }
+    }
+    // remove the best edge from the array
+    edgeArray.splice(edgeArray.indexOf(bestEdge), 1);
+    joinOrder.shift();
     return bestEdge;
   };
 
