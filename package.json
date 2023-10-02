@@ -85,7 +85,7 @@
     "@storybook/preset-create-react-app": "^7.4.5",
     "@storybook/react": "^7.4.5",
     "@storybook/react-webpack5": "^7.4.5",
-    "@storybook/testing-library": "^0.2.1",
+    "@storybook/testing-library": "^0.2.2",
     "@testing-library/react": "^14.0.0",
     "@welldone-software/why-did-you-render": "^7.0.1",
     "@wojtekmaj/enzyme-adapter-react-17": "^0.8.0",
