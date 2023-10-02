@@ -34,7 +34,7 @@
     "react-table": "^6.11.5",
     "redux": "^4.2.1",
     "typescript": "*",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.1"
   },
   "scripts": {
     "analyze": "source-map-explorer build/static/js/*.js",
