@@ -518,6 +518,7 @@ function optimize(type: string, expr: {[key: string]: any}) {
   switch (type) {
     case 'join':
       const graph = constructRelationalGraph(expr);
+      console.log('graph', graph);
       const optimizedExpr = optimizeJoinOrder(graph);
       return optimizedExpr;
     default:
@@ -532,69 +533,65 @@ function optimize(type: string, expr: {[key: string]: any}) {
  */
 const optimizeJoinOrder = (graph: GRAPH): {[key: string]: any} => {
   const nodes = graph.nodes;
-  const edges = Object.entries(nodes).map(([tableName, node]) => {
-    return {tableName, edges: node.edges};
-  });
-  // create a set for the edges to remove duplicates
-  const edgeSet: Set<any> = new Set();
-  for (const edge of edges) {
-    for (const e of edge.edges) {
-      edgeSet.add(e);
-    }
-  }
-  // cast the set back to an array
-  const edgeArray = Array.from(edgeSet);
   const joinOrder = joinOrderOptimization(graph);
-  // this function should return the best edge to join based on selectivity in the future
-  // at the moment it just returns the first edge because the array is sorted
-  const getBestEdgeToJoin = (
-    edgeArray: Array<CONDITION_TYPE>
-  ): {[key: string]: any} => {
+
+  const getBestEdgeToJoin = (): {[key: string]: any} => {
     const bestLeftTable = joinOrder[0];
-    const bestRightTable = joinOrder[1];
-    let bestEdge = {};
-    for (const edge of edgeArray) {
-      const leftTable = edge.cmp.lhs.split('.')[0];
-      const rightTable = edge.cmp.rhs.split('.')[0];
-      if (
-        (leftTable === bestLeftTable && rightTable === bestRightTable) ||
-        (leftTable === bestRightTable && rightTable === bestLeftTable)
-      ) {
-        bestEdge = edge;
-        break;
-      }
-    }
-    // remove the best edge from the array
-    edgeArray.splice(edgeArray.indexOf(bestEdge), 1);
+    const joinCondition = joinOrder[1];
+    const bestRightTable = joinOrder[2];
+    let bestEdge = joinCondition;
     joinOrder.shift();
-    return bestEdge;
+    joinOrder.shift();
+    // clean best edge from joinOrder, edge should not have nodes with "_" in them
+    if (bestEdge.cmp.lhs.includes('_')) {
+      bestEdge.cmp.lhs =
+        bestEdge.cmp.lhs.split('_')[0] + '.' + bestEdge.cmp.lhs.split('.')[1];
+    }
+    if (bestEdge.cmp.rhs.includes('_')) {
+      bestEdge.cmp.rhs =
+        bestEdge.cmp.rhs.split('_')[0] + '.' + bestEdge.cmp.rhs.split('.')[1];
+    }
+    return [bestLeftTable, bestEdge, bestRightTable];
+  };
+
+  const getOriginalTableName = (tableName: string): string => {
+    if (tableName.includes('_')) {
+      return tableName.split('_')[0];
+    }
+    return tableName;
   };
 
   // recursively construct the join expression using joinexpr function from edgeArray
   const constructJoinExpr = (
-    edgeArray: Array<CONDITION_TYPE>,
     joinMap: {[key: string]: any},
     joinExpr: {[key: string]: any}
   ): {[key: string]: any} => {
-    if (edgeArray.length === 0) {
+    if (joinOrder.length < 3) {
       return joinExpr;
     }
-    const bestEdge = getBestEdgeToJoin(edgeArray);
-    const leftTable = bestEdge.cmp.lhs.split('.')[0];
+    const bestEdgeInfo = getBestEdgeToJoin();
+    const leftTable = bestEdgeInfo[0];
+    const bestEdge = bestEdgeInfo[1];
+    const rightTable = bestEdgeInfo[2];
     const leftRelation =
-      leftTable in joinMap
+      leftTable in joinMap && !leftTable.includes('_')
         ? joinMap[leftTable]
-        : getSelectionExpression(leftTable, nodes[leftTable].selections);
-    const rightTable = bestEdge.cmp.rhs.split('.')[0];
+        : getSelectionExpression(
+            getOriginalTableName(leftTable),
+            nodes[getOriginalTableName(leftTable)].selections
+          );
     const rightRelation =
-      rightTable in joinMap
+      rightTable in joinMap && !rightTable.includes('_')
         ? joinMap[rightTable]
-        : getSelectionExpression(rightTable, nodes[rightTable].selections);
+        : getSelectionExpression(
+            getOriginalTableName(rightTable),
+            nodes[getOriginalTableName(rightTable)].selections
+          );
     const type: string = 'inner';
     joinExpr = joinExpression(leftRelation, rightRelation, type, bestEdge);
     joinMap[leftTable] = joinExpr;
     joinMap[rightTable] = joinExpr;
-    return constructJoinExpr(edgeArray, joinMap, joinExpr);
+    return constructJoinExpr(joinMap, joinExpr);
   };
   // default joinExpr is the first node in the graph
   const firstTable = Object.keys(nodes)[0];
@@ -602,7 +599,7 @@ const optimizeJoinOrder = (graph: GRAPH): {[key: string]: any} => {
     firstTable,
     nodes[firstTable].selections
   );
-  return constructJoinExpr(edgeArray, {}, selectExpr);
+  return constructJoinExpr({}, selectExpr);
 };
 
 /**
@@ -621,6 +618,17 @@ const constructRelationalGraph = (expr: {[key: string]: any}): GRAPH => {
     nodes: {},
   };
 
+  const getNewTableName = (tableName: string): string => {
+    if (!(tableName in graph.nodes)) {
+      return tableName;
+    }
+    let i = 1;
+    while (tableName + '_' + i.toString() in graph.nodes) {
+      i++;
+    }
+    return tableName + '_' + i.toString();
+  };
+
   // Create a node of the table name with relevant fields
   const addNode = (
     tableName: string,
@@ -636,6 +644,7 @@ const constructRelationalGraph = (expr: {[key: string]: any}): GRAPH => {
     if (selection) {
       graph.nodes[tableName]['selections'].push(selection);
     }
+    return tableName;
   };
 
   // Add an edge for two tables if there's a valid join relation between them
@@ -669,14 +678,64 @@ const constructRelationalGraph = (expr: {[key: string]: any}): GRAPH => {
     } else if (JOIN_TYPE in expr) {
       const joinExpr = expr[JOIN_TYPE];
       const {left, right, condition} = joinExpr;
-      parseExpression(left);
-      parseExpression(right);
+      const parsedLeftTables = parseExpression(left);
+      const parsedRightTables = parseExpression(right);
       const leftTable = condition.cmp.lhs.split('.')[0];
       const rightTable = condition.cmp.rhs.split('.')[0];
-      addEdge(leftTable, rightTable, condition);
+      // check if parsedRightTables is a string
+      if (typeof parsedLeftTables === 'string') {
+        const newCondition = {
+          cmp: {
+            lhs: condition.cmp.lhs,
+            op: condition.cmp.op,
+            rhs: condition.cmp.rhs,
+          },
+        };
+        addEdge(parsedLeftTables, parsedRightTables, newCondition);
+        return [parsedLeftTables, parsedRightTables];
+      }
+      if (typeof parsedLeftTables === 'object') {
+        let newRightTableName = parsedRightTables;
+        for (const index in parsedLeftTables) {
+          if (parsedLeftTables[index] === parsedRightTables) {
+            newRightTableName = getNewTableName(parsedRightTables);
+            break;
+          }
+        }
+        const leftTableToJoin =
+          leftTable === parsedRightTables ? rightTable : leftTable;
+        let newCondition = condition;
+        if (condition.cmp.lhs.includes(parsedRightTables + '.')) {
+          const lhs = condition.cmp.lhs.replace(
+            parsedRightTables + '.',
+            newRightTableName + '.'
+          );
+          newCondition = {
+            cmp: {
+              lhs: lhs,
+              op: condition.cmp.op,
+              rhs: condition.cmp.rhs,
+            },
+          };
+        } else if (condition.cmp.rhs.includes(parsedRightTables + '.')) {
+          const rhs = condition.cmp.rhs.replace(
+            parsedRightTables + '.',
+            newRightTableName + '.'
+          );
+          newCondition = {
+            cmp: {
+              lhs: condition.cmp.lhs,
+              op: condition.cmp.op,
+              rhs: rhs,
+            },
+          };
+        }
+        addEdge(leftTableToJoin, newRightTableName, newCondition);
+        return [...parsedLeftTables, newRightTableName];
+      }
     } else if (RELATION_TYPE in expr) {
       const table = expr[RELATION_TYPE];
-      addNode(table);
+      return addNode(table);
     } else {
       console.error('Invalid expression type', expr);
     }

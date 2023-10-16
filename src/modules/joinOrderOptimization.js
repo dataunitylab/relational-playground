@@ -1,32 +1,114 @@
-const RELATION_SIZE_MAP = {
-  Department: 7,
-  Doctor: 40,
-  Patient: 40,
-};
+import department from '../resources/Department.json';
+import doctor from '../resources/Doctor.json';
+import patient from '../resources/Patient.json';
+
+const SUPPORTED_TABLES = ['Department', 'Doctor', 'Patient'];
 
 const RELATION_SELECTIVITY_MAP = {
   Department: {
+    Department: 1,
     Doctor: 0.14285,
+    Patient: 0.0,
   },
   Doctor: {
+    Doctor: 1,
     Department: 0.14285,
     Patient: 0.025,
   },
   Patient: {
+    Patient: 1,
     Doctor: 0.025,
+    Department: 0.025,
   },
 };
 
+// jo parameters object structure in local storage
+/*
+jo_parameters: {
+    Department: {
+        rows: 7,
+    }
+}
+*/
+
+const saveJOParametersToLocalStorage = (joinOrderParameters) => {
+  const json = JSON.stringify(joinOrderParameters);
+  localStorage.setItem('jo_parameters', json);
+};
+
+const loadJOParametersFromLocalStorage = () => {
+  const json = localStorage.getItem('jo_parameters');
+  if (json) {
+    return JSON.parse(json);
+  }
+  console.log('No join order parameters found in local storage');
+  return {};
+};
+
+const getOriginalTableName = (tableName) => {
+  return tableName.includes('_') ? tableName.split('_')[0] : tableName;
+};
+
+const getRowsFromJson = (tableName) => {
+  switch (tableName) {
+    case 'Department':
+      return department.data.length;
+    case 'Doctor':
+      return doctor.data.length;
+    case 'Patient':
+      return patient.data.length;
+    default:
+      return 0;
+  }
+};
+
+const getRows = (tableName) => {
+  const originalTableName = getOriginalTableName(tableName);
+  const joParameters = loadJOParametersFromLocalStorage();
+  if (!SUPPORTED_TABLES.includes(originalTableName)) {
+    console.error('Table name not supported');
+    return 0;
+  }
+  const tableInfo =
+    originalTableName in joParameters ? joParameters[originalTableName] : {};
+  if ('rows' in tableInfo) {
+    return joParameters[originalTableName].rows;
+  } else {
+    const rows = getRowsFromJson(originalTableName);
+    tableInfo.rows = rows;
+    joParameters[originalTableName] = tableInfo;
+    saveJOParametersToLocalStorage(joParameters);
+    return rows;
+  }
+};
+
+const getSelectivity = (leftTableName, rightTableName) => {
+  const leftOriginalTableName = getOriginalTableName(leftTableName);
+  const rightOriginalTableName = getOriginalTableName(rightTableName);
+  return RELATION_SELECTIVITY_MAP[leftOriginalTableName][
+    rightOriginalTableName
+  ];
+};
+
 const joinOrderOptimization = (graph) => {
+  //   saveJOParametersToLocalStorage(RELATION_SELECTIVITY_MAP);
   const queue = new PriorityQueue();
   // initialize the queue with all the nodes
   for (const node in graph.nodes) {
-    const rows = RELATION_SIZE_MAP[node];
-    queue.enqueue(new JoinOrderQueueElement(graph, [node], rows, 0));
+    queue.enqueue(
+      new JoinOrderQueueElement(graph, [node], new Set(), getRows(node), 0)
+    );
+  }
+  // find number of edges in the graph
+  const edges = [];
+  for (const node in graph.nodes) {
+    for (const edge of graph.nodes[node].edges) {
+      edges.push(edge);
+    }
   }
   let bestCost = Number.MAX_SAFE_INTEGER;
   let bestJoinOrder = [];
-  const JOIN_ORDER_SIZE = Object.keys(graph.nodes).length;
+  const JOIN_ORDER_SIZE = edges.length / 2;
   while (queue.size() > 0) {
     const joinOrderElement = queue.dequeue();
     // condition to prune this branch
@@ -51,9 +133,10 @@ const joinOrderOptimization = (graph) => {
 };
 
 class JoinOrderQueueElement {
-  constructor(graph, joinTables, rows, cost) {
+  constructor(graph, joinTables, edgesPicked, rows, cost) {
     this.graph = graph;
     this.joinTables = joinTables;
+    this.edgesPicked = edgesPicked;
     this.rows = rows;
     this.cost = cost;
   }
@@ -63,29 +146,49 @@ class JoinOrderQueueElement {
   };
 
   getSize = () => {
-    return this.joinTables.length;
+    return this.edgesPicked.size;
   };
 
   getChildren = () => {
     const children = [];
-    const currentTablesSet = new Set(this.joinTables);
     for (const table of this.joinTables) {
+      if (typeof table === 'object') continue;
       const node = this.graph.nodes[table];
       const edges = node.edges;
       for (const edge of edges) {
         const leftTable = edge.cmp.lhs.split('.')[0];
         const rightTable = edge.cmp.rhs.split('.')[0];
-        const tableToJoin = table === leftTable ? rightTable : leftTable;
-        if (!currentTablesSet.has(tableToJoin)) {
-          const newTables = [...this.joinTables, tableToJoin];
+        // sort the edge representation to avoid duplicate join order
+        // used to track if an edge has been picked
+        const tableToJoin =
+          getOriginalTableName(table) === leftTable ? rightTable : leftTable;
+        const edgeRepr = [
+          edge.cmp.lhs,
+          edge.cmp.op,
+          edge.cmp.rhs,
+          table,
+          tableToJoin,
+        ]
+          .sort()
+          .join(' ');
+
+        if (!this.edgesPicked.has(edgeRepr)) {
+          const newTables = [...this.joinTables, edge, tableToJoin];
           const newRows =
             this.rows *
-            RELATION_SELECTIVITY_MAP[table][tableToJoin] *
-            RELATION_SIZE_MAP[tableToJoin];
-          const newCost =
-            this.cost + this.rows * RELATION_SIZE_MAP[tableToJoin];
+            getSelectivity(table, tableToJoin) *
+            getRows(tableToJoin);
+          const newCost = this.cost + this.rows * getRows(tableToJoin);
+          const newEdgesPicked = new Set(this.edgesPicked);
+          newEdgesPicked.add(edgeRepr);
           children.push(
-            new JoinOrderQueueElement(this.graph, newTables, newRows, newCost)
+            new JoinOrderQueueElement(
+              this.graph,
+              newTables,
+              newEdgesPicked,
+              newRows,
+              newCost
+            )
           );
         }
       }
