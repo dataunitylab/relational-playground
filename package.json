@@ -112,7 +112,7 @@
     "webpack": "5"
   },
   "engines": {
-    "node": "16.x"
+    "node": "18.x"
   },
   "resolutions": {
     "babel-loader": "8.1.0"
