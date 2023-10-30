@@ -1,196 +1,371 @@
+// @flow
+import type {
+  Graph,
+  JoinCondition,
+  SelectionCondition,
+} from './constructRelationalGraph';
+
 import department from '../resources/Department.json';
 import doctor from '../resources/Doctor.json';
 import patient from '../resources/Patient.json';
+import {getTableFromAttribute} from './constructRelationalGraph';
 
-const SUPPORTED_TABLES = ['Department', 'Doctor', 'Patient'];
-
-const RELATION_SELECTIVITY_MAP = {
-  Department: {
-    Department: 1,
-    Doctor: 0.14285,
-    Patient: 0.0,
-  },
-  Doctor: {
-    Doctor: 1,
-    Department: 0.14285,
-    Patient: 0.025,
-  },
-  Patient: {
-    Patient: 1,
-    Doctor: 0.025,
-    Department: 0.025,
-  },
-};
-
-// jo parameters object structure in local storage
-/*
-jo_parameters: {
-    Department: {
-        rows: 7,
-    }
-}
-*/
-
-const saveJOParametersToLocalStorage = (joinOrderParameters) => {
-  const json = JSON.stringify(joinOrderParameters);
-  localStorage.setItem('jo_parameters', json);
-};
-
-const loadJOParametersFromLocalStorage = () => {
-  const json = localStorage.getItem('jo_parameters');
-  if (json) {
-    return JSON.parse(json);
+/**
+ * Formats into selection condition format for a given table
+ * @param tableExpr - a relational algebra expression object to render
+ * @param selections - an array where all created paths should be saved
+ * @return a tree structure representing the exppression
+ */
+const getSelectionExpression = (
+  tableExpr: string | {[key: string]: any},
+  selections: Array<SelectionCondition>
+) => {
+  let relation =
+    typeof tableExpr === 'string' ? {relation: tableExpr} : tableExpr;
+  if (selections.length === 0) {
+    return relation;
   }
-  console.log('No join order parameters found in local storage');
-  return {};
-};
-
-const getOriginalTableName = (tableName) => {
-  return tableName.includes('_') ? tableName.split('_')[0] : tableName;
-};
-
-const getRowsFromJson = (tableName) => {
-  switch (tableName) {
-    case 'Department':
-      return department.data.length;
-    case 'Doctor':
-      return doctor.data.length;
-    case 'Patient':
-      return patient.data.length;
-    default:
-      return 0;
-  }
-};
-
-const getRows = (tableName) => {
-  const originalTableName = getOriginalTableName(tableName);
-  const joParameters = loadJOParametersFromLocalStorage();
-  if (!SUPPORTED_TABLES.includes(originalTableName)) {
-    console.error('Table name not supported');
-    return 0;
-  }
-  const tableInfo =
-    originalTableName in joParameters ? joParameters[originalTableName] : {};
-  if ('rows' in tableInfo) {
-    return joParameters[originalTableName].rows;
+  let select: {[key: string]: any} = {};
+  if (selections.length === 1) {
+    select = selections[0];
   } else {
-    const rows = getRowsFromJson(originalTableName);
-    tableInfo.rows = rows;
-    joParameters[originalTableName] = tableInfo;
-    saveJOParametersToLocalStorage(joParameters);
-    return rows;
+    select = {
+      and: {
+        clauses: selections,
+      },
+    };
+  }
+  return {
+    selection: {
+      arguments: {
+        select: select,
+      },
+      children: [relation],
+    },
+  };
+};
+
+/**
+ * Formats into join condition format for a given table
+ * @param joinConditions - a relational algebra expression object to render
+ * @return a tree structure representing the exppression
+ */
+const formatJoinConditions = (joinConditions: Array<JoinCondition>) => {
+  if (joinConditions.length === 0) {
+    return {cmp: {}};
+  }
+  if (joinConditions.length === 1) {
+    return {cmp: joinConditions[0]};
+  } else {
+    const processedJoinConditions = joinConditions.map((joinCondition) => {
+      return {cmp: joinCondition};
+    });
+    return {and: {clauses: processedJoinConditions}};
   }
 };
 
-const getSelectivity = (leftTableName, rightTableName) => {
-  const leftOriginalTableName = getOriginalTableName(leftTableName);
-  const rightOriginalTableName = getOriginalTableName(rightTableName);
-  return RELATION_SELECTIVITY_MAP[leftOriginalTableName][
-    rightOriginalTableName
-  ];
+/**
+ * Formats into relational expression format for a given table
+ * @param tableName - a relational algebra expression object to render
+ * @param tablesWithSelections - all tables with selections
+ */
+const getRelationExpression = (
+  tableName: string,
+  tablesWithSelections: {[key: string]: any}
+) => {
+  if (tableName in tablesWithSelections) {
+    return tablesWithSelections[tableName];
+  }
+  return {relation: tableName};
 };
 
-const joinOrderOptimization = (graph) => {
-  //   saveJOParametersToLocalStorage(RELATION_SELECTIVITY_MAP);
+/**
+ * Parses the join order expression
+ * @param tablesWithSelections - all tables with selections
+ * @param joinOrder - the join order
+ */
+const parseJoinOrderExpression = (
+  tablesWithSelections: {[key: string]: any},
+  joinOrder: Array<string | Array<JoinCondition>>
+) => {
+  let leftJoinExpr: {[key: string]: any} = getRelationExpression(
+    (joinOrder[0]: any),
+    tablesWithSelections
+  );
+  for (let i = 2; i < joinOrder.length; i += 2) {
+    const rightTable: any = joinOrder[i];
+    const joinConditions: any = joinOrder[i - 1];
+    const rightJoinExpr = getRelationExpression(
+      rightTable,
+      tablesWithSelections
+    );
+    leftJoinExpr = {
+      join: {
+        left: leftJoinExpr,
+        right: rightJoinExpr,
+        type: 'inner',
+        condition: formatJoinConditions(joinConditions),
+      },
+    };
+  }
+  return leftJoinExpr;
+};
+
+/**
+ * Gets the relational expression for the given join order
+ * @param graph - the relational graph
+ * @param bestJoinOrder - the best join order
+ * @param globalSelections - the global selections
+ */
+const getRelationalExpression = (
+  graph: Graph,
+  bestJoinOrder: Array<string | Array<JoinCondition>>,
+  globalSelections: Array<SelectionCondition>
+): {[key: string]: any} => {
+  const tablesWithSelections: {[key: string]: any} = {};
+  for (const tableName in graph) {
+    const selections = graph[tableName]?.selections ?? [];
+    if (selections.length > 0) {
+      tablesWithSelections[tableName] = getSelectionExpression(
+        tableName,
+        selections
+      );
+    }
+  }
+
+  const joinExpr = parseJoinOrderExpression(
+    tablesWithSelections,
+    bestJoinOrder
+  );
+  return getSelectionExpression(joinExpr, globalSelections);
+};
+
+/**
+ * Performs join order optimization
+ * @param graph - the relational graph
+ * @param globalSelections - the global selections
+ * @return the relational expression
+ */
+const joinOrderOptimization = (
+  graph: Graph,
+  globalSelections: Array<SelectionCondition>
+): {[key: string]: any} => {
   const queue = new PriorityQueue();
   // initialize the queue with all the nodes
-  for (const node in graph.nodes) {
+  for (const node in graph) {
     queue.enqueue(
-      new JoinOrderQueueElement(graph, [node], new Set(), getRows(node), 0)
+      new JoinOrderQueueElement(graph, [node], getTableData(node), 0, [node])
     );
   }
-  // find number of edges in the graph
-  const edges = [];
-  for (const node in graph.nodes) {
-    for (const edge of graph.nodes[node].edges) {
-      edges.push(edge);
-    }
-  }
+
   let bestCost = Number.MAX_SAFE_INTEGER;
-  let bestJoinOrder = [];
-  const JOIN_ORDER_SIZE = edges.length / 2;
+  let bestJoinTables: Array<string> = [];
+  let bestJoinOrder: Array<string | Array<JoinCondition>> = [];
+  const JOIN_ORDER_SIZE = Object.keys(graph).length;
   while (queue.size() > 0) {
     const joinOrderElement = queue.dequeue();
     // condition to prune this branch
-    if (joinOrderElement.getCost() >= bestCost) {
+    if (joinOrderElement && joinOrderElement.getCost() >= bestCost) {
       continue;
     }
     // condition to stop this branch
-    if (joinOrderElement.getSize() === JOIN_ORDER_SIZE) {
+    if (joinOrderElement && joinOrderElement.getSize() === JOIN_ORDER_SIZE) {
       if (joinOrderElement.getCost() < bestCost) {
         bestCost = joinOrderElement.getCost();
-        bestJoinOrder = joinOrderElement.joinTables;
+        bestJoinTables = joinOrderElement.joinTables;
+        bestJoinOrder = joinOrderElement.joinOrder;
       }
       continue;
     }
-    const children = joinOrderElement.getChildren();
+    const children = joinOrderElement ? joinOrderElement.getChildren() : [];
     for (const child of children) {
       queue.enqueue(child);
     }
   }
-  console.log('Best join order: ', bestJoinOrder, ' best cost: ', bestCost);
-  return bestJoinOrder;
+  console.log('Best join order: ', bestJoinTables, ' best cost: ', bestCost);
+  return getRelationalExpression(graph, bestJoinOrder, globalSelections);
+};
+
+/**
+ * Gets the rows and cost for the given join conditions
+ * @param rows - the rows
+ * @param cost - the cost
+ * @param joinConditions - the join conditions
+ */
+const getRowsAndCost = (
+  rows: Array<any>,
+  cost: number,
+  joinConditions: Array<JoinCondition>,
+  leftTables: Array<string>,
+  rightTable: string
+) => {
+  const tableRows = getTableData(rightTable);
+  const newRows: Array<any> = [];
+  let totalCost = cost;
+  for (const tableARow of rows) {
+    for (const tableBRow of tableRows) {
+      totalCost += 1;
+      let shouldAddRow = true;
+      for (const joinCondition of joinConditions) {
+        const {lhs, op, rhs} = joinCondition;
+        const left = getTableFromAttribute(lhs, [...leftTables, rightTable]);
+        const right = getTableFromAttribute(rhs, [...leftTables, rightTable]);
+        const leftColumn = lhs.includes('.') ? lhs.split('.')[1] : lhs;
+        const rightColumn = rhs.includes('.') ? rhs.split('.')[1] : rhs;
+        let leftExpression =
+          right === rightTable
+            ? `${left}.${leftColumn}`
+            : `${right}.${rightColumn}`;
+        let rightExpression =
+          right === rightTable
+            ? `${right}.${rightColumn}`
+            : `${left}.${leftColumn}`;
+        leftExpression = leftExpression.toLowerCase();
+        rightExpression = rightExpression.toLowerCase();
+        switch (op) {
+          case '$eq':
+            if (tableARow[leftExpression] !== tableBRow[rightExpression]) {
+              shouldAddRow = false;
+            }
+            break;
+          case '$neq':
+            if (tableARow[leftExpression] === tableBRow[rightExpression]) {
+              shouldAddRow = false;
+            }
+            break;
+          case '$gt':
+            if (tableARow[leftExpression] <= tableBRow[rightExpression]) {
+              shouldAddRow = false;
+            }
+            break;
+          case '$gte':
+            if (tableARow[leftExpression] < tableBRow[rightExpression]) {
+              shouldAddRow = false;
+            }
+            break;
+          case '$lt':
+            if (tableARow[leftExpression] >= tableBRow[rightExpression]) {
+              shouldAddRow = false;
+            }
+            break;
+          case '$lte':
+            if (tableARow[leftExpression] > tableBRow[rightExpression]) {
+              shouldAddRow = false;
+            }
+            break;
+          default:
+            console.error('Invalid operator');
+        }
+        if (!shouldAddRow) break;
+      }
+      if (shouldAddRow) {
+        const newRow = {...tableARow, ...tableBRow};
+        newRows.push(newRow);
+      }
+    }
+  }
+  return {rows: newRows, cost: totalCost};
+};
+
+/**
+ * Gets the data for the given table
+ * @param tableName - the table name
+ */
+const getTableData = (tableName: string) => {
+  switch (tableName) {
+    case 'Department':
+      return addTablePrefixToData('department', department.data);
+    case 'Doctor':
+      return addTablePrefixToData('doctor', doctor.data);
+    case 'Patient':
+      return addTablePrefixToData('patient', patient.data);
+    default:
+      return [];
+  }
+};
+
+/**
+ * Adds the table prefix to the data
+ * @param tableName - the table name
+ * @param data - the data
+ */
+const addTablePrefixToData = (
+  tableName: string,
+  data: Array<{[key: string]: string}>
+) => {
+  const newData = [];
+  for (const row of data) {
+    const newRow: {[key: string]: string} = {};
+    for (const key of Object.keys(row)) {
+      newRow[`${tableName}.${key}`.toLowerCase()] = row[key];
+    }
+    newData.push(newRow);
+  }
+  return newData;
 };
 
 class JoinOrderQueueElement {
-  constructor(graph, joinTables, edgesPicked, rows, cost) {
+  graph: Graph;
+  joinTables: Array<string>;
+  rows: Array<any>;
+  cost: number;
+  joinOrder: Array<string | Array<JoinCondition>>;
+
+  constructor(
+    graph: Graph,
+    joinTables: Array<string>,
+    rows: Array<any>,
+    cost: number,
+    joinOrder: Array<string | Array<JoinCondition>>
+  ) {
     this.graph = graph;
     this.joinTables = joinTables;
-    this.edgesPicked = edgesPicked;
     this.rows = rows;
     this.cost = cost;
+    this.joinOrder = joinOrder;
   }
 
-  getCost = () => {
+  getCost = (): number => {
     return this.cost;
   };
 
-  getSize = () => {
-    return this.edgesPicked.size;
+  getSize = (): number => {
+    return this.joinTables.length;
   };
 
-  getChildren = () => {
+  getChildren = (): Array<JoinOrderQueueElement> => {
     const children = [];
     for (const table of this.joinTables) {
-      if (typeof table === 'object') continue;
-      const node = this.graph.nodes[table];
-      const edges = node.edges;
-      for (const edge of edges) {
-        const leftTable = edge.cmp.lhs.split('.')[0];
-        const rightTable = edge.cmp.rhs.split('.')[0];
-        // sort the edge representation to avoid duplicate join order
-        // used to track if an edge has been picked
-        const tableToJoin =
-          getOriginalTableName(table) === leftTable ? rightTable : leftTable;
-        const edgeRepr = [
-          edge.cmp.lhs,
-          edge.cmp.op,
-          edge.cmp.rhs,
-          table,
-          tableToJoin,
-        ]
-          .sort()
-          .join(' ');
-
-        if (!this.edgesPicked.has(edgeRepr)) {
-          const newTables = [...this.joinTables, edge, tableToJoin];
-          const newRows =
-            this.rows *
-            getSelectivity(table, tableToJoin) *
-            getRows(tableToJoin);
-          const newCost = this.cost + this.rows * getRows(tableToJoin);
-          const newEdgesPicked = new Set(this.edgesPicked);
-          newEdgesPicked.add(edgeRepr);
-          children.push(
-            new JoinOrderQueueElement(
-              this.graph,
-              newTables,
-              newEdgesPicked,
-              newRows,
-              newCost
-            )
-          );
+      const edges = this.graph[table].edges;
+      const neighbors = Object.keys(edges);
+      for (const neighbor of neighbors) {
+        if (this.joinTables.includes(neighbor)) continue;
+        let joinConditions: Array<JoinCondition> = [];
+        for (const currentTable in this.graph[neighbor].edges) {
+          if (this.joinTables.includes(currentTable)) {
+            joinConditions = [
+              ...joinConditions,
+              ...this.graph[neighbor].edges[currentTable],
+            ];
+          }
         }
+        const newJoinOrder = [...this.joinOrder, joinConditions, neighbor];
+        const {rows, cost} = getRowsAndCost(
+          this.rows,
+          this.cost,
+          joinConditions,
+          this.joinTables,
+          neighbor
+        );
+        children.push(
+          new JoinOrderQueueElement(
+            this.graph,
+            [...this.joinTables, neighbor],
+            rows,
+            cost,
+            newJoinOrder
+          )
+        );
       }
     }
     return children;
@@ -198,16 +373,17 @@ class JoinOrderQueueElement {
 }
 
 class PriorityQueue {
+  items: Array<JoinOrderQueueElement>;
   constructor() {
     this.items = [];
   }
 
-  enqueue(item) {
+  enqueue(item: JoinOrderQueueElement) {
     this.items.push(item);
     this.heapifyUp(this.items.length - 1);
   }
 
-  dequeue() {
+  dequeue(): ?JoinOrderQueueElement {
     if (this.isEmpty()) {
       return null;
     }
@@ -223,15 +399,15 @@ class PriorityQueue {
     return root;
   }
 
-  isEmpty() {
+  isEmpty(): boolean {
     return this.items.length === 0;
   }
 
-  size() {
+  size(): number {
     return this.items.length;
   }
 
-  heapifyUp(index) {
+  heapifyUp(index: number) {
     while (index > 0) {
       const parentIndex = Math.floor((index - 1) / 2);
       if (this.items[index].getCost() < this.items[parentIndex].getCost()) {
@@ -243,7 +419,7 @@ class PriorityQueue {
     }
   }
 
-  heapifyDown(index) {
+  heapifyDown(index: number) {
     while (true) {
       const leftChildIndex = 2 * index + 1;
       const rightChildIndex = 2 * index + 2;
@@ -274,7 +450,7 @@ class PriorityQueue {
     }
   }
 
-  swap(index1, index2) {
+  swap(index1: number, index2: number) {
     const temp = this.items[index1];
     this.items[index1] = this.items[index2];
     this.items[index2] = temp;
