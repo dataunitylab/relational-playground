@@ -10,7 +10,6 @@ exports[`correctly renders tutorial given no cookie 1`] = `
   disableOverlayClose={false}
   disableScrollParentFix={false}
   disableScrolling={false}
-  getHelpers={[Function]}
   hideBackButton={false}
   run={true}
   scrollDuration={300}
