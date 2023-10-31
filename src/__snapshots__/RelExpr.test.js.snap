@@ -1,9 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`correctly renders a complex expression 1`] = `
+exports[`RelExpr correctly renders a complex expression 1`] = `
 <span
   className="RelExpr"
   onClick={[Function]}
+  onMouseOut={[Function]}
+  onMouseOver={[Function]}
   style={
     Object {
       "margin": ".4em",
@@ -11,11 +13,7 @@ exports[`correctly renders a complex expression 1`] = `
   }
 >
   <span>
-    <span
-      className=""
-      onMouseOut={[Function]}
-      onMouseOver={[Function]}
-    >
+    <span>
       <span>
         <span>
           ρ
@@ -27,6 +25,8 @@ exports[`correctly renders a complex expression 1`] = `
         <span
           className="RelExpr"
           onClick={[Function]}
+          onMouseOut={[Function]}
+          onMouseOver={[Function]}
           style={
             Object {
               "margin": ".4em",
@@ -34,11 +34,7 @@ exports[`correctly renders a complex expression 1`] = `
           }
         >
           <span>
-            <span
-              className=""
-              onMouseOut={[Function]}
-              onMouseOver={[Function]}
-            >
+            <span>
               <span>
                 <span>
                   π
@@ -50,6 +46,8 @@ exports[`correctly renders a complex expression 1`] = `
                 <span
                   className="RelExpr"
                   onClick={[Function]}
+                  onMouseOut={[Function]}
+                  onMouseOver={[Function]}
                   style={
                     Object {
                       "margin": ".4em",
@@ -57,11 +55,7 @@ exports[`correctly renders a complex expression 1`] = `
                   }
                 >
                   <span>
-                    <span
-                      className=""
-                      onMouseOut={[Function]}
-                      onMouseOver={[Function]}
-                    >
+                    <span>
                       <span>
                         <span>
                           σ
