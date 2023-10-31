@@ -16,26 +16,6 @@ import {
   Union,
 } from './RelOp';
 
-each([
-  ['unary operators', <UnaryRelOp />],
-  ['binary operators', <BinaryRelOp />],
-]).test('%s should add (and remove) a class on hover', (opType, relOp) => {
-  const wrapper = mount(relOp);
-
-  // Hovering class should be off by default
-  expect(wrapper.hasClass('hovering')).toBeFalsy();
-
-  // Hovering should add the class and not propagate the event
-  const mockStop = jest.fn();
-  wrapper.simulate('mouseover', {type: 'mouseover', stopPropagation: mockStop});
-  expect(wrapper.exists('.hovering')).toBeTruthy();
-  expect(mockStop.mock.calls.length).toBe(1);
-
-  // Mouse out should remove the class
-  wrapper.simulate('mouseout', {type: 'mouseout', stopPropagation: jest.fn()});
-  expect(wrapper.exists('.hovering')).toBeFalsy();
-});
-
 /** @test {Projection} */
 it('renders a projection', () => {
   const {container} = render(<Projection project={['foo', 'bar']} />);

@@ -1,5 +1,5 @@
 // @flow
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   UnaryRelOp,
   Projection,
@@ -34,21 +34,15 @@ type Props = {
 const RelExpr: StatelessFunctionalComponent<Props> = (props) => {
   const nodeRef = useRef<?HTMLSpanElement>();
   const currentNode = useSelector<{data: State}, _>((state) => state.data.expr);
+  const [isHovering, setIsHovering] = useState(false);
+  const [isSelected, setIsSelected] = useState(false);
 
   useEffect(() => {
     // Adjust 'clicked' highlighting based on any changes to currentNode selected
-    const node =
-      ReactDOM.findDOMNode(nodeRef.current) instanceof HTMLElement
-        ? ReactDOM.findDOMNode(nodeRef.current)
-        : undefined;
-    if (node instanceof HTMLElement) {
-      const clicked = props.expr === currentNode;
-      let newClassName = node.className;
-      if (!clicked) {
-        newClassName = newClassName.replace(' clicked', '');
-        newClassName = newClassName.replace(' hovering', '');
-      }
-      node.className = newClassName;
+    const clicked = props.expr === currentNode;
+    if (!clicked) {
+      setIsSelected(false);
+      setIsHovering(false);
     }
   }, [currentNode, props.expr]);
 
@@ -179,23 +173,18 @@ const RelExpr: StatelessFunctionalComponent<Props> = (props) => {
       ReactDOM.findDOMNode(nodeRef.current) instanceof HTMLElement
         ? ReactDOM.findDOMNode(nodeRef.current)
         : undefined;
-    if (node instanceof HTMLElement) {
-      let newClassName = node.className;
-      const clicked = e.type === 'click' && !newClassName.includes(' clicked');
 
-      if (props.changeExpr) {
-        if (clicked) {
-          props.changeExpr(props.expr, node);
-        } else {
-          props.changeExpr({}, node);
-        }
+    const clicked = e.type === 'click' && !isSelected;
+
+    if (props.changeExpr && node instanceof HTMLElement) {
+      if (clicked) {
+        props.changeExpr(props.expr, node);
+      } else {
+        props.changeExpr({}, node);
       }
 
-      newClassName = newClassName.replace(' clicked', '');
-      newClassName = newClassName.replace(' hovering', '');
-      newClassName += clicked ? ' clicked' : '';
-
-      node.className = newClassName;
+      setIsHovering(false);
+      setIsSelected(clicked);
     }
 
     props.ReactGA.event({
@@ -206,25 +195,20 @@ const RelExpr: StatelessFunctionalComponent<Props> = (props) => {
 
   const handleExprHover = (e: SyntheticMouseEvent<HTMLElement>): void => {
     e.stopPropagation();
-    const node =
-      ReactDOM.findDOMNode(nodeRef.current) instanceof HTMLElement
-        ? ReactDOM.findDOMNode(nodeRef.current)
-        : undefined;
-
-    if (node instanceof HTMLElement) {
-      const hovering = e.type === 'mouseover';
-      let newClassName = node.className;
-      newClassName = newClassName.replace(' hovering', '');
-      newClassName += hovering ? ' hovering' : '';
-
-      node.className = newClassName;
-    }
+    setIsHovering(e.type === 'mouseover');
   };
 
   if (!props.expr || Object.keys(props.expr).length === 0) {
     return '';
   }
   const type = Object.keys(props.expr)[0];
+  let className = 'RelExpr';
+  if (isHovering) {
+    className += ' hovering';
+  }
+  if (isSelected) {
+    className += ' clicked';
+  }
   if (type === 'relation') {
     return (
       <span className="RelExpr" style={{margin: '.4em'}}>
@@ -234,7 +218,7 @@ const RelExpr: StatelessFunctionalComponent<Props> = (props) => {
   } else {
     return (
       <span
-        className="RelExpr"
+        className={className}
         onMouseOver={handleExprHover}
         onMouseOut={handleExprHover}
         onClick={handleExprClick}

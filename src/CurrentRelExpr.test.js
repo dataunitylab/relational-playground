@@ -14,6 +14,7 @@ describe('CurrentRelExpr', () => {
 
   beforeEach(() => {
     store = mockStore({
+      data: {expr: {}},
       relexp: {
         expr: {
           selection: {
