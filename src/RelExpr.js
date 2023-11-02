@@ -187,10 +187,12 @@ const RelExpr: StatelessFunctionalComponent<Props> = (props) => {
       setIsSelected(clicked);
     }
 
-    props.ReactGA.event({
-      category: 'User Selecting Relational Algebra Enclosure',
-      action: Object.keys(props.expr)[0],
-    });
+    if (props.ReactGA) {
+      props.ReactGA.event({
+        category: 'User Selecting Relational Algebra Enclosure',
+        action: Object.keys(props.expr)[0],
+      });
+    }
   };
 
   const handleExprHover = (e: SyntheticMouseEvent<HTMLElement>): void => {
