@@ -1,9 +1,7 @@
 // @flow
-import type {
-  Graph,
-  JoinCondition,
-  SelectionCondition,
-} from './constructRelationalGraph';
+import type {JoinCondition, SelectionCondition, Graph} from './types';
+
+import TinyQueue from 'tinyqueue';
 
 import department from '../resources/Department.json';
 import doctor from '../resources/Doctor.json';
@@ -150,20 +148,21 @@ const joinOrderOptimization = (
   graph: Graph,
   globalSelections: Array<SelectionCondition>
 ): {[key: string]: any} => {
-  const queue = new PriorityQueue();
+  const queue = new TinyQueue([], function (a, b) {
+    return a.getCost() - b.getCost();
+  });
   // initialize the queue with all the nodes
   for (const node in graph) {
-    queue.enqueue(
+    queue.push(
       new JoinOrderQueueElement(graph, [node], getTableData(node), 0, [node])
     );
   }
 
   let bestCost = Number.MAX_SAFE_INTEGER;
-  let bestJoinTables: Array<string> = [];
   let bestJoinOrder: Array<string | Array<JoinCondition>> = [];
   const JOIN_ORDER_SIZE = Object.keys(graph).length;
-  while (queue.size() > 0) {
-    const joinOrderElement = queue.dequeue();
+  while (queue.length > 0) {
+    const joinOrderElement = queue.pop();
     // condition to prune this branch
     if (joinOrderElement && joinOrderElement.getCost() >= bestCost) {
       continue;
@@ -172,17 +171,15 @@ const joinOrderOptimization = (
     if (joinOrderElement && joinOrderElement.getSize() === JOIN_ORDER_SIZE) {
       if (joinOrderElement.getCost() < bestCost) {
         bestCost = joinOrderElement.getCost();
-        bestJoinTables = joinOrderElement.joinTables;
         bestJoinOrder = joinOrderElement.joinOrder;
       }
       continue;
     }
     const children = joinOrderElement ? joinOrderElement.getChildren() : [];
     for (const child of children) {
-      queue.enqueue(child);
+      queue.push(child);
     }
   }
-  console.log('Best join order: ', bestJoinTables, ' best cost: ', bestCost);
   return getRelationalExpression(graph, bestJoinOrder, globalSelections);
 };
 
@@ -333,11 +330,23 @@ class JoinOrderQueueElement {
     return this.joinTables.length;
   };
 
-  getChildren = (): Array<JoinOrderQueueElement> => {
+  /**
+   * Gets the children of the current join order
+   * Iterates through all the tables in the current join order
+   * For each table, iterates through all its neighbors
+   * If the neighbor is not in the current join order, evaluate the cost of adding it
+   * and add it to the queue
+   * Add the join conditions between the tables in the join order so far and the new neighbor
+   * @return the children
+   */
+  // eslint-disable-next-line no-use-before-define
+  getChildren(): Array<JoinOrderQueueElement> {
     const children = [];
+    // iterate through all the tables in the current join order
     for (const table of this.joinTables) {
       const edges = this.graph[table].edges;
       const neighbors = Object.keys(edges);
+      // iterate through all the neighbors of the current table
       for (const neighbor of neighbors) {
         if (this.joinTables.includes(neighbor)) continue;
         let joinConditions: Array<JoinCondition> = [];
@@ -350,6 +359,7 @@ class JoinOrderQueueElement {
           }
         }
         const newJoinOrder = [...this.joinOrder, joinConditions, neighbor];
+        // evaluate the cost of adding the neighbor
         const {rows, cost} = getRowsAndCost(
           this.rows,
           this.cost,
@@ -357,6 +367,7 @@ class JoinOrderQueueElement {
           this.joinTables,
           neighbor
         );
+        // add it to the list of children
         children.push(
           new JoinOrderQueueElement(
             this.graph,
@@ -369,91 +380,6 @@ class JoinOrderQueueElement {
       }
     }
     return children;
-  };
-}
-
-class PriorityQueue {
-  items: Array<JoinOrderQueueElement>;
-  constructor() {
-    this.items = [];
-  }
-
-  enqueue(item: JoinOrderQueueElement) {
-    this.items.push(item);
-    this.heapifyUp(this.items.length - 1);
-  }
-
-  dequeue(): ?JoinOrderQueueElement {
-    if (this.isEmpty()) {
-      return null;
-    }
-
-    if (this.items.length === 1) {
-      return this.items.pop();
-    }
-
-    const root = this.items[0];
-    this.items[0] = this.items.pop();
-    this.heapifyDown(0);
-
-    return root;
-  }
-
-  isEmpty(): boolean {
-    return this.items.length === 0;
-  }
-
-  size(): number {
-    return this.items.length;
-  }
-
-  heapifyUp(index: number) {
-    while (index > 0) {
-      const parentIndex = Math.floor((index - 1) / 2);
-      if (this.items[index].getCost() < this.items[parentIndex].getCost()) {
-        this.swap(index, parentIndex);
-        index = parentIndex;
-      } else {
-        break;
-      }
-    }
-  }
-
-  heapifyDown(index: number) {
-    while (true) {
-      const leftChildIndex = 2 * index + 1;
-      const rightChildIndex = 2 * index + 2;
-      let smallestChildIndex = index;
-
-      if (
-        leftChildIndex < this.items.length &&
-        this.items[leftChildIndex].getCost() <
-          this.items[smallestChildIndex].getCost()
-      ) {
-        smallestChildIndex = leftChildIndex;
-      }
-
-      if (
-        rightChildIndex < this.items.length &&
-        this.items[rightChildIndex].getCost() <
-          this.items[smallestChildIndex].getCost()
-      ) {
-        smallestChildIndex = rightChildIndex;
-      }
-
-      if (smallestChildIndex !== index) {
-        this.swap(index, smallestChildIndex);
-        index = smallestChildIndex;
-      } else {
-        break;
-      }
-    }
-  }
-
-  swap(index1: number, index2: number) {
-    const temp = this.items[index1];
-    this.items[index1] = this.items[index2];
-    this.items[index2] = temp;
   }
 }
 

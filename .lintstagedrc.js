@@ -1,20 +1,11 @@
 module.exports = {
-  "*.yml": [
-    "eslint"
+  '*.yml': ['eslint'],
+  'src/**/*.{js,json}': [
+    'eslint --fix',
+    'flow focus-check',
+    'prettier --write',
   ],
-  "src/**/*.{js,json}": [
-    "eslint --fix",
-    "prettier --write"
-  ],
-  "src/**/*.css": [
-    "stylelint --fix",
-    "prettier --write"
-  ],
-  "package.json": [
-    "npmPkgJsonLint -q .",
-    () => "pkg-ok"
-  ],
-  "README.md": [
-    "markdownlint -f"
-  ]
-}
+  'src/**/*.css': ['stylelint --fix', 'prettier --write'],
+  'package.json': ['npmPkgJsonLint -q .', () => 'pkg-ok'],
+  'README.md': ['markdownlint -f'],
+};

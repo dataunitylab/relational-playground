@@ -1,31 +1,14 @@
 // @flow
-import {original} from 'immer';
 import Doctor from '../resources/Doctor.json';
 import Patient from '../resources/Patient.json';
 import Department from '../resources/Department.json';
 
-export type Expression = {[key: string]: any};
-
-export type JoinCondition = {[key: string]: any};
-
-export type SelectionCondition = {[key: string]: any};
-
-export type Graph = {
-  [key: string]: {
-    edges: {[key: string]: Array<JoinCondition>},
-    selections: Array<SelectionCondition>,
-  },
-};
-
-export const AvailableTables = ['Doctor', 'Patient', 'Department'];
-
-export const ExpressionType = {
-  SELECTION: 'selection',
-  JOIN: 'join',
-  RELATION: 'relation',
-  AND: 'and',
-  CMP: 'cmp',
-};
+import type {
+  JoinCondition,
+  SelectionCondition,
+  Expression,
+  Graph,
+} from './types';
 
 // Create a node of the table name with relevant fields
 const addNode = (
@@ -83,8 +66,8 @@ const conditionIsOnValidAttributes = (
         columns.push(...Department.columns);
         break;
       default:
-        console.error('Invalid table name', table);
-        throw new Error('Invalid table name');
+        // pass
+        break;
     }
   }
   return columns.includes(attribute);
@@ -124,13 +107,13 @@ const parseSelectionExpression = (
   tables: Array<string>,
   globalSelections: Array<SelectionCondition>
 ) => {
-  if (ExpressionType.AND in expr) {
-    const conditions = expr[ExpressionType.AND].clauses;
+  if ('and' in expr) {
+    const conditions = expr['and'].clauses;
     for (const condition of conditions) {
       parseSelectionExpression(graph, condition, tables, globalSelections);
     }
-  } else if (ExpressionType.CMP in expr) {
-    const selection = expr[ExpressionType.CMP];
+  } else if ('cmp' in expr) {
+    const selection = expr['cmp'];
     if (
       isValidJoinColumn(selection.lhs, tables) &&
       isValidJoinColumn(selection.rhs, tables)
@@ -159,27 +142,26 @@ const parseJoinExpression = (
   graph: Graph,
   expr: Expression,
   tables: Array<string>
-) => {
-  if (ExpressionType.AND in expr) {
-    const conditions = expr[ExpressionType.AND].clauses;
+): void => {
+  if ('and' in expr) {
+    const conditions = expr['and'].clauses;
     for (const condition of conditions) {
       parseJoinExpression(graph, condition, tables);
     }
-  } else if (ExpressionType.CMP in expr) {
-    const {lhs, rhs} = expr[ExpressionType.CMP];
+  } else if ('cmp' in expr) {
+    const {lhs, rhs} = expr['cmp'];
     const leftTable = getTableFromAttribute(lhs, tables);
     const rightTable = getTableFromAttribute(rhs, tables);
-    addEdge(graph, leftTable, rightTable, expr[ExpressionType.CMP]);
+    addEdge(graph, leftTable, rightTable, expr['cmp']);
   } else {
-    console.error('Invalid join expression for Join Order Optimization', expr);
+    throw new Error('Invalid join expression for Join Order Optimization');
   }
 };
 
 // function used to check all the tables that are involved in this query
 const preParseExpression = (expr: Expression, tables: Array<string>) => {
   if (typeof expr === 'object') {
-    if (ExpressionType.RELATION in expr)
-      tables.push(expr[ExpressionType.RELATION]);
+    if ('relation' in expr) tables.push(expr['relation']);
     for (const key in expr) {
       preParseExpression(expr[key], tables);
     }
@@ -196,24 +178,23 @@ const parseExpression = (
   tables: Array<string>,
   globalSelections: Array<SelectionCondition>
 ): void => {
-  if (ExpressionType.SELECTION in expr) {
-    const selection = expr[ExpressionType.SELECTION].arguments.select;
+  if ('selection' in expr) {
+    const selection = expr['selection'].arguments.select;
     parseSelectionExpression(graph, selection, tables, globalSelections);
-    const children = expr[ExpressionType.SELECTION].children;
+    const children = expr['selection'].children;
     for (const child of children) {
       parseExpression(graph, child, tables, globalSelections);
     }
-  } else if (ExpressionType.JOIN in expr) {
-    const joinExpr = expr[ExpressionType.JOIN];
+  } else if ('join' in expr) {
+    const joinExpr = expr['join'];
     const {left, right, condition} = joinExpr;
     parseJoinExpression(graph, condition, tables);
     parseExpression(graph, left, tables, globalSelections);
     parseExpression(graph, right, tables, globalSelections);
-  } else if (ExpressionType.RELATION in expr) {
-    const table = expr[ExpressionType.RELATION];
+  } else if ('relation' in expr) {
+    const table = expr['relation'];
     addNode(graph, table);
   } else {
-    console.error('Invalid expression type', expr);
     throw new Error('Invalid expression type');
   }
 };
@@ -234,32 +215,8 @@ export const constructRelationalGraph = (expr: {
   // if duplicate tables found, console error and don't proceed
   const uniqueTables = new Set(tables);
   if (uniqueTables.size !== tables.length) {
-    console.error('Duplicate tables found in the query');
     throw new Error('Duplicate tables found in the query');
   }
   parseExpression(graph, expr, tables, globalSelections);
-  // printGraph(graph, globalSelections);
-  // print the graph using original to see the actual graph
   return {graph: graph, globalSelections: globalSelections};
-};
-
-const printGraph = (
-  graph: Graph,
-  globalSelections: Array<SelectionCondition>
-) => {
-  for (const table in graph) {
-    console.log('Table: ', table);
-    for (const edge in graph[table]['edges']) {
-      console.log('Edge: ', edge);
-      for (const joinCondition of graph[table]['edges'][edge]) {
-        console.log('Join Condition: ', original(joinCondition));
-      }
-    }
-    for (const selection of graph[table]['selections']) {
-      console.log('Selection: ', original(selection));
-    }
-  }
-  for (const selection of globalSelections) {
-    console.log('Global selection: ', original(selection));
-  }
 };

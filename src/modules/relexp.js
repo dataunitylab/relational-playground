@@ -1,6 +1,6 @@
 // @flow
 import fromEntries from 'fromentries';
-import {produce, original} from 'immer';
+import {produce} from 'immer';
 import {joinOrderOptimization} from './joinOrderOptimization';
 import {constructRelationalGraph} from './constructRelationalGraph';
 
@@ -281,7 +281,6 @@ function convertExpr(
       }
 
     default:
-      console.log(expr);
       // Produce an error if the expression is unsupported
       throw new Error('Invalid expression.');
   }
@@ -476,13 +475,11 @@ const reducer: (
     switch (action.type) {
       case EXPR_FROM_SQL:
         draft.expr = buildRelExp(action.sql, action.types, []);
-        console.log('Building relational expression', original(draft));
         delete draft.unoptimizedExpr;
         delete draft.optimized;
         break;
       case ENABLE_OPTIMIZATION:
         draft.unoptimizedExpr = draft.expr;
-        console.log('Optimizing now', original(draft));
         draft.expr = optimize(action.optimization, draft.expr);
         draft.optimized = true;
         break;
