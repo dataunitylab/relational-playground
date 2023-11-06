@@ -143,7 +143,11 @@ const parseJoinExpression = (
   expr: Expression,
   tables: Array<string>
 ): void => {
-  if ('and' in expr) {
+  if (typeof expr === 'string') {
+    throw new Error(
+      'Invalid join expression for Join Order Optimization. This type of join condition is not supported currently'
+    );
+  } else if ('and' in expr) {
     const conditions = expr['and'].clauses;
     for (const condition of conditions) {
       parseJoinExpression(graph, condition, tables);
@@ -152,6 +156,8 @@ const parseJoinExpression = (
     const {lhs, rhs} = expr['cmp'];
     const leftTable = getTableFromAttribute(lhs, tables);
     const rightTable = getTableFromAttribute(rhs, tables);
+    if (leftTable === '' || rightTable === '')
+      throw new Error('Invalid join expression for Join Order Optimization');
     addEdge(graph, leftTable, rightTable, expr['cmp']);
   } else {
     throw new Error('Invalid join expression for Join Order Optimization');

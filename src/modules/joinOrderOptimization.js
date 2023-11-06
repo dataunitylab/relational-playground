@@ -188,6 +188,8 @@ const joinOrderOptimization = (
  * @param rows - the rows
  * @param cost - the cost
  * @param joinConditions - the join conditions
+ * @param leftTables - the left tables
+ * @param rightTable - the right table
  */
 const getRowsAndCost = (
   rows: Array<any>,
