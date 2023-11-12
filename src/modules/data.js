@@ -261,7 +261,7 @@ function applyItem(expr: {[string]: any}, item: {[string]: any}): any {
  * @param sourceData - source data from relations
  * @return result of evaluating the expression
  */
-function applyExpr(
+export function applyExpr(
   expr: {[string]: any},
   sourceData: {[string]: any}
 ): {[string]: any} {

@@ -449,7 +449,9 @@ function buildRelExp(
 function optimize(type: string, expr: {[key: string]: any}) {
   switch (type) {
     case 'join':
-      const {graph, globalSelections} = constructRelationalGraph(expr);
+      const {graph, globalSelections, canOptimize} =
+        constructRelationalGraph(expr);
+      if (!canOptimize) return expr;
       const optimizedExpr = joinOrderOptimization(graph, globalSelections);
       return optimizedExpr;
     default:

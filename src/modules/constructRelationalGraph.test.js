@@ -278,9 +278,12 @@ describe('constructRelationalGraph', () => {
         edges: {
           Patient: [
             {
-              lhs: 'Doctor.id',
-              op: '$eq',
-              rhs: 'Patient.primaryDoctor',
+              condition: {
+                lhs: 'Doctor.id',
+                op: '$eq',
+                rhs: 'Patient.primaryDoctor',
+              },
+              type: 'inner',
             },
           ],
         },
@@ -290,9 +293,12 @@ describe('constructRelationalGraph', () => {
         edges: {
           Doctor: [
             {
-              lhs: 'Doctor.id',
-              op: '$eq',
-              rhs: 'Patient.primaryDoctor',
+              condition: {
+                lhs: 'Doctor.id',
+                op: '$eq',
+                rhs: 'Patient.primaryDoctor',
+              },
+              type: 'inner',
             },
           ],
         },
@@ -378,16 +384,22 @@ describe('constructRelationalGraph', () => {
         edges: {
           Patient: [
             {
-              lhs: 'Doctor.id',
-              op: '$eq',
-              rhs: 'Patient.primaryDoctor',
+              condition: {
+                lhs: 'Doctor.id',
+                op: '$eq',
+                rhs: 'Patient.primaryDoctor',
+              },
+              type: 'inner',
             },
           ],
           Department: [
             {
-              lhs: 'Doctor.departmentId',
-              op: '$eq',
-              rhs: 'Department.id',
+              condition: {
+                lhs: 'Doctor.departmentId',
+                op: '$eq',
+                rhs: 'Department.id',
+              },
+              type: 'inner',
             },
           ],
         },
@@ -405,9 +417,12 @@ describe('constructRelationalGraph', () => {
         edges: {
           Doctor: [
             {
-              lhs: 'Doctor.id',
-              op: '$eq',
-              rhs: 'Patient.primaryDoctor',
+              condition: {
+                lhs: 'Doctor.id',
+                op: '$eq',
+                rhs: 'Patient.primaryDoctor',
+              },
+              type: 'inner',
             },
           ],
         },
@@ -417,9 +432,12 @@ describe('constructRelationalGraph', () => {
         edges: {
           Doctor: [
             {
-              lhs: 'Doctor.departmentId',
-              op: '$eq',
-              rhs: 'Department.id',
+              condition: {
+                lhs: 'Doctor.departmentId',
+                op: '$eq',
+                rhs: 'Department.id',
+              },
+              type: 'inner',
             },
           ],
         },
@@ -518,16 +536,22 @@ describe('constructRelationalGraph', () => {
         edges: {
           Patient: [
             {
-              lhs: 'Doctor.id',
-              op: '$eq',
-              rhs: 'Patient.primaryDoctor',
+              condition: {
+                lhs: 'Doctor.id',
+                op: '$eq',
+                rhs: 'Patient.primaryDoctor',
+              },
+              type: 'inner',
             },
           ],
           Department: [
             {
-              lhs: 'Doctor.departmentId',
-              op: '$eq',
-              rhs: 'Department.id',
+              condition: {
+                lhs: 'Doctor.departmentId',
+                op: '$eq',
+                rhs: 'Department.id',
+              },
+              type: 'inner',
             },
           ],
         },
@@ -545,16 +569,22 @@ describe('constructRelationalGraph', () => {
         edges: {
           Doctor: [
             {
-              lhs: 'Doctor.id',
-              op: '$eq',
-              rhs: 'Patient.primaryDoctor',
+              condition: {
+                lhs: 'Doctor.id',
+                op: '$eq',
+                rhs: 'Patient.primaryDoctor',
+              },
+              type: 'inner',
             },
           ],
           Department: [
             {
-              lhs: 'Patient.id',
-              op: '$eq',
-              rhs: 'Department.id',
+              condition: {
+                lhs: 'Patient.id',
+                op: '$eq',
+                rhs: 'Department.id',
+              },
+              type: 'inner',
             },
           ],
         },
@@ -564,16 +594,22 @@ describe('constructRelationalGraph', () => {
         edges: {
           Doctor: [
             {
-              lhs: 'Doctor.departmentId',
-              op: '$eq',
-              rhs: 'Department.id',
+              condition: {
+                lhs: 'Doctor.departmentId',
+                op: '$eq',
+                rhs: 'Department.id',
+              },
+              type: 'inner',
             },
           ],
           Patient: [
             {
-              lhs: 'Patient.id',
-              op: '$eq',
-              rhs: 'Department.id',
+              condition: {
+                lhs: 'Patient.id',
+                op: '$eq',
+                rhs: 'Department.id',
+              },
+              type: 'inner',
             },
           ],
         },
@@ -582,7 +618,7 @@ describe('constructRelationalGraph', () => {
     expect(globalSelections).toEqual([]);
   });
 
-  it('should throw error for edge case join conditions', () => {
+  it('should not optimize for edge case join conditions', () => {
     const expr1 = {
       selection: {
         arguments: {
@@ -674,12 +710,14 @@ describe('constructRelationalGraph', () => {
         ],
       },
     };
-    // expect error to be thrown
-    expect(() => constructRelationalGraph(expr1)).toThrow(Error);
-    expect(() => constructRelationalGraph(expr2)).toThrow(Error);
+    // expect empty graph and global selections
+    const {canOptimize: canOptimizeExpr1} = constructRelationalGraph(expr1);
+    const {canOptimize: canOptimizeExpr2} = constructRelationalGraph(expr2);
+    expect(canOptimizeExpr1).toEqual(false);
+    expect(canOptimizeExpr2).toEqual(false);
   });
 
-  it('should throw error for multi-table join query', () => {
+  it('should not optimize for multi-table join query', () => {
     const expr = {
       selection: {
         arguments: {
@@ -731,6 +769,7 @@ describe('constructRelationalGraph', () => {
         ],
       },
     };
-    expect(() => constructRelationalGraph(expr)).toThrow(Error);
+    const {canOptimize} = constructRelationalGraph(expr);
+    expect(canOptimize).toEqual(false);
   });
 });

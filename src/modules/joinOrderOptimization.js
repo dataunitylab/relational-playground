@@ -6,7 +6,13 @@ import TinyQueue from 'tinyqueue';
 import department from '../resources/Department.json';
 import doctor from '../resources/Doctor.json';
 import patient from '../resources/Patient.json';
-import {getTableFromAttribute} from './constructRelationalGraph';
+import {applyExpr} from './data';
+
+const sourceData = {
+  Department: department,
+  Doctor: doctor,
+  Patient: patient,
+};
 
 /**
  * Formats into selection condition format for a given table
@@ -53,10 +59,10 @@ const formatJoinConditions = (joinConditions: Array<JoinCondition>) => {
     return {cmp: {}};
   }
   if (joinConditions.length === 1) {
-    return {cmp: joinConditions[0]};
+    return {cmp: joinConditions[0].condition};
   } else {
     const processedJoinConditions = joinConditions.map((joinCondition) => {
-      return {cmp: joinCondition};
+      return {cmp: joinCondition.condition};
     });
     return {and: {clauses: processedJoinConditions}};
   }
@@ -101,7 +107,7 @@ const parseJoinOrderExpression = (
       join: {
         left: leftJoinExpr,
         right: rightJoinExpr,
-        type: 'inner',
+        type: joinConditions[0].type ?? 'inner',
         condition: formatJoinConditions(joinConditions),
       },
     };
@@ -154,7 +160,9 @@ const joinOrderOptimization = (
   // initialize the queue with all the nodes
   for (const node in graph) {
     queue.push(
-      new JoinOrderQueueElement(graph, [node], getTableData(node), 0, [node])
+      new JoinOrderQueueElement(graph, [node], getTableData(node), 0, [node], {
+        relation: node,
+      })
     );
   }
 
@@ -194,76 +202,29 @@ const joinOrderOptimization = (
 const getRowsAndCost = (
   rows: Array<any>,
   cost: number,
+  joinExpr: {[key: string]: any},
   joinConditions: Array<JoinCondition>,
   leftTables: Array<string>,
   rightTable: string
 ) => {
-  const tableRows = getTableData(rightTable);
-  const newRows: Array<any> = [];
-  let totalCost = cost;
-  for (const tableARow of rows) {
-    for (const tableBRow of tableRows) {
-      totalCost += 1;
-      let shouldAddRow = true;
-      for (const joinCondition of joinConditions) {
-        const {lhs, op, rhs} = joinCondition;
-        const left = getTableFromAttribute(lhs, [...leftTables, rightTable]);
-        const right = getTableFromAttribute(rhs, [...leftTables, rightTable]);
-        const leftColumn = lhs.includes('.') ? lhs.split('.')[1] : lhs;
-        const rightColumn = rhs.includes('.') ? rhs.split('.')[1] : rhs;
-        let leftExpression =
-          right === rightTable
-            ? `${left}.${leftColumn}`
-            : `${right}.${rightColumn}`;
-        let rightExpression =
-          right === rightTable
-            ? `${right}.${rightColumn}`
-            : `${left}.${leftColumn}`;
-        leftExpression = leftExpression.toLowerCase();
-        rightExpression = rightExpression.toLowerCase();
-        switch (op) {
-          case '$eq':
-            if (tableARow[leftExpression] !== tableBRow[rightExpression]) {
-              shouldAddRow = false;
-            }
-            break;
-          case '$neq':
-            if (tableARow[leftExpression] === tableBRow[rightExpression]) {
-              shouldAddRow = false;
-            }
-            break;
-          case '$gt':
-            if (tableARow[leftExpression] <= tableBRow[rightExpression]) {
-              shouldAddRow = false;
-            }
-            break;
-          case '$gte':
-            if (tableARow[leftExpression] < tableBRow[rightExpression]) {
-              shouldAddRow = false;
-            }
-            break;
-          case '$lt':
-            if (tableARow[leftExpression] >= tableBRow[rightExpression]) {
-              shouldAddRow = false;
-            }
-            break;
-          case '$lte':
-            if (tableARow[leftExpression] > tableBRow[rightExpression]) {
-              shouldAddRow = false;
-            }
-            break;
-          default:
-            console.error('Invalid operator');
-        }
-        if (!shouldAddRow) break;
-      }
-      if (shouldAddRow) {
-        const newRow = {...tableARow, ...tableBRow};
-        newRows.push(newRow);
-      }
-    }
-  }
-  return {rows: newRows, cost: totalCost};
+  // trying to see if we can use applyExpr from data.js
+  const joinConditionsExpr = formatJoinConditions(joinConditions);
+  const combinedJoinExpr = {
+    join: {
+      left: joinExpr,
+      right: {
+        relation: rightTable,
+      },
+      type: joinConditions[0].type ?? 'inner',
+      condition: joinConditionsExpr,
+    },
+  };
+  const joinResult = applyExpr(combinedJoinExpr, sourceData);
+  const leftTableRowsSize = rows.length;
+  const rightTableRowsSize = getTableData(rightTable).length;
+  const newRows = joinResult.data;
+  const newCost = cost + leftTableRowsSize * rightTableRowsSize;
+  return {rows: newRows, cost: newCost, expr: combinedJoinExpr};
 };
 
 /**
@@ -309,19 +270,22 @@ class JoinOrderQueueElement {
   rows: Array<any>;
   cost: number;
   joinOrder: Array<string | Array<JoinCondition>>;
+  joinExpr: {[key: string]: any};
 
   constructor(
     graph: Graph,
     joinTables: Array<string>,
     rows: Array<any>,
     cost: number,
-    joinOrder: Array<string | Array<JoinCondition>>
+    joinOrder: Array<string | Array<JoinCondition>>,
+    joinExpr: {[key: string]: any}
   ) {
     this.graph = graph;
     this.joinTables = joinTables;
     this.rows = rows;
     this.cost = cost;
     this.joinOrder = joinOrder;
+    this.joinExpr = joinExpr;
   }
 
   getCost = (): number => {
@@ -362,9 +326,10 @@ class JoinOrderQueueElement {
         }
         const newJoinOrder = [...this.joinOrder, joinConditions, neighbor];
         // evaluate the cost of adding the neighbor
-        const {rows, cost} = getRowsAndCost(
+        const {rows, cost, expr} = getRowsAndCost(
           this.rows,
           this.cost,
+          this.joinExpr,
           joinConditions,
           this.joinTables,
           neighbor
@@ -376,7 +341,8 @@ class JoinOrderQueueElement {
             [...this.joinTables, neighbor],
             rows,
             cost,
-            newJoinOrder
+            newJoinOrder,
+            expr
           )
         );
       }
