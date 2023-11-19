@@ -3,16 +3,7 @@ import type {JoinCondition, SelectionCondition, Graph} from './types';
 
 import TinyQueue from 'tinyqueue';
 
-import department from '../resources/Department.json';
-import doctor from '../resources/Doctor.json';
-import patient from '../resources/Patient.json';
-import {applyExpr} from './data';
-
-const sourceData = {
-  Department: department,
-  Doctor: doctor,
-  Patient: patient,
-};
+import {initialState, applyExpr} from './data';
 
 /**
  * Formats into selection condition format for a given table
@@ -188,6 +179,8 @@ const joinOrderOptimization = (
       queue.push(child);
     }
   }
+  console.log('best join order', bestJoinOrder);
+  console.log('best cost', bestCost);
   return getRelationalExpression(graph, bestJoinOrder, globalSelections);
 };
 
@@ -200,7 +193,7 @@ const joinOrderOptimization = (
  * @param rightTable - the right table
  */
 const getRowsAndCost = (
-  rows: Array<any>,
+  rows: number,
   cost: number,
   joinExpr: {[key: string]: any},
   joinConditions: Array<JoinCondition>,
@@ -219,11 +212,9 @@ const getRowsAndCost = (
       condition: joinConditionsExpr,
     },
   };
-  const joinResult = applyExpr(combinedJoinExpr, sourceData);
-  const leftTableRowsSize = rows.length;
-  const rightTableRowsSize = getTableData(rightTable).length;
-  const newRows = joinResult.data;
-  const newCost = cost + leftTableRowsSize * rightTableRowsSize;
+  const joinResult = applyExpr(combinedJoinExpr, initialState.sourceData);
+  const newRows = joinResult.data?.length ?? 0;
+  const newCost = cost + rows * getTableData(rightTable);
   return {rows: newRows, cost: newCost, expr: combinedJoinExpr};
 };
 
@@ -232,42 +223,15 @@ const getRowsAndCost = (
  * @param tableName - the table name
  */
 const getTableData = (tableName: string) => {
-  switch (tableName) {
-    case 'Department':
-      return addTablePrefixToData('department', department.data);
-    case 'Doctor':
-      return addTablePrefixToData('doctor', doctor.data);
-    case 'Patient':
-      return addTablePrefixToData('patient', patient.data);
-    default:
-      return [];
-  }
-};
-
-/**
- * Adds the table prefix to the data
- * @param tableName - the table name
- * @param data - the data
- */
-const addTablePrefixToData = (
-  tableName: string,
-  data: Array<{[key: string]: string}>
-) => {
-  const newData = [];
-  for (const row of data) {
-    const newRow: {[key: string]: string} = {};
-    for (const key of Object.keys(row)) {
-      newRow[`${tableName}.${key}`.toLowerCase()] = row[key];
-    }
-    newData.push(newRow);
-  }
-  return newData;
+  return tableName in initialState.sourceData
+    ? initialState.sourceData[tableName].data.length
+    : 0;
 };
 
 class JoinOrderQueueElement {
   graph: Graph;
   joinTables: Array<string>;
-  rows: Array<any>;
+  rows: number;
   cost: number;
   joinOrder: Array<string | Array<JoinCondition>>;
   joinExpr: {[key: string]: any};
@@ -275,7 +239,7 @@ class JoinOrderQueueElement {
   constructor(
     graph: Graph,
     joinTables: Array<string>,
-    rows: Array<any>,
+    rows: number,
     cost: number,
     joinOrder: Array<string | Array<JoinCondition>>,
     joinExpr: {[key: string]: any}

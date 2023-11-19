@@ -56,7 +56,7 @@ export type State = {
 };
 
 // Source data which can be used in SQL queries
-const initialState = {
+export const initialState = {
   sourceData: {
     Department: department,
     Doctor: doctor,

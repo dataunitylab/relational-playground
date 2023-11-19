@@ -1,7 +1,5 @@
 // @flow
-import Doctor from '../resources/Doctor.json';
-import Patient from '../resources/Patient.json';
-import Department from '../resources/Department.json';
+import {initialState} from './data';
 
 import type {
   JoinCondition,
@@ -9,8 +7,6 @@ import type {
   Expression,
   Graph,
 } from './types';
-
-let canOptimize = true;
 
 // Create a node of the table name with relevant fields
 const addNode = (
@@ -58,21 +54,9 @@ const conditionIsOnValidAttributes = (
   tables: Array<string>
 ) => {
   const columns: Array<string> = [];
-  for (const table of tables) {
-    switch (table) {
-      case 'Doctor':
-        columns.push(...Doctor.columns);
-        break;
-      case 'Patient':
-        columns.push(...Patient.columns);
-        break;
-      case 'Department':
-        columns.push(...Department.columns);
-        break;
-      default:
-        // pass
-        break;
-    }
+  const {sourceData} = initialState;
+  for (const table in sourceData) {
+    columns.push(...sourceData[table].columns);
   }
   return columns.includes(attribute);
 };
@@ -122,6 +106,8 @@ const parseSelectionExpression = (
       isValidJoinColumn(selection.lhs, tables) &&
       isValidJoinColumn(selection.rhs, tables)
     ) {
+      // this in future can be used as a join condition
+      // right now we are just adding it to the global selections
       globalSelections.push(expr);
     } else {
       const {lhs, rhs} = selection;
@@ -146,11 +132,9 @@ const parseJoinExpression = (
   tables: Array<string>
 ): void => {
   if (typeof expr === 'string') {
-    console.error(
+    throw new Error(
       'Invalid join expression for Join Order Optimization. This type of join condition is not supported currently'
     );
-    canOptimize = false;
-    return;
   } else if ('and' in expr) {
     const conditions = expr['and'].clauses;
     for (const condition of conditions) {
@@ -161,17 +145,13 @@ const parseJoinExpression = (
     const leftTable = getTableFromAttribute(lhs, tables);
     const rightTable = getTableFromAttribute(rhs, tables);
     if (leftTable === '' || rightTable === '') {
-      console.error(
+      throw new Error(
         'Invalid join expression for Join Order Optimization. This type of join condition is not supported currently'
       );
-      canOptimize = false;
-      return;
     }
     addEdge(graph, leftTable, rightTable, expr['cmp'], joinType);
   } else {
-    console.error('Invalid join expression for Join Order Optimization');
-    canOptimize = false;
-    return;
+    throw new Error('Invalid join expression for Join Order Optimization');
   }
 };
 
@@ -212,9 +192,7 @@ const parseExpression = (
     const table = expr['relation'];
     addNode(graph, table);
   } else {
-    console.error('Invalid expression type for join order optimization');
-    canOptimize = false;
-    return;
+    throw new Error('Invalid expression type for join order optimization');
   }
 };
 
@@ -231,7 +209,6 @@ export const constructRelationalGraph = (expr: {
   globalSelections: Array<SelectionCondition>,
   canOptimize: boolean,
 } => {
-  canOptimize = true;
   const graph: Graph = {};
   const tables: Array<string> = [];
   const globalSelections: Array<SelectionCondition> = [];
@@ -240,13 +217,19 @@ export const constructRelationalGraph = (expr: {
   const uniqueTables = new Set(tables);
   if (uniqueTables.size !== tables.length) {
     console.error('Duplicate tables found in the query');
-    canOptimize = false;
     return {
       graph: graph,
       globalSelections: globalSelections,
-      canOptimize,
+      canOptimize: false,
     };
   }
-  parseExpression(graph, expr, tables, globalSelections);
+
+  let canOptimize = true;
+  try {
+    parseExpression(graph, expr, tables, globalSelections);
+  } catch (e) {
+    console.error(e.message);
+    canOptimize = false;
+  }
   return {graph: graph, globalSelections: globalSelections, canOptimize};
 };
