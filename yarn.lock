@@ -10296,11 +10296,6 @@ execa@^5.0.0, execa@^5.1.1:
     signal-exit "^3.0.3"
     strip-final-newline "^2.0.0"
 
-exenv@^1.2.2:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/exenv/-/exenv-1.2.2.tgz#2ae78e85d9894158670b03d47bec1f03bd91bb9d"
-  integrity sha1-KueOhdmJQVhnCwPUe+wfA72Ru50=
-
 exit@0.1.2, exit@0.1.x, exit@^0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/exit/-/exit-0.1.2.tgz#0632638f8d877cc82107d30a0fff1a17cba1cd0c"
@@ -15946,17 +15941,15 @@ react-error-overlay@^6.0.11:
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-6.0.11.tgz#92835de5841c5cf08ba00ddd2d677b6d17ff9adb"
   integrity sha512-/6UZ2qgEyH2aqzYZgQPxEnz33NJ2gNsnHA2o5+o4wW9bLM/JYQitNP9xPhsXwC08hMMovfGe/8retsdDsczPRg==
 
-react-floater@^0.7.6:
-  version "0.7.6"
-  resolved "https://registry.yarnpkg.com/react-floater/-/react-floater-0.7.6.tgz#a98ee90e3d51200c6e6a564ff33496f3c0d7cfee"
-  integrity sha512-tt/15k/HpaShbtvWCwsQYLR+ebfUuYbl+oAUJ3DcEDkgYKeUcSkDey2PdAIERdVwzdFZANz47HbwoET2/Rduxg==
+react-floater@^0.7.9:
+  version "0.7.9"
+  resolved "https://registry.yarnpkg.com/react-floater/-/react-floater-0.7.9.tgz#b15a652e817f200bfa42a2023ee8d3105803b968"
+  integrity sha512-NXqyp9o8FAXOATOEo0ZpyaQ2KPb4cmPMXGWkx377QtJkIXHlHRAGer7ai0r0C1kG5gf+KJ6Gy+gdNIiosvSicg==
   dependencies:
-    deepmerge "^4.2.2"
-    exenv "^1.2.2"
+    deepmerge "^4.3.1"
     is-lite "^0.8.2"
     popper.js "^1.16.0"
     prop-types "^15.8.1"
-    react-proptype-conditional-require "^1.0.4"
     tree-changes "^0.9.1"
 
 react-ga@^3.3.1:
@@ -15989,33 +15982,28 @@ react-is@^17.0.0, react-is@^17.0.1, react-is@^17.0.2:
   resolved "https://registry.nlark.com/react-is/download/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha1-5pHUqOnHiTZWVVOas3J2Kw77VPA=
 
-react-joyride@^2.7.0:
-  version "2.7.0"
-  resolved "https://registry.yarnpkg.com/react-joyride/-/react-joyride-2.7.0.tgz#78b33a567f20d44daebfa03f3ea2f5cefa5a532d"
-  integrity sha512-fWcIKhat6okO4gLXMz8SRUTIQKmh3dHGzsEQxHVwGNBBFd3z/KQMYVu82dBX448ASTmSG1OJhA7lqBmKX7OQVA==
+react-joyride@^2.7.2:
+  version "2.7.2"
+  resolved "https://registry.yarnpkg.com/react-joyride/-/react-joyride-2.7.2.tgz#9f742250595dc170330beb0bb39696cf3bdb3eab"
+  integrity sha512-AVzEweJxjQMc6hXUbJlH6St987GCmw0pkCSoz+X3XBMQmrk57FCMOrh1LvyMvW5GaT95C4D5oZpoaVjaOsgptg==
   dependencies:
     "@gilbarbara/deep-equal" "^0.3.1"
     "@gilbarbara/helpers" "^0.9.0"
     deep-diff "^1.0.2"
     deepmerge "^4.3.1"
     is-lite "^1.2.0"
-    react-floater "^0.7.6"
+    react-floater "^0.7.9"
     react-innertext "^1.1.5"
     react-is "^16.13.1"
     scroll "^3.0.1"
     scrollparent "^2.1.0"
-    tree-changes "^0.11.1"
-    type-fest "^4.7.1"
+    tree-changes "^0.11.2"
+    type-fest "^4.8.3"
 
 react-lifecycles-compat@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
-
-react-proptype-conditional-require@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/react-proptype-conditional-require/-/react-proptype-conditional-require-1.0.4.tgz#69c2d5741e6df5e08f230f36bbc2944ee1222555"
-  integrity sha1-acLVdB5t9eCPIw82u8KUTuEiJVU=
 
 react-redux@^9.0.2:
   version "9.0.2"
@@ -18282,10 +18270,10 @@ tr46@~0.0.1, tr46@~0.0.3:
   resolved "https://registry.yarnpkg.com/tr46/-/tr46-0.0.3.tgz#8184fd347dac9cdc185992f3a6622e14b9d9ab6a"
   integrity sha1-gYT9NH2snNwYWZLzpmIuFLnZq2o=
 
-tree-changes@^0.11.1:
-  version "0.11.1"
-  resolved "https://registry.yarnpkg.com/tree-changes/-/tree-changes-0.11.1.tgz#ffac2be9f21b46b9534fffeb22df2fa4f9e0c6be"
-  integrity sha512-20NVAwbaBZrhnuVE588BOHMu7U+fLfm4SbE5zcz2n9GE0oqZvaIasHbTWBuOIslr3f21zXu+tI1ASzcRobwVnw==
+tree-changes@^0.11.2:
+  version "0.11.2"
+  resolved "https://registry.yarnpkg.com/tree-changes/-/tree-changes-0.11.2.tgz#e02e65c4faae6230dfe357aa97a26e8eb7c7d321"
+  integrity sha512-4gXlUthrl+RabZw6lLvcCDl6KfJOCmrC16BC5CRdut1EAH509Omgg0BfKLY+ViRlzrvYOTWR0FMS2SQTwzumrw==
   dependencies:
     "@gilbarbara/deep-equal" "^0.3.1"
     is-lite "^1.2.0"
@@ -18426,10 +18414,10 @@ type-fest@^3.12.0:
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-3.13.1.tgz#bb744c1f0678bea7543a2d1ec24e83e68e8c8706"
   integrity sha512-tLq3bSNx+xSpwvAJnzrK0Ep5CLNWjvFTOp71URMaAEWBfRb9nnJiBoUe0tF8bI4ZFO3omgBR6NvnbzVUT3Ly4g==
 
-type-fest@^4.1.0, type-fest@^4.7.1:
-  version "4.7.1"
-  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-4.7.1.tgz#dbe462c5f350d708ec6ca6fe8925b5b6541ca9a7"
-  integrity sha512-iWr8RUmzAJRfhZugX9O7nZE6pCxDU8CZ3QxsLuTnGcBLJpCaP2ll3s4eMTBoFnU/CeXY/5rfQSuAEsTGJO4y8A==
+type-fest@^4.1.0, type-fest@^4.8.3:
+  version "4.8.3"
+  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-4.8.3.tgz#6db08d9f44d596cd953f83020c7c56310c368d1c"
+  integrity sha512-//BaTm14Q/gHBn09xlnKNqfI8t6bmdzx2DXYfPBNofN0WUybCEUDcbCWcTa0oF09lzLjZgPphXAsvRiMK0V6Bw==
 
 type-is@~1.6.18:
   version "1.6.18"
