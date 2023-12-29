@@ -1,14 +1,10 @@
 import React from 'react';
-import {mount} from 'enzyme';
 import {render} from '@testing-library/react';
-import each from 'jest-each';
 
 import {
-  UnaryRelOp,
   Projection,
   Rename,
   Selection,
-  BinaryRelOp,
   Except,
   Intersect,
   Product,
