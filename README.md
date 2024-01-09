@@ -3,6 +3,7 @@
 [![CI](https://github.com/dataunitylab/relational-playground/actions/workflows/ci.yml/badge.svg)](https://github.com/dataunitylab/relational-playground/actions/workflows/ci.yml)
 [![Coverage Status](https://coveralls.io/repos/github/dataunitylab/relational-playground/badge.svg?branch=main)](https://coveralls.io/github/dataunitylab/relational-playground?branch=main)
 
+[Relational Playground](https://relationalplayground.com/) is developed by the [Data Unity Lab](https://cs.rit.edu/~dataunitylab/) at the Rochester Institute of Technology.
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
@@ -28,9 +29,6 @@ Builds the app for production to the `build` folder.<br />
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
 The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
 ### `yarn flow`
 
@@ -41,16 +39,6 @@ This check will also be run before commits.
 
 Lint all files in `src` using [ESLint](https://eslint.org/) and [Prettier](https://prettier.io/).
 Files which have changed are also linted before every commit.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc.) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
 ## Learn More
 
