@@ -1,0 +1,17 @@
+# YAML 1.2
+---
+version: 1.0.3
+authors:
+  -
+    affiliation: "Rochester Institute of Technology"
+    family-names: Mior
+    given-names: "Michael Joseph"
+    orcid: "https://orcid.org/0000-0002-4057-8726"
+cff-version: "1.0.3"
+date-released: 2023-06-23
+doi: "10.1145/3596673.3596978"
+license: "MIT"
+message: "If you use this software, please cite it using these metadata."
+repository-code: "https://github.com/dataunitylab/relational-playground"
+title: "Relational Playground: Teaching the Duality of Relational Algebra and SQL"
+...
