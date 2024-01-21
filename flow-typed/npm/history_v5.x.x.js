@@ -1,5 +1,5 @@
-// flow-typed signature: 6168687222dfcafc9c4a07fbbef813ad
-// flow-typed version: bb2f6ae824/history_v5.x.x/flow_>=v0.104.x
+// flow-typed signature: 1a0b3d7b30fa34f656ec3b48ab330fec
+// flow-typed version: c097941e54/history_v5.x.x/flow_>=v0.201.x
 
 declare module 'history' {
   declare type Unregister = () => void;
@@ -19,9 +19,9 @@ declare module 'history' {
     location: HistoryLocation,
     action: Action,
     push: ((path: string, state?: { ... }) => void) &
-      ((location: $Shape<HistoryLocation>) => void),
+      ((location: Partial<HistoryLocation>) => void),
     replace: ((path: string, state?: { ... }) => void) &
-      ((location: $Shape<HistoryLocation>) => void),
+      ((location: Partial<HistoryLocation>) => void),
     go(n: number): void,
     back(): void,
     forward(): void,
@@ -33,7 +33,7 @@ declare module 'history' {
         retry: () => void,
       |}) => void,
     ): Unregister,
-    createHref(location: $Shape<HistoryLocation>): string,
+    createHref(location: Partial<HistoryLocation>): string,
   |};
 
   declare export type BrowserHistory = History<>;
@@ -78,16 +78,16 @@ declare module 'history' {
   // PathUtils
   declare function parsePath(path: string): Location;
 
-  declare function createPath(location: $Shape<Location>): string;
+  declare function createPath(location: Partial<Location>): string;
 
   // LocationUtils
   declare function locationsAreEqual(
-    a: $Shape<Location>,
-    b: $Shape<Location>
+    a: Partial<Location>,
+    b: Partial<Location>
   ): boolean;
 
   declare function createLocation(
-    path: string | $Shape<Location>,
+    path: string | Partial<Location>,
     state?: { ... },
     key?: string,
     currentLocation?: Location
