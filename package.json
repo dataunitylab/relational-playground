@@ -98,7 +98,7 @@
     "eslint-plugin-flowtype": "^8.0.3",
     "eslint-plugin-yaml": "^0.5.0",
     "flow-bin": "^0.203.1",
-    "husky": "8",
+    "husky": "9",
     "jest-each": "^29.7.0",
     "jest-enzyme": "^7.1.2",
     "lint-staged": "^15.2.2",
