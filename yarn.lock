@@ -16076,10 +16076,10 @@ react-colorful@^5.1.2:
   resolved "https://registry.yarnpkg.com/react-colorful/-/react-colorful-5.6.1.tgz#7dc2aed2d7c72fac89694e834d179e32f3da563b"
   integrity sha512-1exovf0uGTGyq5mXQT0zgQ80uvj2PCwvF8zY1RN9/vbJVSjSo3fsB/4L3ObbF7u70NduSiK4xu4Y6q1MHoUGEw==
 
-react-cookie@^7.1.0:
-  version "7.1.0"
-  resolved "https://registry.yarnpkg.com/react-cookie/-/react-cookie-7.1.0.tgz#646ddc578ead7dfa2bf1d767c79348dfed74006e"
-  integrity sha512-n2+Gt07/xxuShXary+SImk1sw5l7a1UguQOQEN55YewEW5LoA0opbR4nbeo8sY6OYwR37iCFJtqJ0AGEywqAtg==
+react-cookie@^7.1.2:
+  version "7.1.2"
+  resolved "https://registry.yarnpkg.com/react-cookie/-/react-cookie-7.1.2.tgz#82461b44d8ecfa6718c4ab309eadb7d7e53d630e"
+  integrity sha512-zmxFrVNLl03OAM8Xnh43cg4Tz9t4K0DRToWuyQcDUf0jHZLugvCA5t3skmcKgG07L11qXltzWWJUFTF97Toj9w==
   dependencies:
     "@types/hoist-non-react-statics" "^3.3.5"
     hoist-non-react-statics "^3.3.2"
