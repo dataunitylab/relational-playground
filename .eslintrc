@@ -13,5 +13,8 @@
       "plugins": ["yaml"],
       "extends": ["plugin:yaml/recommended"]
     }
-  ]
+  ],
+  "rules": {
+      "flowtype/space-after-type-colon": "off",
+  }
 }
