@@ -1,5 +1,12 @@
 {
-  "extends": "react-app",
+  "parser": "@babel/eslint-parser",
+  "extends": [
+    "react-app",
+    "plugin:flowtype/recommended",
+  ],
+  "plugins": [
+    "flowtype",
+  ],
   "overrides" : [
     {
       "files": ["*.yaml", "*.yml"],
