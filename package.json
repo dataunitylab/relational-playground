@@ -89,7 +89,7 @@
     "@storybook/react": "^8.0.9",
     "@storybook/react-webpack5": "^8.0.9",
     "@storybook/testing-library": "^0.2.2",
-    "@testing-library/react": "^15.0.4",
+    "@testing-library/react": "^15.0.6",
     "@welldone-software/why-did-you-render": "^8.0.1",
     "@wojtekmaj/enzyme-adapter-react-17": "^0.8.0",
     "bundlewatch": "^0.3.3",
