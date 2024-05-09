@@ -47,7 +47,7 @@
     "flow": "flow check src",
     "lint": "node_modules/.bin/prettier --check src/**/*.{js,json} && eslint --ext .js,.yml . && npmPkgJsonLint -q . && pkg-ok && markdownlint *.md",
     "netlify-build": "REACT_APP_GIT_SHA=`([ -n \"$COMMIT_REF\" ] && echo \"$COMMIT_REF\") || git rev-parse HEAD` react-scripts build && storybook build -o build/storybook/ && esdoc && mv docs/ build/",
-    "postinstall": "husky install",
+    "prepare": "husky",
     "start": "react-scripts start",
     "storybook": "storybook dev -p 9009 -s public",
     "test": "react-scripts test"
