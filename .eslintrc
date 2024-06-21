@@ -11,7 +11,7 @@
     {
       "files": ["*.yaml", "*.yml"],
       "plugins": ["yaml"],
-      "extends": ["plugin:yaml/recommended"]
+      "extends": ["plugin:yaml/legacy"]
     }
   ],
   "rules": {
