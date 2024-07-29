@@ -22,7 +22,7 @@ const Table: StatelessFunctionalComponent<Props> = (props) => {
       // default behaviour of asking nested properties via dots
       columns: props.columns.map((c) => ({
         id: c,
-        Header: c,
+        Header: () => <span title={c}>{c}</span>,
         accessor: (d: {[string]: any}) => d[c],
       })),
     },
