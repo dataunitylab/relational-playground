@@ -1,10 +1,17 @@
-// flow-typed signature: 7193e451973000caef07d1ec202ed177
-// flow-typed version: a349be2d72/@reduxjs/toolkit_v1.x.x/flow_>=v0.142.x
+// flow-typed signature: 1db74cd54cd0882d2e4291e7b6ba667a
+// flow-typed version: 3a05283656/@reduxjs/toolkit_v1.x.x/flow_>=v0.104.x
 
 declare module '@reduxjs/toolkit' {
-  import type { Action, Reducer } from 'redux';
   // These types are copied directly from the redux libdef.
   // Importing them in this libdef causes a loss in type coverage.
+  // import type { Action, Reducer } from 'redux';
+
+  declare type Action<T> = {
+    type: T,
+    ...
+  };
+
+  declare type Reducer<S, A> = (state: S | void, action: A) => S;
 
   declare type DispatchAPI<A> = (action: A) => A;
 
