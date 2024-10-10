@@ -19,7 +19,7 @@
     "immer": "^10.1.1",
     "prismjs": "^1.29.0",
     "react": "^18.3.1",
-    "react-cookie": "^7.2.0",
+    "react-cookie": "^7.2.1",
     "react-device-detect": "^2.2.3",
     "react-dom": "^18.3.1",
     "react-ga": "^3.3.1",
