@@ -11,7 +11,7 @@
     "@reduxjs/toolkit": "^1.9.7",
     "@sentry/browser": "^8.34.0",
     "@sentry/cli": "^2.37.0",
-    "@testing-library/jest-dom": "^6.5.0",
+    "@testing-library/jest-dom": "^6.6.1",
     "connected-react-router": "^6.9.3",
     "fast-equals": "^5.0.1",
     "fromentries": "^1.3.2",
