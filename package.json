@@ -42,11 +42,12 @@
     "build": "react-scripts build",
     "build-storybook": "storybook build",
     "chromatic": "npx chromatic --project-token \"$CHROMATIC_PROJECT_TOKEN\"",
-    "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls",
+    "coveralls": "cat ./coverage/lcov.info | coveralls",
     "eject": "react-scripts eject",
     "flow": "flow check src",
-    "lint": "node_modules/.bin/prettier --check src/**/*.{js,json} && eslint --ext .js,.yml . && npmPkgJsonLint -q . && pkg-ok && markdownlint *.md",
+    "lint": "prettier --check src/**/*.{js,json} && eslint --ext .js,.yml . && npmPkgJsonLint -q . && pkg-ok && markdownlint *.md",
     "netlify-build": "REACT_APP_GIT_SHA=`([ -n \"$COMMIT_REF\" ] && echo \"$COMMIT_REF\") || git rev-parse HEAD` react-scripts build && storybook build -o build/storybook/ && esdoc && mv docs/ build/",
+    "preinstall": "npx only-allow pnpm",
     "prepare": "husky",
     "start": "react-scripts start",
     "storybook": "storybook dev -p 9009",
@@ -113,6 +114,7 @@
     "storybook": "^8.4.0",
     "stylelint": "^16.9.0",
     "stylelint-config-standard": "^36.0.1",
+    "universal-cookie": "^7.2.2",
     "webpack": "5"
   },
   "engines": {
@@ -137,5 +139,10 @@
       }
     ]
   },
-  "packageManager": "yarn@1.22.19"
+  "pnpm": {
+    "overrides": {
+      "jest-environment-jsdom": "27.4.6"
+    }
+  },
+  "packageManager": "pnpm@9.12.3+sha512.cce0f9de9c5a7c95bef944169cc5dfe8741abfb145078c0d508b868056848a87c81e626246cb60967cbd7fd29a6c062ef73ff840d96b3c86c40ac92cf4a813ee"
 }

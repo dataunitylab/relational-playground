@@ -1,6 +1,6 @@
 [build]
   # Build command.
-  command = "yarn run netlify-build"
+  command = "pnpm run netlify-build"
 
   # Publish diretory
   publish = "build/"
