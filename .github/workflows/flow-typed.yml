@@ -13,11 +13,12 @@ jobs:
       with:
         ref: main
 
+    - uses: pnpm/action-setup@v4
     - name: Set up node
       uses: actions/setup-node@v3
       with:
         node-version: 18
-    - run: yarn install --frozen-lockfile --non-interactive
+    - run: pnpm install --frozen-lockfile
     - run: npx flow-typed install
 
     - name: Create Pull Request

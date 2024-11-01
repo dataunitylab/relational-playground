@@ -28,28 +28,29 @@ jobs:
         with:
           fetch-depth: 0
 
+      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: 'yarn'
+          cache: 'pnpm'
 
-      - run: yarn install
-      - run: yarn lint
-      - run: yarn flow
-      - run: yarn test --coverage
-      - run: yarn build
-      - run: yarn esdoc
+      - run: pnpm install
+      - run: pnpm run lint
+      - run: pnpm run flow
+      - run: pnpm run test --coverage
+      - run: pnpm run build
+      - run: pnpm esdoc
 
       - name: BundleWatch
         env:
           BUNDLEWATCH_GITHUB_TOKEN: ${{ secrets.BUNDLEWATCH_GITHUB_TOKEN }}
           CI_BRANCH_BASE: main
         if: ${{ matrix.os == 'ubuntu-latest' }}
-        run: yarn run bundlewatch
+        run: pnpm bundlewatch
 
       - name: Coveralls
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
         if: ${{ matrix.os == 'ubuntu-latest' && github.ref == 'refs/heads/main' }}
-        run: yarn coveralls
+        run: pnpm run coveralls
         shell: bash
