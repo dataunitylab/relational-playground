@@ -60,8 +60,8 @@ importers:
         specifier: ^3.3.1
         version: 3.3.1(prop-types@15.8.1)(react@18.3.1)
       react-joyride:
-        specifier: ^2.9.2
-        version: 2.9.2(@types/react@18.2.79)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^2.9.3
+        version: 2.9.3(@types/react@18.2.79)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-redux:
         specifier: ^9.2.0
         version: 9.2.0(@types/react@18.2.79)(react@18.3.1)(redux@4.2.1)
@@ -73,7 +73,7 @@ importers:
         version: 6.27.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-scripts:
         specifier: 5.0.1
-        version: 5.0.1(@babel/plugin-syntax-flow@7.23.3(@babel/core@7.24.7))(@babel/plugin-transform-react-jsx@7.19.0(@babel/core@7.24.7))(@types/babel__core@7.20.5)(esbuild@0.24.0)(eslint@8.26.0)(react@18.3.1)(type-fest@4.26.1)(typescript@5.7.2)(webpack-hot-middleware@2.26.1)
+        version: 5.0.1(@babel/plugin-syntax-flow@7.23.3(@babel/core@7.24.7))(@babel/plugin-transform-react-jsx@7.19.0(@babel/core@7.24.7))(@types/babel__core@7.20.5)(esbuild@0.24.0)(eslint@8.26.0)(react@18.3.1)(type-fest@4.30.2)(typescript@5.7.2)(webpack-hot-middleware@2.26.1)
       react-simple-code-editor:
         specifier: ^0.14.1
         version: 0.14.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -140,7 +140,7 @@ importers:
         version: 8.4.7(storybook@8.4.7(prettier@3.4.2))
       '@storybook/preset-create-react-app':
         specifier: ^8.4.7
-        version: 8.4.7(react-refresh@0.11.0)(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.23.3(@babel/core@7.24.7))(@babel/plugin-transform-react-jsx@7.19.0(@babel/core@7.24.7))(@types/babel__core@7.20.5)(esbuild@0.24.0)(eslint@8.26.0)(react@18.3.1)(type-fest@4.26.1)(typescript@5.7.2)(webpack-hot-middleware@2.26.1))(storybook@8.4.7(prettier@3.4.2))(type-fest@4.26.1)(typescript@5.7.2)(webpack-dev-server@4.11.1(webpack@5.94.0(esbuild@0.24.0)))(webpack-hot-middleware@2.26.1)(webpack@5.94.0(esbuild@0.24.0))
+        version: 8.4.7(react-refresh@0.11.0)(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.23.3(@babel/core@7.24.7))(@babel/plugin-transform-react-jsx@7.19.0(@babel/core@7.24.7))(@types/babel__core@7.20.5)(esbuild@0.24.0)(eslint@8.26.0)(react@18.3.1)(type-fest@4.30.2)(typescript@5.7.2)(webpack-hot-middleware@2.26.1))(storybook@8.4.7(prettier@3.4.2))(type-fest@4.30.2)(typescript@5.7.2)(webpack-dev-server@4.11.1(webpack@5.94.0(esbuild@0.24.0)))(webpack-hot-middleware@2.26.1)(webpack@5.94.0(esbuild@0.24.0))
       '@storybook/react':
         specifier: ^8.4.7
         version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.2)
@@ -6555,8 +6555,8 @@ packages:
   react-is@18.3.1:
     resolution: {integrity: sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==}
 
-  react-joyride@2.9.2:
-    resolution: {integrity: sha512-DQ3m3W/GeoASv4UE9ZaadFp3ACJusV0kjjBe7zTpPwWuHpvEoofc+2TCJkru0lbA+G9l39+vPVttcJA/p1XeSA==}
+  react-joyride@2.9.3:
+    resolution: {integrity: sha512-1+Mg34XK5zaqJ63eeBhqdbk7dlGCFp36FXwsEvgpjqrtyywX2C6h9vr3jgxP0bGHCw8Ilsp/nRDzNVq6HJ3rNw==}
     peerDependencies:
       react: 15 - 18
       react-dom: 15 - 18
@@ -7621,8 +7621,8 @@ packages:
     resolution: {integrity: sha512-R6wDsVsoS9xYOpy8vgeBlqpdOyzJ12HNfQhC/aAKWM3YoCV9TtunJzh/QpkMgeDhkoynDcw5f1y+qF9yc/HHyg==}
     engines: {node: '>=16'}
 
-  type-fest@4.26.1:
-    resolution: {integrity: sha512-yOGpmOAL7CkKe/91I5O3gPICmJNLJ1G4zFYVAsRHg7M64biSnPtRj0WNQt++bRkjYOqjWXrhnUw1utzmVErAdg==}
+  type-fest@4.30.2:
+    resolution: {integrity: sha512-UJShLPYi1aWqCdq9HycOL/gwsuqda1OISdBO3t8RlXQC4QvtuIz4b5FCfe2dQIWEpmlRExKmcTBfP1r9bhY7ig==}
     engines: {node: '>=16'}
 
   type-is@1.6.18:
@@ -9692,7 +9692,7 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.17.1
 
-  '@pmmmwh/react-refresh-webpack-plugin@0.5.11(react-refresh@0.11.0)(type-fest@4.26.1)(webpack-dev-server@4.11.1(webpack@5.94.0(esbuild@0.24.0)))(webpack-hot-middleware@2.26.1)(webpack@5.94.0(esbuild@0.24.0))':
+  '@pmmmwh/react-refresh-webpack-plugin@0.5.11(react-refresh@0.11.0)(type-fest@4.30.2)(webpack-dev-server@4.11.1(webpack@5.94.0(esbuild@0.24.0)))(webpack-hot-middleware@2.26.1)(webpack@5.94.0(esbuild@0.24.0))':
     dependencies:
       ansi-html-community: 0.0.8
       common-path-prefix: 3.0.0
@@ -9706,11 +9706,11 @@ snapshots:
       source-map: 0.7.4
       webpack: 5.94.0(esbuild@0.24.0)
     optionalDependencies:
-      type-fest: 4.26.1
+      type-fest: 4.30.2
       webpack-dev-server: 4.11.1(webpack@5.94.0(esbuild@0.24.0))
       webpack-hot-middleware: 2.26.1
 
-  '@pmmmwh/react-refresh-webpack-plugin@0.5.15(react-refresh@0.11.0)(type-fest@4.26.1)(webpack-dev-server@4.11.1(webpack@5.94.0(esbuild@0.24.0)))(webpack-hot-middleware@2.26.1)(webpack@5.94.0(esbuild@0.24.0))':
+  '@pmmmwh/react-refresh-webpack-plugin@0.5.15(react-refresh@0.11.0)(type-fest@4.30.2)(webpack-dev-server@4.11.1(webpack@5.94.0(esbuild@0.24.0)))(webpack-hot-middleware@2.26.1)(webpack@5.94.0(esbuild@0.24.0))':
     dependencies:
       ansi-html: 0.0.9
       core-js-pure: 3.39.0
@@ -9722,7 +9722,7 @@ snapshots:
       source-map: 0.7.4
       webpack: 5.94.0(esbuild@0.24.0)
     optionalDependencies:
-      type-fest: 4.26.1
+      type-fest: 4.30.2
       webpack-dev-server: 4.11.1(webpack@5.94.0(esbuild@0.24.0))
       webpack-hot-middleware: 2.26.1
 
@@ -10135,13 +10135,13 @@ snapshots:
     dependencies:
       storybook: 8.4.7(prettier@3.4.2)
 
-  '@storybook/preset-create-react-app@8.4.7(react-refresh@0.11.0)(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.23.3(@babel/core@7.24.7))(@babel/plugin-transform-react-jsx@7.19.0(@babel/core@7.24.7))(@types/babel__core@7.20.5)(esbuild@0.24.0)(eslint@8.26.0)(react@18.3.1)(type-fest@4.26.1)(typescript@5.7.2)(webpack-hot-middleware@2.26.1))(storybook@8.4.7(prettier@3.4.2))(type-fest@4.26.1)(typescript@5.7.2)(webpack-dev-server@4.11.1(webpack@5.94.0(esbuild@0.24.0)))(webpack-hot-middleware@2.26.1)(webpack@5.94.0(esbuild@0.24.0))':
+  '@storybook/preset-create-react-app@8.4.7(react-refresh@0.11.0)(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.23.3(@babel/core@7.24.7))(@babel/plugin-transform-react-jsx@7.19.0(@babel/core@7.24.7))(@types/babel__core@7.20.5)(esbuild@0.24.0)(eslint@8.26.0)(react@18.3.1)(type-fest@4.30.2)(typescript@5.7.2)(webpack-hot-middleware@2.26.1))(storybook@8.4.7(prettier@3.4.2))(type-fest@4.30.2)(typescript@5.7.2)(webpack-dev-server@4.11.1(webpack@5.94.0(esbuild@0.24.0)))(webpack-hot-middleware@2.26.1)(webpack@5.94.0(esbuild@0.24.0))':
     dependencies:
-      '@pmmmwh/react-refresh-webpack-plugin': 0.5.15(react-refresh@0.11.0)(type-fest@4.26.1)(webpack-dev-server@4.11.1(webpack@5.94.0(esbuild@0.24.0)))(webpack-hot-middleware@2.26.1)(webpack@5.94.0(esbuild@0.24.0))
+      '@pmmmwh/react-refresh-webpack-plugin': 0.5.15(react-refresh@0.11.0)(type-fest@4.30.2)(webpack-dev-server@4.11.1(webpack@5.94.0(esbuild@0.24.0)))(webpack-hot-middleware@2.26.1)(webpack@5.94.0(esbuild@0.24.0))
       '@storybook/react-docgen-typescript-plugin': 1.0.6--canary.9.0c3f3b7.0(typescript@5.7.2)(webpack@5.94.0(esbuild@0.24.0))
       '@types/semver': 7.5.8
       pnp-webpack-plugin: 1.7.0(typescript@5.7.2)
-      react-scripts: 5.0.1(@babel/plugin-syntax-flow@7.23.3(@babel/core@7.24.7))(@babel/plugin-transform-react-jsx@7.19.0(@babel/core@7.24.7))(@types/babel__core@7.20.5)(esbuild@0.24.0)(eslint@8.26.0)(react@18.3.1)(type-fest@4.26.1)(typescript@5.7.2)(webpack-hot-middleware@2.26.1)
+      react-scripts: 5.0.1(@babel/plugin-syntax-flow@7.23.3(@babel/core@7.24.7))(@babel/plugin-transform-react-jsx@7.19.0(@babel/core@7.24.7))(@types/babel__core@7.20.5)(esbuild@0.24.0)(eslint@8.26.0)(react@18.3.1)(type-fest@4.30.2)(typescript@5.7.2)(webpack-hot-middleware@2.26.1)
       semver: 7.6.3
       storybook: 8.4.7(prettier@3.4.2)
     transitivePeerDependencies:
@@ -15602,7 +15602,7 @@ snapshots:
 
   react-is@18.3.1: {}
 
-  react-joyride@2.9.2(@types/react@18.2.79)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  react-joyride@2.9.3(@types/react@18.2.79)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@gilbarbara/deep-equal': 0.3.1
       deep-diff: 1.0.2
@@ -15616,7 +15616,7 @@ snapshots:
       scroll: 3.0.1
       scrollparent: 2.1.0
       tree-changes: 0.11.2
-      type-fest: 4.26.1
+      type-fest: 4.30.2
     transitivePeerDependencies:
       - '@types/react'
 
@@ -15645,10 +15645,10 @@ snapshots:
       '@remix-run/router': 1.20.0
       react: 18.3.1
 
-  react-scripts@5.0.1(@babel/plugin-syntax-flow@7.23.3(@babel/core@7.24.7))(@babel/plugin-transform-react-jsx@7.19.0(@babel/core@7.24.7))(@types/babel__core@7.20.5)(esbuild@0.24.0)(eslint@8.26.0)(react@18.3.1)(type-fest@4.26.1)(typescript@5.7.2)(webpack-hot-middleware@2.26.1):
+  react-scripts@5.0.1(@babel/plugin-syntax-flow@7.23.3(@babel/core@7.24.7))(@babel/plugin-transform-react-jsx@7.19.0(@babel/core@7.24.7))(@types/babel__core@7.20.5)(esbuild@0.24.0)(eslint@8.26.0)(react@18.3.1)(type-fest@4.30.2)(typescript@5.7.2)(webpack-hot-middleware@2.26.1):
     dependencies:
       '@babel/core': 7.24.7
-      '@pmmmwh/react-refresh-webpack-plugin': 0.5.11(react-refresh@0.11.0)(type-fest@4.26.1)(webpack-dev-server@4.11.1(webpack@5.94.0(esbuild@0.24.0)))(webpack-hot-middleware@2.26.1)(webpack@5.94.0(esbuild@0.24.0))
+      '@pmmmwh/react-refresh-webpack-plugin': 0.5.11(react-refresh@0.11.0)(type-fest@4.30.2)(webpack-dev-server@4.11.1(webpack@5.94.0(esbuild@0.24.0)))(webpack-hot-middleware@2.26.1)(webpack@5.94.0(esbuild@0.24.0))
       '@svgr/webpack': 5.5.0
       babel-jest: 27.5.1(@babel/core@7.24.7)
       babel-loader: 8.3.0(@babel/core@7.24.7)(webpack@5.94.0(esbuild@0.24.0))
@@ -16892,7 +16892,7 @@ snapshots:
 
   type-fest@4.20.1: {}
 
-  type-fest@4.26.1: {}
+  type-fest@4.30.2: {}
 
   type-is@1.6.18:
     dependencies:
