@@ -103,8 +103,8 @@ importers:
         specifier: ^7.25.9
         version: 7.25.9(@babel/core@7.24.7)(eslint@8.26.0)
       '@chromatic-com/storybook':
-        specifier: ^3.2.2
-        version: 3.2.2(react@18.3.1)(storybook@8.4.7(prettier@3.4.2))
+        specifier: ^3.2.3
+        version: 3.2.3(react@18.3.1)(storybook@8.4.7(prettier@3.4.2))
       '@sebastianwessel/esdoc':
         specifier: ^2.1.0
         version: 2.1.0(@babel/core@7.24.7)
@@ -1049,8 +1049,8 @@ packages:
   '@bcoe/v8-coverage@0.2.3':
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
 
-  '@chromatic-com/storybook@3.2.2':
-    resolution: {integrity: sha512-xmXt/GW0hAPbzNTrxYuVo43Adrtjue4DeVrsoIIEeJdGaPNNeNf+DHMlJKOBdlHmCnFUoe9R/0mLM9zUp5bKWw==}
+  '@chromatic-com/storybook@3.2.3':
+    resolution: {integrity: sha512-3+hfANx79kIjP1qrOSLxpoAXOiYUA0S7A0WI0A24kASrv7USFNNW8etR5TjUilMb0LmqKUn3wDwUK2h6aceQ9g==}
     engines: {node: '>=16.0.0', yarn: '>=1.22.18'}
     peerDependencies:
       storybook: ^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0
@@ -9190,7 +9190,7 @@ snapshots:
 
   '@bcoe/v8-coverage@0.2.3': {}
 
-  '@chromatic-com/storybook@3.2.2(react@18.3.1)(storybook@8.4.7(prettier@3.4.2))':
+  '@chromatic-com/storybook@3.2.3(react@18.3.1)(storybook@8.4.7(prettier@3.4.2))':
     dependencies:
       chromatic: 11.16.3
       filesize: 10.1.1
@@ -14138,7 +14138,7 @@ snapshots:
 
   jsonfile@6.1.0:
     dependencies:
-      universalify: 2.0.0
+      universalify: 2.0.1
     optionalDependencies:
       graceful-fs: 4.2.11
 
