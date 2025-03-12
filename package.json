@@ -73,7 +73,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "@babel/eslint-parser": "^7.26.8",
+    "@babel/eslint-parser": "^7.26.10",
     "@chromatic-com/storybook": "^3.2.5",
     "@sebastianwessel/esdoc": "^2.1.0",
     "@sebastianwessel/esdoc-ecmascript-proposal-plugin": "^2.1.0",
