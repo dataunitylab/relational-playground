@@ -175,8 +175,8 @@ importers:
         specifier: ^1.0.3
         version: 1.0.3
       flow-bin:
-        specifier: ^0.203.1
-        version: 0.203.1
+        specifier: ^0.264.0
+        version: 0.264.0
       husky:
         specifier: '9'
         version: 9.1.7
@@ -4108,8 +4108,8 @@ packages:
   flatted@3.3.3:
     resolution: {integrity: sha512-GX+ysw4PBCz0PzosHDepZGANEuFCMLrnRTiEy9McGjmkCQYwRq4A/X786G/fjM/+OjsWSU1ZrY5qyARZmO/uwg==}
 
-  flow-bin@0.203.1:
-    resolution: {integrity: sha512-W/SX7QnRmBYS0TjfgtGb9ltPZzlsNeTZ7wA1yqwChxbLaQtrxGtO4K5GKtjRwAtucMQSebB7Ao++u21fRmC4TQ==}
+  flow-bin@0.264.0:
+    resolution: {integrity: sha512-9sEmxu7TuV2ZXOwSBwa3rPVxA0rMuxzBkzZVZ7Elmu8f4HzC7/+6E2yq/zya+AGLDyIxzZNP38fbXRiBYkUD2Q==}
     engines: {node: '>=0.10.0'}
     hasBin: true
 
@@ -12923,7 +12923,7 @@ snapshots:
 
   flatted@3.3.3: {}
 
-  flow-bin@0.203.1: {}
+  flow-bin@0.264.0: {}
 
   follow-redirects@1.15.6: {}
 
