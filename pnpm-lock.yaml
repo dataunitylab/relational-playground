@@ -16,7 +16,7 @@ importers:
         version: 1.3.0
       '@reduxjs/toolkit':
         specifier: ^1.9.7
-        version: 1.9.7(react-redux@9.2.0(@types/react@18.2.79)(react@18.3.1)(redux@4.2.1))(react@18.3.1)
+        version: 1.9.7(react-redux@9.2.0(@types/react@19.0.10)(react@18.3.1)(redux@4.2.1))(react@18.3.1)
       '@sentry/browser':
         specifier: ^8.54.0
         version: 8.54.0
@@ -28,7 +28,7 @@ importers:
         version: 6.6.3
       connected-react-router:
         specifier: ^6.9.3
-        version: 6.9.3(history@5.3.0)(react-redux@9.2.0(@types/react@18.2.79)(react@18.3.1)(redux@4.2.1))(react-router@6.27.0(react@18.3.1))(react@18.3.1)(redux@4.2.1)
+        version: 6.9.3(history@5.3.0)(react-redux@9.2.0(@types/react@19.0.10)(react@18.3.1)(redux@4.2.1))(react-router@6.27.0(react@18.3.1))(react@18.3.1)(redux@4.2.1)
       fast-equals:
         specifier: ^5.2.2
         version: 5.2.2
@@ -48,8 +48,8 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1
       react-cookie:
-        specifier: ^7.2.2
-        version: 7.2.2(react@18.3.1)
+        specifier: ^8.0.0
+        version: 8.0.0(react@18.3.1)
       react-device-detect:
         specifier: ^2.2.3
         version: 2.2.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -61,10 +61,10 @@ importers:
         version: 3.3.1(prop-types@15.8.1)(react@18.3.1)
       react-joyride:
         specifier: ^2.9.3
-        version: 2.9.3(@types/react@18.2.79)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 2.9.3(@types/react@19.0.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-redux:
         specifier: ^9.2.0
-        version: 9.2.0(@types/react@18.2.79)(react@18.3.1)(redux@4.2.1)
+        version: 9.2.0(@types/react@19.0.10)(react@18.3.1)(redux@4.2.1)
       react-router:
         specifier: ^6.27.0
         version: 6.27.0(react@18.3.1)
@@ -128,7 +128,7 @@ importers:
         version: 8.6.4(storybook@8.6.4(prettier@3.4.2))
       '@storybook/addon-essentials':
         specifier: ^8.6.4
-        version: 8.6.4(@types/react@18.2.79)(storybook@8.6.4(prettier@3.4.2))
+        version: 8.6.4(@types/react@19.0.10)(storybook@8.6.4(prettier@3.4.2))
       '@storybook/addon-interactions':
         specifier: ^8.6.4
         version: 8.6.4(storybook@8.6.4(prettier@3.4.2))
@@ -152,7 +152,7 @@ importers:
         version: 0.2.2
       '@testing-library/react':
         specifier: ^15.0.7
-        version: 15.0.7(@types/react@18.2.79)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 15.0.7(@types/react@19.0.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@welldone-software/why-did-you-render':
         specifier: ^8.0.3
         version: 8.0.3(react@18.3.1)
@@ -2141,8 +2141,8 @@ packages:
   '@types/graceful-fs@4.1.3':
     resolution: {integrity: sha512-AiHRaEB50LQg0pZmm659vNBb9f4SJ0qrAnteuzhSeAUcJKxoYgEnprg/83kppCnc2zvtCKbdZry1a5pVY3lOTQ==}
 
-  '@types/hoist-non-react-statics@3.3.5':
-    resolution: {integrity: sha512-SbcrWzkKBw2cdwRTwQAswfpB9g9LJWfjtUeW/jvNwbhC8cpmmNYVePa+ncbUe0rGTQ7G3Ff6mYUN2VMfLVr+Sg==}
+  '@types/hoist-non-react-statics@3.3.6':
+    resolution: {integrity: sha512-lPByRJUer/iN/xa4qpyL0qmL11DqNW81iU/IG1S3uvRUq4oKagz8VCxZjiWkumgt66YT3vOdDgZ0o32sGKtCEw==}
 
   '@types/html-minifier-terser@6.1.0':
     resolution: {integrity: sha512-oh/6byDPnL1zeNXFrDXFLyZjkr1MsBG667IM792caf1L2UPOOMf65NFzjUH/ltyfwjAGfs1rsX1eftK0jC/KIg==}
@@ -2209,6 +2209,9 @@ packages:
 
   '@types/react@18.2.79':
     resolution: {integrity: sha512-RwGAGXPl9kSXwdNTafkOEuFrTBD5SA2B3iEB96xi8+xu5ddUa/cpvyVCSNn+asgLCTHkb5ZxN8gbuibYJi4s1w==}
+
+  '@types/react@19.0.10':
+    resolution: {integrity: sha512-JuRQ9KXLEjaUNjTWpzuR231Z2WpIwczOkBEIvbHNCzQefFIT0L8IqE6NV6ULLyC1SI/i234JnDoMkfg+RjQj2g==}
 
   '@types/resolve@1.17.1':
     resolution: {integrity: sha512-yy7HuzQhj0dhGpD8RLXSZWEkLsV9ibvxvi6EiJ3bkqLAO1RGo0WbkWQiwpRlSFymTJRz0d3k5LM3kkx8ArDbLw==}
@@ -3354,6 +3357,9 @@ packages:
 
   csstype@3.0.11:
     resolution: {integrity: sha512-sa6P2wJ+CAbgyy4KFssIb/JNMLxFvKF1pCYCSXS8ZMuqZnMsrxqI2E5sPyoTpxoPU/gVZMzr2zjOfg8GIZOMsw==}
+
+  csstype@3.1.3:
+    resolution: {integrity: sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==}
 
   damerau-levenshtein@1.0.8:
     resolution: {integrity: sha512-sdQSFB7+llfUcQHUQO3+B8ERRj0Oa4w9POWMI/puGtuf7gFywGmkaLCElnudfTiKZV+NvHqL0ifzdrI8Ro7ESA==}
@@ -6538,8 +6544,8 @@ packages:
     peerDependencies:
       react: ^16.3.0 || ^17.0.1 || ^18.0.0 || ^19.0.0
 
-  react-cookie@7.2.2:
-    resolution: {integrity: sha512-e+hi6axHcw9VODoeVu8WyMWyoosa1pzpyjfvrLdF7CexfU+WSGZdDuRfHa4RJgTpfv3ZjdIpHE14HpYBieHFhg==}
+  react-cookie@8.0.0:
+    resolution: {integrity: sha512-bfYsiNOlphYuZRzbOToZ0iqWx6vIxIhu++83N6IYNTdE9XQMONg89D8nohfNXvQDeB9UAdKlR38dC6vHAdgLiw==}
     peerDependencies:
       react: '>= 16.3.0'
 
@@ -7725,8 +7731,8 @@ packages:
   undici-types@6.20.0:
     resolution: {integrity: sha512-Ny6QZ2Nju20vw1SRHe3d9jVu6gJ+4e3+MMpqu7pqE5HT6WsTSlce++GQmK5UXS8mzV8DSYHrQH+Xrf2jVcuKNg==}
 
-  undici@6.21.1:
-    resolution: {integrity: sha512-q/1rj5D0/zayJB2FraXdaWxbhWiNKDvu8naDT2dl1yTlvJp4BLtOcp2a5BvgGNQpYYJzau7tf1WgKv3b+7mqpQ==}
+  undici@6.21.2:
+    resolution: {integrity: sha512-uROZWze0R0itiAKVPsYhFov9LxrPMHLMEQFszeI2gCN6bnIIZ8twzBCJcN2LJrBBLfrP0t1FW0g+JmKVl8Vk1g==}
     engines: {node: '>=18.17'}
 
   unicode-canonical-property-names-ecmascript@2.0.0:
@@ -9754,10 +9760,10 @@ snapshots:
 
   '@leichtgewicht/ip-codec@2.0.4': {}
 
-  '@mdx-js/react@3.1.0(@types/react@18.2.79)(react@18.3.1)':
+  '@mdx-js/react@3.1.0(@types/react@19.0.10)(react@18.3.1)':
     dependencies:
       '@types/mdx': 2.0.13
-      '@types/react': 18.2.79
+      '@types/react': 19.0.10
       react: 18.3.1
 
   '@michaelmior/js-sql-parser@1.3.0': {}
@@ -9812,7 +9818,7 @@ snapshots:
       webpack-dev-server: 4.11.1(webpack@5.98.0(esbuild@0.25.0))
       webpack-hot-middleware: 2.26.1
 
-  '@reduxjs/toolkit@1.9.7(react-redux@9.2.0(@types/react@18.2.79)(react@18.3.1)(redux@4.2.1))(react@18.3.1)':
+  '@reduxjs/toolkit@1.9.7(react-redux@9.2.0(@types/react@19.0.10)(react@18.3.1)(redux@4.2.1))(react@18.3.1)':
     dependencies:
       immer: 9.0.21
       redux: 4.2.1
@@ -9820,7 +9826,7 @@ snapshots:
       reselect: 4.1.8
     optionalDependencies:
       react: 18.3.1
-      react-redux: 9.2.0(@types/react@18.2.79)(react@18.3.1)(redux@4.2.1)
+      react-redux: 9.2.0(@types/react@19.0.10)(react@18.3.1)(redux@4.2.1)
 
   '@remix-run/router@1.20.0': {}
 
@@ -10041,9 +10047,9 @@ snapshots:
       storybook: 8.6.4(prettier@3.4.2)
       ts-dedent: 2.2.0
 
-  '@storybook/addon-docs@8.6.4(@types/react@18.2.79)(storybook@8.6.4(prettier@3.4.2))':
+  '@storybook/addon-docs@8.6.4(@types/react@19.0.10)(storybook@8.6.4(prettier@3.4.2))':
     dependencies:
-      '@mdx-js/react': 3.1.0(@types/react@18.2.79)(react@18.3.1)
+      '@mdx-js/react': 3.1.0(@types/react@19.0.10)(react@18.3.1)
       '@storybook/blocks': 8.6.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.6.4(prettier@3.4.2))
       '@storybook/csf-plugin': 8.6.4(storybook@8.6.4(prettier@3.4.2))
       '@storybook/react-dom-shim': 8.6.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.6.4(prettier@3.4.2))
@@ -10054,12 +10060,12 @@ snapshots:
     transitivePeerDependencies:
       - '@types/react'
 
-  '@storybook/addon-essentials@8.6.4(@types/react@18.2.79)(storybook@8.6.4(prettier@3.4.2))':
+  '@storybook/addon-essentials@8.6.4(@types/react@19.0.10)(storybook@8.6.4(prettier@3.4.2))':
     dependencies:
       '@storybook/addon-actions': 8.6.4(storybook@8.6.4(prettier@3.4.2))
       '@storybook/addon-backgrounds': 8.6.4(storybook@8.6.4(prettier@3.4.2))
       '@storybook/addon-controls': 8.6.4(storybook@8.6.4(prettier@3.4.2))
-      '@storybook/addon-docs': 8.6.4(@types/react@18.2.79)(storybook@8.6.4(prettier@3.4.2))
+      '@storybook/addon-docs': 8.6.4(@types/react@19.0.10)(storybook@8.6.4(prettier@3.4.2))
       '@storybook/addon-highlight': 8.6.4(storybook@8.6.4(prettier@3.4.2))
       '@storybook/addon-measure': 8.6.4(storybook@8.6.4(prettier@3.4.2))
       '@storybook/addon-outline': 8.6.4(storybook@8.6.4(prettier@3.4.2))
@@ -10467,7 +10473,7 @@ snapshots:
       lodash: 4.17.21
       redent: 3.0.0
 
-  '@testing-library/react@15.0.7(@types/react@18.2.79)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@testing-library/react@15.0.7(@types/react@19.0.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@babel/runtime': 7.23.1
       '@testing-library/dom': 10.0.0
@@ -10475,7 +10481,7 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
     optionalDependencies:
-      '@types/react': 18.2.79
+      '@types/react': 19.0.10
 
   '@testing-library/user-event@14.5.2(@testing-library/dom@10.4.0)':
     dependencies:
@@ -10578,9 +10584,9 @@ snapshots:
     dependencies:
       '@types/node': 22.10.2
 
-  '@types/hoist-non-react-statics@3.3.5':
+  '@types/hoist-non-react-statics@3.3.6':
     dependencies:
-      '@types/react': 18.2.79
+      '@types/react': 19.0.10
       hoist-non-react-statics: 3.3.2
 
   '@types/html-minifier-terser@6.1.0': {}
@@ -10643,6 +10649,10 @@ snapshots:
     dependencies:
       '@types/prop-types': 15.7.3
       csstype: 3.0.11
+
+  '@types/react@19.0.10':
+    dependencies:
+      csstype: 3.1.3
 
   '@types/resolve@1.17.1':
     dependencies:
@@ -11558,7 +11568,7 @@ snapshots:
       parse5: 7.2.1
       parse5-htmlparser2-tree-adapter: 7.1.0
       parse5-parser-stream: 7.1.2
-      undici: 6.21.1
+      undici: 6.21.2
       whatwg-mimetype: 4.0.0
 
   cheerio@1.0.0-rc.3:
@@ -11704,13 +11714,13 @@ snapshots:
 
   connect-history-api-fallback@2.0.0: {}
 
-  connected-react-router@6.9.3(history@5.3.0)(react-redux@9.2.0(@types/react@18.2.79)(react@18.3.1)(redux@4.2.1))(react-router@6.27.0(react@18.3.1))(react@18.3.1)(redux@4.2.1):
+  connected-react-router@6.9.3(history@5.3.0)(react-redux@9.2.0(@types/react@19.0.10)(react@18.3.1)(redux@4.2.1))(react-router@6.27.0(react@18.3.1))(react@18.3.1)(redux@4.2.1):
     dependencies:
       history: 5.3.0
       lodash.isequalwith: 4.4.0
       prop-types: 15.8.1
       react: 18.3.1
-      react-redux: 9.2.0(@types/react@18.2.79)(react@18.3.1)(redux@4.2.1)
+      react-redux: 9.2.0(@types/react@19.0.10)(react@18.3.1)(redux@4.2.1)
       react-router: 6.27.0(react@18.3.1)
       redux: 4.2.1
     optionalDependencies:
@@ -11983,6 +11993,8 @@ snapshots:
       cssom: 0.3.8
 
   csstype@3.0.11: {}
+
+  csstype@3.1.3: {}
 
   damerau-levenshtein@1.0.8: {}
 
@@ -15620,9 +15632,9 @@ snapshots:
       react: 18.3.1
       tween-functions: 1.2.0
 
-  react-cookie@7.2.2(react@18.3.1):
+  react-cookie@8.0.0(react@18.3.1):
     dependencies:
-      '@types/hoist-non-react-statics': 3.3.5
+      '@types/hoist-non-react-statics': 3.3.6
       hoist-non-react-statics: 3.3.2
       react: 18.3.1
       universal-cookie: 7.2.2
@@ -15709,9 +15721,9 @@ snapshots:
       prop-types: 15.8.1
       react: 18.3.1
 
-  react-innertext@1.1.5(@types/react@18.2.79)(react@18.3.1):
+  react-innertext@1.1.5(@types/react@19.0.10)(react@18.3.1):
     dependencies:
-      '@types/react': 18.2.79
+      '@types/react': 19.0.10
       react: 18.3.1
 
   react-is@16.13.1: {}
@@ -15720,7 +15732,7 @@ snapshots:
 
   react-is@18.3.1: {}
 
-  react-joyride@2.9.3(@types/react@18.2.79)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  react-joyride@2.9.3(@types/react@19.0.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@gilbarbara/deep-equal': 0.3.1
       deep-diff: 1.0.2
@@ -15729,7 +15741,7 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       react-floater: 0.7.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      react-innertext: 1.1.5(@types/react@18.2.79)(react@18.3.1)
+      react-innertext: 1.1.5(@types/react@19.0.10)(react@18.3.1)
       react-is: 16.13.1
       scroll: 3.0.1
       scrollparent: 2.1.0
@@ -15740,13 +15752,13 @@ snapshots:
 
   react-lifecycles-compat@3.0.4: {}
 
-  react-redux@9.2.0(@types/react@18.2.79)(react@18.3.1)(redux@4.2.1):
+  react-redux@9.2.0(@types/react@19.0.10)(react@18.3.1)(redux@4.2.1):
     dependencies:
       '@types/use-sync-external-store': 0.0.6
       react: 18.3.1
       use-sync-external-store: 1.4.0(react@18.3.1)
     optionalDependencies:
-      '@types/react': 18.2.79
+      '@types/react': 19.0.10
       redux: 4.2.1
 
   react-refresh@0.11.0: {}
@@ -17071,7 +17083,7 @@ snapshots:
 
   undici-types@6.20.0: {}
 
-  undici@6.21.1: {}
+  undici@6.21.2: {}
 
   unicode-canonical-property-names-ecmascript@2.0.0: {}
 
