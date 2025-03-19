@@ -103,8 +103,8 @@ importers:
         specifier: ^7.26.10
         version: 7.26.10(@babel/core@7.24.7)(eslint@8.26.0)
       '@chromatic-com/storybook':
-        specifier: ^3.2.5
-        version: 3.2.5(react@18.3.1)(storybook@8.6.7(prettier@3.4.2))
+        specifier: ^3.2.6
+        version: 3.2.6(react@18.3.1)(storybook@8.6.7(prettier@3.4.2))
       '@sebastianwessel/esdoc':
         specifier: ^2.1.0
         version: 2.1.0(@babel/core@7.24.7)
@@ -1062,8 +1062,8 @@ packages:
   '@bcoe/v8-coverage@0.2.3':
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
 
-  '@chromatic-com/storybook@3.2.5':
-    resolution: {integrity: sha512-Y388ft6po5FmGKdkcqz3r2sW6aMF5DSBaatC0jvT5bI/Dh27RJw3gPTmXJcZVNjteNl6tpiP3qxZ9MswAk5luw==}
+  '@chromatic-com/storybook@3.2.6':
+    resolution: {integrity: sha512-FDmn5Ry2DzQdik+eq2sp/kJMMT36Ewe7ONXUXM2Izd97c7r6R/QyGli8eyh/F0iyqVvbLveNYFyF0dBOJNwLqw==}
     engines: {node: '>=16.0.0', yarn: '>=1.22.18'}
     peerDependencies:
       storybook: ^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0
@@ -2962,8 +2962,8 @@ packages:
     resolution: {integrity: sha512-7VT13fmjotKpGipCW9JEQAusEPE+Ei8nl6/g4FBAmIm0GOOLMua9NDDo/DWp0ZAxCr3cPq5ZpBqmPAQgDda2Pw==}
     engines: {node: '>= 8.10.0'}
 
-  chromatic@11.26.1:
-    resolution: {integrity: sha512-kVMTigrKI7TOOV04i1lTTIVJsmQ+fj6ZFXyZ3LcdCioOrxO/zCVB1y74iX0iKS++cpi3bJcG+UszkmvptGDEuA==}
+  chromatic@11.27.0:
+    resolution: {integrity: sha512-jQ2ufjS+ePpg+NtcPI9B2eOi+pAzlRd2nhd1LgNMsVCC9Bzf5t8mJtyd8v2AUuJS0LdX0QVBgkOnlNv9xviHzA==}
     hasBin: true
     peerDependencies:
       '@chromatic-com/cypress': ^0.*.* || ^1.0.0
@@ -6533,8 +6533,8 @@ packages:
     resolution: {integrity: sha512-sZ41cxiU5llIB003yxxQBYrARBqe0repqPTTYBTmMqTz9szeBbE37BehCE891NZsmdZqqP+xWKdT3eo3vOzN8w==}
     engines: {node: '>=14'}
 
-  react-confetti@6.2.3:
-    resolution: {integrity: sha512-Jt6Fy3jE7FrpKxeDQ3oh36Bz6LoYt4o+vU578ghuF//NxADlcauDYvWr24S8hHKnQ90Uv01XXOngnKVBdZ73zQ==}
+  react-confetti@6.4.0:
+    resolution: {integrity: sha512-5MdGUcqxrTU26I2EU7ltkWPwxvucQTuqMm8dUz72z2YMqTD6s9vMcDUysk7n9jnC+lXuCPeJJ7Knf98VEYE9Rg==}
     engines: {node: '>=16'}
     peerDependencies:
       react: ^16.3.0 || ^17.0.1 || ^18.0.0 || ^19.0.0
@@ -8509,7 +8509,7 @@ snapshots:
 
   '@babel/parser@7.26.7':
     dependencies:
-      '@babel/types': 7.26.7
+      '@babel/types': 7.26.10
 
   '@babel/plugin-bugfix-firefox-class-in-computed-class-key@7.24.7(@babel/core@7.24.7)':
     dependencies:
@@ -9289,12 +9289,12 @@ snapshots:
 
   '@bcoe/v8-coverage@0.2.3': {}
 
-  '@chromatic-com/storybook@3.2.5(react@18.3.1)(storybook@8.6.7(prettier@3.4.2))':
+  '@chromatic-com/storybook@3.2.6(react@18.3.1)(storybook@8.6.7(prettier@3.4.2))':
     dependencies:
-      chromatic: 11.26.1
+      chromatic: 11.27.0
       filesize: 10.1.6
       jsonfile: 6.1.0
-      react-confetti: 6.2.3(react@18.3.1)
+      react-confetti: 6.4.0(react@18.3.1)
       storybook: 8.6.7(prettier@3.4.2)
       strip-ansi: 7.1.0
     transitivePeerDependencies:
@@ -10499,16 +10499,16 @@ snapshots:
 
   '@types/babel__generator@7.6.1':
     dependencies:
-      '@babel/types': 7.24.7
+      '@babel/types': 7.26.10
 
   '@types/babel__template@7.0.2':
     dependencies:
-      '@babel/parser': 7.24.7
-      '@babel/types': 7.24.7
+      '@babel/parser': 7.26.10
+      '@babel/types': 7.26.10
 
   '@types/babel__traverse@7.20.4':
     dependencies:
-      '@babel/types': 7.24.7
+      '@babel/types': 7.26.10
 
   '@types/babel__traverse@7.20.6':
     dependencies:
@@ -11590,7 +11590,7 @@ snapshots:
     optionalDependencies:
       fsevents: 2.3.3
 
-  chromatic@11.26.1: {}
+  chromatic@11.27.0: {}
 
   chrome-trace-event@1.0.4: {}
 
@@ -15613,7 +15613,7 @@ snapshots:
       regenerator-runtime: 0.13.10
       whatwg-fetch: 3.6.2
 
-  react-confetti@6.2.3(react@18.3.1):
+  react-confetti@6.4.0(react@18.3.1):
     dependencies:
       react: 18.3.1
       tween-functions: 1.2.0
