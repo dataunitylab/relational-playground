@@ -74,7 +74,7 @@
   ],
   "devDependencies": {
     "@babel/eslint-parser": "^7.26.10",
-    "@chromatic-com/storybook": "^3.2.5",
+    "@chromatic-com/storybook": "^3.2.6",
     "@sebastianwessel/esdoc": "^2.1.0",
     "@sebastianwessel/esdoc-ecmascript-proposal-plugin": "^2.1.0",
     "@sebastianwessel/esdoc-flow-type-plugin": "^2.1.0",
