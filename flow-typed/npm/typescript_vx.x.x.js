@@ -1,4 +1,4 @@
-// flow-typed signature: 28360924d0fcf0cab2c7996d5c945608
+// flow-typed signature: 2c1c1781fc6b155318a36bba9ef58f5f
 // flow-typed version: <<STUB>>/typescript_v*/flow_v0.203.1
 
 /**
@@ -22,7 +22,15 @@ declare module 'typescript' {
  * require those files directly. Feel free to delete any files that aren't
  * needed.
  */
-declare module 'typescript/lib/cancellationToken' {
+declare module 'typescript/lib/_tsc' {
+  declare module.exports: any;
+}
+
+declare module 'typescript/lib/_tsserver' {
+  declare module.exports: any;
+}
+
+declare module 'typescript/lib/_typingsInstaller' {
   declare module.exports: any;
 }
 
@@ -51,8 +59,14 @@ declare module 'typescript/lib/watchGuard' {
 }
 
 // Filename aliases
-declare module 'typescript/lib/cancellationToken.js' {
-  declare module.exports: $Exports<'typescript/lib/cancellationToken'>;
+declare module 'typescript/lib/_tsc.js' {
+  declare module.exports: $Exports<'typescript/lib/_tsc'>;
+}
+declare module 'typescript/lib/_tsserver.js' {
+  declare module.exports: $Exports<'typescript/lib/_tsserver'>;
+}
+declare module 'typescript/lib/_typingsInstaller.js' {
+  declare module.exports: $Exports<'typescript/lib/_typingsInstaller'>;
 }
 declare module 'typescript/lib/tsc.js' {
   declare module.exports: $Exports<'typescript/lib/tsc'>;
