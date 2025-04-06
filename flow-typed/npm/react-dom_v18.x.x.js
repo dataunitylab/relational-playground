@@ -1,5 +1,5 @@
-// flow-typed signature: bd8a9984746306d26194a489f3aeff35
-// flow-typed version: 388e9edcf0/react-dom_v18.x.x/flow_>=v0.127.x
+// flow-typed signature: b4957d9ef3b30fb54e85759a46383e27
+// flow-typed version: c2ec346755/react-dom_v18.x.x/flow_>=v0.198.x
 
 declare module 'react-dom_shared-types' {
   /**
