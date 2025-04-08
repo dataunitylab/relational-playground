@@ -223,8 +223,8 @@ importers:
         specifier: ^36.0.1
         version: 36.0.1(stylelint@16.12.0(typescript@5.8.3))
       universal-cookie:
-        specifier: ^7.2.2
-        version: 7.2.2
+        specifier: ^8.0.1
+        version: 8.0.1
       webpack:
         specifier: '5'
         version: 5.99.2(esbuild@0.25.2)
@@ -3136,6 +3136,10 @@ packages:
   cookie@0.7.2:
     resolution: {integrity: sha512-yki5XnKuf750l50uGTllt6kKILY4nQ1eNIQatoXEByZ5dWgnKqbnqmTrBE5B4N7lrMJKQ2ytWMiTO2o0v6Ew/w==}
     engines: {node: '>= 0.6'}
+
+  cookie@1.0.2:
+    resolution: {integrity: sha512-9Kr/j4O16ISv8zBBhJoi4bXOYNTkFLOqSL3UDB0njXxCXNezjeyVrJyGOWtgfs/q2km1gwBcfH8q1yEGoMYunA==}
+    engines: {node: '>=18'}
 
   core-js-compat@3.37.1:
     resolution: {integrity: sha512-9TNiImhKvQqSUkOvk/mMRZzOANTiEVC7WaBNhHcKM7x+/5E1l5NvsysR19zuDQScE8k+kfQXWRN3AtS/eOSHpg==}
@@ -7735,6 +7739,9 @@ packages:
   universal-cookie@7.2.2:
     resolution: {integrity: sha512-fMiOcS3TmzP2x5QV26pIH3mvhexLIT0HmPa3V7Q7knRfT9HG6kTwq02HZGLPw0sAOXrAmotElGRvTLCMbJsvxQ==}
 
+  universal-cookie@8.0.1:
+    resolution: {integrity: sha512-B6ks9FLLnP1UbPPcveOidfvB9pHjP+wekP2uRYB9YDfKVpvcjKgy1W5Zj+cEXJ9KTPnqOKGfVDQBmn8/YCQfRg==}
+
   universalify@0.1.2:
     resolution: {integrity: sha512-rBJeI5CXAlmy1pV+617WB9J63U6XcazHHF2f2dbJix4XzpUF0RS3Zbj0FGIOCAva5P/d/GBOYaACQ1w+0azUkg==}
     engines: {node: '>= 4.0.0'}
@@ -8487,7 +8494,7 @@ snapshots:
 
   '@babel/parser@7.26.7':
     dependencies:
-      '@babel/types': 7.26.7
+      '@babel/types': 7.27.0
 
   '@babel/parser@7.27.0':
     dependencies:
@@ -10481,16 +10488,16 @@ snapshots:
 
   '@types/babel__generator@7.6.1':
     dependencies:
-      '@babel/types': 7.24.7
+      '@babel/types': 7.27.0
 
   '@types/babel__template@7.0.2':
     dependencies:
-      '@babel/parser': 7.24.7
-      '@babel/types': 7.24.7
+      '@babel/parser': 7.27.0
+      '@babel/types': 7.27.0
 
   '@types/babel__traverse@7.20.4':
     dependencies:
-      '@babel/types': 7.24.7
+      '@babel/types': 7.27.0
 
   '@types/babel__traverse@7.20.7':
     dependencies:
@@ -11718,6 +11725,8 @@ snapshots:
   cookie@0.7.1: {}
 
   cookie@0.7.2: {}
+
+  cookie@1.0.2: {}
 
   core-js-compat@3.37.1:
     dependencies:
@@ -17061,6 +17070,10 @@ snapshots:
     dependencies:
       '@types/cookie': 0.6.0
       cookie: 0.7.2
+
+  universal-cookie@8.0.1:
+    dependencies:
+      cookie: 1.0.2
 
   universalify@0.1.2: {}
 
