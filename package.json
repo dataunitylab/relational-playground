@@ -9,8 +9,8 @@
   "dependencies": {
     "@michaelmior/js-sql-parser": "^1.3.0",
     "@reduxjs/toolkit": "^1.9.7",
-    "@sentry/browser": "^9.11.0",
-    "@sentry/cli": "^2.43.0",
+    "@sentry/browser": "^9.14.0",
+    "@sentry/cli": "^2.43.1",
     "@testing-library/jest-dom": "^6.6.3",
     "connected-react-router": "^6.9.3",
     "fast-equals": "^5.2.2",
