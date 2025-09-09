@@ -118,7 +118,7 @@
     "webpack": "^5.99.2"
   },
   "engines": {
-    "node": "18.x"
+    "node": "24.x"
   },
   "jest": {
     "collectCoverageFrom": [
