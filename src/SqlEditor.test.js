@@ -9,6 +9,7 @@ it('can parse the initial query', () => {
   const mockAction = jest.fn();
   const mockEvent = jest.fn();
   const mockResetAction = jest.fn(() => undefined);
+  const mockNavigate = jest.fn();
 
   // eslint-disable-next-line no-native-reassign
   window = Object.create(window);
@@ -24,6 +25,7 @@ it('can parse the initial query', () => {
       exprFromSql={mockAction}
       types={types}
       resetAction={mockResetAction}
+      navigate={mockNavigate}
     />
   );
 
@@ -43,6 +45,7 @@ it('can parse modified query and fire an event', () => {
   const mockAction = jest.fn(() => undefined);
   const mockEvent = jest.fn(() => undefined);
   const mockResetAction = jest.fn(() => undefined);
+  const mockNavigate = jest.fn();
   const wrapper = shallow(
     <SqlEditor
       defaultText="SELECT * FROM foo"
@@ -50,6 +53,7 @@ it('can parse modified query and fire an event', () => {
       exprFromSql={mockAction}
       types={types}
       resetAction={mockResetAction}
+      navigate={mockNavigate}
     />
   );
 

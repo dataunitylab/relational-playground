@@ -2,6 +2,7 @@
 import * as React from 'react';
 import Table from './Table';
 import {BrowserView, MobileOnlyView, isMobileOnly} from 'react-device-detect';
+import {useReactGA} from './contexts/ReactGAContext';
 
 import './MultiTable.css';
 
@@ -10,7 +11,7 @@ import type {Data} from './modules/data';
 
 type Props = {
   tables: {[string]: Data},
-  ReactGA: any,
+  ReactGA?: any, // For backwards compatibility with tests
   testIsMobile?: boolean,
 };
 
@@ -23,13 +24,15 @@ const MultiTable: StatelessFunctionalComponent<Props> = (props) => {
   const [selected, setSelected] = React.useState(Object.keys(props.tables)[0]);
   const [isMobile] = React.useState(isMobileOnly);
   const [buttonText, setButtonText] = React.useState(tableHiddenText);
+  const contextReactGA = useReactGA();
+  const ReactGA = props.ReactGA || contextReactGA;
 
   // TODO: Fix type annotation below
   const handleChange = (e: any) => {
     if (e.target !== undefined) {
       setSelected(e.target.value);
-      if (props.ReactGA) {
-        props.ReactGA.event({
+      if (ReactGA) {
+        ReactGA.event({
           category: 'User Selecting A Table',
           action: e.target.value,
         });

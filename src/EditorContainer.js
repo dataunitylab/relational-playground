@@ -11,9 +11,7 @@ import type {StatelessFunctionalComponent} from 'react';
 
 import type {State} from './modules/data';
 
-type Props = {
-  ReactGA: any,
-};
+type Props = {};
 
 const EditorContainer: StatelessFunctionalComponent<Props> = (props) => {
   const types = useSelector<{data: State}, _>((state) =>
@@ -30,7 +28,6 @@ const EditorContainer: StatelessFunctionalComponent<Props> = (props) => {
   return (
     <SqlEditor
       navigate={navigate}
-      ReactGA={props.ReactGA}
       defaultText="SELECT * FROM Doctor"
       exprFromSql={(sql, types) => dispatch(exprFromSql(sql, types))}
       resetAction={() => dispatch(resetAction())}

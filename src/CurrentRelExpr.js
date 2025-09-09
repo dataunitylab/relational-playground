@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {changeExpr} from './modules/data';
 import RelExpr from './RelExpr';
 import RelExprTree from './RelExprTree';
+import {useReactGA} from './contexts/ReactGAContext';
 
 import type {StatelessFunctionalComponent} from 'react';
 import {disableOptimization, enableOptimization} from './modules/relexp';
@@ -11,7 +12,7 @@ import {disableOptimization, enableOptimization} from './modules/relexp';
 import type {State} from './modules/relexp';
 
 type Props = {
-  ReactGA: any,
+  ReactGA?: any, // For backwards compatibility with tests
 };
 
 const CurrentRelExpr: StatelessFunctionalComponent<Props> = (props) => {
@@ -21,10 +22,12 @@ const CurrentRelExpr: StatelessFunctionalComponent<Props> = (props) => {
   const optimized = useSelector<{relexp: State}, _>(
     (state) => state.relexp.optimized
   );
+  const contextReactGA = useReactGA();
+  const ReactGA = props.ReactGA || contextReactGA;
 
   function handleTreeInputChange(event: SyntheticInputEvent<HTMLInputElement>) {
-    if (props.ReactGA) {
-      props.ReactGA.event({
+    if (ReactGA) {
+      ReactGA.event({
         category: 'Toggle Expression Display',
         action: event.target.checked ? 'tree' : 'linear',
       });
@@ -44,13 +47,11 @@ const CurrentRelExpr: StatelessFunctionalComponent<Props> = (props) => {
 
   const relExp = showTree ? (
     <RelExprTree
-      ReactGA={props.ReactGA}
       expr={expr}
       changeExpr={(data, element) => dispatch(changeExpr(data, element))}
     />
   ) : (
     <RelExpr
-      ReactGA={props.ReactGA}
       expr={expr}
       changeExpr={(data, element) => dispatch(changeExpr(data, element))}
     />

@@ -18,6 +18,7 @@ import Relation from './Relation';
 import {exprToString} from './util';
 import {changeExpr} from './modules/data';
 import ReactDOM from 'react-dom';
+import {useReactGA} from './contexts/ReactGAContext';
 
 import './RelExpr.css';
 
@@ -28,7 +29,7 @@ import type {State} from './modules/relexp';
 type Props = {
   changeExpr: typeof changeExpr,
   expr: {[string]: any},
-  ReactGA: any,
+  ReactGA?: any, // For backwards compatibility with tests
 };
 
 /** A graphical representation of a relational algebra expression */
@@ -37,6 +38,8 @@ const RelExpr: StatelessFunctionalComponent<Props> = (props) => {
   const currentNode = useSelector<{data: State}, _>((state) => state.data.expr);
   const [isHovering, setIsHovering] = useState(false);
   const [isSelected, setIsSelected] = useState(false);
+  const contextReactGA = useReactGA();
+  const ReactGA = props.ReactGA || contextReactGA;
 
   useEffect(() => {
     // Adjust 'clicked' highlighting based on any changes to currentNode selected
@@ -69,7 +72,6 @@ const RelExpr: StatelessFunctionalComponent<Props> = (props) => {
               <RelExpr
                 expr={expr.projection.children[0]}
                 changeExpr={props.changeExpr}
-                ReactGA={props.ReactGA}
               />
             </UnaryRelOp>
           </span>
@@ -88,7 +90,6 @@ const RelExpr: StatelessFunctionalComponent<Props> = (props) => {
               <RelExpr
                 expr={expr.selection.children[0]}
                 changeExpr={props.changeExpr}
-                ReactGA={props.ReactGA}
               />
             </UnaryRelOp>
           </span>
@@ -103,7 +104,6 @@ const RelExpr: StatelessFunctionalComponent<Props> = (props) => {
               <RelExpr
                 expr={expr.rename.children[0]}
                 changeExpr={props.changeExpr}
-                ReactGA={props.ReactGA}
               />
             </UnaryRelOp>
           </span>
@@ -138,7 +138,6 @@ const RelExpr: StatelessFunctionalComponent<Props> = (props) => {
               <RelExpr
                 expr={expr.group_by.children[0]}
                 changeExpr={props.changeExpr}
-                ReactGA={props.ReactGA}
               />
             </UnaryRelOp>
           </span>
@@ -168,18 +167,10 @@ const RelExpr: StatelessFunctionalComponent<Props> = (props) => {
           <BinaryRelOp
             operator={operator}
             left={
-              <RelExpr
-                expr={expr[type].left}
-                ReactGA={props.ReactGA}
-                changeExpr={props.changeExpr}
-              />
+              <RelExpr expr={expr[type].left} changeExpr={props.changeExpr} />
             }
             right={
-              <RelExpr
-                expr={expr[type].right}
-                ReactGA={props.ReactGA}
-                changeExpr={props.changeExpr}
-              />
+              <RelExpr expr={expr[type].right} changeExpr={props.changeExpr} />
             }
           />
         );
@@ -212,8 +203,8 @@ const RelExpr: StatelessFunctionalComponent<Props> = (props) => {
       setIsSelected(clicked);
     }
 
-    if (props.ReactGA) {
-      props.ReactGA.event({
+    if (ReactGA) {
+      ReactGA.event({
         category: 'User Selecting Relational Algebra Enclosure',
         action: Object.keys(props.expr)[0],
       });

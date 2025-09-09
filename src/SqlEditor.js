@@ -9,11 +9,12 @@ import SqlAutocompleteDropdown, {
   parseForAutocomplete,
   generateSuggestions,
 } from './SqlAutocomplete';
+import {useReactGA} from './contexts/ReactGAContext';
 import './SqlEditor.css';
 
 import 'prismjs/themes/prism.css';
 
-import type {Node} from 'react';
+import type {Node, StatelessFunctionalComponent} from 'react';
 
 const parser = require('@michaelmior/js-sql-parser');
 
@@ -466,4 +467,21 @@ class SqlEditor extends React.Component<Props, State> {
   }
 }
 
-export default SqlEditor;
+type SqlEditorWrapperProps = {
+  navigate: any,
+  defaultText: string,
+  exprFromSql: typeof exprFromSql,
+  resetAction: typeof resetAction,
+  types: {[string]: Array<string>},
+  ReactGA?: any, // For backwards compatibility with tests
+};
+
+const SqlEditorWithContext: StatelessFunctionalComponent<
+  SqlEditorWrapperProps,
+> = (props: SqlEditorWrapperProps) => {
+  const contextReactGA = useReactGA();
+  const ReactGA = props.ReactGA || contextReactGA;
+  return <SqlEditor {...props} ReactGA={ReactGA} />;
+};
+
+export default SqlEditorWithContext;

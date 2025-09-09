@@ -15,6 +15,7 @@ import {
 } from './RelOp';
 import {exprToString} from './util';
 import {changeExpr} from './modules/data';
+import {useReactGA} from './contexts/ReactGAContext';
 
 import '../node_modules/react-simple-tree-menu/dist/main.css';
 import './RelExprTree.css';
@@ -24,11 +25,13 @@ import type {Node, StatelessFunctionalComponent} from 'react';
 type Props = {
   changeExpr: typeof changeExpr,
   expr: {[string]: any},
-  ReactGA: any,
+  ReactGA?: any, // For backwards compatibility with tests
 };
 
 /** A graphical representation of a relational algebra expression */
 const RelExprTree: StatelessFunctionalComponent<Props> = (props) => {
+  const contextReactGA = useReactGA();
+  const ReactGA = props.ReactGA || contextReactGA;
   /**
    * @param expr - a relational algebra expression object to render
    * @param keys - an array where all created paths should be saved
@@ -151,8 +154,8 @@ const RelExprTree: StatelessFunctionalComponent<Props> = (props) => {
         onClickItem={(clickProps) => {
           props.changeExpr(clickProps.expr, null);
 
-          if (props.ReactGA) {
-            props.ReactGA.event({
+          if (ReactGA) {
+            ReactGA.event({
               category: 'User Selecting Relational Algebra Tree',
               action: Object.keys(clickProps.expr)[0],
             });

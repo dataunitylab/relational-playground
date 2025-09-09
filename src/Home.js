@@ -8,6 +8,7 @@ import SourceMultiTable from './SourceMultiTable';
 import SplitPane from 'react-split-pane';
 import {BrowserView, MobileOnlyView} from 'react-device-detect';
 import ReactGA from 'react-ga';
+import {ReactGAProvider} from './contexts/ReactGAContext';
 
 import './Home.css';
 
@@ -40,8 +41,8 @@ const Home: StatelessFunctionalComponent<Props> = (props) => {
       <h2>Relational Playground</h2>
       <div>
         {/* SQL query input */}
-        <EditorContainer ReactGA={ReactGA} />
-        <CurrentRelExpr ReactGA={ReactGA} />
+        <EditorContainer />
+        <CurrentRelExpr />
       </div>
     </div>
   );
@@ -62,30 +63,32 @@ const Home: StatelessFunctionalComponent<Props> = (props) => {
   );
 
   return (
-    <div>
-      <BrowserView>
-        <SplitPane split="vertical" primary="second" minSize={'30%'}>
-          <div>
-            <SplitPane split="horizontal" primary="second" minSize={'55%'}>
-              {editorContainer}
-              {dataContainer}
-            </SplitPane>
-          </div>
-          {/* Input dataset preview */}
-          <div style={{margin: '2em'}}>
-            <SourceMultiTable ReactGA={ReactGA} />
-          </div>
-        </SplitPane>
-      </BrowserView>
+    <ReactGAProvider reactGA={ReactGA}>
+      <div>
+        <BrowserView>
+          <SplitPane split="vertical" primary="second" minSize={'30%'}>
+            <div>
+              <SplitPane split="horizontal" primary="second" minSize={'55%'}>
+                {editorContainer}
+                {dataContainer}
+              </SplitPane>
+            </div>
+            {/* Input dataset preview */}
+            <div style={{margin: '2em'}}>
+              <SourceMultiTable />
+            </div>
+          </SplitPane>
+        </BrowserView>
 
-      <MobileOnlyView>
-        <div style={{padding: '0em 1em 1em 1em'}}>
-          {editorContainer}
-          <SourceMultiTable ReactGA={ReactGA} />
-        </div>
-        {dataContainer}
-      </MobileOnlyView>
-    </div>
+        <MobileOnlyView>
+          <div style={{padding: '0em 1em 1em 1em'}}>
+            {editorContainer}
+            <SourceMultiTable />
+          </div>
+          {dataContainer}
+        </MobileOnlyView>
+      </div>
+    </ReactGAProvider>
   );
 };
 
