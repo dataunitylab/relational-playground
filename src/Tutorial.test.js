@@ -6,7 +6,6 @@ import JoyrideTooltipContainer from 'react-joyride';
 
 /** @test {Tutorial} */
 it('correctly renders tutorial given no cookie', () => {
-  let cookies = new Cookies();
   const wrapper = shallow(<Tutorial />);
   let tooltip = wrapper.find(JoyrideTooltipContainer);
 
