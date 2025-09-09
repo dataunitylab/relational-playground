@@ -430,46 +430,50 @@ export function applyExpr(
         for (const agg of aggregates) {
           const column = agg.aggregate.column;
           const func = agg.aggregate.function;
-          const values = groupRows.map((row) => {
-            const resolvedCol = resolveColumn(column, row);
-            return parseFloat(row[resolvedCol]) || 0;
-          });
 
           let result;
-          switch (func) {
-            case 'MAX':
-              result = Math.max(...values);
-              break;
-            case 'MIN':
-              result = Math.min(...values);
-              break;
-            case 'AVG':
-              result =
-                values.reduce((sum, val) => sum + val, 0) / values.length;
-              break;
-            case 'SUM':
-              result = values.reduce((sum, val) => sum + val, 0);
-              break;
-            case 'COUNT':
-              result = groupRows.length;
-              break;
-            case 'STDEV':
-              if (values.length <= 1) {
-                result = 0;
-              } else {
-                const mean =
+          if (func === 'COUNT') {
+            // COUNT doesn't need to resolve column, just count rows
+            result = groupRows.length;
+          } else {
+            // Other aggregates need to resolve the column and get values
+            const values = groupRows.map((row) => {
+              const resolvedCol = resolveColumn(column, row);
+              return parseFloat(row[resolvedCol]) || 0;
+            });
+
+            switch (func) {
+              case 'MAX':
+                result = Math.max(...values);
+                break;
+              case 'MIN':
+                result = Math.min(...values);
+                break;
+              case 'AVG':
+                result =
                   values.reduce((sum, val) => sum + val, 0) / values.length;
-                const variance =
-                  values.reduce(
-                    (sum, val) => sum + Math.pow(val - mean, 2),
-                    0
-                  ) /
-                  (values.length - 1);
-                result = Math.sqrt(variance);
-              }
-              break;
-            default:
-              throw new Error('Unsupported aggregate function: ' + func);
+                break;
+              case 'SUM':
+                result = values.reduce((sum, val) => sum + val, 0);
+                break;
+              case 'STDEV':
+                if (values.length <= 1) {
+                  result = 0;
+                } else {
+                  const mean =
+                    values.reduce((sum, val) => sum + val, 0) / values.length;
+                  const variance =
+                    values.reduce(
+                      (sum, val) => sum + Math.pow(val - mean, 2),
+                      0
+                    ) /
+                    (values.length - 1);
+                  result = Math.sqrt(variance);
+                }
+                break;
+              default:
+                throw new Error('Unsupported aggregate function: ' + func);
+            }
           }
 
           resultRow[`${func}(${column})`] = result;

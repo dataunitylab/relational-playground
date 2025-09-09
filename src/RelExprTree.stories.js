@@ -140,3 +140,114 @@ export const GroupByMultipleAggregates = () => (
   />
 );
 GroupByMultipleAggregates.storyName = 'GROUP BY with multiple aggregates';
+
+export const GroupByWithHaving = ({aggregateFunction, threshold}) => (
+  <RelExprTree
+    expr={{
+      selection: {
+        arguments: {
+          condition: {
+            cmp: {
+              lhs: `${aggregateFunction}(salary)`,
+              op: '$gt',
+              rhs: threshold.toString(),
+            },
+          },
+        },
+        children: [
+          {
+            group_by: {
+              arguments: {
+                groupBy: ['departmentId'],
+                aggregates: [
+                  {
+                    aggregate: {
+                      function: aggregateFunction,
+                      column: 'salary',
+                    },
+                  },
+                ],
+                selectColumns: ['departmentId'],
+              },
+              children: [{relation: 'Doctor'}],
+            },
+          },
+        ],
+      },
+    }}
+    changeExpr={(expr, element) => undefined}
+  />
+);
+GroupByWithHaving.storyName = 'GROUP BY with HAVING clause';
+GroupByWithHaving.args = {
+  aggregateFunction: 'AVG',
+  threshold: 50000,
+};
+GroupByWithHaving.argTypes = {
+  aggregateFunction: {
+    options: ['COUNT', 'SUM', 'AVG', 'MIN', 'MAX'],
+    control: {type: 'inline-radio'},
+  },
+  threshold: {
+    control: {type: 'number', min: 0, max: 200000, step: 5000},
+  },
+};
+
+export const GroupByWithComplexHaving = () => (
+  <RelExprTree
+    expr={{
+      selection: {
+        arguments: {
+          condition: {
+            and: {
+              clauses: [
+                {
+                  cmp: {
+                    lhs: 'COUNT(*)',
+                    op: '$gt',
+                    rhs: '1',
+                  },
+                },
+                {
+                  cmp: {
+                    lhs: 'AVG(salary)',
+                    op: '$gt',
+                    rhs: '80000',
+                  },
+                },
+              ],
+            },
+          },
+        },
+        children: [
+          {
+            group_by: {
+              arguments: {
+                groupBy: ['departmentId'],
+                aggregates: [
+                  {
+                    aggregate: {
+                      function: 'COUNT',
+                      column: '*',
+                    },
+                  },
+                  {
+                    aggregate: {
+                      function: 'AVG',
+                      column: 'salary',
+                    },
+                  },
+                ],
+                selectColumns: ['departmentId'],
+              },
+              children: [{relation: 'Doctor'}],
+            },
+          },
+        ],
+      },
+    }}
+    changeExpr={(expr, element) => undefined}
+  />
+);
+GroupByWithComplexHaving.storyName =
+  'GROUP BY with complex HAVING (COUNT and AVG)';

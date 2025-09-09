@@ -1145,3 +1145,317 @@ it('converts a GROUP BY with STDEV aggregate', () => {
     },
   });
 });
+
+// HAVING Clause Tests
+
+/** @test {relexp} */
+it('converts a GROUP BY with HAVING clause using aggregate function', () => {
+  const sql = parser.parse(
+    'SELECT departmentId, COUNT(*) FROM Doctor GROUP BY departmentId HAVING COUNT(*) > 5'
+  );
+  const action = exprFromSql(sql.value, {
+    Doctor: ['id', 'salary', 'departmentId'],
+  });
+  expect(reducer({}, action)).toMatchObject({
+    expr: {
+      selection: {
+        arguments: {
+          select: {
+            cmp: {
+              lhs: 'COUNT(*)',
+              op: '$gt',
+              rhs: '5',
+            },
+          },
+        },
+        children: [
+          {
+            group_by: {
+              arguments: {
+                groupBy: ['departmentId'],
+                aggregates: [
+                  {
+                    aggregate: {
+                      function: 'COUNT',
+                      column: '*',
+                    },
+                  },
+                ],
+                selectColumns: ['departmentId'],
+              },
+              children: [{relation: 'Doctor'}],
+            },
+          },
+        ],
+      },
+    },
+  });
+});
+
+/** @test {relexp} */
+it('converts a GROUP BY with HAVING clause using multiple aggregate functions', () => {
+  const sql = parser.parse(
+    'SELECT departmentId, COUNT(*), AVG(salary) FROM Doctor GROUP BY departmentId HAVING COUNT(*) > 3 AND AVG(salary) > 50000'
+  );
+  const action = exprFromSql(sql.value, {
+    Doctor: ['id', 'salary', 'departmentId'],
+  });
+  expect(reducer({}, action)).toMatchObject({
+    expr: {
+      selection: {
+        arguments: {
+          select: {
+            and: {
+              clauses: [
+                {
+                  cmp: {
+                    lhs: 'COUNT(*)',
+                    op: '$gt',
+                    rhs: '3',
+                  },
+                },
+                {
+                  cmp: {
+                    lhs: 'AVG(salary)',
+                    op: '$gt',
+                    rhs: '50000',
+                  },
+                },
+              ],
+            },
+          },
+        },
+        children: [
+          {
+            group_by: {
+              arguments: {
+                groupBy: ['departmentId'],
+                aggregates: [
+                  {
+                    aggregate: {
+                      function: 'COUNT',
+                      column: '*',
+                    },
+                  },
+                  {
+                    aggregate: {
+                      function: 'AVG',
+                      column: 'salary',
+                    },
+                  },
+                ],
+                selectColumns: ['departmentId'],
+              },
+              children: [{relation: 'Doctor'}],
+            },
+          },
+        ],
+      },
+    },
+  });
+});
+
+/** @test {relexp} */
+it('converts a GROUP BY with HAVING clause using GROUP BY column', () => {
+  const sql = parser.parse(
+    'SELECT departmentId, COUNT(*) FROM Doctor GROUP BY departmentId HAVING departmentId = 1'
+  );
+  const action = exprFromSql(sql.value, {
+    Doctor: ['id', 'salary', 'departmentId'],
+  });
+  expect(reducer({}, action)).toMatchObject({
+    expr: {
+      selection: {
+        arguments: {
+          select: {
+            cmp: {
+              lhs: 'departmentId',
+              op: '$eq',
+              rhs: '1',
+            },
+          },
+        },
+        children: [
+          {
+            group_by: {
+              arguments: {
+                groupBy: ['departmentId'],
+                aggregates: [
+                  {
+                    aggregate: {
+                      function: 'COUNT',
+                      column: '*',
+                    },
+                  },
+                ],
+                selectColumns: ['departmentId'],
+              },
+              children: [{relation: 'Doctor'}],
+            },
+          },
+        ],
+      },
+    },
+  });
+});
+
+/** @test {relexp} */
+it('throws error when HAVING clause references column not in GROUP BY', () => {
+  const sql = parser.parse(
+    'SELECT departmentId, COUNT(*) FROM Doctor GROUP BY departmentId HAVING salary > 50000'
+  );
+  const action = exprFromSql(sql.value, {
+    Doctor: ['id', 'salary', 'departmentId'],
+  });
+  expect(() => reducer({}, action)).toThrow(
+    "Column 'salary' in HAVING clause must appear in the GROUP BY clause or be used in an aggregate function"
+  );
+});
+
+/** @test {relexp} */
+it('throws error when HAVING clause uses non-aggregate function', () => {
+  const sql = parser.parse(
+    'SELECT departmentId, COUNT(*) FROM Doctor GROUP BY departmentId HAVING UPPER(departmentId) = "CARDIOLOGY"'
+  );
+  const action = exprFromSql(sql.value, {
+    Doctor: ['id', 'salary', 'departmentId'],
+  });
+  expect(() => reducer({}, action)).toThrow(
+    "Function 'UPPER' is not allowed in HAVING clause"
+  );
+});
+
+/** @test {relexp} */
+it('converts HAVING with BETWEEN predicate using aggregate', () => {
+  const sql = parser.parse(
+    'SELECT departmentId, AVG(salary) FROM Doctor GROUP BY departmentId HAVING AVG(salary) BETWEEN 40000 AND 80000'
+  );
+  const action = exprFromSql(sql.value, {
+    Doctor: ['id', 'salary', 'departmentId'],
+  });
+  expect(reducer({}, action)).toMatchObject({
+    expr: {
+      selection: {
+        arguments: {
+          select: {
+            and: {
+              clauses: [
+                {
+                  cmp: {
+                    lhs: 'AVG(salary)',
+                    op: '$gte',
+                    rhs: '40000',
+                  },
+                },
+                {
+                  cmp: {
+                    lhs: 'AVG(salary)',
+                    op: '$lte',
+                    rhs: '80000',
+                  },
+                },
+              ],
+            },
+          },
+        },
+      },
+    },
+  });
+});
+
+/** @test {relexp} */
+it('converts HAVING with OR condition using aggregates', () => {
+  const sql = parser.parse(
+    'SELECT departmentId, COUNT(*), MAX(salary) FROM Doctor GROUP BY departmentId HAVING COUNT(*) < 2 OR MAX(salary) > 100000'
+  );
+  const action = exprFromSql(sql.value, {
+    Doctor: ['id', 'salary', 'departmentId'],
+  });
+  expect(reducer({}, action)).toMatchObject({
+    expr: {
+      selection: {
+        arguments: {
+          select: {
+            or: {
+              clauses: [
+                {
+                  cmp: {
+                    lhs: 'COUNT(*)',
+                    op: '$lt',
+                    rhs: '2',
+                  },
+                },
+                {
+                  cmp: {
+                    lhs: 'MAX(salary)',
+                    op: '$gt',
+                    rhs: '100000',
+                  },
+                },
+              ],
+            },
+          },
+        },
+      },
+    },
+  });
+});
+
+/** @test {relexp} */
+it('adds projection when HAVING uses aggregates not in SELECT', () => {
+  const sql = parser.parse(
+    'SELECT departmentId, MIN(salary) FROM Doctor GROUP BY departmentId HAVING COUNT(*) > 3'
+  );
+  const action = exprFromSql(sql.value, {
+    Doctor: ['id', 'salary', 'departmentId'],
+  });
+  expect(reducer({}, action)).toMatchObject({
+    expr: {
+      projection: {
+        arguments: {
+          project: ['departmentId', 'MIN(salary)'],
+        },
+        children: [
+          {
+            selection: {
+              arguments: {
+                select: {
+                  cmp: {
+                    lhs: 'COUNT(*)',
+                    op: '$gt',
+                    rhs: '3',
+                  },
+                },
+              },
+              children: [
+                {
+                  group_by: {
+                    arguments: {
+                      groupBy: ['departmentId'],
+                      aggregates: [
+                        {
+                          aggregate: {
+                            function: 'MIN',
+                            column: 'salary',
+                          },
+                        },
+                        {
+                          aggregate: {
+                            function: 'COUNT',
+                            column: '*',
+                          },
+                        },
+                      ],
+                      selectColumns: ['departmentId'],
+                    },
+                    children: [{relation: 'Doctor'}],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  });
+});

@@ -115,6 +115,225 @@ function normalizeColumnName(columnName: string): string {
  * @param tables - all tables used in the expression
  * @return a relational algebra expression object
  */
+/**
+ * Extracts aggregate functions used in a HAVING expression
+ * @param expr - the HAVING expression to analyze
+ * @return array of aggregate objects
+ */
+function extractHavingAggregates(expr: {
+  [string]: any,
+}): Array<{[string]: any}> {
+  const aggregates = [];
+
+  switch (expr.type) {
+    case 'FunctionCall':
+      const funcName = expr.name.toUpperCase();
+      if (['MAX', 'MIN', 'AVG', 'SUM', 'COUNT', 'STDEV'].includes(funcName)) {
+        let param;
+        if (expr.params[0] === '*') {
+          param = '*';
+        } else {
+          // For now, assume it's a simple column reference
+          param = expr.params[0].value || expr.params[0];
+        }
+        aggregates.push({
+          aggregate: {
+            function: funcName,
+            column: param,
+          },
+        });
+      }
+      return aggregates;
+
+    case 'ComparisonBooleanPrimary':
+      aggregates.push(...extractHavingAggregates(expr.left));
+      aggregates.push(...extractHavingAggregates(expr.right));
+      return aggregates;
+
+    case 'AndExpression':
+    case 'OrExpression':
+      aggregates.push(...extractHavingAggregates(expr.left));
+      aggregates.push(...extractHavingAggregates(expr.right));
+      return aggregates;
+
+    case 'BetweenPredicate':
+      aggregates.push(...extractHavingAggregates(expr.left));
+      aggregates.push(...extractHavingAggregates(expr.right.left));
+      aggregates.push(...extractHavingAggregates(expr.right.right));
+      return aggregates;
+
+    default:
+      return aggregates;
+  }
+}
+
+/**
+ * Converts a HAVING expression to work with the grouped/aggregated column names
+ * @param expr - the HAVING expression to convert
+ * @param types - an object mapping table names to lists of columns
+ * @param tables - all tables used in the expression
+ * @return a condition expression for selection after GROUP BY
+ */
+function convertHavingExpr(
+  expr: {[string]: any},
+  types: {[string]: Array<string>},
+  tables: Array<string>
+): {[string]: any} {
+  switch (expr.type) {
+    case 'ComparisonBooleanPrimary':
+      return {
+        cmp: {
+          lhs: convertHavingValue(expr.left, types, tables),
+          op: opMap[expr.operator],
+          rhs: convertHavingValue(expr.right, types, tables),
+        },
+      };
+
+    case 'AndExpression':
+      return {
+        and: {
+          clauses: [
+            convertHavingExpr(expr.left, types, tables),
+            convertHavingExpr(expr.right, types, tables),
+          ],
+        },
+      };
+
+    case 'OrExpression':
+      return {
+        or: {
+          clauses: [
+            convertHavingExpr(expr.left, types, tables),
+            convertHavingExpr(expr.right, types, tables),
+          ],
+        },
+      };
+
+    case 'BetweenPredicate':
+      const lhs = convertHavingValue(expr.left, types, tables);
+      return {
+        and: {
+          clauses: [
+            {
+              cmp: {
+                lhs,
+                op: '$gte',
+                rhs: convertHavingValue(expr.right.left, types, tables),
+              },
+            },
+            {
+              cmp: {
+                lhs,
+                op: '$lte',
+                rhs: convertHavingValue(expr.right.right, types, tables),
+              },
+            },
+          ],
+        },
+      };
+
+    default:
+      throw new Error(`Unsupported HAVING expression type: ${expr.type}`);
+  }
+}
+
+/**
+ * Converts a value in a HAVING expression (could be aggregate, column, or literal)
+ */
+function convertHavingValue(
+  expr: {[string]: any},
+  types: {[string]: Array<string>},
+  tables: Array<string>
+): string {
+  if (typeof expr === 'string' || typeof expr === 'number') {
+    return expr.toString();
+  }
+
+  switch (expr.type) {
+    case 'FunctionCall':
+      // Convert aggregate function to column name
+      const funcName = expr.name.toUpperCase();
+      let param;
+      if (expr.params[0] === '*') {
+        param = '*';
+      } else {
+        param = convertExpr(expr.params[0], types, tables);
+      }
+      return `${funcName}(${param})`;
+
+    case 'Identifier':
+      // Convert column reference to actual column name
+      return convertExpr(expr, types, tables);
+
+    case 'Number':
+    case 'String':
+      return expr.value;
+
+    default:
+      throw new Error(`Unsupported HAVING value type: ${expr.type}`);
+  }
+}
+
+/**
+ * Validates that a HAVING expression only uses aggregate functions or GROUP BY columns
+ * @param expr - the expression to validate
+ * @param groupByColumns - columns that are in the GROUP BY clause (converted expressions)
+ * @return true if valid, throws error if invalid
+ */
+function validateHavingExpression(
+  expr: {[string]: any},
+  groupByColumns: Array<string>
+): boolean {
+  switch (expr.type) {
+    case 'FunctionCall':
+      const funcName = expr.name.toUpperCase();
+      if (['MAX', 'MIN', 'AVG', 'SUM', 'COUNT', 'STDEV'].includes(funcName)) {
+        return true; // Aggregate functions are allowed
+      }
+      throw new Error(
+        `Function '${expr.name}' is not allowed in HAVING clause`
+      );
+
+    case 'Identifier':
+      const normalizedColumn = normalizeColumnName(expr.value);
+      const isInGroupBy = groupByColumns.some(
+        (groupCol) => normalizeColumnName(groupCol) === normalizedColumn
+      );
+      if (!isInGroupBy) {
+        throw new Error(
+          `Column '${expr.value}' in HAVING clause must appear in the GROUP BY clause or be used in an aggregate function`
+        );
+      }
+      return true;
+
+    case 'Number':
+    case 'String':
+      return true; // Literals are allowed
+
+    case 'ComparisonBooleanPrimary':
+      validateHavingExpression(expr.left, groupByColumns);
+      validateHavingExpression(expr.right, groupByColumns);
+      return true;
+
+    case 'AndExpression':
+    case 'OrExpression':
+      validateHavingExpression(expr.left, groupByColumns);
+      validateHavingExpression(expr.right, groupByColumns);
+      return true;
+
+    case 'BetweenPredicate':
+      validateHavingExpression(expr.left, groupByColumns);
+      validateHavingExpression(expr.right.left, groupByColumns);
+      validateHavingExpression(expr.right.right, groupByColumns);
+      return true;
+
+    default:
+      throw new Error(
+        `Unsupported expression type '${expr.type}' in HAVING clause`
+      );
+  }
+}
+
 function convertExpr(
   expr: {[string]: any},
   types: {[string]: Array<string>},
@@ -304,7 +523,14 @@ function convertExpr(
         throw new Error('Aggregate functions must have exactly one parameter');
       }
 
-      const param = convertExpr(expr.params[0], types, tables);
+      // Handle special case for COUNT(*)
+      let param;
+      if (expr.params[0] === '*') {
+        param = '*';
+      } else {
+        param = convertExpr(expr.params[0], types, tables);
+      }
+
       return {
         aggregate: {
           function: funcName,
@@ -469,18 +695,84 @@ function buildRelExp(
           }
         }
 
+        // Extract aggregates from HAVING clause if it exists
+        let havingAggregates = [];
+        if (sql.having) {
+          havingAggregates = extractHavingAggregates(sql.having);
+        }
+
+        // Combine SELECT aggregates with HAVING aggregates, removing duplicates
+        const allAggregates = [...aggregates];
+        for (const havingAgg of havingAggregates) {
+          const isDuplicate = allAggregates.some(
+            (selectAgg) =>
+              selectAgg.aggregate.function === havingAgg.aggregate.function &&
+              selectAgg.aggregate.column === havingAgg.aggregate.column
+          );
+          if (!isDuplicate) {
+            allAggregates.push(havingAgg);
+          }
+        }
+
         from = [
           {
             group_by: {
               arguments: {
                 groupBy: groupByColumns,
-                aggregates: aggregates,
+                aggregates: allAggregates, // Include both SELECT and HAVING aggregates
                 selectColumns: groupColumns, // Non-aggregate columns from SELECT
               },
               children: from,
             },
           },
         ];
+
+        // Add HAVING clause if it exists
+        if (sql.having) {
+          // Validate HAVING expression
+          validateHavingExpression(sql.having, groupByColumns);
+
+          // Apply HAVING as a selection (restriction) operation after GROUP BY
+          from = [
+            {
+              selection: {
+                arguments: {
+                  select: convertHavingExpr(sql.having, types, tables),
+                },
+                children: from,
+              },
+            },
+          ];
+
+          // If HAVING clause introduced additional aggregates not in SELECT,
+          // add a projection to only return the originally requested columns
+          const extraHavingAggregates = havingAggregates.filter((havingAgg) => {
+            return !aggregates.some(
+              (selectAgg) =>
+                selectAgg.aggregate.function === havingAgg.aggregate.function &&
+                selectAgg.aggregate.column === havingAgg.aggregate.column
+            );
+          });
+
+          if (extraHavingAggregates.length > 0) {
+            const originalColumns = [...groupColumns]; // Non-aggregate SELECT columns
+
+            // Add aggregate columns that were in the original SELECT
+            for (const agg of aggregates) {
+              const columnName = `${agg.aggregate.function}(${agg.aggregate.column})`;
+              originalColumns.push(columnName);
+            }
+
+            from = [
+              {
+                projection: {
+                  arguments: {project: originalColumns},
+                  children: from,
+                },
+              },
+            ];
+          }
+        }
       }
 
       if (sql.orderBy) {

@@ -746,3 +746,231 @@ it('maintains correct group separation', () => {
     ])
   );
 });
+
+// HAVING Clause Data Execution Tests
+
+/** @test {data} */
+it('can evaluate HAVING clause with COUNT aggregate', () => {
+  const expr = {
+    selection: {
+      arguments: {
+        select: {
+          cmp: {
+            lhs: 'COUNT(*)',
+            op: '$gt',
+            rhs: '1',
+          },
+        },
+      },
+      children: [
+        {
+          group_by: {
+            arguments: {
+              groupBy: ['departmentId'],
+              aggregates: [
+                {
+                  aggregate: {
+                    function: 'COUNT',
+                    column: '*',
+                  },
+                },
+              ],
+              selectColumns: ['departmentId'],
+            },
+            children: [{relation: 'Doctor'}],
+          },
+        },
+      ],
+    },
+  };
+  const action = changeExpr(expr);
+  const current = reducer({sourceData: groupSourceData}, action).current;
+
+  expect(current.columns).toStrictEqual(['departmentId', 'COUNT(*)']);
+  expect(current.data).toHaveLength(2); // Only departments with > 1 doctor
+  expect(current.data).toEqual(
+    expect.arrayContaining([
+      {departmentId: '1', 'COUNT(*)': 2}, // dept 1 has Alice and Bob
+      {departmentId: '2', 'COUNT(*)': 2}, // dept 2 has Charlie and Diana
+      // dept 3 (Eve) excluded because COUNT(*) = 1
+    ])
+  );
+});
+
+/** @test {data} */
+it('can evaluate HAVING clause with AVG aggregate', () => {
+  const expr = {
+    selection: {
+      arguments: {
+        select: {
+          cmp: {
+            lhs: 'AVG(salary)',
+            op: '$gt',
+            rhs: '100000',
+          },
+        },
+      },
+      children: [
+        {
+          group_by: {
+            arguments: {
+              groupBy: ['departmentId'],
+              aggregates: [
+                {
+                  aggregate: {
+                    function: 'AVG',
+                    column: 'salary',
+                  },
+                },
+              ],
+              selectColumns: ['departmentId'],
+            },
+            children: [{relation: 'Doctor'}],
+          },
+        },
+      ],
+    },
+  };
+  const action = changeExpr(expr);
+  const current = reducer({sourceData: groupSourceData}, action).current;
+
+  expect(current.columns).toStrictEqual(['departmentId', 'AVG(salary)']);
+  expect(current.data).toHaveLength(1); // Only department with AVG(salary) > 100000
+  expect(current.data).toEqual([
+    {departmentId: '1', 'AVG(salary)': 110000}, // dept 1: (100000 + 120000) / 2 = 110000
+    // dept 2: (90000 + 110000) / 2 = 100000 (not > 100000)
+    // dept 3: 95000 (not > 100000)
+  ]);
+});
+
+/** @test {data} */
+it('can evaluate HAVING clause with complex condition using AND', () => {
+  const expr = {
+    selection: {
+      arguments: {
+        select: {
+          and: {
+            clauses: [
+              {
+                cmp: {
+                  lhs: 'COUNT(*)',
+                  op: '$gt',
+                  rhs: '1',
+                },
+              },
+              {
+                cmp: {
+                  lhs: 'MAX(salary)',
+                  op: '$gt',
+                  rhs: '110000',
+                },
+              },
+            ],
+          },
+        },
+      },
+      children: [
+        {
+          group_by: {
+            arguments: {
+              groupBy: ['departmentId'],
+              aggregates: [
+                {
+                  aggregate: {
+                    function: 'COUNT',
+                    column: '*',
+                  },
+                },
+                {
+                  aggregate: {
+                    function: 'MAX',
+                    column: 'salary',
+                  },
+                },
+              ],
+              selectColumns: ['departmentId'],
+            },
+            children: [{relation: 'Doctor'}],
+          },
+        },
+      ],
+    },
+  };
+  const action = changeExpr(expr);
+  const current = reducer({sourceData: groupSourceData}, action).current;
+
+  expect(current.columns).toStrictEqual([
+    'departmentId',
+    'COUNT(*)',
+    'MAX(salary)',
+  ]);
+  expect(current.data).toHaveLength(1); // Only departments with COUNT(*) > 1 AND MAX(salary) > 110000
+  expect(current.data).toEqual([
+    {departmentId: '1', 'COUNT(*)': 2, 'MAX(salary)': 120000}, // dept 1: COUNT=2, MAX=120000
+    // dept 2: COUNT=2, MAX=110000 (not > 110000)
+    // dept 3: COUNT=1 (not > 1)
+  ]);
+});
+
+/** @test {data} */
+it('can evaluate HAVING with extra aggregates not in SELECT', () => {
+  const expr = {
+    projection: {
+      arguments: {
+        project: ['departmentId', 'MIN(salary)'],
+      },
+      children: [
+        {
+          selection: {
+            arguments: {
+              select: {
+                cmp: {
+                  lhs: 'COUNT(*)',
+                  op: '$gt',
+                  rhs: '1',
+                },
+              },
+            },
+            children: [
+              {
+                group_by: {
+                  arguments: {
+                    groupBy: ['departmentId'],
+                    aggregates: [
+                      {
+                        aggregate: {
+                          function: 'MIN',
+                          column: 'salary',
+                        },
+                      },
+                      {
+                        aggregate: {
+                          function: 'COUNT',
+                          column: '*',
+                        },
+                      },
+                    ],
+                    selectColumns: ['departmentId'],
+                  },
+                  children: [{relation: 'Doctor'}],
+                },
+              },
+            ],
+          },
+        },
+      ],
+    },
+  };
+  const action = changeExpr(expr);
+  const current = reducer({sourceData: groupSourceData}, action).current;
+
+  expect(current.columns).toStrictEqual(['departmentId', 'MIN(salary)']);
+  expect(current.data).toHaveLength(2); // Only departments with COUNT(*) > 1
+  expect(current.data).toEqual(
+    expect.arrayContaining([
+      {departmentId: '1', 'MIN(salary)': 100000}, // dept 1 min salary
+      {departmentId: '2', 'MIN(salary)': 90000}, // dept 2 min salary
+      // dept 3 (Eve) excluded because COUNT(*) = 1
+    ])
+  );
+});
