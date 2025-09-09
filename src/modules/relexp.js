@@ -123,7 +123,7 @@ function normalizeColumnName(columnName: string): string {
 function extractHavingAggregates(expr: {
   [string]: any,
 }): Array<{[string]: any}> {
-  const aggregates = [];
+  const aggregates: Array<{[string]: any}> = [];
 
   switch (expr.type) {
     case 'FunctionCall':
@@ -257,13 +257,13 @@ function convertHavingValue(
       if (expr.params[0] === '*') {
         param = '*';
       } else {
-        param = convertExpr(expr.params[0], types, tables);
+        param = convertHavingValue(expr.params[0], types, tables);
       }
       return `${funcName}(${param})`;
 
     case 'Identifier':
       // Convert column reference to actual column name
-      return convertExpr(expr, types, tables);
+      return expr.value;
 
     case 'Number':
     case 'String':
@@ -528,7 +528,9 @@ function convertExpr(
       if (expr.params[0] === '*') {
         param = '*';
       } else {
-        param = convertExpr(expr.params[0], types, tables);
+        const paramObj = convertExpr(expr.params[0], types, tables);
+        param =
+          typeof paramObj === 'string' ? paramObj : JSON.stringify(paramObj);
       }
 
       return {
@@ -608,7 +610,7 @@ function buildRelExp(
       const hasAggregates = select.some((field) => containsAggregate(field));
 
       // Helper function to check if a field contains aggregates without converting
-      function containsAggregate(field) {
+      function containsAggregate(field: any): boolean {
         if (!field || typeof field !== 'object') return false;
 
         // Direct function call
@@ -643,7 +645,7 @@ function buildRelExp(
             groupColumns.push(converted);
           }
         }
-        let groupByColumns = [];
+        let groupByColumns: Array<string> = [];
 
         if (sql.groupBy) {
           groupByColumns = sql.groupBy.value.map((item) =>
@@ -654,7 +656,11 @@ function buildRelExp(
         // Validate GROUP BY rules: all non-aggregate SELECT columns must be in GROUP BY
         if (aggregates.length > 0 && groupColumns.length > 0) {
           for (const selectColumn of groupColumns) {
-            const normalizedSelectColumn = normalizeColumnName(selectColumn);
+            const selectColumnStr =
+              typeof selectColumn === 'string'
+                ? selectColumn
+                : JSON.stringify(selectColumn);
+            const normalizedSelectColumn = normalizeColumnName(selectColumnStr);
             const isInGroupBy = groupByColumns.some(
               (groupCol) =>
                 normalizeColumnName(groupCol) === normalizedSelectColumn
@@ -662,7 +668,7 @@ function buildRelExp(
 
             if (!isInGroupBy) {
               throw new Error(
-                `Column '${selectColumn}' must appear in the GROUP BY clause or be used in an aggregate function`
+                `Column '${selectColumnStr}' must appear in the GROUP BY clause or be used in an aggregate function`
               );
             }
           }
@@ -680,7 +686,11 @@ function buildRelExp(
               orderColumn.aggregate;
 
             if (!isAggregate) {
-              const normalizedOrderColumn = normalizeColumnName(orderColumn);
+              const orderColumnStr =
+                typeof orderColumn === 'string'
+                  ? orderColumn
+                  : JSON.stringify(orderColumn);
+              const normalizedOrderColumn = normalizeColumnName(orderColumnStr);
               const isInGroupBy = groupByColumns.some(
                 (groupCol) =>
                   normalizeColumnName(groupCol) === normalizedOrderColumn
@@ -688,7 +698,7 @@ function buildRelExp(
 
               if (!isInGroupBy) {
                 throw new Error(
-                  `Column '${orderColumn}' in ORDER BY clause must appear in the GROUP BY clause or be used in an aggregate function`
+                  `Column '${orderColumnStr}' in ORDER BY clause must appear in the GROUP BY clause or be used in an aggregate function`
                 );
               }
             }
@@ -696,7 +706,7 @@ function buildRelExp(
         }
 
         // Extract aggregates from HAVING clause if it exists
-        let havingAggregates = [];
+        let havingAggregates: Array<{[string]: any}> = [];
         if (sql.having) {
           havingAggregates = extractHavingAggregates(sql.having);
         }
@@ -755,7 +765,9 @@ function buildRelExp(
           });
 
           if (extraHavingAggregates.length > 0) {
-            const originalColumns = [...groupColumns]; // Non-aggregate SELECT columns
+            const originalColumns = groupColumns.map((col) =>
+              typeof col === 'string' ? col : JSON.stringify(col)
+            ); // Non-aggregate SELECT columns
 
             // Add aggregate columns that were in the original SELECT
             for (const agg of aggregates) {

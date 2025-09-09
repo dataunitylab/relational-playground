@@ -203,7 +203,7 @@ function resolveValue(path: string, row: {[string]: any}): string {
  * @param columnName - column name (could be qualified like "Doctor.departmentId" or unqualified like "departmentId")
  * @return the base column name without table qualification
  */
-function normalizeColumnName(columnName) {
+function normalizeColumnName(columnName: string): string {
   if (typeof columnName !== 'string') {
     return columnName;
   }
@@ -376,7 +376,7 @@ export function applyExpr(
       const selectColumns = expr.group_by.arguments.selectColumns || [];
 
       // Group the data by the specified columns
-      const groups = {};
+      const groups: {[string]: Array<{[string]: any}>} = {};
       for (const row of groupData.data) {
         // Create a group key from the group by columns
         // If no grouping columns, use a single group for all data
@@ -409,7 +409,7 @@ export function applyExpr(
       }
 
       for (const [groupKey, groupRows] of Object.entries(groups)) {
-        const resultRow = {};
+        const resultRow: {[string]: any} = {};
 
         // Add explicitly selected column values (from SELECT clause)
         if (selectColumns.length > 0) {
@@ -437,7 +437,7 @@ export function applyExpr(
             result = groupRows.length;
           } else {
             // Other aggregates need to resolve the column and get values
-            const values = groupRows.map((row) => {
+            const values = groupRows.map((row: {[string]: any}) => {
               const resolvedCol = resolveColumn(column, row);
               return parseFloat(row[resolvedCol]) || 0;
             });

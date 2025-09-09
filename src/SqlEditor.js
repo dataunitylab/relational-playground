@@ -52,6 +52,7 @@ class SqlEditor extends React.Component<Props, State> {
     (this: any).handleKeyDown = this.handleKeyDown.bind(this);
     // $FlowFixMe[method-unbinding]
     (this: any).handleAutocompleteSelect =
+      // $FlowFixMe[method-unbinding]
       this.handleAutocompleteSelect.bind(this);
     // $FlowFixMe[method-unbinding]
     (this: any).hideAutocomplete = this.hideAutocomplete.bind(this);

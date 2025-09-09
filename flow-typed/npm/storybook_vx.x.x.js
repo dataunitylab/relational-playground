@@ -94,10 +94,6 @@ declare module 'storybook/core/docs-tools' {
   declare module.exports: any;
 }
 
-declare module 'storybook/core' {
-  declare module.exports: any;
-}
-
 declare module 'storybook/core/manager-api' {
   declare module.exports: any;
 }
