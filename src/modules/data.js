@@ -199,6 +199,19 @@ function resolveValue(path: string, row: {[string]: any}): string {
 }
 
 /**
+ * Normalizes column names for comparison by extracting the base column name
+ * @param columnName - column name (could be qualified like "Doctor.departmentId" or unqualified like "departmentId")
+ * @return the base column name without table qualification
+ */
+function normalizeColumnName(columnName) {
+  if (typeof columnName !== 'string') {
+    return columnName;
+  }
+  const parts = columnName.split('.');
+  return parts[parts.length - 1]; // Return the last part (column name)
+}
+
+/**
  * @param expr - a relational algebra expression to evaluate
  * @param item - an item to evaluate against
  * @return result of evaluating the expression
@@ -355,6 +368,121 @@ export function applyExpr(
       });
 
       return ordData;
+
+    case 'group_by':
+      let groupData = applyExpr(expr.group_by.children[0], sourceData);
+      const groupByColumns = expr.group_by.arguments.groupBy;
+      const aggregates = expr.group_by.arguments.aggregates;
+      const selectColumns = expr.group_by.arguments.selectColumns || [];
+
+      // Group the data by the specified columns
+      const groups = {};
+      for (const row of groupData.data) {
+        // Create a group key from the group by columns
+        // If no grouping columns, use a single group for all data
+        const groupKey =
+          groupByColumns.length > 0
+            ? groupByColumns
+                .map((col) => {
+                  const resolvedCol = resolveColumn(col, row);
+                  return row[resolvedCol];
+                })
+                .join('|')
+            : 'all'; // Single group key when no GROUP BY columns
+
+        if (!groups[groupKey]) {
+          groups[groupKey] = [];
+        }
+        groups[groupKey].push(row);
+      }
+
+      // Calculate aggregates for each group
+      const resultData = [];
+      // Only include explicitly selected columns, not all GROUP BY columns
+      const resultColumns = [...selectColumns];
+
+      // Add aggregate columns to result columns
+      for (const agg of aggregates) {
+        resultColumns.push(
+          `${agg.aggregate.function}(${agg.aggregate.column})`
+        );
+      }
+
+      for (const [groupKey, groupRows] of Object.entries(groups)) {
+        const resultRow = {};
+
+        // Add explicitly selected column values (from SELECT clause)
+        if (selectColumns.length > 0) {
+          const groupKeyValues = groupKey.split('|');
+          for (const selectCol of selectColumns) {
+            // Find the index of this select column in the groupBy columns
+            const groupByIndex = groupByColumns.findIndex(
+              (groupCol) =>
+                normalizeColumnName(groupCol) === normalizeColumnName(selectCol)
+            );
+            if (groupByIndex >= 0) {
+              resultRow[selectCol] = groupKeyValues[groupByIndex];
+            }
+          }
+        }
+
+        // Calculate aggregates
+        for (const agg of aggregates) {
+          const column = agg.aggregate.column;
+          const func = agg.aggregate.function;
+          const values = groupRows.map((row) => {
+            const resolvedCol = resolveColumn(column, row);
+            return parseFloat(row[resolvedCol]) || 0;
+          });
+
+          let result;
+          switch (func) {
+            case 'MAX':
+              result = Math.max(...values);
+              break;
+            case 'MIN':
+              result = Math.min(...values);
+              break;
+            case 'AVG':
+              result =
+                values.reduce((sum, val) => sum + val, 0) / values.length;
+              break;
+            case 'SUM':
+              result = values.reduce((sum, val) => sum + val, 0);
+              break;
+            case 'COUNT':
+              result = groupRows.length;
+              break;
+            case 'STDEV':
+              if (values.length <= 1) {
+                result = 0;
+              } else {
+                const mean =
+                  values.reduce((sum, val) => sum + val, 0) / values.length;
+                const variance =
+                  values.reduce(
+                    (sum, val) => sum + Math.pow(val - mean, 2),
+                    0
+                  ) /
+                  (values.length - 1);
+                result = Math.sqrt(variance);
+              }
+              break;
+            default:
+              throw new Error('Unsupported aggregate function: ' + func);
+          }
+
+          resultRow[`${func}(${column})`] = result;
+        }
+
+        resultData.push(resultRow);
+      }
+
+      return {
+        name: groupData.name + ' (grouped)',
+        columns: resultColumns,
+        data: resultData,
+      };
 
     case 'except':
     case 'intersect':

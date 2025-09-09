@@ -844,3 +844,304 @@ it('should convert conditions with IN', () => {
     },
   });
 });
+
+/** @test {relexp} */
+it('converts a GROUP BY with aggregate only', () => {
+  const sql = parser.parse(
+    'SELECT MIN(salary) FROM Doctor GROUP BY departmentId'
+  );
+  const action = exprFromSql(sql.value, {Doctor: ['salary', 'departmentId']});
+  expect(reducer({}, action)).toMatchObject({
+    expr: {
+      group_by: {
+        arguments: {
+          groupBy: ['departmentId'],
+          aggregates: [
+            {
+              aggregate: {
+                function: 'MIN',
+                column: 'salary',
+              },
+            },
+          ],
+          selectColumns: [],
+        },
+        children: [{relation: 'Doctor'}],
+      },
+    },
+  });
+});
+
+/** @test {relexp} */
+it('converts a GROUP BY with mixed columns and aggregates', () => {
+  const sql = parser.parse(
+    'SELECT departmentId, MAX(salary) FROM Doctor GROUP BY departmentId'
+  );
+  const action = exprFromSql(sql.value, {Doctor: ['salary', 'departmentId']});
+  expect(reducer({}, action)).toMatchObject({
+    expr: {
+      group_by: {
+        arguments: {
+          groupBy: ['departmentId'],
+          aggregates: [
+            {
+              aggregate: {
+                function: 'MAX',
+                column: 'salary',
+              },
+            },
+          ],
+          selectColumns: ['departmentId'],
+        },
+        children: [{relation: 'Doctor'}],
+      },
+    },
+  });
+});
+
+/** @test {relexp} */
+it('converts a GROUP BY with multiple aggregates', () => {
+  const sql = parser.parse(
+    'SELECT MIN(salary), MAX(salary), AVG(salary) FROM Doctor GROUP BY departmentId'
+  );
+  const action = exprFromSql(sql.value, {Doctor: ['salary', 'departmentId']});
+  expect(reducer({}, action)).toMatchObject({
+    expr: {
+      group_by: {
+        arguments: {
+          groupBy: ['departmentId'],
+          aggregates: [
+            {
+              aggregate: {
+                function: 'MIN',
+                column: 'salary',
+              },
+            },
+            {
+              aggregate: {
+                function: 'MAX',
+                column: 'salary',
+              },
+            },
+            {
+              aggregate: {
+                function: 'AVG',
+                column: 'salary',
+              },
+            },
+          ],
+          selectColumns: [],
+        },
+        children: [{relation: 'Doctor'}],
+      },
+    },
+  });
+});
+
+/** @test {relexp} */
+it('converts aggregate without GROUP BY (implicit grouping)', () => {
+  const sql = parser.parse('SELECT MIN(salary) FROM Doctor');
+  const action = exprFromSql(sql.value, {Doctor: ['salary']});
+  expect(reducer({}, action)).toMatchObject({
+    expr: {
+      group_by: {
+        arguments: {
+          groupBy: [],
+          aggregates: [
+            {
+              aggregate: {
+                function: 'MIN',
+                column: 'salary',
+              },
+            },
+          ],
+          selectColumns: [],
+        },
+        children: [{relation: 'Doctor'}],
+      },
+    },
+  });
+});
+
+/** @test {relexp} */
+it('converts GROUP BY with qualified column names', () => {
+  const sql = parser.parse(
+    'SELECT departmentId, MIN(Doctor.salary) FROM Doctor GROUP BY Doctor.departmentId'
+  );
+  const action = exprFromSql(sql.value, {Doctor: ['salary', 'departmentId']});
+  expect(reducer({}, action)).toMatchObject({
+    expr: {
+      group_by: {
+        arguments: {
+          groupBy: ['Doctor.departmentId'],
+          aggregates: [
+            {
+              aggregate: {
+                function: 'MIN',
+                column: 'Doctor.salary',
+              },
+            },
+          ],
+          selectColumns: ['departmentId'],
+        },
+        children: [{relation: 'Doctor'}],
+      },
+    },
+  });
+});
+
+/** @test {relexp} */
+it('supports all aggregate functions', () => {
+  const sql = parser.parse(
+    'SELECT SUM(salary) FROM Doctor GROUP BY departmentId'
+  );
+  const action = exprFromSql(sql.value, {Doctor: ['salary', 'departmentId']});
+  expect(reducer({}, action)).toMatchObject({
+    expr: {
+      group_by: {
+        arguments: {
+          groupBy: ['departmentId'],
+          aggregates: [
+            {
+              aggregate: {
+                function: 'SUM',
+                column: 'salary',
+              },
+            },
+          ],
+          selectColumns: [],
+        },
+        children: [{relation: 'Doctor'}],
+      },
+    },
+  });
+});
+
+// GROUP BY Validation Tests
+/** @test {relexp} */
+it('throws error when non-aggregate column not in GROUP BY', () => {
+  const sql = parser.parse(
+    'SELECT id, MIN(salary) FROM Doctor GROUP BY departmentId'
+  );
+  const action = exprFromSql(sql.value, {
+    Doctor: ['id', 'salary', 'departmentId'],
+  });
+  expect(() => reducer({}, action)).toThrow(
+    "Column 'id' must appear in the GROUP BY clause or be used in an aggregate function"
+  );
+});
+
+/** @test {relexp} */
+it('throws error when ORDER BY column not in GROUP BY', () => {
+  const sql = parser.parse(
+    'SELECT departmentId, MIN(salary) FROM Doctor GROUP BY departmentId ORDER BY id'
+  );
+  const action = exprFromSql(sql.value, {
+    Doctor: ['id', 'salary', 'departmentId'],
+  });
+  expect(() => reducer({}, action)).toThrow(
+    "Column 'id' in ORDER BY clause must appear in the GROUP BY clause or be used in an aggregate function"
+  );
+});
+
+/** @test {relexp} */
+it('allows ORDER BY with GROUP BY column', () => {
+  const sql = parser.parse(
+    'SELECT departmentId, MIN(salary) FROM Doctor GROUP BY departmentId ORDER BY departmentId'
+  );
+  const action = exprFromSql(sql.value, {Doctor: ['salary', 'departmentId']});
+  expect(reducer({}, action)).toMatchObject({
+    expr: {
+      order_by: {
+        arguments: {
+          order_by: [
+            {
+              ascending: true,
+              column_name: 'departmentId',
+            },
+          ],
+        },
+        children: [
+          {
+            group_by: {
+              arguments: {
+                groupBy: ['departmentId'],
+                aggregates: [
+                  {
+                    aggregate: {
+                      function: 'MIN',
+                      column: 'salary',
+                    },
+                  },
+                ],
+                selectColumns: ['departmentId'],
+              },
+              children: [{relation: 'Doctor'}],
+            },
+          },
+        ],
+      },
+    },
+  });
+});
+
+/** @test {relexp} */
+it('handles qualified vs unqualified column name matching', () => {
+  const sql = parser.parse(
+    'SELECT departmentId, MIN(salary) FROM Doctor GROUP BY Doctor.departmentId'
+  );
+  const action = exprFromSql(sql.value, {Doctor: ['salary', 'departmentId']});
+  expect(() => reducer({}, action)).not.toThrow();
+});
+
+/** @test {relexp} */
+it('converts a GROUP BY with COUNT aggregate', () => {
+  const sql = parser.parse(
+    'SELECT COUNT(salary) FROM Doctor GROUP BY departmentId'
+  );
+  const action = exprFromSql(sql.value, {Doctor: ['salary', 'departmentId']});
+  expect(reducer({}, action)).toMatchObject({
+    expr: {
+      group_by: {
+        arguments: {
+          groupBy: ['departmentId'],
+          aggregates: [
+            {
+              aggregate: {
+                function: 'COUNT',
+                column: 'salary',
+              },
+            },
+          ],
+          selectColumns: [],
+        },
+      },
+    },
+  });
+});
+
+/** @test {relexp} */
+it('converts a GROUP BY with STDEV aggregate', () => {
+  const sql = parser.parse(
+    'SELECT STDEV(salary) FROM Doctor GROUP BY departmentId'
+  );
+  const action = exprFromSql(sql.value, {Doctor: ['salary', 'departmentId']});
+  expect(reducer({}, action)).toMatchObject({
+    expr: {
+      group_by: {
+        arguments: {
+          groupBy: ['departmentId'],
+          aggregates: [
+            {
+              aggregate: {
+                function: 'STDEV',
+                column: 'salary',
+              },
+            },
+          ],
+          selectColumns: [],
+        },
+      },
+    },
+  });
+});

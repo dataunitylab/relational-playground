@@ -12,6 +12,7 @@ import {
   Join,
   Intersect,
   Union,
+  GroupBy,
 } from './RelOp';
 import Relation from './Relation';
 import {exprToString} from './util';
@@ -117,6 +118,30 @@ const RelExpr: StatelessFunctionalComponent<Props> = (props) => {
             columns={expr.order_by.arguments.order_by}
             relation={buildExpr(expr.order_by.children[0])}
           />
+        );
+
+      case 'group_by':
+        return (
+          <span>
+            <UnaryRelOp
+              operator={
+                <GroupBy
+                  groupBy={expr.group_by.arguments.groupBy}
+                  aggregates={expr.group_by.arguments.aggregates.map(
+                    (agg) =>
+                      `${agg.aggregate.function}(${agg.aggregate.column})`
+                  )}
+                  selectColumns={expr.group_by.arguments.selectColumns}
+                />
+              }
+            >
+              <RelExpr
+                expr={expr.group_by.children[0]}
+                changeExpr={props.changeExpr}
+                ReactGA={props.ReactGA}
+              />
+            </UnaryRelOp>
+          </span>
         );
 
       case 'join':

@@ -71,3 +71,72 @@ export const JustARelation = () => (
   />
 );
 JustARelation.storyName = 'just a relation';
+
+export const GroupByWithAggregates = ({aggregateFunction}) => (
+  <RelExprTree
+    expr={{
+      group_by: {
+        arguments: {
+          groupBy: ['departmentId'],
+          aggregates: [
+            {
+              aggregate: {
+                function: aggregateFunction,
+                column: 'salary',
+              },
+            },
+          ],
+          selectColumns: ['departmentId'],
+        },
+        children: [{relation: 'Doctor'}],
+      },
+    }}
+    changeExpr={(expr, element) => undefined}
+  />
+);
+GroupByWithAggregates.storyName = 'GROUP BY with aggregates';
+GroupByWithAggregates.args = {
+  aggregateFunction: 'AVG',
+};
+GroupByWithAggregates.argTypes = {
+  aggregateFunction: {
+    options: ['COUNT', 'SUM', 'AVG', 'MIN', 'MAX', 'STDEV'],
+    control: {type: 'inline-radio'},
+  },
+};
+
+export const GroupByMultipleAggregates = () => (
+  <RelExprTree
+    expr={{
+      group_by: {
+        arguments: {
+          groupBy: ['departmentId'],
+          aggregates: [
+            {
+              aggregate: {
+                function: 'COUNT',
+                column: 'salary',
+              },
+            },
+            {
+              aggregate: {
+                function: 'AVG',
+                column: 'salary',
+              },
+            },
+            {
+              aggregate: {
+                function: 'STDEV',
+                column: 'salary',
+              },
+            },
+          ],
+          selectColumns: ['departmentId'],
+        },
+        children: [{relation: 'Doctor'}],
+      },
+    }}
+    changeExpr={(expr, element) => undefined}
+  />
+);
+GroupByMultipleAggregates.storyName = 'GROUP BY with multiple aggregates';

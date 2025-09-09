@@ -11,6 +11,7 @@ import {
   Join,
   Intersect,
   Union,
+  GroupBy,
 } from './RelOp';
 import {exprToString} from './util';
 import {changeExpr} from './modules/data';
@@ -54,6 +55,7 @@ const RelExprTree: StatelessFunctionalComponent<Props> = (props) => {
       case 'projection':
       case 'selection':
       case 'rename':
+      case 'group_by':
         return {
           key: key,
           expr: expr,
@@ -97,6 +99,16 @@ const RelExprTree: StatelessFunctionalComponent<Props> = (props) => {
         );
       case 'rename':
         return <Rename rename={expr.rename.arguments.rename} />;
+      case 'group_by':
+        return (
+          <GroupBy
+            groupBy={expr.group_by.arguments.groupBy}
+            aggregates={expr.group_by.arguments.aggregates.map(
+              (agg) => `${agg.aggregate.function}(${agg.aggregate.column})`
+            )}
+            selectColumns={expr.group_by.arguments.selectColumns}
+          />
+        );
       case 'relation':
         return expr.relation;
       case 'join':

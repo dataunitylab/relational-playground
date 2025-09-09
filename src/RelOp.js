@@ -153,3 +153,20 @@ export const Product: StatelessFunctionalComponent<{||}> = () => (
 export const Union: StatelessFunctionalComponent<{||}> = () => (
   <span>&cup;</span>
 );
+
+/** Group By relational algebra operator */
+export const GroupBy: StatelessFunctionalComponent<{|
+  groupBy: Array<string>,
+  aggregates: Array<string>,
+  selectColumns?: Array<string>,
+|}> = (props) => {
+  const resultColumns = [...(props.selectColumns || []), ...props.aggregates];
+
+  return (
+    <span>
+      {props.groupBy.length > 0 && <sub>{props.groupBy.join(',')}</sub>}
+      &gamma;
+      <sub>{resultColumns.join(',')}</sub>
+    </span>
+  );
+};

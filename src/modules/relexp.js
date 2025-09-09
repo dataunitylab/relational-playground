@@ -97,6 +97,19 @@ function addToExpr(
 }
 
 /**
+ * Normalizes column names for comparison by extracting the base column name
+ * @param columnName - column name (could be qualified like "Doctor.departmentId" or unqualified like "departmentId")
+ * @return the base column name without table qualification
+ */
+function normalizeColumnName(columnName: string): string {
+  if (typeof columnName !== 'string') {
+    return columnName;
+  }
+  const parts = columnName.split('.');
+  return parts[parts.length - 1]; // Return the last part (column name)
+}
+
+/**
  * @param expr - a parsed expression from a SQL query
  * @param types - an object mapping table names to lists of columns
  * @param tables - all tables used in the expression
@@ -280,6 +293,25 @@ function convertExpr(
         return inOrExpr;
       }
 
+    case 'FunctionCall':
+      // Handle aggregate functions like MAX, MIN, AVG, SUM
+      const funcName = expr.name.toUpperCase();
+      if (!['MAX', 'MIN', 'AVG', 'SUM', 'COUNT', 'STDEV'].includes(funcName)) {
+        throw new Error('Unsupported aggregate function: ' + expr.name);
+      }
+
+      if (expr.params.length !== 1) {
+        throw new Error('Aggregate functions must have exactly one parameter');
+      }
+
+      const param = convertExpr(expr.params[0], types, tables);
+      return {
+        aggregate: {
+          function: funcName,
+          column: param,
+        },
+      };
+
     default:
       // Produce an error if the expression is unsupported
       throw new Error('Invalid expression.');
@@ -345,6 +377,112 @@ function buildRelExp(
         ];
       }
 
+      // Check for aggregates in SELECT clause (with or without GROUP BY)
+      const select = sql.selectItems.value;
+      const hasAggregates = select.some((field) => containsAggregate(field));
+
+      // Helper function to check if a field contains aggregates without converting
+      function containsAggregate(field) {
+        if (!field || typeof field !== 'object') return false;
+
+        // Direct function call
+        if (field.type === 'FunctionCall') {
+          const funcName = field.name?.toUpperCase?.();
+          return ['MAX', 'MIN', 'AVG', 'SUM'].includes(funcName);
+        }
+
+        // Check nested structures recursively
+        if (field.value && typeof field.value === 'object') {
+          return containsAggregate(field.value);
+        }
+
+        return false;
+      }
+
+      // Add group by operator if there's a GROUP BY clause OR aggregates are present
+      if (sql.groupBy || hasAggregates) {
+        // Now we need to convert expressions for validation and GROUP BY processing
+        const aggregates = [];
+        const groupColumns = [];
+
+        for (const field of select) {
+          const converted = convertExpr(field, types, tables);
+          if (
+            converted &&
+            typeof converted === 'object' &&
+            converted.aggregate
+          ) {
+            aggregates.push(converted);
+          } else {
+            groupColumns.push(converted);
+          }
+        }
+        let groupByColumns = [];
+
+        if (sql.groupBy) {
+          groupByColumns = sql.groupBy.value.map((item) =>
+            convertExpr(item.value, types, tables)
+          );
+        }
+
+        // Validate GROUP BY rules: all non-aggregate SELECT columns must be in GROUP BY
+        if (aggregates.length > 0 && groupColumns.length > 0) {
+          for (const selectColumn of groupColumns) {
+            const normalizedSelectColumn = normalizeColumnName(selectColumn);
+            const isInGroupBy = groupByColumns.some(
+              (groupCol) =>
+                normalizeColumnName(groupCol) === normalizedSelectColumn
+            );
+
+            if (!isInGroupBy) {
+              throw new Error(
+                `Column '${selectColumn}' must appear in the GROUP BY clause or be used in an aggregate function`
+              );
+            }
+          }
+        }
+
+        // Validate ORDER BY rules when GROUP BY is present
+        if (sql.orderBy) {
+          const orderByColumns = sql.orderBy.value;
+          for (const orderCol of orderByColumns) {
+            const orderColumn = convertExpr(orderCol.value, types, tables);
+            // Check if the ORDER BY column is either in GROUP BY or is an aggregate
+            const isAggregate =
+              orderColumn &&
+              typeof orderColumn === 'object' &&
+              orderColumn.aggregate;
+
+            if (!isAggregate) {
+              const normalizedOrderColumn = normalizeColumnName(orderColumn);
+              const isInGroupBy = groupByColumns.some(
+                (groupCol) =>
+                  normalizeColumnName(groupCol) === normalizedOrderColumn
+              );
+
+              if (!isInGroupBy) {
+                throw new Error(
+                  `Column '${orderColumn}' in ORDER BY clause must appear in the GROUP BY clause or be used in an aggregate function`
+                );
+              }
+            }
+          }
+        }
+
+        from = [
+          {
+            group_by: {
+              arguments: {
+                groupBy: groupByColumns,
+                aggregates: aggregates,
+                selectColumns: groupColumns, // Non-aggregate columns from SELECT
+              },
+              children: from,
+            },
+          },
+        ];
+      }
+
       if (sql.orderBy) {
         from = [
           {
@@ -357,7 +495,12 @@ function buildRelExp(
       }
 
       // Add projections as needed for the SELECT clause
-      const select = sql.selectItems.value;
+
+      // If GROUP BY is used or aggregates are present, return from without additional projection
+      if (sql.groupBy || hasAggregates) {
+        return from[0];
+      }
+
       if (select.length === 1 && select[0].value === '*') {
         // Don't project anything if SELECT * is used
         return from[0];

@@ -478,3 +478,271 @@ it.each(operatorTests)(
     );
   }
 );
+
+// Test data for GROUP BY operations
+const groupSourceData = {
+  Doctor: {
+    name: 'Doctor',
+    columns: ['id', 'name', 'salary', 'departmentId'],
+    data: [
+      {id: 1, name: 'Alice', salary: 100000, departmentId: 1},
+      {id: 2, name: 'Bob', salary: 120000, departmentId: 1},
+      {id: 3, name: 'Charlie', salary: 90000, departmentId: 2},
+      {id: 4, name: 'Diana', salary: 110000, departmentId: 2},
+      {id: 5, name: 'Eve', salary: 95000, departmentId: 3},
+    ],
+  },
+  Department: {
+    name: 'Department',
+    columns: ['id', 'name'],
+    data: [
+      {id: 1, name: 'Cardiology'},
+      {id: 2, name: 'Neurology'},
+      {id: 3, name: 'Orthopedics'},
+    ],
+  },
+};
+
+// GROUP BY Data Execution Tests
+/** @test {data} */
+it('can evaluate GROUP BY with aggregate only', () => {
+  const expr = {
+    group_by: {
+      arguments: {
+        groupBy: ['departmentId'],
+        aggregates: [
+          {
+            aggregate: {
+              function: 'MIN',
+              column: 'salary',
+            },
+          },
+        ],
+        selectColumns: [],
+      },
+      children: [{relation: 'Doctor'}],
+    },
+  };
+  const action = changeExpr(expr);
+  const current = reducer({sourceData: groupSourceData}, action).current;
+
+  expect(current.columns).toStrictEqual(['MIN(salary)']);
+  expect(current.data).toHaveLength(3); // 3 departments
+  expect(current.data).toEqual(
+    expect.arrayContaining([
+      expect.objectContaining({'MIN(salary)': 100000}), // dept 1
+      expect.objectContaining({'MIN(salary)': 90000}), // dept 2
+      expect.objectContaining({'MIN(salary)': 95000}), // dept 3
+    ])
+  );
+});
+
+/** @test {data} */
+it('can evaluate GROUP BY with mixed columns and aggregates', () => {
+  const expr = {
+    group_by: {
+      arguments: {
+        groupBy: ['departmentId'],
+        aggregates: [
+          {
+            aggregate: {
+              function: 'MAX',
+              column: 'salary',
+            },
+          },
+        ],
+        selectColumns: ['departmentId'],
+      },
+      children: [{relation: 'Doctor'}],
+    },
+  };
+  const action = changeExpr(expr);
+  const current = reducer({sourceData: groupSourceData}, action).current;
+
+  expect(current.columns).toStrictEqual(['departmentId', 'MAX(salary)']);
+  expect(current.data).toHaveLength(3);
+  expect(current.data).toEqual(
+    expect.arrayContaining([
+      {departmentId: '1', 'MAX(salary)': 120000},
+      {departmentId: '2', 'MAX(salary)': 110000},
+      {departmentId: '3', 'MAX(salary)': 95000},
+    ])
+  );
+});
+
+/** @test {data} */
+it('can evaluate GROUP BY with multiple aggregates', () => {
+  const expr = {
+    group_by: {
+      arguments: {
+        groupBy: ['departmentId'],
+        aggregates: [
+          {
+            aggregate: {
+              function: 'MIN',
+              column: 'salary',
+            },
+          },
+          {
+            aggregate: {
+              function: 'MAX',
+              column: 'salary',
+            },
+          },
+          {
+            aggregate: {
+              function: 'AVG',
+              column: 'salary',
+            },
+          },
+        ],
+        selectColumns: [],
+      },
+      children: [{relation: 'Doctor'}],
+    },
+  };
+  const action = changeExpr(expr);
+  const current = reducer({sourceData: groupSourceData}, action).current;
+
+  expect(current.columns).toStrictEqual([
+    'MIN(salary)',
+    'MAX(salary)',
+    'AVG(salary)',
+  ]);
+  expect(current.data).toHaveLength(3);
+
+  // Check department 1 (Alice: 100000, Bob: 120000)
+  const dept1 = current.data.find(
+    (row) => row['MIN(salary)'] === 100000 && row['MAX(salary)'] === 120000
+  );
+  expect(dept1).toBeDefined();
+  expect(dept1['AVG(salary)']).toBe(110000); // (100000 + 120000) / 2
+});
+
+/** @test {data} */
+it('can evaluate aggregate without GROUP BY (implicit grouping)', () => {
+  const expr = {
+    group_by: {
+      arguments: {
+        groupBy: [],
+        aggregates: [
+          {
+            aggregate: {
+              function: 'SUM',
+              column: 'salary',
+            },
+          },
+        ],
+        selectColumns: [],
+      },
+      children: [{relation: 'Doctor'}],
+    },
+  };
+  const action = changeExpr(expr);
+  const current = reducer({sourceData: groupSourceData}, action).current;
+
+  expect(current.columns).toStrictEqual(['SUM(salary)']);
+  expect(current.data).toHaveLength(1); // Single group for entire table
+  expect(current.data[0]['SUM(salary)']).toBe(515000); // Sum of all salaries
+});
+
+/** @test {data} */
+it('can evaluate GROUP BY with qualified column names', () => {
+  const expr = {
+    group_by: {
+      arguments: {
+        groupBy: ['Doctor.departmentId'],
+        aggregates: [
+          {
+            aggregate: {
+              function: 'MIN',
+              column: 'Doctor.salary',
+            },
+          },
+        ],
+        selectColumns: ['departmentId'],
+      },
+      children: [{relation: 'Doctor'}],
+    },
+  };
+  const action = changeExpr(expr);
+  const current = reducer({sourceData: groupSourceData}, action).current;
+
+  expect(current.columns).toStrictEqual(['departmentId', 'MIN(Doctor.salary)']);
+  expect(current.data).toHaveLength(3);
+  expect(current.data).toEqual(
+    expect.arrayContaining([
+      {departmentId: '1', 'MIN(Doctor.salary)': 100000},
+      {departmentId: '2', 'MIN(Doctor.salary)': 90000},
+      {departmentId: '3', 'MIN(Doctor.salary)': 95000},
+    ])
+  );
+});
+
+/** @test {data} */
+it('handles all aggregate functions correctly', () => {
+  const functions = ['MIN', 'MAX', 'AVG', 'SUM'];
+  const expectedResults = {
+    MIN: 90000, // Charlie's salary
+    MAX: 120000, // Bob's salary
+    AVG: 103000, // (100000 + 120000 + 90000 + 110000 + 95000) / 5
+    SUM: 515000, // Sum of all salaries
+  };
+
+  for (const func of functions) {
+    const expr = {
+      group_by: {
+        arguments: {
+          groupBy: [],
+          aggregates: [
+            {
+              aggregate: {
+                function: func,
+                column: 'salary',
+              },
+            },
+          ],
+          selectColumns: [],
+        },
+        children: [{relation: 'Doctor'}],
+      },
+    };
+    const action = changeExpr(expr);
+    const current = reducer({sourceData: groupSourceData}, action).current;
+
+    expect(current.data).toHaveLength(1);
+    expect(current.data[0][`${func}(salary)`]).toBe(expectedResults[func]);
+  }
+});
+
+/** @test {data} */
+it('maintains correct group separation', () => {
+  const expr = {
+    group_by: {
+      arguments: {
+        groupBy: ['departmentId'],
+        aggregates: [
+          {
+            aggregate: {
+              function: 'SUM',
+              column: 'salary',
+            },
+          },
+        ],
+        selectColumns: ['departmentId'],
+      },
+      children: [{relation: 'Doctor'}],
+    },
+  };
+  const action = changeExpr(expr);
+  const current = reducer({sourceData: groupSourceData}, action).current;
+
+  expect(current.data).toHaveLength(3);
+  expect(current.data).toEqual(
+    expect.arrayContaining([
+      {departmentId: '1', 'SUM(salary)': 220000}, // Alice + Bob
+      {departmentId: '2', 'SUM(salary)': 200000}, // Charlie + Diana
+      {departmentId: '3', 'SUM(salary)': 95000}, // Eve only
+    ])
+  );
+});

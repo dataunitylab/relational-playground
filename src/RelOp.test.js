@@ -10,6 +10,7 @@ import {
   Product,
   Join,
   Union,
+  GroupBy,
 } from './RelOp';
 
 /** @test {Projection} */
@@ -90,4 +91,108 @@ it('renders a right outer Join', () => {
 it('renders a Union', () => {
   const {container} = render(<Union />);
   expect(container).toContainHTML('∪');
+});
+
+/** @test {GroupBy} */
+it('renders GROUP BY with aggregate only (no grouping columns)', () => {
+  const {container} = render(
+    <GroupBy groupBy={[]} aggregates={['MIN(salary)']} selectColumns={[]} />
+  );
+
+  expect(container.textContent).toBe('γMIN(salary)');
+});
+
+/** @test {GroupBy} */
+it('renders GROUP BY with grouping columns and aggregate', () => {
+  const {container} = render(
+    <GroupBy
+      groupBy={['departmentId']}
+      aggregates={['MAX(salary)']}
+      selectColumns={[]}
+    />
+  );
+
+  expect(container.textContent).toBe('departmentIdγMAX(salary)');
+});
+
+/** @test {GroupBy} */
+it('renders GROUP BY with selected columns and aggregates', () => {
+  const {container} = render(
+    <GroupBy
+      groupBy={['departmentId']}
+      aggregates={['MIN(salary)']}
+      selectColumns={['departmentId']}
+    />
+  );
+
+  expect(container.textContent).toBe('departmentIdγdepartmentId,MIN(salary)');
+});
+
+/** @test {GroupBy} */
+it('renders GROUP BY with multiple grouping columns', () => {
+  const {container} = render(
+    <GroupBy
+      groupBy={['departmentId', 'category']}
+      aggregates={['AVG(salary)']}
+      selectColumns={['departmentId']}
+    />
+  );
+
+  expect(container.textContent).toBe(
+    'departmentId,categoryγdepartmentId,AVG(salary)'
+  );
+});
+
+/** @test {GroupBy} */
+it('renders GROUP BY with multiple aggregates', () => {
+  const {container} = render(
+    <GroupBy
+      groupBy={['departmentId']}
+      aggregates={['MIN(salary)', 'MAX(salary)', 'AVG(salary)']}
+      selectColumns={[]}
+    />
+  );
+
+  expect(container.textContent).toBe(
+    'departmentIdγMIN(salary),MAX(salary),AVG(salary)'
+  );
+});
+
+/** @test {GroupBy} */
+it('renders GROUP BY with mixed select columns and aggregates', () => {
+  const {container} = render(
+    <GroupBy
+      groupBy={['departmentId', 'category']}
+      aggregates={['SUM(salary)']}
+      selectColumns={['departmentId', 'category']}
+    />
+  );
+
+  expect(container.textContent).toBe(
+    'departmentId,categoryγdepartmentId,category,SUM(salary)'
+  );
+});
+
+/** @test {GroupBy} */
+it('handles qualified column names', () => {
+  const {container} = render(
+    <GroupBy
+      groupBy={['Doctor.departmentId']}
+      aggregates={['MIN(Doctor.salary)']}
+      selectColumns={['departmentId']}
+    />
+  );
+
+  expect(container.textContent).toBe(
+    'Doctor.departmentIdγdepartmentId,MIN(Doctor.salary)'
+  );
+});
+
+/** @test {GroupBy} */
+it('renders correctly without selectColumns prop', () => {
+  const {container} = render(
+    <GroupBy groupBy={['departmentId']} aggregates={['MAX(salary)']} />
+  );
+
+  expect(container.textContent).toBe('departmentIdγMAX(salary)');
 });
