@@ -146,10 +146,12 @@ const RelExprTree: StatelessFunctionalComponent<Props> = (props) => {
         onClickItem={(clickProps) => {
           props.changeExpr(clickProps.expr, null);
 
-          props.ReactGA.event({
-            category: 'User Selecting Relational Algebra Tree',
-            action: Object.keys(clickProps.expr)[0],
-          });
+          if (props.ReactGA) {
+            props.ReactGA.event({
+              category: 'User Selecting Relational Algebra Tree',
+              action: Object.keys(clickProps.expr)[0],
+            });
+          }
         }}
       >
         {({search, items}) => (

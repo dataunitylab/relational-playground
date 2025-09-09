@@ -105,7 +105,7 @@ class SqlEditor extends React.Component<Props, State> {
         ['Except', 'Intersect', 'Select', 'Union'].includes(sql.value.type)
       ) {
         // Record the typed SQL statement
-        if (!firstLoad) {
+        if (!firstLoad && this.props.ReactGA) {
           this.props.ReactGA.event({
             category: 'User Typing SQL Statement',
             action: queryToParse,

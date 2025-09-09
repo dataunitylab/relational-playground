@@ -23,10 +23,12 @@ const CurrentRelExpr: StatelessFunctionalComponent<Props> = (props) => {
   );
 
   function handleTreeInputChange(event: SyntheticInputEvent<HTMLInputElement>) {
-    props.ReactGA.event({
-      category: 'Toggle Expression Display',
-      action: event.target.checked ? 'tree' : 'linear',
-    });
+    if (props.ReactGA) {
+      props.ReactGA.event({
+        category: 'Toggle Expression Display',
+        action: event.target.checked ? 'tree' : 'linear',
+      });
+    }
     setShowTree(event.target.checked);
   }
 

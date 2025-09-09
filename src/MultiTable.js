@@ -28,10 +28,12 @@ const MultiTable: StatelessFunctionalComponent<Props> = (props) => {
   const handleChange = (e: any) => {
     if (e.target !== undefined) {
       setSelected(e.target.value);
-      props.ReactGA.event({
-        category: 'User Selecting A Table',
-        action: e.target.value,
-      });
+      if (props.ReactGA) {
+        props.ReactGA.event({
+          category: 'User Selecting A Table',
+          action: e.target.value,
+        });
+      }
     }
   };
 
