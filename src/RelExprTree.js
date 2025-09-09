@@ -95,7 +95,12 @@ const RelExprTree: StatelessFunctionalComponent<Props> = (props) => {
         return <Projection project={expr.projection.arguments.project} />;
       case 'selection':
         return (
-          <Selection select={exprToString(expr.selection.arguments.select)} />
+          <Selection
+            select={exprToString(
+              expr.selection.arguments.select ||
+                expr.selection.arguments.condition
+            )}
+          />
         );
       case 'rename':
         return <Rename rename={expr.rename.arguments.rename} />;
