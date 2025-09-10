@@ -74,6 +74,7 @@
   ],
   "devDependencies": {
     "@babel/eslint-parser": "^7.27.0",
+    "@cfaester/enzyme-adapter-react-18": "^0.8.0",
     "@chromatic-com/storybook": "^3.2.6",
     "@sebastianwessel/esdoc": "^2.1.0",
     "@sebastianwessel/esdoc-ecmascript-proposal-plugin": "^2.1.0",
@@ -92,7 +93,6 @@
     "@storybook/testing-library": "^0.2.2",
     "@testing-library/react": "^15.0.7",
     "@welldone-software/why-did-you-render": "^8.0.3",
-    "@wojtekmaj/enzyme-adapter-react-17": "^0.8.0",
     "bundlewatch": "^0.4.0",
     "coveralls": "^3.1.1",
     "enzyme": "^3.11.0",

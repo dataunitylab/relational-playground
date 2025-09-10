@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import {createRoot} from 'react-dom/client';
 import {MemoryRouter} from 'react-router';
 import {configureStore} from '@reduxjs/toolkit';
 import {Provider} from 'react-redux';
@@ -20,13 +20,13 @@ it('renders without crashing', () => {
     },
     preloadedState: initialState,
   });
-  ReactDOM.render(
+  const root = createRoot(div);
+  root.render(
     <Provider store={store}>
       <MemoryRouter>
         <App />
       </MemoryRouter>
-    </Provider>,
-    div
+    </Provider>
   );
-  ReactDOM.unmountComponentAtNode(div);
+  root.unmount();
 });

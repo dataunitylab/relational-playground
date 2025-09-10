@@ -4,7 +4,7 @@ import './wydr';
 import {BrowserRouter} from 'react-router-dom';
 import {Provider} from 'react-redux';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import {createRoot} from 'react-dom/client';
 import * as Sentry from '@sentry/browser';
 import './index.css';
 import store from './store';
@@ -22,13 +22,14 @@ if (process.env.REACT_APP_GIT_SHA) {
 }
 Sentry.init(sentryConfig);
 
-ReactDOM.render(
+const container = ((document.getElementById('root'): any): HTMLElement);
+const root = createRoot(container);
+root.render(
   <Provider store={store}>
     <BrowserRouter>
       <div>
         <App />
       </div>
     </BrowserRouter>
-  </Provider>,
-  ((document.getElementById('root'): any): HTMLElement)
+  </Provider>
 );
