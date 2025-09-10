@@ -266,7 +266,6 @@ function applyItem(expr: {[string]: any}, item: {[string]: any}): any {
       return !applyItem(expr.not.clause, item);
 
     default:
-      console.log(expr);
       throw new Error('Invalid expression');
   }
 }

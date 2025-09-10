@@ -179,8 +179,6 @@ const joinOrderOptimization = (
       queue.push(child);
     }
   }
-  console.log('best join order', bestJoinOrder);
-  console.log('best cost', bestCost);
   return getRelationalExpression(graph, bestJoinOrder, globalSelections);
 };
 
