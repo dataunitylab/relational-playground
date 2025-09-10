@@ -8,6 +8,16 @@ export const EXPR_FROM_SQL = 'EXPR_FROM_SQL';
 export const ENABLE_OPTIMIZATION = 'ENABLE_OPTIMIZATION';
 export const DISABLE_OPTIMIZATION = 'DISABLE_OPTIMIZATION';
 
+// Supported aggregate functions
+export const SUPPORTED_AGGREGATE_FUNCTIONS = [
+  'MAX',
+  'MIN',
+  'AVG',
+  'SUM',
+  'COUNT',
+  'STDEV',
+];
+
 type ExprFromSqlAction = {
   type: 'EXPR_FROM_SQL',
   sql: {[string]: any},
@@ -128,7 +138,7 @@ function extractHavingAggregates(expr: {
   switch (expr.type) {
     case 'FunctionCall':
       const funcName = expr.name.toUpperCase();
-      if (['MAX', 'MIN', 'AVG', 'SUM', 'COUNT', 'STDEV'].includes(funcName)) {
+      if (SUPPORTED_AGGREGATE_FUNCTIONS.includes(funcName)) {
         let param;
         if (expr.params[0] === '*') {
           param = '*';
@@ -287,7 +297,7 @@ function validateHavingExpression(
   switch (expr.type) {
     case 'FunctionCall':
       const funcName = expr.name.toUpperCase();
-      if (['MAX', 'MIN', 'AVG', 'SUM', 'COUNT', 'STDEV'].includes(funcName)) {
+      if (SUPPORTED_AGGREGATE_FUNCTIONS.includes(funcName)) {
         return true; // Aggregate functions are allowed
       }
       throw new Error(
@@ -515,7 +525,7 @@ function convertExpr(
     case 'FunctionCall':
       // Handle aggregate functions like MAX, MIN, AVG, SUM
       const funcName = expr.name.toUpperCase();
-      if (!['MAX', 'MIN', 'AVG', 'SUM', 'COUNT', 'STDEV'].includes(funcName)) {
+      if (!SUPPORTED_AGGREGATE_FUNCTIONS.includes(funcName)) {
         throw new Error('Unsupported aggregate function: ' + expr.name);
       }
 
@@ -616,7 +626,7 @@ function buildRelExp(
         // Direct function call
         if (field.type === 'FunctionCall') {
           const funcName = field.name?.toUpperCase?.();
-          return ['MAX', 'MIN', 'AVG', 'SUM'].includes(funcName);
+          return SUPPORTED_AGGREGATE_FUNCTIONS.includes(funcName);
         }
 
         // Check nested structures recursively

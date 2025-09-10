@@ -1,6 +1,7 @@
 import React from 'react';
 
 import RelExprTree from './RelExprTree';
+import {SUPPORTED_AGGREGATE_FUNCTIONS} from './modules/relexp';
 
 const RelExprTreeStories = {
   title: 'RelExprTree',
@@ -100,7 +101,7 @@ GroupByWithAggregates.args = {
 };
 GroupByWithAggregates.argTypes = {
   aggregateFunction: {
-    options: ['COUNT', 'SUM', 'AVG', 'MIN', 'MAX', 'STDEV'],
+    options: SUPPORTED_AGGREGATE_FUNCTIONS,
     control: {type: 'inline-radio'},
   },
 };
@@ -185,7 +186,7 @@ GroupByWithHaving.args = {
 };
 GroupByWithHaving.argTypes = {
   aggregateFunction: {
-    options: ['COUNT', 'SUM', 'AVG', 'MIN', 'MAX'],
+    options: SUPPORTED_AGGREGATE_FUNCTIONS,
     control: {type: 'inline-radio'},
   },
   threshold: {

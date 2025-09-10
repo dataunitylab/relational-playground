@@ -1,5 +1,10 @@
 import reducer from './relexp';
-import {exprFromSql, enableOptimization, disableOptimization} from './relexp';
+import {
+  exprFromSql,
+  enableOptimization,
+  disableOptimization,
+  SUPPORTED_AGGREGATE_FUNCTIONS,
+} from './relexp';
 
 const parser = require('@michaelmior/js-sql-parser');
 
@@ -992,28 +997,33 @@ it('converts GROUP BY with qualified column names', () => {
 
 /** @test {relexp} */
 it('supports all aggregate functions', () => {
-  const sql = parser.parse(
-    'SELECT SUM(salary) FROM Doctor GROUP BY departmentId'
-  );
-  const action = exprFromSql(sql.value, {Doctor: ['salary', 'departmentId']});
-  expect(reducer({}, action)).toMatchObject({
-    expr: {
-      group_by: {
-        arguments: {
-          groupBy: ['departmentId'],
-          aggregates: [
-            {
-              aggregate: {
-                function: 'SUM',
-                column: 'salary',
+  // Test each supported aggregate function
+  SUPPORTED_AGGREGATE_FUNCTIONS.forEach((functionName) => {
+    const column = functionName === 'COUNT' ? '*' : 'salary';
+    const sql = parser.parse(
+      `SELECT ${functionName}(${column}) FROM Doctor GROUP BY departmentId`
+    );
+    const action = exprFromSql(sql.value, {Doctor: ['salary', 'departmentId']});
+
+    expect(reducer({}, action)).toMatchObject({
+      expr: {
+        group_by: {
+          arguments: {
+            groupBy: ['departmentId'],
+            aggregates: [
+              {
+                aggregate: {
+                  function: functionName,
+                  column: column,
+                },
               },
-            },
-          ],
-          selectColumns: [],
+            ],
+            selectColumns: [],
+          },
+          children: [{relation: 'Doctor'}],
         },
-        children: [{relation: 'Doctor'}],
       },
-    },
+    });
   });
 });
 
@@ -1141,6 +1151,31 @@ it('converts a GROUP BY with STDEV aggregate', () => {
           ],
           selectColumns: [],
         },
+      },
+    },
+  });
+});
+
+/** @test {relexp} */
+it('converts STDEV aggregate without GROUP BY (implicit grouping)', () => {
+  const sql = parser.parse('SELECT STDEV(salary) FROM Doctor');
+  const action = exprFromSql(sql.value, {Doctor: ['salary']});
+  expect(reducer({}, action)).toMatchObject({
+    expr: {
+      group_by: {
+        arguments: {
+          groupBy: [],
+          aggregates: [
+            {
+              aggregate: {
+                function: 'STDEV',
+                column: 'salary',
+              },
+            },
+          ],
+          selectColumns: [],
+        },
+        children: [{relation: 'Doctor'}],
       },
     },
   });
@@ -1452,6 +1487,48 @@ it('adds projection when HAVING uses aggregates not in SELECT', () => {
                   },
                 },
               ],
+            },
+          },
+        ],
+      },
+    },
+  });
+});
+
+/** @test {relexp} */
+it('converts a GROUP BY with HAVING clause using STDEV aggregate', () => {
+  const sql = parser.parse(
+    'SELECT departmentId, STDEV(salary) FROM Doctor GROUP BY departmentId HAVING STDEV(salary) > 5000'
+  );
+  const action = exprFromSql(sql.value, {Doctor: ['salary', 'departmentId']});
+  expect(reducer({}, action)).toMatchObject({
+    expr: {
+      selection: {
+        arguments: {
+          select: {
+            cmp: {
+              lhs: 'STDEV(salary)',
+              op: '$gt',
+              rhs: '5000',
+            },
+          },
+        },
+        children: [
+          {
+            group_by: {
+              arguments: {
+                groupBy: ['departmentId'],
+                aggregates: [
+                  {
+                    aggregate: {
+                      function: 'STDEV',
+                      column: 'salary',
+                    },
+                  },
+                ],
+                selectColumns: ['departmentId'],
+              },
+              children: [{relation: 'Doctor'}],
             },
           },
         ],
