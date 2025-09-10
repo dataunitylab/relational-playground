@@ -2,7 +2,7 @@ import React from 'react';
 import {shallow} from 'enzyme';
 
 import Editor from 'react-simple-code-editor';
-import SqlEditor from './SqlEditor';
+import {SqlEditor} from './SqlEditor';
 
 it('can parse the initial query', () => {
   const types = {foo: ['bar', 'baz']};

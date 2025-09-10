@@ -484,4 +484,5 @@ const SqlEditorWithContext: StatelessFunctionalComponent<
   return <SqlEditor {...props} ReactGA={ReactGA} />;
 };
 
+export {SqlEditor};
 export default SqlEditorWithContext;
