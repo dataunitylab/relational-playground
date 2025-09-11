@@ -6,6 +6,7 @@ import {Provider} from 'react-redux';
 import React from 'react';
 import {createRoot} from 'react-dom/client';
 import * as Sentry from '@sentry/browser';
+import {CookiesProvider} from 'react-cookie';
 import './index.css';
 import store from './store';
 import App from './App';
@@ -28,7 +29,9 @@ root.render(
   <Provider store={store}>
     <BrowserRouter>
       <div>
-        <App />
+        <CookiesProvider defaultSetOptions={{path: '/'}}>
+          <App />
+        </CookiesProvider>
       </div>
     </BrowserRouter>
   </Provider>
