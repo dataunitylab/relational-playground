@@ -23,9 +23,6 @@ importers:
       '@testing-library/jest-dom':
         specifier: ^6.8.0
         version: 6.8.0
-      connected-react-router:
-        specifier: ^6.9.3
-        version: 6.9.3(history@5.3.0)(react-redux@9.2.0(@types/react@18.2.79)(react@18.3.1)(redux@4.2.1))(react-router@6.27.0(react@18.3.1))(react@18.3.1)(redux@4.2.1)
       fast-equals:
         specifier: ^5.2.2
         version: 5.2.2
@@ -86,6 +83,9 @@ importers:
       redux:
         specifier: ^4.2.1
         version: 4.2.1
+      redux-first-history:
+        specifier: ^5.2.0
+        version: 5.2.0(history@5.3.0)(redux@4.2.1)
       tinyqueue:
         specifier: ^2.0.3
         version: 2.0.3
@@ -3135,15 +3135,6 @@ packages:
     resolution: {integrity: sha512-U73+6lQFmfiNPrYbXqr6kZ1i1wiRqXnp2nhMsINseWXO8lDau0LGEffJ8kQi4EjLZympVgRdvqjAgiZ1tgzDDA==}
     engines: {node: '>=0.8'}
 
-  connected-react-router@6.9.3:
-    resolution: {integrity: sha512-4ThxysOiv/R2Dc4Cke1eJwjKwH1Y51VDwlOrOfs1LjpdYOVvCNjNkZDayo7+sx42EeGJPQUNchWkjAIJdXGIOQ==}
-    peerDependencies:
-      history: ^4.7.2
-      react: ^16.4.0 || ^17.0.0
-      react-redux: ^6.0.0 || ^7.1.0
-      react-router: ^4.3.1 || ^5.0.0
-      redux: ^3.6.0 || ^4.0.0
-
   console-browserify@1.1.0:
     resolution: {integrity: sha512-duS7VP5pvfsNLDvL1O4VOEbw37AI3A4ZUQYemvDlnpGrNu9tprR7BYWpDYwC0Xia0Zxz5ZupdiIrUp0GH1aXfg==}
 
@@ -4574,9 +4565,6 @@ packages:
   immer@9.0.21:
     resolution: {integrity: sha512-bc4NBHqOqSfRW7POMkHd51LvClaeMXpm8dx0e8oE2GORbq5aRK7Bxl4FyzVLdGtLmvLKL7BTDBG5ACQm4HWjTA==}
 
-  immutable@4.0.0:
-    resolution: {integrity: sha512-zIE9hX70qew5qTUjSS7wi1iwj/l7+m54KWU247nhM3v806UdGj1yDndXj+IOYxxtW9zyLI+xqFNZjTuDaLUqFw==}
-
   import-fresh@3.3.1:
     resolution: {integrity: sha512-TR3KfrTZTYLPB6jUjfx6MF9WcWrHL9su5TObK4ZkYgBdWKPOFoSoQIdEuTuR82pmtxH2spWG9h6etwfr1pLBqQ==}
     engines: {node: '>=6'}
@@ -5255,9 +5243,6 @@ packages:
 
   lodash.debounce@4.0.8:
     resolution: {integrity: sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==}
-
-  lodash.isequalwith@4.4.0:
-    resolution: {integrity: sha512-dcZON0IalGBpRmJBmMkaoV7d3I80R2O+FrzsZyHdNSFrANq/cgDqKQNmAHE8UEj4+QYWwwhkQOVdLHiAopzlsQ==}
 
   lodash.isplainobject@4.0.6:
     resolution: {integrity: sha512-oSXzaWypCMHkPC3NvBEaPHf0KsA5mvPrOPgQWDsbg8n7orZ290M0BmC/jgRZ4vcJ6DTAhjrsSYgdsW/F+MFOBA==}
@@ -6738,6 +6723,12 @@ packages:
     resolution: {integrity: sha512-tYkDkVVtYkSVhuQ4zBgfvciymHaeuel+zFKXShfDnFP5SyVEP7qo70Rf1jTOTCx3vGNAbnEi/xFkcfQVMIBWag==}
     engines: {node: '>=12'}
 
+  redux-first-history@5.2.0:
+    resolution: {integrity: sha512-7kLqtSXGPZIgvEhl3B+3wRvzePvvZggpVqg+jpR2ZVqu2ESGj9DF6hMHpoEP7bGHqddljjKYjnRmtSetYEiG2Q==}
+    peerDependencies:
+      history: ^4.7.2 || ^5.0
+      redux: ^3.6.0 || ^4.0.0 || ^5.0.0
+
   redux-mock-store@1.5.5:
     resolution: {integrity: sha512-YxX+ofKUTQkZE4HbhYG4kKGr7oCTJfB0GLy7bSeqx86GLpGirrbUWstMnqXkqHNaQpcnbMGbof2dYs5KsPE6Zg==}
     peerDependencies:
@@ -6969,9 +6960,6 @@ packages:
 
   scrollparent@2.1.0:
     resolution: {integrity: sha512-bnnvJL28/Rtz/kz2+4wpBjHzWoEzXhVg/TE8BeVGJHUqE8THNIRnDxDWMktwM+qahvlRdvlLdsQfYe+cuqfZeA==}
-
-  seamless-immutable@7.1.4:
-    resolution: {integrity: sha512-XiUO1QP4ki4E2PHegiGAlu6r82o5A+6tRh7IkGGTVg/h+UoeX4nFBeCGPOhb4CYjvkqsfm/TUtvOMYC1xmV30A==}
 
   select-hose@2.0.0:
     resolution: {integrity: sha512-mEugaLK+YfkijB4fx0e6kImuJdCIt2LxCRcbEYPqRGCs4F2ogyfZU5IAZRdjCP8JPq2AtdNoC/Dux63d9Kiryg==}
@@ -11691,19 +11679,6 @@ snapshots:
 
   connect-history-api-fallback@2.0.0: {}
 
-  connected-react-router@6.9.3(history@5.3.0)(react-redux@9.2.0(@types/react@18.2.79)(react@18.3.1)(redux@4.2.1))(react-router@6.27.0(react@18.3.1))(react@18.3.1)(redux@4.2.1):
-    dependencies:
-      history: 5.3.0
-      lodash.isequalwith: 4.4.0
-      prop-types: 15.8.1
-      react: 18.3.1
-      react-redux: 9.2.0(@types/react@18.2.79)(react@18.3.1)(redux@4.2.1)
-      react-router: 6.27.0(react@18.3.1)
-      redux: 4.2.1
-    optionalDependencies:
-      immutable: 4.0.0
-      seamless-immutable: 7.1.4
-
   console-browserify@1.1.0:
     dependencies:
       date-now: 0.1.4
@@ -13371,9 +13346,6 @@ snapshots:
 
   immer@9.0.21: {}
 
-  immutable@4.0.0:
-    optional: true
-
   import-fresh@3.3.1:
     dependencies:
       parent-module: 1.0.1
@@ -14301,8 +14273,6 @@ snapshots:
       p-locate: 5.0.0
 
   lodash.debounce@4.0.8: {}
-
-  lodash.isequalwith@4.4.0: {}
 
   lodash.isplainobject@4.0.6: {}
 
@@ -16020,6 +15990,11 @@ snapshots:
       indent-string: 5.0.0
       strip-indent: 4.1.0
 
+  redux-first-history@5.2.0(history@5.3.0)(redux@4.2.1):
+    dependencies:
+      history: 5.3.0
+      redux: 4.2.1
+
   redux-mock-store@1.5.5(redux@4.2.1):
     dependencies:
       lodash.isplainobject: 4.0.6
@@ -16258,9 +16233,6 @@ snapshots:
   scroll@3.0.1: {}
 
   scrollparent@2.1.0: {}
-
-  seamless-immutable@7.1.4:
-    optional: true
 
   select-hose@2.0.0: {}
 
