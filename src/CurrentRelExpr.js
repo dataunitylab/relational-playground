@@ -74,7 +74,7 @@ const CurrentRelExpr: StatelessFunctionalComponent<Props> = (props) => {
           Query Optimization
           <input
             type="checkbox"
-            checked={optimized}
+            checked={Boolean(optimized)}
             onChange={handleOptimizeInputChange}
           />
         </label>

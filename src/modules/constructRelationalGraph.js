@@ -53,12 +53,13 @@ const conditionIsOnValidAttributes = (
   attribute: string,
   tables: Array<string>
 ) => {
-  const columns: Array<string> = [];
   const {sourceData} = initialState;
-  for (const table in sourceData) {
-    columns.push(...sourceData[table].columns);
+  for (const table of tables) {
+    if (sourceData[table] && sourceData[table].columns.includes(attribute)) {
+      return true;
+    }
   }
-  return columns.includes(attribute);
+  return false;
 };
 
 // function to check if a selection condition is a join condition

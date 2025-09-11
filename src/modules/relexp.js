@@ -909,8 +909,27 @@ function optimize(type: string, expr: {[key: string]: any}) {
       const {graph, globalSelections, canOptimize} =
         constructRelationalGraph(expr);
       if (!canOptimize) return expr;
-      const optimizedExpr = joinOrderOptimization(graph, globalSelections);
-      return optimizedExpr;
+      try {
+        const optimizedExpr = joinOrderOptimization(graph, globalSelections);
+        // Ensure the optimized expression is valid and not empty
+        if (
+          !optimizedExpr ||
+          typeof optimizedExpr !== 'object' ||
+          Object.keys(optimizedExpr).length === 0
+        ) {
+          console.warn(
+            'Join order optimization returned empty result, using original expression'
+          );
+          return expr;
+        }
+        return optimizedExpr;
+      } catch (error) {
+        console.warn(
+          'Join order optimization failed, using original expression:',
+          error.message
+        );
+        return expr;
+      }
     default:
       return expr;
   }

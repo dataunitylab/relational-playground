@@ -47,7 +47,9 @@ const getSelectionExpression = (
  */
 const formatJoinConditions = (joinConditions: Array<JoinCondition>) => {
   if (joinConditions.length === 0) {
-    return {cmp: {}};
+    // This should not happen in a well-formed query, but handle gracefully
+    console.warn('Empty join conditions encountered');
+    return {cmp: {lhs: '1', op: '$eq', rhs: '1'}}; // Dummy true condition
   }
   if (joinConditions.length === 1) {
     return {cmp: joinConditions[0].condition};
@@ -98,7 +100,10 @@ const parseJoinOrderExpression = (
       join: {
         left: leftJoinExpr,
         right: rightJoinExpr,
-        type: joinConditions[0].type ?? 'inner',
+        type:
+          joinConditions.length > 0
+            ? (joinConditions[0].type ?? 'inner')
+            : 'inner',
         condition: formatJoinConditions(joinConditions),
       },
     };
@@ -179,6 +184,17 @@ const joinOrderOptimization = (
       queue.push(child);
     }
   }
+  // If no valid join order was found (empty bestJoinOrder),
+  // it means the graph has disconnected components or optimization failed
+  if (bestJoinOrder.length === 0) {
+    console.warn(
+      'Join order optimization failed: no complete join order found'
+    );
+    throw new Error(
+      'Join order optimization failed: disconnected graph or no valid joins'
+    );
+  }
+
   return getRelationalExpression(graph, bestJoinOrder, globalSelections);
 };
 
@@ -206,14 +222,30 @@ const getRowsAndCost = (
       right: {
         relation: rightTable,
       },
-      type: joinConditions[0].type ?? 'inner',
+      type:
+        joinConditions.length > 0
+          ? (joinConditions[0].type ?? 'inner')
+          : 'inner',
       condition: joinConditionsExpr,
     },
   };
-  const joinResult = applyExpr(combinedJoinExpr, initialState.sourceData);
-  const newRows = joinResult.data?.length ?? 0;
-  const newCost = cost + rows * getTableData(rightTable);
-  return {rows: newRows, cost: newCost, expr: combinedJoinExpr};
+  try {
+    const joinResult = applyExpr(combinedJoinExpr, initialState.sourceData);
+    const newRows = joinResult.data?.length ?? 0;
+    const newCost = cost + rows * getTableData(rightTable);
+    return {rows: newRows, cost: newCost, expr: combinedJoinExpr};
+  } catch (error) {
+    console.warn(
+      'Error evaluating join expression during optimization:',
+      error.message
+    );
+    // Return a high cost to discourage this path
+    return {
+      rows: Number.MAX_SAFE_INTEGER,
+      cost: Number.MAX_SAFE_INTEGER,
+      expr: combinedJoinExpr,
+    };
+  }
 };
 
 /**

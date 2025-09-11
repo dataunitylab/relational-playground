@@ -322,4 +322,34 @@ describe('join order optimization', () => {
       },
     });
   });
+
+  it('should handle disconnected graph gracefully', () => {
+    // Create a manually constructed graph with two disconnected tables
+    const disconnectedGraph = {
+      Doctor: {
+        selections: [{cmp: {lhs: 'Doctor.id', op: '$eq', rhs: '1'}}],
+        edges: {},
+      },
+      Patient: {
+        selections: [{cmp: {lhs: 'Patient.id', op: '$eq', rhs: '2'}}],
+        edges: {},
+      },
+    };
+
+    // This should throw an error since there's no way to join these tables
+    expect(() => {
+      joinOrderOptimization(disconnectedGraph, []);
+    }).toThrow(
+      'Join order optimization failed: disconnected graph or no valid joins'
+    );
+  });
+
+  it('should handle empty graph gracefully', () => {
+    // Empty graph should throw an error
+    expect(() => {
+      joinOrderOptimization({}, []);
+    }).toThrow(
+      'Join order optimization failed: disconnected graph or no valid joins'
+    );
+  });
 });
