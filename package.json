@@ -34,7 +34,7 @@
     "react-table": "^6.11.5",
     "redux": "^4.2.1",
     "tinyqueue": "^2.0.3",
-    "typescript": "^5.8.3",
+    "typescript": "^5.9.2",
     "uuid": "^11.1.0"
   },
   "scripts": {
