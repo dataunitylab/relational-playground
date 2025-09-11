@@ -3,6 +3,7 @@ import Tutorial from './Tutorial';
 import Cookies from 'universal-cookie/cjs';
 import {render, act, waitFor} from '@testing-library/react';
 import Joyride from 'react-joyride';
+import {CookiesProvider} from 'react-cookie';
 
 // Mock Joyride to capture props passed to it
 jest.mock('react-joyride', () => {
@@ -14,7 +15,11 @@ it('correctly renders tutorial given no cookie', async () => {
   let result;
 
   await act(async () => {
-    result = render(<Tutorial />);
+    result = render(
+      <CookiesProvider defaultSetOptions={{path: '/'}}>
+        <Tutorial />
+      </CookiesProvider>
+    );
   });
 
   // Wait for any async state updates to complete
@@ -90,7 +95,11 @@ it('cookie exists, no tutorial', async () => {
 
   let container;
 
-  const rendered = render(<Tutorial />);
+  const rendered = render(
+    <CookiesProvider defaultSetOptions={{path: '/'}}>
+      <Tutorial />
+    </CookiesProvider>
+  );
   container = rendered.container;
 
   await waitFor(() => {
