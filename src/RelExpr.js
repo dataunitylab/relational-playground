@@ -17,7 +17,6 @@ import {
 import Relation from './Relation';
 import {exprToString} from './util';
 import {changeExpr} from './modules/data';
-import ReactDOM from 'react-dom';
 import {useReactGA} from './contexts/ReactGAContext';
 
 import './RelExpr.css';
@@ -185,10 +184,7 @@ const RelExpr: StatelessFunctionalComponent<Props> = (props) => {
    */
   const handleExprClick = (e: SyntheticMouseEvent<HTMLElement>): void => {
     e.stopPropagation();
-    const node =
-      ReactDOM.findDOMNode(nodeRef.current) instanceof HTMLElement
-        ? ReactDOM.findDOMNode(nodeRef.current)
-        : undefined;
+    const node = nodeRef.current;
 
     const clicked = e.type === 'click' && !isSelected;
 
