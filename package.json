@@ -122,6 +122,9 @@
       "src/**/*.js",
       "!src/*.stories.js",
       "!src/index.js"
+    ],
+    "transformIgnorePatterns": [
+      "node_modules/(?!(.pnpm/)?tinyqueue)"
     ]
   },
   "bundlewatch": {
