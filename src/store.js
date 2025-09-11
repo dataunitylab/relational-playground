@@ -19,7 +19,8 @@ const store: Store<{}, Action<{}>> = configureStore({
     data,
     relexp,
   },
-  middleware: [routerMiddleware(history)],
+  middleware: ((getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(routerMiddleware(history)): any),
 });
 
 export default store;
