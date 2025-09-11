@@ -1,8 +1,7 @@
 import React from 'react';
 import {Provider} from 'react-redux';
 import {render} from '@testing-library/react';
-import {produce} from 'immer';
-import {configureStore} from '@reduxjs/toolkit';
+import {createStore} from 'redux';
 
 import DataContainer from './DataContainer';
 
@@ -18,12 +17,7 @@ describe('DataContainer', () => {
         },
       },
     };
-    const mockStore = configureStore({
-      reducer: {
-        data: produce((state, action) => state, initialState),
-      },
-      preloadedState: initialState,
-    });
+    const mockStore = createStore(() => initialState, initialState);
     const {container} = render(
       <Provider store={mockStore}>
         <DataContainer />

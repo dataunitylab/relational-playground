@@ -1,17 +1,11 @@
 import React from 'react';
 import {Provider} from 'react-redux';
-import {produce} from 'immer';
-import {configureStore} from '@reduxjs/toolkit';
+import {createStore} from 'redux';
 
 import RelExpr from './RelExpr';
 
 const initialState = {data: {expr: null}};
-const mockStore = configureStore({
-  reducer: {
-    data: produce((state, action) => state, initialState),
-  },
-  preloadedState: initialState,
-});
+const mockStore = createStore(() => initialState, initialState);
 
 const MockedStore = ({children}) => (
   <Provider store={mockStore}>{children}</Provider>

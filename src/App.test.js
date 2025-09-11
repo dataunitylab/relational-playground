@@ -1,9 +1,8 @@
 import React from 'react';
 import {createRoot} from 'react-dom/client';
 import {MemoryRouter} from 'react-router';
-import {configureStore} from '@reduxjs/toolkit';
+import {createStore} from 'redux';
 import {Provider} from 'react-redux';
-import {produce} from 'immer';
 import App from './App';
 
 /** @test {App} */
@@ -13,13 +12,7 @@ it('renders without crashing', () => {
     relexp: {expr: {}},
     data: {sourceData: {}},
   };
-  const store = configureStore({
-    reducer: {
-      data: produce((state, action) => state, initialState),
-      relexp: produce((state, action) => state, initialState),
-    },
-    preloadedState: initialState,
-  });
+  const store = createStore(() => initialState, initialState);
   const root = createRoot(div);
   root.render(
     <Provider store={store}>

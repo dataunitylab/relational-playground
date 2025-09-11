@@ -654,8 +654,8 @@ export function applyExpr(
   }
 }
 
-const reducer: (State, Action) => State = produce<State, Action>(
-  (draft: State, action: Action) => {
+const reducer = (state: State = initialState, action: Action): State => {
+  return produce(state, (draft: State) => {
     // eslint-disable-next-line default-case
     switch (action.type) {
       case RESET_EXPR:
@@ -665,14 +665,14 @@ const reducer: (State, Action) => State = produce<State, Action>(
         break;
       case CHANGE_EXPR:
         draft.expr = action.expr;
+        draft.element = action.element;
         draft.current =
           JSON.stringify(action.expr) === JSON.stringify({})
             ? undefined
             : applyExpr(action.expr, draft.sourceData);
         break;
     }
-  },
-  initialState
-);
+  });
+};
 
 export default reducer;

@@ -916,20 +916,14 @@ function optimize(type: string, expr: {[key: string]: any}) {
   }
 }
 
-const reducer: (
-  State,
-  ExprFromSqlAction | EnableOptimizationAction | DisableOptimizationAction
-) => State = produce<
-  State,
-  ExprFromSqlAction | EnableOptimizationAction | DisableOptimizationAction,
->(
-  (
-    draft: State,
-    action:
-      | ExprFromSqlAction
-      | EnableOptimizationAction
-      | DisableOptimizationAction
-  ) => {
+const reducer = (
+  state: State = initialState,
+  action:
+    | ExprFromSqlAction
+    | EnableOptimizationAction
+    | DisableOptimizationAction
+): State => {
+  return produce(state, (draft: State) => {
     // eslint-disable-next-line default-case
     switch (action.type) {
       case EXPR_FROM_SQL:
@@ -949,8 +943,7 @@ const reducer: (
         }
         delete draft.optimized;
     }
-  },
-  initialState
-);
+  });
+};
 
 export default reducer;
