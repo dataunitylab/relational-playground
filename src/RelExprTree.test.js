@@ -1,9 +1,9 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
+import {render, fireEvent} from '@testing-library/react';
 
 import RelExprTree from './RelExprTree';
 import {Selection} from './RelOp';
-import {mount} from 'enzyme';
 
 /** @test {RelExprTree} */
 it('correctly renders a complex expression', () => {
@@ -52,8 +52,10 @@ it.each(condTests)('it correctly renders a %s condition as %s', (op, str) => {
       children: [{relation: 'Doctor'}],
     },
   };
-  const wrapper = mount(<RelExprTree expr={expr} changeExpr={jest.fn()} />);
-  expect(wrapper.find(Selection).text()).toContain('salary ' + str + ' 130000');
+  const {container} = render(
+    <RelExprTree expr={expr} changeExpr={jest.fn()} />
+  );
+  expect(container).toHaveTextContent('salary ' + str + ' 130000');
 });
 
 /** @test {RelExprTree} */
@@ -75,7 +77,7 @@ it('doesnt change the expression when clicked and relation', () => {
   const mockAction = jest.fn();
   const mockEvent = jest.fn();
   const expr = {relation: 'foo'};
-  const wrapper = mount(
+  const {container} = render(
     <RelExprTree
       ReactGA={{event: mockEvent}}
       expr={expr}
@@ -84,7 +86,7 @@ it('doesnt change the expression when clicked and relation', () => {
   );
 
   // Click on the expression
-  wrapper.simulate('click', {stopPropagation: jest.fn()});
+  fireEvent.click(container.firstChild);
 
   // An action changing the expression should fire
   // Should not have action attached when type relation
@@ -106,7 +108,7 @@ it('changes the expression when clicked not relation', () => {
       children: [{relation: 'bar'}],
     },
   };
-  const wrapper = mount(
+  const {container} = render(
     <RelExprTree
       ReactGA={{event: mockEvent}}
       expr={expr}
@@ -114,8 +116,9 @@ it('changes the expression when clicked not relation', () => {
     />
   );
 
-  // Click on the expression
-  wrapper.find('li').first().simulate('click', {stopPropagation: jest.fn()});
+  // Click on the first li element (tree structure)
+  const firstLi = container.querySelector('li');
+  fireEvent.click(firstLi);
 
   // An action changing the expression should fire
   expect(mockAction.mock.calls.length).toBe(1);

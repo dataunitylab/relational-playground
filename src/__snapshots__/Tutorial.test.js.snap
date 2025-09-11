@@ -1,134 +1,116 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`correctly renders tutorial given no cookie 1`] = `
-<Joyride
-  callback={[Function]}
-  continuous={true}
-  debug={false}
-  disableCloseOnEsc={false}
-  disableOverlay={false}
-  disableOverlayClose={false}
-  disableScrollParentFix={false}
-  disableScrolling={false}
-  hideBackButton={false}
-  run={true}
-  scrollDuration={300}
-  scrollOffset={20}
-  scrollToFirstStep={true}
-  showProgress={true}
-  showSkipButton={true}
-  spotlightClicks={false}
-  spotlightPadding={10}
-  steps={
-    Array [
-      Object {
-        "content": <h2>
-          Welcome to Relational Playground!
-        </h2>,
-        "locale": Object {
-          "skip": <strong
-            aria-label="skip"
-          >
-            Skip tutorial
-          </strong>,
-        },
-        "placement": "center",
-        "target": "body",
+exports[`correctly renders tutorial given no cookie: dom-structure 1`] = `
+<div>
+  <button
+    class="button"
+  >
+    Tutorial
+  </button>
+</div>
+`;
+
+exports[`correctly renders tutorial given no cookie: joyride-steps 1`] = `
+Array [
+  Object {
+    "content": <h2>
+      Welcome to Relational Playground!
+    </h2>,
+    "locale": Object {
+      "skip": <strong
+        aria-label="skip"
+      >
+        Skip tutorial
+      </strong>,
+    },
+    "placement": "center",
+    "target": "body",
+  },
+  Object {
+    "content": <div>
+      <h2>
+        Enter SQL queries here
+      </h2>
+      <p>
+        Note that not all SQL queries are supported (e.g. aggregation, arithmetic, and function calls).
+      </p>
+    </div>,
+    "spotlightPadding": 4,
+    "styles": Object {
+      "tooltipContainer": Object {
+        "textAlign": "left",
       },
-      Object {
-        "content": <div>
-          <h2>
-            Enter SQL queries here
-          </h2>
-          <p>
-            Note that not all SQL queries are supported (e.g. aggregation, arithmetic, and function calls).
-          </p>
-        </div>,
-        "spotlightPadding": 4,
-        "styles": Object {
-          "tooltipContainer": Object {
-            "textAlign": "left",
-          },
-        },
-        "target": ".SqlEditor",
+    },
+    "target": ".SqlEditor",
+  },
+  Object {
+    "content": <div>
+      <h4>
+        Source relations are displayed here
+      </h4>
+      ,
+      <p>
+        Any of these relations can be used in your SQL queries.
+      </p>
+    </div>,
+    "spotlightPadding": 4,
+    "styles": Object {
+      "tooltipContainer": Object {
+        "textAlign": "left",
       },
-      Object {
-        "content": <div>
-          <h4>
-            Source relations are displayed here
-          </h4>
-          ,
-          <p>
-            Any of these relations can be used in your SQL queries.
-          </p>
-        </div>,
-        "spotlightPadding": 4,
-        "styles": Object {
-          "tooltipContainer": Object {
-            "textAlign": "left",
-          },
-        },
-        "target": ".sourceTableContainer",
+    },
+    "target": ".sourceTableContainer",
+  },
+  Object {
+    "content": <div>
+      <h4>
+        Relational algebra expressions
+      </h4>
+      <p>
+        The expression is generated from the SQL queries entered above. The expression will automatically be updated based on the query. You can select any subexpression to view the data the relation contains below.
+      </p>
+    </div>,
+    "spotlightPadding": 4,
+    "styles": Object {
+      "tooltipContainer": Object {
+        "textAlign": "left",
       },
-      Object {
-        "content": <div>
-          <h4>
-            Relational algebra expressions
-          </h4>
-          <p>
-            The expression is generated from the SQL queries entered above. The expression will automatically be updated based on the query. You can select any subexpression to view the data the relation contains below.
-          </p>
-        </div>,
-        "spotlightPadding": 4,
-        "styles": Object {
-          "tooltipContainer": Object {
-            "textAlign": "left",
-          },
-        },
-        "target": ".relExprContainer",
+    },
+    "target": ".relExprContainer",
+  },
+  Object {
+    "content": <div>
+      <h4>
+        Relation algebra expressions data
+      </h4>
+      <p>
+        When you select an expression above, the data contained in that expression will be displayed here. You can select the top-level expression to see the final results of the query or any intermediate expression to see what relations result from each step.
+      </p>
+    </div>,
+    "spotlightPadding": 4,
+    "styles": Object {
+      "tooltipContainer": Object {
+        "textAlign": "left",
       },
-      Object {
-        "content": <div>
-          <h4>
-            Relation algebra expressions data
-          </h4>
-          <p>
-            When you select an expression above, the data contained in that expression will be displayed here. You can select the top-level expression to see the final results of the query or any intermediate expression to see what relations result from each step.
-          </p>
-        </div>,
-        "spotlightPadding": 4,
-        "styles": Object {
-          "tooltipContainer": Object {
-            "textAlign": "left",
-          },
-        },
-        "target": ".dataContainer",
+    },
+    "target": ".dataContainer",
+  },
+  Object {
+    "content": <div>
+      <h4>
+        Tree view
+      </h4>
+      <p>
+        Toggling this checkbox will enable a tree view for relational algebra expressions. You can switch back to a linear view by unchecking the box.
+      </p>
+    </div>,
+    "spotlightPadding": 4,
+    "styles": Object {
+      "tooltipContainer": Object {
+        "textAlign": "left",
       },
-      Object {
-        "content": <div>
-          <h4>
-            Tree view
-          </h4>
-          <p>
-            Toggling this checkbox will enable a tree view for relational algebra expressions. You can switch back to a linear view by unchecking the box.
-          </p>
-        </div>,
-        "spotlightPadding": 4,
-        "styles": Object {
-          "tooltipContainer": Object {
-            "textAlign": "left",
-          },
-        },
-        "target": ".relExprContainer .toggle",
-      },
-    ]
-  }
-  styles={
-    Object {
-      "options": Object {
-        "zIndex": 10000,
-      },
-    }
-  }
-/>
+    },
+    "target": ".relExprContainer .toggle",
+  },
+]
 `;

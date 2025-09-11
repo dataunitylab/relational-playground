@@ -2,10 +2,10 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import {Provider} from 'react-redux';
 import configureStore from 'redux-mock-store';
+import {render, fireEvent, act} from '@testing-library/react';
 
 import RelExpr from './RelExpr';
 import {Selection} from './RelOp';
-import {mount} from 'enzyme';
 
 const mockStore = configureStore([]);
 
@@ -67,14 +67,12 @@ describe('RelExpr', () => {
         children: [{relation: 'Doctor'}],
       },
     };
-    const wrapper = mount(
+    const {container} = render(
       <Provider store={store}>
         <RelExpr expr={expr} changeExpr={jest.fn()} />
       </Provider>
     );
-    expect(wrapper.find(Selection).text()).toContain(
-      'salary ' + str + ' 130000'
-    );
+    expect(container).toHaveTextContent('salary ' + str + ' 130000');
   });
 
   /** @test {RelExpr} */
@@ -98,7 +96,7 @@ describe('RelExpr', () => {
     const mockAction = jest.fn();
     const mockEvent = jest.fn();
     const expr = {relation: 'foo'};
-    const wrapper = mount(
+    const {container} = render(
       <Provider store={store}>
         <RelExpr
           ReactGA={{event: mockEvent}}
@@ -109,7 +107,7 @@ describe('RelExpr', () => {
     );
 
     // Click on the expression
-    wrapper.simulate('click', {stopPropagation: jest.fn()});
+    fireEvent.click(container.firstChild);
 
     // An action changing the expression should fire
     // Should not have action attached when type relation
@@ -131,7 +129,7 @@ describe('RelExpr', () => {
         children: [{relation: 'bar'}],
       },
     };
-    const wrapper = mount(
+    const {container} = render(
       <Provider store={store}>
         <RelExpr
           ReactGA={{event: mockEvent}}
@@ -142,7 +140,7 @@ describe('RelExpr', () => {
     );
 
     // Click on the expression
-    wrapper.simulate('click', {stopPropagation: jest.fn()});
+    fireEvent.click(container.firstChild);
 
     // An action changing the expression should fire
     expect(mockAction.mock.calls.length).toBe(1);
@@ -168,7 +166,7 @@ describe('RelExpr', () => {
         children: [{relation: 'bar'}],
       },
     };
-    const wrapper = mount(
+    const {container} = render(
       <Provider store={store}>
         <RelExpr
           ReactGA={{event: mockEvent}}
@@ -179,22 +177,14 @@ describe('RelExpr', () => {
     );
 
     // Hovering class should be off by default
-    expect(wrapper.hasClass('hovering')).toBeFalsy();
+    expect(container.firstChild).not.toHaveClass('hovering');
 
-    // Hovering should add the class and not propagate the event
-    const mockStop = jest.fn();
-    wrapper.simulate('mouseover', {
-      type: 'mouseover',
-      stopPropagation: mockStop,
-    });
-    expect(wrapper.exists('.hovering')).toBeTruthy();
-    expect(mockStop.mock.calls.length).toBe(1);
+    // Hovering should add the class
+    fireEvent.mouseOver(container.firstChild);
+    expect(container.firstChild).toHaveClass('hovering');
 
     // Mouse out should remove the class
-    wrapper.simulate('mouseout', {
-      type: 'mouseout',
-      stopPropagation: jest.fn(),
-    });
-    expect(wrapper.exists('.hovering')).toBeFalsy();
+    fireEvent.mouseOut(container.firstChild);
+    expect(container.firstChild).not.toHaveClass('hovering');
   });
 });

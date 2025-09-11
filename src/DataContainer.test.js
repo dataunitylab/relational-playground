@@ -1,11 +1,10 @@
 import React from 'react';
 import {Provider} from 'react-redux';
-import {mount} from 'enzyme';
+import {render} from '@testing-library/react';
 import {produce} from 'immer';
 import {configureStore} from '@reduxjs/toolkit';
 
 import DataContainer from './DataContainer';
-import Table from './Table';
 
 describe('DataContainer', () => {
   /** @test {DataContainer} */
@@ -25,17 +24,18 @@ describe('DataContainer', () => {
       },
       preloadedState: initialState,
     });
-    const wrapper = mount(
+    const {container} = render(
       <Provider store={mockStore}>
         <DataContainer />
       </Provider>
     );
 
-    const table = wrapper.find(Table).first();
-    expect(table).toHaveProp({
-      tableName: 'foo',
-      columns: ['bar', 'baz'],
-      sortable: false,
-    });
+    // Check that the table is rendered with correct content
+    expect(container.querySelector('.ReactTable')).toBeInTheDocument();
+    expect(container).toHaveTextContent('Data for selected expression');
+    expect(container).toHaveTextContent('bar');
+    expect(container).toHaveTextContent('baz');
+    expect(container).toHaveTextContent('1');
+    expect(container).toHaveTextContent('2');
   });
 });

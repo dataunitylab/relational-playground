@@ -1,5 +1,5 @@
 import React from 'react';
-import {shallow} from 'enzyme';
+import {render, act, fireEvent} from '@testing-library/react';
 
 import Editor from 'react-simple-code-editor';
 import {SqlEditor} from './SqlEditor';
@@ -18,7 +18,7 @@ it('can parse the initial query', () => {
     value: new URL('http://localhost:3000/'),
   });
 
-  shallow(
+  render(
     <SqlEditor
       defaultText="SELECT * FROM foo"
       ReactGA={{event: mockEvent}}
@@ -46,7 +46,8 @@ it('can parse modified query and fire an event', () => {
   const mockEvent = jest.fn(() => undefined);
   const mockResetAction = jest.fn(() => undefined);
   const mockNavigate = jest.fn();
-  const wrapper = shallow(
+
+  const {container} = render(
     <SqlEditor
       defaultText="SELECT * FROM foo"
       ReactGA={{event: mockEvent}}
@@ -59,10 +60,11 @@ it('can parse modified query and fire an event', () => {
 
   const query = 'SELECT 1 FROM quux';
 
-  // The valueChange event is specific to this component,
-  // but triggering it is the easiest way to simulate
-  // typing to the underlying textarea
-  wrapper.find(Editor).first().simulate('valueChange', query);
+  // Find the textarea inside the Editor component and change its value
+  const textarea = container.querySelector('textarea');
+
+  // Change the value of the textarea directly
+  fireEvent.change(textarea, {target: {value: query}});
 
   // No events should be recorded yet
   expect(mockEvent.mock.calls.length).toBe(0);
@@ -70,7 +72,9 @@ it('can parse modified query and fire an event', () => {
   // The new query should not be parsed yet
   expect(mockAction.mock.calls.length).toBe(1);
 
-  jest.runAllTimers();
+  act(() => {
+    jest.runAllTimers();
+  });
 
   // Now an event should be fire with the new query and an action created
   expect(mockEvent.mock.calls.length).toBe(1);

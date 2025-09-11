@@ -1,25 +1,107 @@
 import React from 'react';
 import Tutorial from './Tutorial';
 import Cookies from 'universal-cookie/cjs';
-import {shallow} from 'enzyme';
-import JoyrideTooltipContainer from 'react-joyride';
+import {render, act, waitFor} from '@testing-library/react';
+import Joyride from 'react-joyride';
 
-/** @test {Tutorial} */
-it('correctly renders tutorial given no cookie', () => {
-  const wrapper = shallow(<Tutorial />);
-  let tooltip = wrapper.find(JoyrideTooltipContainer);
-
-  // expect(tooltip).toBeDefined();
-  expect(tooltip).toMatchSnapshot();
+// Mock Joyride to capture props passed to it
+jest.mock('react-joyride', () => {
+  return jest.fn(() => <div data-testid="mocked-joyride" />);
 });
 
 /** @test {Tutorial} */
-it('cookie exists, no tutorial', () => {
+it('correctly renders tutorial given no cookie', async () => {
+  let result;
+
+  await act(async () => {
+    result = render(<Tutorial />);
+  });
+
+  // Wait for any async state updates to complete
+  await waitFor(() => {
+    expect(result.container.firstChild).toBeInTheDocument();
+  });
+
+  // Test that Joyride is rendered with correct props
+  expect(Joyride).toHaveBeenCalledWith(
+    expect.objectContaining({
+      continuous: true,
+      scrollToFirstStep: true,
+      showProgress: true,
+      showSkipButton: true,
+      run: true,
+      steps: expect.arrayContaining([
+        expect.objectContaining({
+          content: expect.any(Object),
+          placement: 'center',
+          target: 'body',
+        }),
+        expect.objectContaining({
+          content: expect.any(Object),
+          target: '.SqlEditor',
+          spotlightPadding: 4,
+        }),
+        expect.objectContaining({
+          content: expect.any(Object),
+          target: '.sourceTableContainer',
+          spotlightPadding: 4,
+        }),
+        expect.objectContaining({
+          content: expect.any(Object),
+          target: '.relExprContainer',
+          spotlightPadding: 4,
+        }),
+        expect.objectContaining({
+          content: expect.any(Object),
+          target: '.dataContainer',
+          spotlightPadding: 4,
+        }),
+        expect.objectContaining({
+          content: expect.any(Object),
+          target: '.relExprContainer .toggle',
+          spotlightPadding: 4,
+        }),
+      ]),
+      styles: expect.objectContaining({
+        options: expect.objectContaining({
+          zIndex: 10000,
+        }),
+      }),
+      callback: expect.any(Function),
+    }),
+    {}
+  );
+
+  // Snapshot the steps content for detailed verification
+  const joyrideCall = Joyride.mock.calls[0][0];
+  expect(joyrideCall.steps).toMatchSnapshot('joyride-steps');
+
+  // Test snapshot of rendered DOM structure
+  expect(result.container.firstChild).toMatchSnapshot('dom-structure');
+});
+
+/** @test {Tutorial} */
+it('cookie exists, no tutorial', async () => {
   let cookies = new Cookies();
   cookies.set('tutorial', 'true', {path: '/'});
 
-  const wrapper = shallow(<Tutorial />);
-  let button = wrapper.find('.button').text();
+  // Clear previous mock calls
+  Joyride.mockClear();
 
-  expect(button).toContain('Redo tutorial');
+  let container;
+
+  const rendered = render(<Tutorial />);
+  container = rendered.container;
+
+  await waitFor(() => {
+    expect(container).toHaveTextContent('Redo tutorial');
+  });
+
+  // Verify Joyride is called with run=false when cookie exists
+  expect(Joyride).toHaveBeenCalledWith(
+    expect.objectContaining({
+      run: false,
+    }),
+    {}
+  );
 });

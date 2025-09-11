@@ -1,6 +1,7 @@
 import React from 'react';
 import {Provider} from 'react-redux';
-import {mount} from 'enzyme';
+import {render, screen, act, waitFor} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import configureStore from 'redux-mock-store';
 
 import CurrentRelExpr from './CurrentRelExpr';
@@ -29,45 +30,52 @@ describe('CurrentRelExpr', () => {
   });
 
   /** @test {CurrentRelExpr} */
-  it('changes the expression when clicked not relation', () => {
+  it('changes the expression when clicked not relation', async () => {
+    const user = userEvent.setup();
     const mockEvent = jest.fn();
-    const wrapper = mount(
+    const {container, findByRole} = render(
       <Provider store={store}>
         <CurrentRelExpr ReactGA={{event: mockEvent}} />
       </Provider>
     );
 
-    // Start with non-tree representation
-    expect(wrapper.find(RelExpr).length).toBe(2);
-    expect(wrapper.find(RelExprTree).length).toBe(0);
+    // Start with non-tree representation - check for RelExpr components
+    expect(container.querySelectorAll('.RelExpr')).toHaveLength(2);
+    expect(container.querySelector('.rstm-tree-item')).toBeNull();
 
     // Click the checkbox to toggle the tree view
-    wrapper
-      .find('input')
-      .at(0)
-      .simulate('change', {target: {checked: true}});
+    const treeViewCheckbox = screen.getByLabelText('Tree view');
+    await act(async () => {
+      await user.click(treeViewCheckbox);
+    });
 
-    // Now only the tree view should display
-    expect(wrapper.find(RelExpr).length).toBe(0);
-    expect(wrapper.find(RelExprTree).length).toBe(1);
+    // Wait for the tree view to appear and verify the change
+    await waitFor(() => {
+      expect(container.querySelectorAll('.RelExpr')).toHaveLength(0);
+      expect(container.querySelector('.rstm-tree-item')).toBeInTheDocument();
+    });
 
     // Click the checkbox again to toggle the tree view back
-    wrapper
-      .find('input')
-      .at(0)
-      .simulate('change', {target: {checked: false}});
+    await act(async () => {
+      await user.click(treeViewCheckbox);
+    });
+
+    // Wait for RelExpr view to return
+    await waitFor(() => {
+      expect(container.querySelectorAll('.RelExpr')).toHaveLength(2);
+      expect(container.querySelector('.rstm-tree-item')).toBeNull();
+    });
 
     // Click the checkbox to toggle query optimization
-    wrapper
-      .find('input')
-      .at(1)
-      .simulate('change', {target: {checked: true}});
+    const optimizationCheckbox = screen.getByLabelText('Query Optimization');
+    await act(async () => {
+      await user.click(optimizationCheckbox);
+    });
 
     // Click the checkbox again to toggle query optimization back
-    wrapper
-      .find('input')
-      .at(1)
-      .simulate('change', {target: {checked: false}});
+    await act(async () => {
+      await user.click(optimizationCheckbox);
+    });
 
     // We should have analytics events for the checkbox
     expect(mockEvent.mock.calls.length).toBe(2);
