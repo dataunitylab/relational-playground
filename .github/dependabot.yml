@@ -41,3 +41,7 @@ updates:
           - 'enzyme'
           - 'jest-*'
           - 'redux-mock-store'
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
