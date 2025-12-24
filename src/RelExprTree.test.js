@@ -1,5 +1,4 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
 import {render, fireEvent} from '@testing-library/react';
 
 import RelExprTree from './RelExprTree';
@@ -29,10 +28,10 @@ it('correctly renders a complex expression', () => {
       ],
     },
   };
-  const tree = renderer
-    .create(<RelExprTree expr={expr} changeExpr={jest.fn()} />)
-    .toJSON();
-  expect(tree).toMatchSnapshot();
+  const {asFragment} = render(
+    <RelExprTree expr={expr} changeExpr={jest.fn()} />
+  );
+  expect(asFragment()).toMatchSnapshot();
 });
 
 const condTests = [
@@ -64,9 +63,7 @@ it('produces an error for an invalid expression', () => {
   console.error = jest.fn();
 
   expect(() => {
-    renderer.create(
-      <RelExprTree expr={{invalidExpr: 42}} changeExpr={jest.fn()} />
-    );
+    render(<RelExprTree expr={{invalidExpr: 42}} changeExpr={jest.fn()} />);
   }).toThrow();
 
   console.error = errorObject;

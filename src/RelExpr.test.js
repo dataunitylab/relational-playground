@@ -1,5 +1,4 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
 import {Provider} from 'react-redux';
 import configureStore from 'redux-mock-store';
 import {render, fireEvent, act} from '@testing-library/react';
@@ -40,14 +39,12 @@ describe('RelExpr', () => {
         ],
       },
     };
-    const tree = renderer
-      .create(
-        <Provider store={store}>
-          <RelExpr expr={expr} changeExpr={jest.fn()} />
-        </Provider>
-      )
-      .toJSON();
-    expect(tree).toMatchSnapshot();
+    const {asFragment} = render(
+      <Provider store={store}>
+        <RelExpr expr={expr} changeExpr={jest.fn()} />
+      </Provider>
+    );
+    expect(asFragment()).toMatchSnapshot();
   });
 
   const condTests = [
@@ -81,7 +78,7 @@ describe('RelExpr', () => {
     console.error = jest.fn();
 
     expect(() => {
-      renderer.create(
+      render(
         <Provider store={store}>
           <RelExpr expr={{invalidExpr: 42}} changeExpr={jest.fn()} />
         </Provider>

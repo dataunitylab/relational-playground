@@ -16,6 +16,11 @@ if (window.document) {
     },
     getBoundingClientRect: () => ({top: 0, right: 0, bottom: 0, left: 0}),
     getClientRects: () => [],
+    createContextualFragment: (html) => {
+      const div = document.createElement('div');
+      div.innerHTML = html;
+      return div;
+    },
   });
 }
 
