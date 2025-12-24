@@ -1,97 +1,74 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`RelExpr correctly renders a complex expression 1`] = `
-<span
-  className="RelExpr"
-  onClick={[Function]}
-  onMouseOut={[Function]}
-  onMouseOver={[Function]}
-  style={
-    Object {
-      "margin": ".4em",
-    }
-  }
->
-  <span>
+<div>
+  <span
+    class="RelExpr"
+    style="margin: .4em;"
+  >
     <span>
       <span>
         <span>
-          ρ
-          <sub>
-            firstName/name
-          </sub>
-        </span>
-        (
-        <span
-          className="RelExpr"
-          onClick={[Function]}
-          onMouseOut={[Function]}
-          onMouseOver={[Function]}
-          style={
-            Object {
-              "margin": ".4em",
-            }
-          }
-        >
           <span>
+            ρ
+            <sub>
+              firstName/name
+            </sub>
+          </span>
+          (
+          <span
+            class="RelExpr"
+            style="margin: .4em;"
+          >
             <span>
               <span>
                 <span>
-                  π
-                  <sub>
-                    firstName,lastName
-                  </sub>
-                </span>
-                (
-                <span
-                  className="RelExpr"
-                  onClick={[Function]}
-                  onMouseOut={[Function]}
-                  onMouseOver={[Function]}
-                  style={
-                    Object {
-                      "margin": ".4em",
-                    }
-                  }
-                >
                   <span>
+                    π
+                    <sub>
+                      firstName,lastName
+                    </sub>
+                  </span>
+                  (
+                  <span
+                    class="RelExpr"
+                    style="margin: .4em;"
+                  >
                     <span>
                       <span>
                         <span>
-                          σ
-                          <sub>
-                            salary &gt; 130000
-                          </sub>
-                        </span>
-                        (
-                        <span
-                          className="RelExpr"
-                          style={
-                            Object {
-                              "margin": ".4em",
-                            }
-                          }
-                        >
-                          <span
-                            className="Relation"
-                            data-testid="span"
-                          >
-                            Doctor
+                          <span>
+                            σ
+                            <sub>
+                              salary &gt; 130000
+                            </sub>
                           </span>
+                          (
+                          <span
+                            class="RelExpr"
+                            style="margin: .4em;"
+                          >
+                            <span
+                              class="Relation"
+                              data-testid="span"
+                            >
+                              Doctor
+                            </span>
+                          </span>
+                          )
                         </span>
-                        )
                       </span>
                     </span>
                   </span>
+                  )
                 </span>
-                )
               </span>
             </span>
           </span>
+          )
         </span>
-        )
       </span>
     </span>
   </span>
-</span>
+</div>
 `;
