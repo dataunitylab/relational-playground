@@ -1,7 +1,7 @@
 // @flow
 import './wydr';
 
-import {BrowserRouter} from 'react-router-dom';
+import {BrowserRouter} from 'react-router';
 import {Provider} from 'react-redux';
 import React from 'react';
 import {createRoot} from 'react-dom/client';

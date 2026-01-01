@@ -1,5 +1,7 @@
 import '@testing-library/jest-dom';
 
+import {TextEncoder, TextDecoder} from 'util';
+
 if (window.document) {
   window.document.createRange = () => ({
     setStart: () => {},
@@ -27,3 +29,7 @@ if (window.document) {
 jest.mock('uuid', () => ({
   v4: () => '00000000-0000-0000-0000-000000000000',
 }));
+
+// Make available for react-router
+global.TextEncoder = TextEncoder;
+global.TextDecoder = TextDecoder;
