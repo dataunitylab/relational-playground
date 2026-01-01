@@ -1,5 +1,5 @@
 import React from 'react';
-import {Route, Routes} from 'react-router-dom';
+import {Route, Routes} from 'react-router';
 import Home from './Home';
 
 /** A container for all routes in the app (currently only one) */
