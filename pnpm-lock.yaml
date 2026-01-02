@@ -172,11 +172,11 @@ importers:
         specifier: ^0.47.0
         version: 0.47.0
       npm-package-json-lint:
-        specifier: ^9.0.0
-        version: 9.0.0(typescript@5.9.3)
+        specifier: ^9.1.0
+        version: 9.1.0(typescript@5.9.3)
       npm-package-json-lint-config-default:
         specifier: ^8.0.1
-        version: 8.0.1(npm-package-json-lint@9.0.0(typescript@5.9.3))
+        version: 8.0.1(npm-package-json-lint@9.1.0(typescript@5.9.3))
       pkg-ok:
         specifier: ^3.0.0
         version: 3.0.0
@@ -3249,15 +3249,6 @@ packages:
       supports-color:
         optional: true
 
-  debug@4.4.1:
-    resolution: {integrity: sha512-KcKCqiftBJcZr++7ykoDIEwSa3XWowTfNPo92BYxjXiyYEVrUQh2aLyhxBCwww+heortUFxEJYcRzosstTEBYQ==}
-    engines: {node: '>=6.0'}
-    peerDependencies:
-      supports-color: '*'
-    peerDependenciesMeta:
-      supports-color:
-        optional: true
-
   debug@4.4.3:
     resolution: {integrity: sha512-RGwwWnwQvkVfavKVt22FGLw+xYSdzARwm0ru6DhTVA3umU5hZc28V3kO4stgYryrTlLpuvgI9GiijltAjNbcqA==}
     engines: {node: '>=6.0'}
@@ -3793,8 +3784,8 @@ packages:
     engines: {node: '>=4'}
     hasBin: true
 
-  esquery@1.6.0:
-    resolution: {integrity: sha512-ca9pw9fomFcKPvFLXhBKUK90ZvGibiGOvRJNbjljY7s7uq/5YO4BOzcYtJqExdx99rF6aAcnRxHmcUHcz6sQsg==}
+  esquery@1.7.0:
+    resolution: {integrity: sha512-Ap6G0WQwcU/LHsvLwON1fAQX9Zp0A2Y6Y/cJBl9r/JbW90Zyg4/zbG6zzKa2OTALELarYHmKu0GhpM5EO+7T0g==}
     engines: {node: '>=0.10'}
 
   esrecurse@4.3.0:
@@ -5456,8 +5447,8 @@ packages:
     peerDependencies:
       npm-package-json-lint: ^9.0.0
 
-  npm-package-json-lint@9.0.0:
-    resolution: {integrity: sha512-bmyraQyO9wAyFwyr+ouMrbv3mFY/UZY8nlBorgqfTw735QtVfAUBKs7GrO/rvJByoKnnwzQIlIFq9WXdfkSL0g==}
+  npm-package-json-lint@9.1.0:
+    resolution: {integrity: sha512-EM+c1FSgncwyNpBRf+Wl92zCfrtBiHZFZE+ncqQEqsW/tLTcHX/GUHCDdPzI0XFKBZHvz+h3C+Ov3VfwJfW9Dw==}
     engines: {node: '>=20.0.0', npm: '>=10.0.0'}
     hasBin: true
 
@@ -6768,11 +6759,6 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
-  semver@7.7.2:
-    resolution: {integrity: sha512-RF0Fw+rO5AMf9MAyaRXI4AV0Ulj5lMHqVxxdSgiVbixSCXoEmmX/jk0CuJw4+3SqroYO9VoUh+HcuJivvtJemA==}
-    engines: {node: '>=10'}
-    hasBin: true
-
   semver@7.7.3:
     resolution: {integrity: sha512-SdsKMrI9TdgjdweUSR9MweHA4EJ8YxHn8DFaDisvhVlUOe4BF1tLD7GAj0lIqWVl+dPb/rExr0Btby5loQm20Q==}
     engines: {node: '>=10'}
@@ -7159,6 +7145,10 @@ packages:
   taffydb@2.7.3:
     resolution: {integrity: sha512-GQ3gtYFSOAxSMN/apGtDKKkbJf+8izz5YfbGqIsUc7AMiQOapARZ76dhilRY2h39cynYxBFdafQo5HUL5vgkrg==}
 
+  tagged-tag@1.0.0:
+    resolution: {integrity: sha512-yEFYrVhod+hdNyx7g5Bnkkb0G6si8HJurOoOEgC8B/O0uXLHlaey/65KRv6cuWBNhBgHKAROVpc7QyYqE5gFng==}
+    engines: {node: '>=20'}
+
   tailwindcss@3.2.1:
     resolution: {integrity: sha512-Uw+GVSxp5CM48krnjHObqoOwlCt5Qo6nw1jlCRwfGy68dSYb/LwS9ZFidYGRiM+w6rMawkZiu1mEMAsHYAfoLg==}
     engines: {node: '>=12.13.0'}
@@ -7401,6 +7391,10 @@ packages:
   type-fest@4.41.0:
     resolution: {integrity: sha512-TeTSQ6H5YHvpqVwBRcnLDCBnDOHWYu7IvGbHT6N8AOymcr9PJGjc1GTtiWZTYg0NCgYwvnYWEkVChQAr9bjfwA==}
     engines: {node: '>=16'}
+
+  type-fest@5.3.1:
+    resolution: {integrity: sha512-VCn+LMHbd4t6sF3wfU/+HKT63C9OoyrSIf4b+vtWHpt2U7/4InZG467YDNMFMR70DdHjAdpPWmw2lzRdg0Xqqg==}
+    engines: {node: '>=20'}
 
   type-is@1.6.18:
     resolution: {integrity: sha512-TkRKr9sUTxEH8MdfuCSP7VizJyzRNMjj2J2do2Jr3Kym598JVdEksuzPQCnlFPW4ky9Q+iA+ma9BGm06XQBy8g==}
@@ -11471,10 +11465,6 @@ snapshots:
     dependencies:
       ms: 2.1.3
 
-  debug@4.4.1:
-    dependencies:
-      ms: 2.1.3
-
   debug@4.4.3:
     dependencies:
       ms: 2.1.3
@@ -12112,7 +12102,7 @@ snapshots:
       eslint-utils: 3.0.0(eslint@8.26.0)
       eslint-visitor-keys: 3.4.3
       espree: 9.6.1
-      esquery: 1.6.0
+      esquery: 1.7.0
       esutils: 2.0.3
       fast-deep-equal: 3.1.3
       file-entry-cache: 6.0.1
@@ -12148,7 +12138,7 @@ snapshots:
 
   esprima@4.0.1: {}
 
-  esquery@1.6.0:
+  esquery@1.7.0:
     dependencies:
       estraverse: 5.3.0
 
@@ -14199,7 +14189,7 @@ snapshots:
     dependencies:
       hosted-git-info: 4.1.0
       is-core-module: 2.16.1
-      semver: 7.7.2
+      semver: 7.7.3
       validate-npm-package-license: 3.0.4
 
   normalize-path@3.0.0: {}
@@ -14208,17 +14198,17 @@ snapshots:
 
   normalize-url@6.1.0: {}
 
-  npm-package-json-lint-config-default@8.0.1(npm-package-json-lint@9.0.0(typescript@5.9.3)):
+  npm-package-json-lint-config-default@8.0.1(npm-package-json-lint@9.1.0(typescript@5.9.3)):
     dependencies:
-      npm-package-json-lint: 9.0.0(typescript@5.9.3)
+      npm-package-json-lint: 9.1.0(typescript@5.9.3)
 
-  npm-package-json-lint@9.0.0(typescript@5.9.3):
+  npm-package-json-lint@9.1.0(typescript@5.9.3):
     dependencies:
       ajv: 6.12.6
       ajv-errors: 1.0.1(ajv@6.12.6)
       chalk: 4.1.2
       cosmiconfig: 8.3.6(typescript@5.9.3)
-      debug: 4.4.1
+      debug: 4.4.3
       globby: 11.1.0
       ignore: 5.3.2
       is-plain-obj: 3.0.0
@@ -14226,10 +14216,10 @@ snapshots:
       log-symbols: 4.1.0
       meow: 9.0.0
       plur: 4.0.0
-      semver: 7.7.2
+      semver: 7.7.3
       slash: 3.0.0
       strip-json-comments: 3.1.1
-      type-fest: 4.41.0
+      type-fest: 5.3.1
       validate-npm-package-name: 6.0.2
     transitivePeerDependencies:
       - supports-color
@@ -15692,8 +15682,6 @@ snapshots:
 
   semver@7.6.2: {}
 
-  semver@7.7.2: {}
-
   semver@7.7.3: {}
 
   send@0.19.0:
@@ -16197,6 +16185,8 @@ snapshots:
 
   taffydb@2.7.3: {}
 
+  tagged-tag@1.0.0: {}
+
   tailwindcss@3.2.1(postcss@8.4.38):
     dependencies:
       arg: 5.0.2
@@ -16417,7 +16407,12 @@ snapshots:
 
   type-fest@4.30.2: {}
 
-  type-fest@4.41.0: {}
+  type-fest@4.41.0:
+    optional: true
+
+  type-fest@5.3.1:
+    dependencies:
+      tagged-tag: 1.0.0
 
   type-is@1.6.18:
     dependencies:
