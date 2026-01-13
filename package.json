@@ -27,7 +27,7 @@
     "react-scripts": "5.0.1",
     "react-simple-code-editor": "^0.14.1",
     "react-simple-tree-menu": "^1.1.18",
-    "react-split-pane": "^0.1.92",
+    "react-split-pane": "^3.0.5",
     "react-table": "^6.11.5",
     "redux": "^4.2.1",
     "redux-first-history": "^5.2.0",
