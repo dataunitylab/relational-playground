@@ -53,6 +53,20 @@ it('converts a rename', () => {
 });
 
 /** @test {relexp} */
+it('converts a aliasing operation', () => {
+  const sql = parser.parse('SELECT bar FROM foo as f');
+  const action = exprFromSql(sql.value, {foo: ['bar']});
+  expect(reducer({}, action)).toMatchObject({
+    expr: {
+      projection: {
+        arguments: {project: ['bar']},
+        children: [{alias: {alias_value: 'f', value: 'foo'}}],
+      },
+    },
+  });
+});
+
+/** @test {relexp} */
 it('converts a difference', () => {
   const sql = parser.parse('SELECT * FROM foo EXCEPT SELECT * FROM bar');
   const action = exprFromSql(sql.value, {});
