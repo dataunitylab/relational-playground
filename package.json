@@ -107,7 +107,7 @@
     "stylelint": "^16.26.1",
     "stylelint-config-standard": "^39.0.1",
     "universal-cookie": "^8.0.1",
-    "webpack": "^5.104.1"
+    "webpack": "^5.105.3"
   },
   "engines": {
     "node": "24.x"
