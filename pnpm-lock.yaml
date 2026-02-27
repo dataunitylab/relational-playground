@@ -72,8 +72,8 @@ importers:
         specifier: ^1.1.18
         version: 1.1.18(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-split-pane:
-        specifier: ^0.1.92
-        version: 0.1.92(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^3.2.0
+        version: 3.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-table:
         specifier: ^6.11.5
         version: 6.11.5(prop-types@15.8.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -6400,9 +6400,6 @@ packages:
       react: 15 - 18
       react-dom: 15 - 18
 
-  react-lifecycles-compat@3.0.4:
-    resolution: {integrity: sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==}
-
   react-redux@9.2.0:
     resolution: {integrity: sha512-ROY9fvHhwOD9ySfrF0wmvu//bKCQ6AeZZq1nJNtbDC+kk5DuSuNX/n6YWYF/SYy7bSba4D4FSz8DJeKY/S/r+g==}
     peerDependencies:
@@ -6453,14 +6450,12 @@ packages:
       react: '>=16.6.3'
       react-dom: '>=16.6.3'
 
-  react-split-pane@0.1.92:
-    resolution: {integrity: sha512-GfXP1xSzLMcLJI5BM36Vh7GgZBpy+U/X0no+VM3fxayv+p1Jly5HpMofZJraeaMl73b3hvlr+N9zJKvLB/uz9w==}
+  react-split-pane@3.2.0:
+    resolution: {integrity: sha512-tH2SaMqBZ7Ypcmj6I/2fIR0gdeE0Q5ve66T51UyXcSqIgPGJh40bOMTVCAFjB0Q3OB5+Aw/4ECVWU+YU9SL88Q==}
+    engines: {node: '>=20.0.0'}
     peerDependencies:
-      react: ^16.0.0-0
-      react-dom: ^16.0.0-0
-
-  react-style-proptype@3.2.2:
-    resolution: {integrity: sha512-ywYLSjNkxKHiZOqNlso9PZByNEY+FTyh3C+7uuziK0xFXu9xzdyfHwg4S9iyiRRoPCR4k2LqaBBsWVmSBwCWYQ==}
+      react: ^17.0.0 || ^18.0.0 || ^19.0.0
+      react-dom: ^17.0.0 || ^18.0.0 || ^19.0.0
 
   react-table@6.11.5:
     resolution: {integrity: sha512-LM+AS9v//7Y7lAlgTWW/cW6Sn5VOb3EsSkKQfQTzOW8FngB1FUskLLNEVkAYsTX9LjOWR3QlGjykJqCE6eXT/g==}
@@ -15257,8 +15252,6 @@ snapshots:
     transitivePeerDependencies:
       - '@types/react'
 
-  react-lifecycles-compat@3.0.4: {}
-
   react-redux@9.2.0(@types/react@18.2.79)(react@18.3.1)(redux@4.2.1):
     dependencies:
       '@types/use-sync-external-store': 0.0.6
@@ -15378,17 +15371,10 @@ snapshots:
       react-dom: 18.3.1(react@18.3.1)
       tiny-debounce: 0.1.1
 
-  react-split-pane@0.1.92(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  react-split-pane@3.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
-      prop-types: 15.8.1
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
-      react-lifecycles-compat: 3.0.4
-      react-style-proptype: 3.2.2
-
-  react-style-proptype@3.2.2:
-    dependencies:
-      prop-types: 15.8.1
 
   react-table@6.11.5(prop-types@15.8.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
