@@ -32,7 +32,7 @@
     "redux": "^4.2.1",
     "redux-first-history": "^5.2.0",
     "tinyqueue": "^2.0.3",
-    "typescript": "^5.9.3",
+    "typescript": "^6.0.2",
     "uuid": "^13.0.0"
   },
   "scripts": {
