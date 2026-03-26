@@ -157,8 +157,8 @@ importers:
         specifier: ^1.1.3
         version: 1.1.3
       flow-bin:
-        specifier: ^0.203.1
-        version: 0.203.1
+        specifier: ^0.307.0
+        version: 0.307.0
       husky:
         specifier: ^9.1.7
         version: 9.1.7
@@ -3982,8 +3982,8 @@ packages:
   flatted@3.3.3:
     resolution: {integrity: sha512-GX+ysw4PBCz0PzosHDepZGANEuFCMLrnRTiEy9McGjmkCQYwRq4A/X786G/fjM/+OjsWSU1ZrY5qyARZmO/uwg==}
 
-  flow-bin@0.203.1:
-    resolution: {integrity: sha512-W/SX7QnRmBYS0TjfgtGb9ltPZzlsNeTZ7wA1yqwChxbLaQtrxGtO4K5GKtjRwAtucMQSebB7Ao++u21fRmC4TQ==}
+  flow-bin@0.307.0:
+    resolution: {integrity: sha512-VJbgwkNCgaY8p9eCzw1Iv1Y76Pxi0KjgIjeABOWMlp2NiJRATnNxz6mhqPs31+5g2JBwab4qchtynE2qLTwb9g==}
     engines: {node: '>=0.10.0'}
     hasBin: true
 
@@ -7465,8 +7465,8 @@ packages:
     resolution: {integrity: sha512-VfQPToRA5FZs/qJxLIinmU59u0r7LXqoJkCzinq3ckNJp3vKEh7jTWN589YQ5+aoAC/TGRLyJLCPKcLQbM8r9g==}
     engines: {node: '>=18.17'}
 
-  undici@7.24.5:
-    resolution: {integrity: sha512-3IWdCpjgxp15CbJnsi/Y9TCDE7HWVN19j1hmzVhoAkY/+CJx449tVxT5wZc1Gwg8J+P0LWvzlBzxYRnHJ+1i7Q==}
+  undici@7.24.6:
+    resolution: {integrity: sha512-Xi4agocCbRzt0yYMZGMA6ApD7gvtUFaxm4ZmeacWI4cZxaF6C+8I8QfofC20NAePiB/IcvZmzkJ7XPa471AEtA==}
     engines: {node: '>=20.18.1'}
 
   unicode-canonical-property-names-ecmascript@2.0.0:
@@ -8099,7 +8099,7 @@ snapshots:
   '@babel/helper-module-imports@7.27.1':
     dependencies:
       '@babel/traverse': 7.28.5
-      '@babel/types': 7.28.5
+      '@babel/types': 7.29.0
     transitivePeerDependencies:
       - supports-color
 
@@ -8194,7 +8194,7 @@ snapshots:
   '@babel/helpers@7.28.4':
     dependencies:
       '@babel/template': 7.27.2
-      '@babel/types': 7.28.5
+      '@babel/types': 7.29.0
 
   '@babel/highlight@7.24.7':
     dependencies:
@@ -8209,11 +8209,11 @@ snapshots:
 
   '@babel/parser@7.26.7':
     dependencies:
-      '@babel/types': 7.28.5
+      '@babel/types': 7.29.0
 
   '@babel/parser@7.28.5':
     dependencies:
-      '@babel/types': 7.28.5
+      '@babel/types': 7.29.0
 
   '@babel/parser@7.29.2':
     dependencies:
@@ -8951,8 +8951,8 @@ snapshots:
   '@babel/template@7.27.2':
     dependencies:
       '@babel/code-frame': 7.27.1
-      '@babel/parser': 7.28.5
-      '@babel/types': 7.28.5
+      '@babel/parser': 7.29.2
+      '@babel/types': 7.29.0
 
   '@babel/traverse@7.24.7':
     dependencies:
@@ -9478,7 +9478,7 @@ snapshots:
   '@jridgewell/source-map@0.3.5':
     dependencies:
       '@jridgewell/gen-mapping': 0.3.13
-      '@jridgewell/trace-mapping': 0.3.25
+      '@jridgewell/trace-mapping': 0.3.31
 
   '@jridgewell/sourcemap-codec@1.4.15': {}
 
@@ -10045,12 +10045,12 @@ snapshots:
 
   '@types/babel__generator@7.27.0':
     dependencies:
-      '@babel/types': 7.28.5
+      '@babel/types': 7.29.0
 
   '@types/babel__template@7.4.4':
     dependencies:
-      '@babel/parser': 7.28.5
-      '@babel/types': 7.28.5
+      '@babel/parser': 7.29.2
+      '@babel/types': 7.29.0
 
   '@types/babel__traverse@7.28.0':
     dependencies:
@@ -11096,7 +11096,7 @@ snapshots:
       parse5: 7.3.0
       parse5-htmlparser2-tree-adapter: 7.1.0
       parse5-parser-stream: 7.1.2
-      undici: 7.24.5
+      undici: 7.24.6
       whatwg-mimetype: 4.0.0
 
   chokidar@3.5.3:
@@ -12396,7 +12396,7 @@ snapshots:
 
   flatted@3.3.3: {}
 
-  flow-bin@0.203.1: {}
+  flow-bin@0.307.0: {}
 
   follow-redirects@1.15.11: {}
 
@@ -16519,7 +16519,7 @@ snapshots:
 
   undici@6.23.0: {}
 
-  undici@7.24.5: {}
+  undici@7.24.6: {}
 
   unicode-canonical-property-names-ecmascript@2.0.0: {}
 
