@@ -29,7 +29,7 @@
     "react-simple-tree-menu": "^1.1.18",
     "react-split-pane": "^0.1.92",
     "react-table": "^6.11.5",
-    "redux": "^4.2.1",
+    "redux": "^5.0.1",
     "redux-first-history": "^5.2.0",
     "tinyqueue": "^2.0.3",
     "typescript": "^5.9.3",
