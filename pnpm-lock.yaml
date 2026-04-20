@@ -90,8 +90,8 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
       uuid:
-        specifier: ^13.0.0
-        version: 13.0.0
+        specifier: ^14.0.0
+        version: 14.0.0
     devDependencies:
       '@babel/eslint-parser':
         specifier: ^7.28.6
@@ -7565,8 +7565,8 @@ packages:
     resolution: {integrity: sha512-pMZTvIkT1d+TFGvDOqodOclx0QWkkgi6Tdoa8gC8ffGAAqz9pzPTZWAybbsHHoED/ztMtkv/VoYTYyShUn81hA==}
     engines: {node: '>= 0.4.0'}
 
-  uuid@13.0.0:
-    resolution: {integrity: sha512-XQegIaBTVUjSHliKqcnFqYypAd4S+WCYt5NIeRs6w/UAry7z8Y9j5ZwRRL4kzq9U3sD6v+85er9FvkEaBpji2w==}
+  uuid@14.0.0:
+    resolution: {integrity: sha512-Qo+uWgilfSmAhXCMav1uYFynlQO7fMFiMVZsQqZRMIXp0O7rR7qjkj+cPvBHLgBqi960QCoo/PH2/6ZtVqKvrg==}
     hasBin: true
 
   uuid@3.4.0:
@@ -8104,7 +8104,7 @@ snapshots:
   '@babel/helper-module-imports@7.27.1':
     dependencies:
       '@babel/traverse': 7.28.5
-      '@babel/types': 7.28.5
+      '@babel/types': 7.29.0
     transitivePeerDependencies:
       - supports-color
 
@@ -8199,7 +8199,7 @@ snapshots:
   '@babel/helpers@7.28.4':
     dependencies:
       '@babel/template': 7.27.2
-      '@babel/types': 7.28.5
+      '@babel/types': 7.29.0
 
   '@babel/highlight@7.24.7':
     dependencies:
@@ -8214,11 +8214,11 @@ snapshots:
 
   '@babel/parser@7.26.7':
     dependencies:
-      '@babel/types': 7.28.5
+      '@babel/types': 7.29.0
 
   '@babel/parser@7.28.5':
     dependencies:
-      '@babel/types': 7.28.5
+      '@babel/types': 7.29.0
 
   '@babel/parser@7.29.2':
     dependencies:
@@ -8956,8 +8956,8 @@ snapshots:
   '@babel/template@7.27.2':
     dependencies:
       '@babel/code-frame': 7.27.1
-      '@babel/parser': 7.28.5
-      '@babel/types': 7.28.5
+      '@babel/parser': 7.29.2
+      '@babel/types': 7.29.0
 
   '@babel/traverse@7.24.7':
     dependencies:
@@ -9483,7 +9483,7 @@ snapshots:
   '@jridgewell/source-map@0.3.5':
     dependencies:
       '@jridgewell/gen-mapping': 0.3.13
-      '@jridgewell/trace-mapping': 0.3.25
+      '@jridgewell/trace-mapping': 0.3.31
 
   '@jridgewell/sourcemap-codec@1.4.15': {}
 
@@ -10050,12 +10050,12 @@ snapshots:
 
   '@types/babel__generator@7.27.0':
     dependencies:
-      '@babel/types': 7.28.5
+      '@babel/types': 7.29.0
 
   '@types/babel__template@7.4.4':
     dependencies:
-      '@babel/parser': 7.28.5
-      '@babel/types': 7.28.5
+      '@babel/parser': 7.29.2
+      '@babel/types': 7.29.0
 
   '@types/babel__traverse@7.28.0':
     dependencies:
@@ -16610,7 +16610,7 @@ snapshots:
 
   utils-merge@1.0.1: {}
 
-  uuid@13.0.0: {}
+  uuid@14.0.0: {}
 
   uuid@3.4.0: {}
 
